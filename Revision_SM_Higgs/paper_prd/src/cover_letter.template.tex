@@ -1,0 +1,90 @@
+% cover_letter.tex -- the cover letter for the submission of "Higgs as a Composite, and Quantum Gravity" to Physical Review D.
+% PROJECT spacetimes, folder Revision_SM_Higgs/paper_prd.  Generated from src/cover_letter.template.tex by
+% scripts/build_paper.py, which inserts the numbers (the same placeholders as in the article, from the data files).
+\documentclass[11pt]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\hypersetup{pdftitle={Cover letter: Higgs as a Composite, and Quantum Gravity},pdfauthor={Patrick Lee Nash}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\begin{document}
+
+\begin{flushright}
+Patrick Lee Nash, Ph.D.\\
+PROJECT spacetimes\\
+November 21, 2026
+\end{flushright}
+
+The Editors\\
+Physical Review D
+
+\textbf{Submission of a Regular Article: ``Higgs as a Composite, and Quantum Gravity''}
+
+Dear Editors,
+
+I submit the manuscript ``Higgs as a Composite, and Quantum Gravity'' for consideration as a Regular Article in
+Physical Review D, together with its Supplemental Material.
+
+\textbf{Context.} In an earlier manuscript (``The Lorentz Super-Loop of the Bi-Octonions: Non-Associative Counterexamples
+to the No-Go Theorems and a Spin-Zero Spinor Superfluid'', dated November 16, 2026, unpublished) I showed that the unit
+bi-octonions form a Moufang loop that contains $SL(2,\mathbb C)$ together with eight spinor charges, a Weyl spinor that is
+an isospin doublet, and that a spin-zero superfluid of these charges forms isospin-triplet pairs. The present manuscript
+asks whether such a superfluid can be the Higgs sector of a gauge theory. The spinor field is a DiracLike spinor (a Dirac
+spinor of $SL(2,\mathbb C)$ with electric charge zero and no electroweak quantum numbers), and its gauge group
+$SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}$ is a new group, not the electroweak group. The manuscript solves the
+superfluid in five mean-field methods (Hubbard-Stratonovich with three decouplings, Kohn-Sham, and
+Cornwall-Jackiw-Tomboulis), derives the effective Lagrangians of the composite order parameter, and asks whether the
+superfluid is the Higgs field of its own gauge group and whether it could be that of the Standard Model.
+
+\textbf{Main findings.}
+\begin{enumerate}
+\item In every method the condensate is the Higgs field of the new group: the isospin bosons $W^\pm$ and the boson $Z$ of
+the fermion number become massive, and exactly one gauge boson stays massless. The massless gauge bosons correspond one to
+one to the generators that leave the condensate unchanged. The massless boson, which I name the zeugon, is a new gauge
+boson, not the photon: it couples to the unbroken isospin charge, it is the only gauge boson that attracts the two members
+of a pair, and, because the surviving group is $SL(2,\mathbb C)\times O(2)$, its charge conjugation is itself a gauge
+symmetry, the structure of Alice electrodynamics.
+\item The amplitude mode is a composite scalar bound below the threshold of two quasi-particles; the Higgs field of the
+model is composite by construction (the compositeness condition of Bardeen, Hill and Lindner).
+\item From the static pair response of a moving pair I compute the gradient coefficient of the order parameter at the
+critical temperature and find Ginzburg numbers ${\rm Gi}={{GI_RANGE}}$: the critical region is wider than the critical
+temperature itself, and the mean-field transition, on which all five methods agree, is not reliable. The calculation also
+shows that a cutoff on the momenta of the two constituents destroys the gradient expansion (the coefficient of
+$|\vec\Phi|^2$ acquires a term linear in the momentum of the pair), while a cutoff on their relative momentum does not.
+\item The amplitude mode is a broad resonance: once it can decay into the longitudinal gauge bosons its tree-level width is
+{{WIDTH_RANGE}} times its mass, and its mass is ${{MHV_RANGE}}$ times the scale of the breaking. Because the DiracLike spinor
+carries no electroweak quantum numbers, the condensate is a singlet of the electroweak group and cannot be the Higgs field
+of the Standard Model, whatever its numbers.
+\end{enumerate}
+
+\textbf{Why Physical Review D.} The manuscript concerns a Higgs sector, composite Higgs bosons and dynamical symmetry
+breaking, a new massless gauge boson with a local charge conjugation, and the finite-temperature transition of a gauge
+theory. Its treatment of the gradient coefficient and of the regularization of a moving pair applies to any
+model in which a four-fermion interaction condenses a fermion field.
+
+\textbf{On the title and the gravitational sector.} The title names quantum gravity because the gauge group of the model
+contains $SL(2,\mathbb C)$ as a gauge factor, and Sec.~VIII of the manuscript outlines how E.~A.~Lord's gauge theory of the
+local change of spinor representation will add the gravitational sector. The abstract and that section state that this
+sector is a program and that no part of it is computed in this manuscript.
+
+\textbf{Reproducibility.} Every number of the manuscript is produced by two independent programs (one in Rust, one in
+Python with numpy and LAPACK); the statements of Secs.~III to VI, except the mass matrix of the gauge bosons and the
+time-dependent calculations, are checked a third time by a notebook in the Wolfram Language. The Supplemental Material
+gives the derivations, the complete tables, every check with its deviation and tolerance, and the SHA-256 checksums of the
+data files and programs, which are openly available in a public repository (the Data Availability statement of the
+manuscript).
+
+\textbf{Submission history.} This manuscript has not been published and is not under consideration for publication
+elsewhere; it has not been submitted to a journal before.
+
+\textbf{Suggested referees.} Suggestions of referees, by area of expertise, are given in the editorial information of
+the submission.
+
+Thank you for your consideration.
+
+Sincerely,
+
+Patrick Lee Nash, Ph.D.
+
+\end{document}

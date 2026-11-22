@@ -1,0 +1,13 @@
+# sf_part1: the checks and the analytic solutions of part I of the manuscript superfluid.md (items 1 to 5 of the
+# problem).  Run from the folder rust/:  cargo run --release --bin sf_part1
+[package]
+name = "sfpart1"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sf_part1"
+path = "src/main.rs"
+
+[dependencies]
+sfcore = { path = "../sfcore" }

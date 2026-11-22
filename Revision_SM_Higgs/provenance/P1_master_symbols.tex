@@ -1,0 +1,2335 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  10pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+  \setmainfont[]{DejaVu Serif}
+  \setsansfont[]{DejaVu Sans}
+  \setmonofont[]{DejaVu Sans Mono}
+  \setmathfont[]{Latin Modern Math}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=2.0cm]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% doc_header.tex -- LaTeX preamble additions used by build_docs.sh for every
+% Markdown -> LaTeX -> PDF conversion (the documents of the folder Revision_SM_Higgs).
+\usepackage{etoolbox}
+% longtable may not be loaded by pandoc when a document has no table
+\usepackage{longtable}
+% bold vectors: \bm -> \symbf under unicode-math (XeLaTeX), bm package otherwise
+\makeatletter
+\@ifpackageloaded{unicode-math}{\providecommand{\bm}[1]{\symbf{#1}}}{\usepackage{bm}}
+\makeatother
+% smaller type in long tables so that wide audit tables fit the text width;
+% inside a table a line break is allowed after an underscore of plain text
+% (pandoc writes it as \_), so that long identifiers wrap inside their column
+% rows are set a little apart, so that symbols with indices do not touch
+\AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{1.45}%
+  \let\sptunderscore\_\def\_{\sptunderscore\allowbreak}}
+\setlength{\LTcapwidth}{\textwidth}
+% A short table is kept on one page.  The build (code/scripts/keep_tables.py) ends the rows of such a table with \\*,
+% which forbids a page break after a row, and sets \sptkeptpenalty to 10000 in front of the table.  This penalty is
+% put here in the place of the breakpoint (penalty 0) that longtable leaves after every table, so that the paragraph
+% that follows a kept table, its caption, begins on the same page; it is set back to 0 after the table.
+\newcount\sptkeptpenalty
+\sptkeptpenalty=0
+\makeatletter
+\patchcmd{\endlongtable}{\endgraf\penalty\z@\addvspace\LTpost}%
+  {\endgraf\penalty\sptkeptpenalty\addvspace\LTpost\global\sptkeptpenalty=\z@}%
+  {}{\PackageError{doc_header}{the end of longtable could not be patched}{The tables can still be typeset, but a short table may be separated from its caption.}}
+\makeatother
+% allow line breaks after slashes and hyphens inside table cells
+\usepackage{xurl}
+% code blocks: break over-long lines instead of running into the margin.
+% Plain ``` blocks are typeset by pandoc as {verbatim}, highlighted ones
+% (```bash) as {Highlighting}; both are re-declared as breakable fancyvrb
+% environments.  The continuation line is marked with a small hooked arrow.
+\usepackage{fvextra}
+\RecustomVerbatimEnvironment{verbatim}{Verbatim}{breaklines,breakanywhere,fontsize=\small}
+\makeatletter
+\@ifundefined{Highlighting}{}{%
+  \RecustomVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,breakanywhere,fontsize=\small,commandchars=\\\{\}}}
+\makeatother
+% inline code (pandoc writes it as \texttt{...}): never hyphenate -- an inserted
+% hyphen could be read as part of a file name -- but allow a line break after
+% an underscore, slash, comma, colon or equals sign, so that long paths and
+% column lists wrap inside the text width and inside table columns.
+% Inside a formula (e.g. the name of a notebook symbol in an equation) the same
+% command must first leave math mode, which \text of amsmath does.
+\ExplSyntaxOn
+\tl_new:N \l__spt_code_tl
+\cs_new_protected:Npn \__spt_texttt:n #1
+  {
+    \tl_set:Nn \l__spt_code_tl {#1}
+    \regex_replace_all:nnN { ([\/\,\:\=]) } { \1 \c{allowbreak} } \l__spt_code_tl
+    \regex_replace_all:nnN { \c{_} } { \c{_} \c{allowbreak} } \l__spt_code_tl
+    \group_begin: \ttfamily \hyphenchar \font = -1 \scan_stop: \l__spt_code_tl \group_end:
+  }
+\RenewDocumentCommand \texttt { m }
+  {
+    \mode_if_math:TF { \text { \__spt_texttt:n {#1} } } { \__spt_texttt:n {#1} }
+  }
+\ExplSyntaxOff
+% A figure is written in the Markdown source as an image paragraph followed by
+% a caption paragraph ("**Figure S1.** ..."), so that the caption is also
+% visible on GitHub.  An image that starts a paragraph is centered.
+\usepackage{graphicx}% pandoc loads it only for documents that contain an image
+\NewCommandCopy\sptincludegraphics\includegraphics
+\RenewDocumentCommand\includegraphics{O{} m}{%
+  \ifvmode\begin{center}\sptincludegraphics[#1]{#2}\end{center}%
+  \else\sptincludegraphics[#1]{#2}\fi}
+% keep figures where they are referenced
+\usepackage{float}
+\floatplacement{figure}{H}
+% running header with the document title
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PROJECT spacetimes, Revision\_SM\_Higgs}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+% 16x16 matrices: tighter columns so that a full matrix fits the text width
+\setlength{\arraycolsep}{3.2pt}
+% The documents of this project contain long tagged symbols, file paths and
+% identifiers that cannot be hyphenated.  A paragraph is therefore allowed to
+% have looser lines before TeX gives up and lets a line stick out of the margin.
+\AtBeginDocument{\tolerance=2000 \emergencystretch=5em \hbadness=2000}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={The MASTER provenance of the symbols of PROJECT spacetimes for the solution of Revision\_SM\_Higgs},
+  pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={blue},
+  urlcolor={blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{The MASTER provenance of the symbols of PROJECT spacetimes for
+the solution of Revision\_SM\_Higgs}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+\subtitle{Provenance document \texttt{P1} of PROJECT spacetimes, folder
+Revision\_SM\_Higgs}
+\author{Prepared for Patrick Lee Nash, Ph.D.}
+\date{November 20, 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{The state of this document under the revised hypotheses (21
+November 2026).} This document was inherited unchanged from the earlier
+hypotheses, under which the spinor field was the DiracLike spinor with
+the electric charge 0 and \(SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\)
+was a new gauge group. The hypotheses of this folder are different:
+\(SU(2)_{\rm v}\) is \(SU(2)_L\), the fermion number is the hypercharge
+(\(Y^{\rm SM}=F_{\rm LL}/4\)), a singlet field \(\chi_{\rm SH}\) is
+added, and the superfluid is the condensate of the pairs of a particle
+of \(\Psi_{\rm LL}\) and a particle of \(\chi_{\rm SH}\), which has the
+quantum numbers of the Higgs doublet. Every statement below that depends
+on the earlier hypotheses is replaced as this document is rewritten for
+the revised ones.
+
+\hypertarget{what-this-document-is}{%
+\section{1. What this document is}\label{what-this-document-is}}
+
+The author's Rule 8 states that many original files of PROJECT
+spacetimes use the same symbol for different objects, and requires that
+this be resolved completely: by a MASTER provenance of the symbols that
+discusses, for each relevant file, how its symbols are identified with
+those of the solution and what was done where they clash, and by the use
+of the unique symbols so defined throughout the solution. This document
+is that MASTER provenance for the solution in the folder
+\texttt{Revision\_SM\_Higgs}.
+
+It contains: the convention by which the symbols of the solution are
+formed (Section 2); the files that were examined and how (Section 3);
+the discussion of each relevant file, with its identifications and
+remedies (Section 4); the symbol texts that occur both in the solution
+and in another file, each with its resolution (Section 5); the machine
+checks and their output (Section 6); and the complete table of the 203
+entries (378 symbol texts) of the registry of the solution (Section 7).
+Every symbol that this document uses is defined in Section 7, or, where
+it is a symbol of another file that is being discussed, in the place
+where it is discussed.
+
+The registry grows with the solution: when a part of the solution
+introduces a symbol, the symbol is entered in the registry first, the
+checks of Section 6 are run, and this document is rebuilt and pushed.
+
+\hypertarget{the-convention-of-the-symbols-of-the-solution}{%
+\section{2. The convention of the symbols of the
+solution}\label{the-convention-of-the-symbols-of-the-solution}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Taken unchanged: the suffix LL.} An object that the solution
+  takes unchanged from the earlier work on the Lorentz super-loop (the
+  folder \texttt{Revision\_SuperLoop}) keeps the symbol of that work,
+  which carries the suffix LL, for \emph{Lorentz super-loop}
+  (\(\Psi_{\rm LL}\), \(\gamma^p_{\rm LL}\), \(T^\iota_{\rm LL}\),
+  \(\vec d_{\rm LL}\), \ldots). The suffix stands as a subscript, or as
+  a superscript when the subscript position holds an index
+  (\(\sigma^{\rm LL}_j\), \(\Gamma^{\rm LL}_p\)). Such a symbol is used
+  in the solution only with the meaning that it has in the registry of
+  that work; the program of Section 6 verifies that every such symbol
+  occurs there (check HCK-S2), and the meaning in the table of Section 7
+  is written anew, complete in itself.
+\item
+  \textbf{Introduced here: the suffix SF.} Every object that the
+  solution introduces, or defines anew (because its definition differs
+  from that of an earlier file, for example by the sign convention of
+  the gauge fields or by the model), carries the suffix SF, for
+  \emph{superfluid solution} (\(W^\iota_{{\rm SF},p}\),
+  \(\mathcal V^X_{\rm SF}\), \(\kappa^{X,{\rm t}}_{\rm SF}\), \ldots).
+  No registry of the project uses the suffix SF; check HCK-S3 verifies
+  the convention.
+\item
+  \textbf{The author's names} are used exactly as the author wrote them:
+  M31 (the manifold \(\mathbb R^{1,3}_{\rm LL}\)), GEE (the gauge
+  group), \(U(1)^{\rm F}_{\rm LL}\) (which the author writes U(1)FLL),
+  \(\mathcal L^{\rm CJT}\), \(\mathcal L^{\rm HS}\),
+  \(\mathcal L^{\rm KS}\) with their parts
+  \(\mathcal L^X_{\rm kinetic}\) and \(\mathcal L^X_{\rm potential}\),
+  \(\mathrm{SFBSv}^X\), and \(S=0\) for the spin singlet. The GEE
+  gauge-covariant derivative is written \(\nabla^{\rm GEE}_p\), after
+  the author's name of the group.
+\item
+  \textbf{The Standard Model of the author's conventions} is written
+  exactly as the author wrote it (\(D^{\rm SM}_\mu\) with the
+  superscript SM added where a plain letter would clash, \(W^a_\mu\),
+  \(B_\mu\), \(g\), \(g'\), \(\theta_W\), \ldots); these symbols occur
+  only where the conventions are stated and where the solution is
+  compared with them. The objects of the solution that correspond to
+  them carry the suffix SF (Section 4.8).
+\item
+  \textbf{Indices, operations and number sets} are written without
+  suffix: \(p,p'\) (coordinates of M31, 0 to 3), \(j\) (space, 1 to 3),
+  \(\iota\) (isospin, 1 to 3), \(c\) (component of the spinor field, 1
+  to 8), \(f\) (member of a doublet, 1 or 2), \(\alpha\) (component of a
+  Weyl spinor, 1 or 2), and \(\mathrm{tr}\), \(\det\), \({}^T\),
+  \({}^\dagger\), \(\mathbb R\), \(\mathbb C\), \ldots.
+\item
+  \textbf{Plain-text names.} Every symbol has the names under which
+  programs, figures and data files write it (column ``plain-text names''
+  of Section 7); each name belongs to one entry (check HCK-S1).
+\end{enumerate}
+
+\hypertarget{the-files-examined-and-how}{%
+\section{3. The files examined, and
+how}\label{the-files-examined-and-how}}
+
+\textbf{The registries.} The project has seven registries of symbols. A
+program (\texttt{code/scripts/write\_symbol\_registry.py}) reads each of
+them, counts its entries and stops with an error if the count differs
+from the expected one, so that no registry can be read only in part:
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+registry
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+folder
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+entries
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+symbol texts
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{provenance/symbols.csv} & \texttt{.} & 113 & 172 \\*
+\texttt{provenance/symbols\_ll.csv} & \texttt{Revision\_SuperLoop} & 239
+& 555 \\*
+\texttt{provenance/symbols\_master.csv} &
+\texttt{Revision\_Deflation\_CJT\_and\_Kohn-Sham} & 229 & 397 \\*
+\texttt{provenance/symbols\_master.csv} &
+\texttt{Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C} & 246 &
+442 \\*
+\texttt{provenance/symbols\_deflation.csv} &
+\texttt{Revision\_Deflation} & 77 & 133 \\*
+\texttt{provenance/symbols\_ng.csv} & \texttt{Revision\_NoGo} & 115 &
+225 \\*
+\texttt{provenance/symbols\_r3.csv} & \texttt{Revision\_3} & 90 & 161 \\*
+all seven & & 1109 & 2085 \\
+\end{longtable}
+
+(The ``symbol texts'' are the separate symbols written between dollar
+signs in the column of symbols; an entry may list several.) Every symbol
+text of the solution was compared with every symbol text of the seven
+registries; the results are in Section 5.
+
+\textbf{The documents of the earlier work on the super-loop} that the
+solution builds on (the folder \texttt{Revision\_SuperLoop}: its
+manuscript, its test documents on the gauge-covariant spinor field and
+on the superfluid boson singlet state by the method of Cornwall, Jackiw
+and Tomboulis, its explanations, and the notebook
+\texttt{3+1super-loop.nb} of the project with its provenance). Their
+symbols are those of the registry of \texttt{Revision\_SuperLoop}, which
+that folder's own checks keep complete.
+
+\textbf{The author's conventions} (the electroweak Standard Model, given
+in the task of 20 November 2026).
+
+\textbf{The author's Kohn-Sham ansatz} of the earlier work (registries
+of \texttt{Revision\_Deflation\_CJT\_and\_Kohn-Sham} and of its variant
+with definition C).
+
+\textbf{The notebooks.} The author's notebooks are represented in the
+registries of the main project and of the deflation work (entries with
+the origin of a notebook); the notebook \texttt{superfluid.nb} of this
+solution will write the symbols of Section 7 under their plain-text
+names with the suffixes of Section 2, and its names will be checked
+against the registry when it exists.
+
+\hypertarget{file-by-file-identifications-and-remedies}{%
+\section{4. File by file: identifications and
+remedies}\label{file-by-file-identifications-and-remedies}}
+
+\hypertarget{the-earlier-work-on-the-lorentz-super-loop-folder-revision_superloop}{%
+\subsection{4.1 The earlier work on the Lorentz super-loop (folder
+Revision\_SuperLoop)}\label{the-earlier-work-on-the-lorentz-super-loop-folder-revision_superloop}}
+
+\textbf{Identifications.} 68 entries of the solution are taken from this
+work with the same symbol and the same object: the number sets and
+operations, the bi-quaternions and bi-octonions and their maps
+(\(M_{\rm LL}\), \(N_{\rm LL}\), the conjugations,
+\(\mathbb L_{\rm LL}\)), the manifold M31 \(=\mathbb R^{1,3}_{\rm LL}\)
+with its coordinates, frames and Lorentz matrices, the spinor field
+\(\Psi_{\rm LL}\) with its components, chirality blocks and spinor
+charges, the Dirac matrices, the spinor matrices of \(SL(2,\mathbb C)\),
+the pair matrices and pair operators, the generators
+\(T^\iota_{\rm LL}\), the charge \(Q_{\rm LL}\), the fermion number
+\(F_{\rm LL}\), the local gauge transformations, the couplings
+\(g^{\rm v}_{\rm LL}\) and \(g^{\rm F}_{\rm LL}\), the order parameter
+\(\vec d_{\rm LL}\) with its gap and non-unitarity, the Bogoliubov-de
+Gennes matrix, the correlation matrices, and the effective action
+\(\Gamma^{\rm CJT}_{\rm LL}\) of the method of Cornwall, Jackiw and
+Tomboulis with the propagator \(\mathcal G_{\rm LL}\). In all, 141
+symbol texts (counted over the solution's symbol texts and the earlier
+registry's occurrences) are such identifications.
+
+\textbf{Objects of the earlier work that the solution writes with
+another symbol.} The author's conventions (Section 4.8) fix the sign
+\(+i\) in front of the couplings and the names \(W\), \(B\), \(Z\),
+\(A\) of the gauge fields; the earlier work wrote \(-i\) and other
+names. Every object whose definition depends on that sign, or that the
+solution defines for its own model or for each of its three methods, has
+a new symbol with the suffix SF:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+earlier symbol (Revision\_SuperLoop)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+its meaning there
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+in the solution
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+reason
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(A^\iota_{{\rm LL},p}\), \(A^{\rm F}_{{\rm LL},p}\) & the gauge fields
+of \(SU(2)_{\rm v}\) and \(U(1)^{\rm F}_{\rm LL}\), entering the
+covariant derivative with \(-ig^{\rm v}_{\rm LL}\),
+\(-ig^{\rm F}_{\rm LL}\) &
+\(W^\iota_{{\rm SF},p}=-A^\iota_{{\rm LL},p}\),
+\(B_{{\rm SF},p}=-A^{\rm F}_{{\rm LL},p}\) & the sign \(+i\) and the
+names of the author's conventions \\
+\(\nabla^{\rm LL}_p\); \(\nabla^{\rm B}_{{\rm LL},p}\) & the covariant
+derivatives of the spinor field and of the pair field, with \(-i\) &
+\(\nabla^{\rm GEE}_p\), one symbol for every field & the sign; one
+derivative named after GEE \\
+\(\mathsf F^\iota_{{\rm LL},pp'}\), \(\mathsf F^{\rm F}_{{\rm LL},pp'}\)
+& the field strengths of \(A^\iota_{{\rm LL},p}\),
+\(A^{\rm F}_{{\rm LL},p}\) & \(W^\iota_{{\rm SF},pp'}\),
+\(B_{{\rm SF},pp'}\) & the sign \\
+\(\mathcal J^{\iota,p}_{\rm LL}\), \(\mathcal J^{{\rm F},p}_{\rm LL}\) &
+the currents, with the couplings included & \(j^{\iota,p}_{\rm SF}\),
+\(j^{{\rm F},p}_{\rm SF}\), without the couplings & the couplings stand
+in the Lagrangian \\
+\(W^\pm_{{\rm LL},p}\), \(V^\iota_{{\rm LL},p}\),
+\(V^{\rm F}_{{\rm LL},p}\) & the fields of definite mass in the unitary
+gauge of the earlier model & \(W^\pm_{{\rm SF},p}\), \(Z_{{\rm SF},p}\),
+\(A_{{\rm SF},p}\) & the sign, the names of the conventions, and three
+methods \\
+\(M^{\rm W}_{\rm LL}\), \(M^{\rm F}_{\rm LL}\);
+\(\theta^{\rm mix}_{\rm LL}\) & the masses and the mixing angle of the
+earlier model & \(M^X_{W,{\rm SF}}\), \(M^X_{Z,{\rm SF}}\);
+\(\theta^{\rm W}_{\rm SF}\) & one value per method; the names of the
+conventions \\
+\(\mathcal L^{\rm B}_{\rm LL}\); \(Z^{\rm t}_{\rm LL}\),
+\(Z^{\rm s}_{\rm LL}\) & the effective Lagrangian of the pair field (one
+loop, pairing interaction only) and its stiffness coefficients &
+\(\mathcal L^X\); \(\kappa^{X,{\rm t}}_{\rm SF}\),
+\(\kappa^{X,{\rm s}}_{\rm SF}\) & the letter \(Z\) is the neutral gauge
+boson in the conventions; three methods \\
+\(\Omega_{\rm LL}\); \(\mathcal U^{\rm CJT}_{\rm LL}\) & the effective
+potentials of the earlier model (pairing interaction only; for the
+method of Cornwall, Jackiw and Tomboulis with counterterms fixed at the
+condensed vacuum) & \(\mathcal V^X_{\rm SF}\) & the model of the
+solution has more terms, and its interaction is normal-ordered with
+respect to the normal vacuum \\
+\(\Delta^{\rm vac}_{\rm LL}\); \(\mathcal V^{\rm vac}_{\rm LL}\),
+\(H^{\rm vac}_{\rm LL}\) & the vacuum gap, the manifold of vacua and its
+stabilizer in the earlier model & \(\Delta^X_{\rm SF}\);
+\(\mathcal M^{X,{\rm vac}}_{\rm SF}\), \(H^{\rm vac}_{\rm SF}\) & one
+per method \\
+\(\vartheta^{\rm G}_{{\rm LL},0}\), \(\vartheta^{\rm G}_{{\rm LL},1}\),
+\(\vartheta^{\rm G}_{{\rm LL},2}\) & the Goldstone fields of the earlier
+expansion & \(\vartheta^X_{{\rm SF},0}\), \(\vartheta^X_{{\rm SF},1}\),
+\(\vartheta^X_{{\rm SF},2}\) & one set per method \\
+\(\vec b_{\rm LL}\) & the pair field of a constrained state &
+\(\vec\Phi^X_{\rm SF}\) (the field of each method) & three methods \\
+\(\chi^{\rm pr}_{\rm LL}\), \(M^{\rm B}_{\rm LL}\),
+\(G^{\rm bd}_{\rm LL}\) & the pair susceptibility of the scalar channel,
+the mass of its bound state and the binding coupling of the earlier
+model & \(\chi^{\rm ch}_{\rm SF}\), \(M^{\rm B}_{\rm SF}\) (for any
+channel of the model of the solution) & the model has more terms \\
+\(\mathsf N^{\rm sc}_{\rm LL}\) & the normal mean field of the earlier
+model & \(\mathsf N_{\rm SF}(\vec q_{\rm LL})\) (it may depend on the
+momentum) & the gauge-boson exchange of the solution makes it depend on
+the momentum \\
+\(\chi^{\rm pw}_{\rm LL}\); \(\varphi^{\rm K}_{\rm LL}\),
+\(\chi^{\rm K}_{\rm LL}\); \(B^\uparrow_{\rm LL}\),
+\(\ell^{\rm B}_{\rm LL}\), \(n^{\rm L}_{\rm LL}\) & the plane-wave
+spinor; the profile and spinor of a bound state of a kink; the
+quantities of the Landau levels & \(\chi^{\rm pw}_{\rm SF}\);
+\(\varphi^{\rm K}_{\rm SF}\), \(\chi^{\rm K}_{\rm SF}\);
+\(\mathcal B_{\rm SF}\), \(\ell^{\rm B}_{\rm SF}\),
+\(n^{\rm L}_{\rm SF}\) & derived anew with the sign convention of the
+solution \\
+\(\mathcal L^{\rm HS}_{\rm LL}\) & the Lagrangian after the identity of
+Hubbard and Stratonovich & the author's \(\mathcal L^{\rm HS}\) is the
+effective Lagrangian of the method, a different object & the author's
+name has priority; the earlier object has no symbol in the solution \\
+\end{longtable}
+
+\textbf{Letters that the earlier work uses for objects the solution does
+not use.} \(W_{\rm LL}(\mathbf u)\) (the Weyl representation),
+\(W^{\rm g}_{\rm LL}\) (the condensation function),
+\(\mathcal V_{\rm LL}(\mathbf u)\) (the vector action of a Lorentz
+element), \(\mathsf Z^\pm_{\rm LL}\) (a wave packet). The solution does
+not use these objects; it uses the letters \(W\), \(\mathcal V\), \(Z\)
+only with the suffix SF and the meanings of Section 7, so that no symbol
+text of the solution coincides with one of them (check HCK-S4). The
+bi-octonions \(\mathbb B_{\rm LL}\) keep their symbol; the gauge field
+\(B_{{\rm SF},p}\) differs from it by type face, suffix and index, and
+their plain-text names differ (\texttt{biocts}, \texttt{B\_p}).
+
+\hypertarget{the-main-project-provenancesymbols.csv}{%
+\subsection{4.2 The main project
+(provenance/symbols.csv)}\label{the-main-project-provenancesymbols.csv}}
+
+The main project registers the symbols of the eight-dimensional
+spacetimes of the author's papers and notebooks (the coordinates
+\texttt{x0} to \texttt{x7}, the 16-component spinor fields, the
+Vorton-Scalar \(\Phi_{VS}\), the gaps and quasi-particle energies of its
+superfluid, the action of Cornwall, Jackiw and Tomboulis
+\(\Gamma[\phi,G]\), \ldots). None of these objects occurs in the
+solution. No symbol text of the solution is a symbol text of this
+registry (Section 5); the letters that both use (\(\Delta\), \(\mu\),
+\(m\), \(\Phi\), \(G\), \(\kappa\), \ldots) carry the suffix LL or SF in
+the solution, which the main project never uses, so that a symbol of the
+solution cannot be read as one of the main project.
+
+\hypertarget{the-authors-kohn-sham-ansatz-revision_deflation_cjt_and_kohn-sham}{%
+\subsection{4.3 The author's Kohn-Sham ansatz
+(Revision\_Deflation\_CJT\_and\_Kohn-Sham)}\label{the-authors-kohn-sham-ansatz-revision_deflation_cjt_and_kohn-sham}}
+
+This work introduced the author's Kohn-Sham ansatz for uniform matter,
+on which the third method of the solution builds. Its symbols and their
+counterparts in the solution:
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol there
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning there
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+in the solution
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(G_S\), \(G_V\) & the scalar and vector couplings of the Kohn-Sham
+description of uniform matter (fields of 16 components on
+eight-dimensional spacetimes): energy density
+\(\tfrac12G_Vn^2+\tfrac12G_Sn_S^2\), attraction for \(G_S<0\) & quoted
+with this meaning where the ansatz is described; the couplings of the
+contact terms of the model of the solution are \(G^{\rm S}_{\rm SF}\),
+\(G^{\rm V}_{\rm SF}\) (the same sign convention, for the
+eight-component field on M31), and the couplings of its Kohn-Sham
+functional are \(G^{\rm KS,S}_{\rm SF}\), \(G^{\rm KS,V}_{\rm SF}\),
+\(G^{\rm KS,P}_{\rm SF}\) \\*
+\(n\), \(n_S\) & number density and scalar density of uniform matter &
+quoted where the ansatz is described; in the solution \(n_{\rm SF}\),
+\(n^{\rm S}_{\rm SF}\), measured from the normal vacuum \\*
+\(V_0\), \(m^*\), \(\mathsf h_{\rm KS}\) & the vector mean field, the
+mass in matter, the Kohn-Sham matrix of a particle &
+\(V^{\rm KS}_{0,{\rm SF}}\), \(m^{\rm KS}_{\rm SF}\), and the matrix
+\(\mathsf H_{\rm SF}(\vec q_{\rm LL})\) with the Kohn-Sham
+self-energies \\*
+\(\Gamma[S]\); \(S\), \(S_0\) & the effective action of the propagator
+and the propagators & \(\Gamma^{\rm CJT}_{\rm LL}\);
+\(\mathcal G_{\rm LL}\) (the letter \(S\) alone is the spin of the
+author's \(S=0\); Section 5) \\*
+\(\Omega_{\rm CJT}\) & the potential of uniform matter in that work &
+\(\mathcal E^{\rm CJT}_{\rm SF}\), \(\mathcal V^{\rm CJT}_{\rm SF}\) \\*
+\(\mathcal L_{\rm self}\), \(g_r\), \(I_r\) & the author's general
+self-interaction of rank \(r\) & not used; the self-interaction of the
+solution is \(\mathcal L^{\rm self}_{\rm SF}\) \\
+\end{longtable}
+
+\hypertarget{the-deflation-work-with-definition-c-revision_deflation_cjt_and_kohn-sham_definition_c}{%
+\subsection{4.4 The deflation work with definition C
+(Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C)}\label{the-deflation-work-with-definition-c-revision_deflation_cjt_and_kohn-sham_definition_c}}
+
+It repeats the registry of Section 4.3 with additions for its definition
+C; the identifications of Section 4.3 hold for it. One more letter: it
+writes \(g\) for a common strength of the couplings of its numerical
+examples; in the solution \(g\) without suffix occurs only as the
+coupling of \(SU(2)_L\) of the Standard Model (declared collision,
+Section 5).
+
+\hypertarget{the-earlier-deflation-work-revision_deflation}{%
+\subsection{4.5 The earlier deflation work
+(Revision\_Deflation)}\label{the-earlier-deflation-work-revision_deflation}}
+
+Its objects (the rates of deflation and the extra axes of the deflating
+spacetimes) do not occur in the solution. It writes \(j\) also for an
+index of the extra axes; in the solution \(j\) is only the index of the
+three space directions (declared, Section 5).
+
+\hypertarget{the-no-go-work-revision_nogo}{%
+\subsection{4.6 The no-go work
+(Revision\_NoGo)}\label{the-no-go-work-revision_nogo}}
+
+It shares with the solution only common notation with the same meaning:
+the imaginary unit, the number sets, the index \(p\) over a basis, the
+unit matrices, the trace, determinant and the other operations, and the
+groups and Lie algebras \(SU(2)\), \(U(1)\), \(SO(3)\),
+\(\mathfrak{so}(3,1)\), \(\mathfrak{su}(2)\) (Section 5).
+
+\hypertarget{the-work-on-the-second-higgs-doublet-revision_3}{%
+\subsection{4.7 The work on the second Higgs doublet
+(Revision\_3)}\label{the-work-on-the-second-higgs-doublet-revision_3}}
+
+It shares common notation (\(i\), \({}^T\), \(\otimes\),
+\(\langle\ \rangle\), \({}^\dagger\), \({}^*\), \(\mathsf 1_{16}\)). It
+writes \(\iota\) for the exponent of a family of radial integrals (in
+the solution only the isospin index) and lists \(\mathsf 1_2\) among
+real \(2\times2\) matrices (the same unit matrix); both are declared in
+Section 5.
+
+\hypertarget{the-authors-conventions-the-standard-model}{%
+\subsection{4.8 The author's conventions (the Standard
+Model)}\label{the-authors-conventions-the-standard-model}}
+
+The author gave the electroweak Standard Model ``to establish terms,
+symbols and conventions'' for a new gauge group, whose gauge-covariant
+derivative is modelled after that of the Standard Model but is not equal
+or equivalent to it. The table pairs each object of the Standard Model
+with the object of the new group that is built in the same way and is
+named after it. The paired objects are different objects of different
+theories: \(SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\) is not the
+electroweak group, and the spinor field of the solution, the DiracLike
+spinor, has electric charge 0 and no electroweak quantum numbers, so no
+object of the right column is an object of the electroweak theory.
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Standard Model (author's conventions)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+the solution
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(SU(2)_L\times U(1)_Y\) &
+\(SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\), the internal part of
+GEE \\*
+\(D^{\rm SM}_\mu\), with \(+ig\) and \(+ig'\) & \(\nabla^{\rm GEE}_p\),
+with \(+ig^{\rm v}_{\rm LL}\) and \(+ig^{\rm F}_{\rm LL}\) \\*
+\(\Phi^{\rm SM}\), a doublet of hypercharge \(Y^{\rm SM}=\tfrac12\) &
+\(\vec\Phi^X_{\rm SF}\), an isospin vector (triplet) of fermion number
+\(F_{\rm LL}=2\) \\*
+\(W^a_\mu\), \(g\); \(\tau^a\), \(T^{a,{\rm SM}}\) &
+\(W^\iota_{{\rm SF},p}\), \(g^{\rm v}_{\rm LL}\);
+\(\tau^{\rm LL}_\iota\), \(T^\iota_{\rm LL}\) \\*
+\(B_\mu\), \(g'\), \(Y^{\rm SM}\) & \(B_{{\rm SF},p}\),
+\(g^{\rm F}_{\rm LL}\), \(F_{\rm LL}\) \\*
+\(Q^{\rm SM}=T^{3,{\rm SM}}+Y^{\rm SM}\), the electric charge &
+\(Q_{\rm LL}=T^3_{\rm LL}\), the generator of the surviving group
+(derived in the solution), a charge of \(SU(2)_{\rm v}\), not the
+electric charge \\*
+\(W^\pm_\mu\), \(Z_\mu\), \(A_\mu\) (the photon), \(\theta_W\), \(e\) &
+\(W^\pm_{{\rm SF},p}\), \(Z_{{\rm SF},p}\), \(A_{{\rm SF},p}\) (the
+massless gauge boson of \(U(1)^{\rm Q}_{\rm LL}\), not the photon; named
+the zeugon), \(\theta^{\rm W}_{\rm SF}\), \(g^{\rm Q}_{\rm SF}\) \\*
+\(v\) & \(v^X_{\rm SF}\), the scale of the breaking of the new group,
+defined by \(M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}v^X_{\rm SF}/2\) as
+\(v\) is defined by \(M_W=gv/2\) (its value in GeV is not known) \\*
+the indices \(\mu\) (0 to 3) and \(a\) (1 to 3) & \(p\) and \(\iota\) \\
+\end{longtable}
+
+The Standard-Model symbols keep their plain form, because they are the
+author's; the solution adds the superscript SM where the plain letter
+would be read as an object of the solution (\(D^{\rm SM}_\mu\),
+\(\Phi^{\rm SM}\), \(T^{a,{\rm SM}}\), \(Y^{\rm SM}\), \(Q^{\rm SM}\)).
+
+\hypertarget{symbol-texts-that-occur-in-the-solution-and-in-another-registry}{%
+\section{5. Symbol texts that occur in the solution and in another
+registry}\label{symbol-texts-that-occur-in-the-solution-and-in-another-registry}}
+
+Apart from the 141 identifications with Revision\_SuperLoop and with the
+author's Kohn-Sham ansatz (Section 4), these symbol texts of the
+solution also occur in another registry:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol of the solution
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin here
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+registry
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning there (beginning)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(i\) & LL & Revision\_NoGo & the imaginary unit, \(i^2=-1\) (in the
+plain text of the checks O-14a, O-14c and K-6 and of the figures of the
+algebras the letter i is the octonion unit \ldots{} \\
+\(i\) & LL & Revision\_3 & the imaginary unit \ldots{} \\
+\(\mathbb R\) & LL & Revision\_NoGo & the real and the complex numbers
+\ldots{} \\
+\(\mathbb C\) & LL & Revision\_NoGo & the real and the complex numbers
+\ldots{} \\
+\(p\) & LL & Revision\_NoGo & a summation index over the basis of an
+algebra (values \(0,\dots,7\), or \(0,\dots,3\) for the quaternions);
+used only in Sec. III A \ldots{} \\
+\(j\) & LL-as & Revision\_Deflation & \(a,b\) as in the main registry,
+with the range stated at each place: in RS1 to RS4 and in the
+manuscripts the index of the four extra axes, values 0, 5, 6, 7 (on
+\ldots{} \\
+\(\iota\) & LL & Revision\_3 & the radial integrals
+\(\mathcal J^{(\iota)}_{U2}(s_{U2})=\int_0^1q^\iota(q^2+s_{U2})^{-1/2}dq\)
+of the vacuum potential of regularization (R7), for the even expon
+\ldots{} \\
+\(\mathsf 1_2\) & LL & Revision\_3 & the real \(2\times2\) matrices
+\(\mathsf 1_2=\mathrm{diag}(1,1)\),
+\(\mathsf X=\begin{pmatrix}0&1\\1&0\end{pmatrix}\) \ldots{} \\
+\(\mathsf 1_8\) & LL & Revision\_NoGo & the unit matrices of size 8 and
+16 \ldots{} \\
+\(\mathsf 1_{16}\) & LL & Revision\_NoGo & the unit matrices of size 8
+and 16 \ldots{} \\
+\(\mathsf 1_{16}\) & LL & Revision\_3 & the unit matrices of the 16
+spinor components and of the 32 components of the doublet (or of the
+Nambu spinor) \ldots{} \\
+\(\mathrm{tr}\) & LL & Revision\_NoGo & trace, determinant, diagonal
+matrix with the listed entries, real part (plain text: Im is the
+imaginary part, of an algebra the set of its imaginary elements; s
+\ldots{} \\
+\(\det\) & LL & Revision\_NoGo & trace, determinant, diagonal matrix
+with the listed entries, real part (plain text: Im is the imaginary
+part, of an algebra the set of its imaginary elements; s \ldots{} \\
+\(\mathrm{diag}\) & LL & Revision\_NoGo & trace, determinant, diagonal
+matrix with the listed entries, real part (plain text: Im is the
+imaginary part, of an algebra the set of its imaginary elements; s
+\ldots{} \\
+\(\mathrm{Re}\) & LL & Revision\_NoGo & trace, determinant, diagonal
+matrix with the listed entries, real part (plain text: Im is the
+imaginary part, of an algebra the set of its imaginary elements; s
+\ldots{} \\
+\({}^T\) & LL & Revision\_NoGo & transpose, Hermitian conjugate, complex
+conjugate (for operators: the Hermitian conjugate of each component);
+commutator, anticommutator and graded bracket (ant \ldots{} \\
+\({}^T\) & LL & Revision\_3 & transpose, Hermitian conjugate, complex
+conjugate (for operators: the Hermitian conjugate of each component);
+Kronecker product; commutator and anticommutator \ldots{} \\
+\(\otimes\) & LL & Revision\_NoGo & transpose, Hermitian conjugate,
+complex conjugate (for operators: the Hermitian conjugate of each
+component); commutator, anticommutator and graded bracket (ant
+\ldots{} \\
+\(\otimes\) & LL & Revision\_3 & transpose, Hermitian conjugate, complex
+conjugate (for operators: the Hermitian conjugate of each component);
+Kronecker product; commutator and anticommutator \ldots{} \\
+\(\langle\ \rangle\) & LL & Revision\_NoGo & transpose, Hermitian
+conjugate, complex conjugate (for operators: the Hermitian conjugate of
+each component); commutator, anticommutator and graded bracket (ant
+\ldots{} \\
+\(\langle\ \rangle\) & LL & Revision\_3 & transpose, Hermitian
+conjugate, complex conjugate (for operators: the Hermitian conjugate of
+each component); Kronecker product; commutator and anticommutator
+\ldots{} \\
+\({}^\dagger\) & new & Revision\_NoGo & transpose, Hermitian conjugate,
+complex conjugate (for operators: the Hermitian conjugate of each
+component); commutator, anticommutator and graded bracket (ant
+\ldots{} \\
+\({}^\dagger\) & new & Revision\_3 & transpose, Hermitian conjugate,
+complex conjugate (for operators: the Hermitian conjugate of each
+component); Kronecker product; commutator and anticommutator \ldots{} \\
+\({}^*\) & new & Revision\_NoGo & transpose, Hermitian conjugate,
+complex conjugate (for operators: the Hermitian conjugate of each
+component); commutator, anticommutator and graded bracket (ant
+\ldots{} \\
+\({}^*\) & new & Revision\_3 & transpose, Hermitian conjugate, complex
+conjugate (for operators: the Hermitian conjugate of each component);
+Kronecker product; commutator and anticommutator \ldots{} \\
+\(SU(2)\) & LL & Revision\_NoGo & the rotation groups, the group of
+phases and the special unitary group of two dimensions (plain text:
+U(1)\_R and SO(1,1)\_R are the groups of the R-symmetry of \ldots{} \\
+\(U(1)\) & LL & Revision\_NoGo & the rotation groups, the group of
+phases and the special unitary group of two dimensions (plain text:
+U(1)\_R and SO(1,1)\_R are the groups of the R-symmetry of \ldots{} \\
+\(SO(3)\) & LL & Revision\_NoGo & the rotation groups, the group of
+phases and the special unitary group of two dimensions (plain text:
+U(1)\_R and SO(1,1)\_R are the groups of the R-symmetry of \ldots{} \\
+\(\mathfrak{so}(3,1)\) & LL & Revision\_NoGo & Lie algebras of the
+linear maps that preserve a quadratic form: \(\mathfrak{so}(8)\) for a
+definite form in eight dimensions, \(\mathfrak{so}(7,1)\) and
+\ldots{} \\
+\(\mathfrak{su}(2)\) & LL & Revision\_NoGo & Lie algebras of the linear
+maps that preserve a quadratic form: \(\mathfrak{so}(8)\) for a definite
+form in eight dimensions, \(\mathfrak{so}(7,1)\) and \ldots{} \\
+\(S\) & author & Revision\_Deflation\_CJT\_and\_Kohn-Sham & the CJT
+effective action as a functional of the propagator of the fermions,
+\(\Gamma[S]=-i\,\mathrm{Tr}\ln S^{-1}-i\,\mathrm{Tr}(S_0^{-1}S-1)+\Gamma_2[S]\),
+with \ldots{} \\
+\(S\) & author & Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C
+& the CJT effective action as a functional of the propagator of the
+fermions,
+\(\Gamma[S]=-i\,\mathrm{Tr}\ln S^{-1}-i\,\mathrm{Tr}(S_0^{-1}S-1)+\Gamma_2[S]\),
+with \ldots{} \\
+\(g\) & SM & Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C &
+the common strength of the couplings of the Lagrangian in the sets A and
+B of the numerical examples on 4+4: \(g=\lvert g_0\rvert>0\), of
+dimension length\(^{D-1}\) \ldots{} \\
+\end{longtable}
+
+Every one of them is either common notation with the same meaning there
+and here (the imaginary unit, the number sets, the operations, the
+groups, the unit matrices, the index \(p\) over a basis), or a collision
+of a letter, declared with its remedy:
+
+\begin{itemize}
+\tightlist
+\item
+  \(j\): Revision\_Deflation uses \(j\) also for indices of the extra
+  axes of the deflating spacetimes; in the solution \(j\) is only the
+  index of the three space coordinates (values 1, 2, 3).
+\item
+  \(\iota\): Revision\_3 writes \(\iota\) as the exponent of a family of
+  radial integrals; in the solution \(\iota\) is only the isospin index
+  (values 1, 2, 3).
+\item
+  \(g\): the deflation work with definition C writes \(g\) for a common
+  strength of the couplings of its numerical examples; in the solution
+  \(g\) without suffix occurs only as the coupling of \(SU(2)_L\) of the
+  Standard Model, where the author's conventions are stated and
+  compared.
+\item
+  \(S\): the deflation works write \(S\) for the propagator of the
+  fermions in their effective action; in the solution the propagator is
+  \(\mathcal G_{\rm LL}\), and \(S\) occurs only in the author's phrase
+  \(S=0\) for the spin singlet.
+\item
+  \(\mathsf 1_2\): Revision\_3 lists the real unit matrix with other
+  real \(2\times2\) matrices; it is the same matrix.
+\end{itemize}
+
+How often the registries use the leading letters (or commands) of the
+symbols of the solution, with any decoration (this measures how much a
+reader of the earlier files must rely on the suffixes, which separate
+every symbol of the solution from theirs):
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+registry
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+symbol texts
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+of them with a leading letter that the solution also uses
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+main project & 172 & 161 \\*
+Revision\_SuperLoop & 555 & 468 \\*
+Revision\_Deflation\_CJT\_and\_Kohn-Sham & 397 & 344 \\*
+Revision\_Deflation\_CJT\_and\_Kohn-Sham\_definition\_C & 442 & 376 \\*
+Revision\_Deflation & 133 & 101 \\*
+Revision\_NoGo & 225 & 167 \\*
+Revision\_3 & 161 & 130 \\
+\end{longtable}
+
+\hypertarget{the-machine-checks}{%
+\section{6. The machine checks}\label{the-machine-checks}}
+
+The program \texttt{code/scripts/check\_symbols.py} performs the checks
+below; its report, \texttt{data/hck\_symbol\_checks.txt}, reads:
+
+\begin{verbatim}
+PROJECT spacetimes, Revision_SM_Higgs: the checks of the symbols (Hard Rule 8)
+generated by: code/scripts/check_symbols.py
+7 of 7 checks passed
+
+[PASS] HCK-S1  every symbol text belongs to one entry (378 symbol texts in 203 entries), and every plain-text name to one entry (360 names)
+[PASS] HCK-S2  the 133 symbol texts taken from Revision_SuperLoop and the old symbols of the renamed objects occur in the registry of Revision_SuperLoop
+[PASS] HCK-S3  the symbols introduced by the solution carry the suffix SF (SH for those introduced by the revision of the hypotheses, Revision_SM_Higgs) and those taken from Revision_SuperLoop the suffix LL, except the declared common notation
+[PASS] HCK-S4  of the 33 occurrences of a symbol text of the solution in another registry (apart from the identifications with Revision_SuperLoop), every one is common notation with the same meaning or a declared collision with its remedy (5 declared)
+[PASS] HCK-S5  the seven registries of the project were read completely: main project 113, Revision_SuperLoop 239, Revision_Deflation_CJT_and_Kohn-Sham 229, Revision_Deflation_CJT_and_Kohn-Sham_definition_C 246, Revision_Deflation 77, Revision_NoGo 115, Revision_3 90 entries (each count equal to the stated one; the program stops otherwise)
+[PASS] HCK-S6  no meaning of the registry of the solution sends the reader to another document (searched for 9 patterns)
+[PASS] HCK-S7  every one of the 6340 symbols with the suffix SF and the 172 with the suffix SH in the 15 documents and document sources is built on a letter that the registry registers with the same suffix
+
+Declared collisions and their remedies:
+  $j$: Revision_Deflation uses $j$ also for indices of the extra axes of the deflating spacetimes; in the solution $j$ is only the index of the three space coordinates (values 1, 2, 3)
+  $\iota$: Revision_3 writes $\iota$ as the exponent of a family of radial integrals; in the solution $\iota$ is only the isospin index (values 1, 2, 3)
+  $g$: Revision_Deflation_CJT_and_Kohn-Sham_definition_C writes $g$ for a common strength of the couplings of its numerical examples; in the solution $g$ (without suffix) occurs only as the coupling of $SU(2)_L$ of the Standard Model when the author's conventions are stated and compared
+  $\mathsf 1_2$: Revision_3 lists the real unit matrix $\mathsf 1_2$ with other real $2\times2$ matrices; the unit matrix is the same object
+  $S$: Revision_Deflation_CJT_and_Kohn-Sham and its variant with definition C write $S$ for the propagator of the fermions in their effective action; in the solution the propagator is $\mathcal G_{\rm LL}$, and $S$ occurs only in the author's phrase $S=0$ for the spin singlet
+\end{verbatim}
+
+To repeat the checks (from the folder \texttt{Revision\_SM\_Higgs}):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py   }\CommentTok{\# writes provenance/symbols\_sf.csv and the tables of this document}
+\ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py           }\CommentTok{\# writes data/hck\_symbol\_checks.txt}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{the-complete-table-of-the-symbols-of-the-solution}{%
+\section{7. The complete table of the symbols of the
+solution}\label{the-complete-table-of-the-symbols-of-the-solution}}
+
+The 203 entries, by group. The column ``origin'' states where the symbol
+comes from: ``Revision\_SuperLoop, same symbol'' (taken unchanged),
+``Revision\_SuperLoop wrote \ldots{}'' (the object of that work, written
+here with the new symbol), ``new'' (introduced by the solution), the
+author's name, a symbol formed after the author's Kohn-Sham ansatz, the
+author's symbol of that ansatz, or a symbol of the author's conventions.
+The registry is also stored as \texttt{provenance/symbols\_sf.csv}.
+
+\textbf{Group 1 Indices, conventions, number sets, operations and
+groups.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(i\) & & the imaginary unit, \(i^2=-1\); it commutes and associates
+with every bi-quaternion and bi-octonion & Revision\_SuperLoop, same
+symbol \\
+\(\mathbb R\), \(\mathbb C\) & \texttt{R} \texttt{C} & the real and the
+complex numbers & Revision\_SuperLoop, same symbol \\
+\(p\), \(p'\) & \texttt{p} \texttt{p\textquotesingle{}} & an index over
+the four coordinates of M31, values 0 (the time), 1, 2, 3; also an index
+over the four units \(\mathbf e_0,\dots,\mathbf e_3\) of the quaternions
+& Revision\_SuperLoop, same symbol \\
+\(j\), \(j'\), \(j''\) & \texttt{j} & an index over the three space
+coordinates and over the three imaginary quaternion units, values 1, 2,
+3 (the letter \(i\) is never an index) & Revision\_SuperLoop, entry
+\(i,j\) \\
+\(\iota\), \(\iota'\), \(\iota''\) & \texttt{iota} & the isospin index,
+values 1, 2, 3: it numbers the generators of \(SU(2)_{\rm v}\), the
+Pauli matrices \(\tau^{\rm LL}_\iota\), the pair matrices, the pair
+operators and the components of isospin vectors; an internal direction,
+not a direction in space & Revision\_SuperLoop, same symbol \\
+\(c\), \(c'\) & \texttt{c} & an index over the eight components of the
+spinor field, values 1 to 8 (the component number is
+\(2\times(\text{Dirac index}-1)+(\text{isospin index})\), isospin index
+1 for up and 2 for down) & new \\
+\(\alpha\), \(\alpha'\) & & an index over the two components of a
+two-component (Weyl) spinor, values 1, 2 & new \\
+\(f\), \(f'\) & & an index over the two members of an \(SU(2)_{\rm v}\)
+doublet of Weyl spinors, values 1, 2 & new \\
+\(\epsilon^{\rm LL}_{jj'j''}\) & \texttt{eps3} & the Levi-Civita symbol:
+\(+1\) for an even permutation of \((1,2,3)\), \(-1\) for an odd one,
+\(0\) otherwise; also with isospin indices,
+\(\epsilon^{\rm LL}_{\iota\iota'\iota''}\) & Revision\_SuperLoop, same
+symbol \\
+\(\sigma^{\rm LL}_0\), \(\sigma^{\rm LL}_j\) & \texttt{sigma\_0}
+\texttt{sigma\_1} \texttt{sigma\_2} \texttt{sigma\_3} & the \(2\times2\)
+unit matrix and the Pauli matrices
+\(\sigma^{\rm LL}_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}\),
+\(\sigma^{\rm LL}_2=\begin{pmatrix}0&-i\\i&0\end{pmatrix}\),
+\(\sigma^{\rm LL}_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}\), acting on
+the two components of a Weyl spinor & Revision\_SuperLoop, same
+symbol \\
+\(\tau^{\rm LL}_\iota\) & \texttt{tau\_1} \texttt{tau\_2}
+\texttt{tau\_3} & the same three Pauli matrices acting on the isospin
+index & Revision\_SuperLoop, same symbol \\
+\(\mathsf E_{\rm LL}\) & \texttt{eps2} & the real antisymmetric
+\(2\times2\) matrix
+\(i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}\),
+\(\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}\) &
+Revision\_SuperLoop, same symbol \\
+\(\mathsf 1_2\), \(\mathsf 1_4\), \(\mathsf 1_8\), \(\mathsf 1_{16}\) &
+& the unit matrices of 2, 4, 8 and 16 rows & Revision\_SuperLoop, same
+symbol \\
+\(\eta^{\rm LL}_{pp'}\) & \texttt{eta} & the Minkowski metric of M31:
+\(\eta^{\rm LL}_{00}=1\),
+\(\eta^{\rm LL}_{11}=\eta^{\rm LL}_{22}=\eta^{\rm LL}_{33}=-1\), \(0\)
+for \(p\neq p'\); it raises and lowers the indices \(p\) (an upper index
+is written \(p\) up, as in \(\gamma^p_{\rm LL}\), a lower one down) &
+Revision\_SuperLoop, same symbol \\
+\(\mathrm{tr}\), \(\det\), \(\mathrm{diag}\), \(\mathrm{Re}\),
+\(\mathrm{Im}\) & \texttt{tr} \texttt{det} \texttt{diag} \texttt{Re}
+\texttt{Im} & trace, determinant, the diagonal matrix with the listed
+entries, real part, imaginary part & Revision\_SuperLoop, same symbol \\
+\({}^T\); \(\otimes\), \(\oplus\); \(\circ\); \(\langle\ \rangle\); h.c.
+& \texttt{(x)} \texttt{\^{}T} & transpose; tensor product and direct
+sum; composition; expectation value in the state named in the text (the
+ground state unless said otherwise); the Hermitian conjugate of the
+preceding terms & Revision\_SuperLoop, same symbol \\
+\({}^\dagger\), \({}^*\) & \texttt{dag} & the Hermitian conjugate (of a
+matrix: the complex-conjugate transpose; of an operator: its adjoint)
+and the complex conjugate (of a column of operators: the column of their
+adjoints) & new \\
+\(:\ :\) & & normal ordering with respect to the normal vacuum: the
+product of field operators between the colons is written so that its
+expectation value in the normal vacuum is zero, and every contraction is
+measured from its value in the normal vacuum & new \\
+\(\square\) & & the end of a proof & new \\
+\(SL(2,\mathbb C)\), \(SU(2)\), \(U(1)\), \(SO(3)\), \(O(2)\) &
+\texttt{SL(2,C)} \texttt{SU(2)} \texttt{U(1)} \texttt{SO(3)}
+\texttt{O(2)} & groups: the complex \(2\times2\) matrices of determinant
+1 (the unit bi-quaternions, the double cover of the Lorentz group); the
+unitary \(2\times2\) matrices of determinant 1; the phases; the
+rotations of three dimensions; the rotations and reflections of a plane
+& Revision\_SuperLoop, same symbol \\
+\(\mathfrak{so}(3,1)\), \(\mathfrak{su}(2)\) & \texttt{so(3,1)}
+\texttt{su(2)} & the Lie algebras of the Lorentz group and of \(SU(2)\)
+& Revision\_SuperLoop, same symbol \\
+\(SU(2)_{\rm v}\), \(U(1)^{\rm F}_{\rm LL}\); \(F_{\rm LL}\) &
+\texttt{SU(2)\_v} \texttt{U(1)\_F\_LL} \texttt{F\_LL} & the isospin
+group, which acts on the isospin index of the spinor field (and on
+isospin vectors by rotations), and the group of the phases of the
+fermion number,
+\(\Psi_{\rm LL}\mapsto e^{i\theta^{\rm F}_{\rm LL}}\Psi_{\rm LL}\);
+\(F_{\rm LL}\) is its generator, the fermion number (1 on
+\(\Psi_{\rm LL}\), 2 on a pair of two spinor charges); the author writes
+\(U(1)^{\rm F}_{\rm LL}\) as U(1)FLL & Revision\_SuperLoop, same
+symbol \\
+\(U(2)\) & \texttt{U(2)} & the group of the unitary \(2\times2\)
+matrices & new \\
+\(S\) & \texttt{S} & the total spin of a state of two spinor charges;
+\(S=0\), the spin singlet (the author's notation) & the author's name \\
+GEE & \texttt{GEE} & the gauge group of the problem,
+\(SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\) (the
+author's name) & the author's name \\
+\(U(1)^{\rm Q}_{\rm LL}\) & \texttt{U(1)\^{}Q} & the group of the charge
+\(Q_{\rm LL}\) (a charge of \(SU(2)_{\rm v}\), not the electric charge):
+the phases \(\exp(i\theta Q_{\rm LL})\), \(Q_{\rm LL}=T^3_{\rm LL}\),
+the rotations about the third isospin axis & Revision\_SuperLoop, same
+symbol \\
+\end{longtable}
+
+\textbf{Group 2 The bi-quaternions, the bi-octonions and the
+super-loop.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mathbb H\), \(\mathbb O\) & \texttt{H} \texttt{O} & the quaternions
+and the octonions: the real combinations of the units
+\(\mathbf e_0,\dots,\mathbf e_3\) and of
+\(\mathbf e_0,\dots,\mathbf e_7\) & Revision\_SuperLoop, same symbol \\
+\(\mathbb B_{\rm LL}\) & \texttt{biocts} & the bi-octonions: the complex
+combinations of the eight units \(\mathbf e_0,\dots,\mathbf e_7\), with
+the product of the units extended bilinearly (real dimension 16) &
+Revision\_SuperLoop, same symbol \\
+\(\mathbf e_0,\dots,\mathbf e_7\); \(\mathbf e_p\), \(\mathbf e_j\) &
+\texttt{e0} \texttt{e1} \texttt{e2} \texttt{e3} \texttt{e4} \texttt{e5}
+\texttt{e6} \texttt{e7} & the units: \(\mathbf e_0=1\);
+\(\mathbf e_1,\mathbf e_2,\mathbf e_3\) the quaternion units,
+\(\mathbf e_j^2=-1\),
+\(\mathbf e_1\mathbf e_2=-\mathbf e_2\mathbf e_1=\mathbf e_3\) and
+cyclically; \(\mathbf e_4\) the unit of the Cayley-Dickson doubling,
+\(\mathbf e_4^2=-1\); \(\mathbf e_{4+j}=\mathbf e_j\mathbf e_4\) &
+Revision\_SuperLoop, same symbol \\
+\(\xi^{\rm LL}_p(\mathbf x)\) & \texttt{xi\_p} & the complex coefficient
+of the unit \(\mathbf e_p\) in the bi-quaternion or bi-octonion
+\(\mathbf x\) & Revision\_SuperLoop, same symbol \\
+\(\mathbf x\), \(\mathbf y\), \(\mathbf z\), \(\mathbf w\) & \texttt{x}
+\texttt{y} \texttt{z} \texttt{w} & bi-octonions (or bi-quaternions, as
+said in the text); a Hermitian bi-quaternion \(\mathbf x\) is also a
+point of M31 & Revision\_SuperLoop, same symbol \\
+\(\mathbf a\), \(\mathbf b\), \(\mathbf c\), \(\mathbf d\) & \texttt{aH}
+\texttt{bS} \texttt{cH} \texttt{dS} & bi-quaternions: complex
+combinations of \(\mathbf e_0,\dots,\mathbf e_3\); every bi-octonion is
+\(\mathbf a+\mathbf b\,\mathbf e_4\) (Cayley-Dickson form), and
+\(\mathbf b\,\mathbf e_4\) is a spinor charge & Revision\_SuperLoop,
+same symbol \\
+\(\bar{\mathbf x}\), \(\mathbf x^*\), \(\mathbf x^\dagger\) &
+\texttt{xbar} \texttt{x\^{}*} \texttt{x\^{}dag} & the three
+conjugations: \(\bar{\mathbf x}\) changes the signs of the coefficients
+of \(\mathbf e_1,\dots,\mathbf e_7\); \(\mathbf x^*\) conjugates every
+complex coefficient; \(\mathbf x^\dagger=(\bar{\mathbf x})^*\) &
+Revision\_SuperLoop, same symbol \\
+\(N_{\rm LL}(\mathbf x)\), \(N_{\rm LL}(\mathbf x,\mathbf y)\) &
+\texttt{N\_LL} & the complex norm
+\(N_{\rm LL}(\mathbf x)=\sum_p\xi^{\rm LL}_p(\mathbf x)^2\), with
+\(\mathbf x\bar{\mathbf x}=N_{\rm LL}(\mathbf x)\,\mathbf e_0\), and its
+polarization
+\(N_{\rm LL}(\mathbf x,\mathbf y)=\sum_p\xi^{\rm LL}_p(\mathbf x)\xi^{\rm LL}_p(\mathbf y)\)
+& Revision\_SuperLoop, same symbol \\
+\(\mathbb L_{\rm LL}\) & \texttt{L\_LL} & the Lorentz super-loop: the
+unit bi-octonions, \(N_{\rm LL}(\mathbf w)=1\), with the product of
+\(\mathbb B_{\rm LL}\); a Moufang loop (not a group), a manifold of real
+dimension 14 & Revision\_SuperLoop, same symbol \\
+\(\mathbf g\) & \texttt{gL} & a unit bi-quaternion,
+\(N_{\rm LL}(\mathbf g)=1\): an element of \(SL(2,\mathbb C)\) &
+Revision\_SuperLoop, same symbol \\
+\(\mathbf v\) & \texttt{vI} & a unit real quaternion, which rotates the
+isospin of the spinor charges from the left & Revision\_SuperLoop, same
+symbol \\
+\(J^j_{\rm LL}\), \(K^j_{\rm LL}\) & \texttt{J\_LL\^{}j}
+\texttt{K\_LL\^{}j} & the rotation and boost generators of the Lorentz
+algebra of the super-loop, \(J^j_{\rm LL}=\mathbf e_j/2\),
+\(K^j_{\rm LL}=i\,\mathbf e_j/2\) & Revision\_SuperLoop, same symbol \\
+\(\mathbf u\) & \texttt{uL} & a Lorentz generator: an imaginary
+bi-quaternion (a complex combination of
+\(\mathbf e_1,\mathbf e_2,\mathbf e_3\)) & Revision\_SuperLoop, same
+symbol \\
+\(M_{\rm LL}(\mathbf b)\) & \texttt{M\_LL} & the complex \(2\times2\)
+matrix of a bi-quaternion,
+\(M_{\rm LL}(\mathbf e_0)=\sigma^{\rm LL}_0\),
+\(M_{\rm LL}(\mathbf e_j)=-i\sigma^{\rm LL}_j\), extended
+complex-linearly;
+\(M_{\rm LL}(\mathbf b\mathbf b')=M_{\rm LL}(\mathbf b)M_{\rm LL}(\mathbf b')\)
+and \(\det M_{\rm LL}(\mathbf b)=N_{\rm LL}(\mathbf b)\) &
+Revision\_SuperLoop, same symbol \\
+\(R^{\rm LL}_{\mathbf x}\) & \texttt{R\_x} & the right multiplication
+\(\mathbf y\mapsto\mathbf y\mathbf x\) by a bi-octonion &
+Revision\_SuperLoop, same symbol \\
+\(\psi'_{\rm LL}\) & \texttt{psi\textquotesingle{}\_LL} & the Weyl
+isodoublet of a spinor charge \(\mathbf b\mathbf e_4\): the \(2\times2\)
+matrix
+\(\psi'_{\rm LL}(\mathbf b)=\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf b)^T\),
+whose rows are the two components of a Weyl spinor and whose columns are
+isospin up and down & Revision\_SuperLoop, same symbol \\
+\end{longtable}
+
+\textbf{Group 3 The manifold M31.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+M31, \(\mathbb R^{1,3}_{\rm LL}\) & \texttt{M31} \texttt{R\^{}(1,3)\_LL}
+& the \(3+1\) manifold of the Lorentz super-loop: the Hermitian
+bi-quaternions
+\(\mathbf x=x^0_{\rm LL}\mathbf e_0+i\sum_jx^j_{\rm LL}\mathbf e_j\)
+with four real coordinates, whose norm
+\(N_{\rm LL}(\mathbf x)=(x^0_{\rm LL})^2-\sum_j(x^j_{\rm LL})^2\) is the
+Minkowski interval (M31 is the author's name) & Revision\_SuperLoop,
+same symbol \\
+\(x^p_{\rm LL}\); \(x_{\rm LL}\), \(\vec x_{\rm LL}\); \(\partial_p\) &
+\texttt{x\_LL\^{}p} \texttt{x\_LL} \texttt{xvec} \texttt{d\_p} & the
+coordinates of a point of M31 (\(x^0_{\rm LL}\) the time), the point,
+its space part, and the partial derivative with respect to
+\(x^p_{\rm LL}\) & Revision\_SuperLoop, same symbol \\
+\(\mathbf f_p\) & \texttt{f\_p} & a frame of M31: four Hermitian
+bi-quaternions with
+\(N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})=\eta^{\rm LL}_{pp'}\); the
+canonical frame is \(\mathbf f_0=\mathbf e_0\),
+\(\mathbf f_j=i\mathbf e_j\), with
+\(M_{\rm LL}(\mathbf f_p)=\sigma^{\rm LL}_p\) & Revision\_SuperLoop,
+same symbol \\
+\(\gamma^p_{\rm LL}[\mathbf f]\) & \texttt{gamma\_LL\^{}p{[}f{]}} & the
+Dirac matrices of a frame, the \(4\times4\) matrices of \(2\times2\)
+blocks
+\(\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}\)
+& Revision\_SuperLoop, same symbol \\
+\(\tilde{\mathbf g}\) & \texttt{gLt} & for a unit bi-quaternion:
+\(\tilde{\mathbf g}=(\mathbf g^\dagger)^{-1}=\mathbf g^*\),
+\(M_{\rm LL}(\tilde{\mathbf g})=(M_{\rm LL}(\mathbf g)^\dagger)^{-1}\) &
+Revision\_SuperLoop, same symbol \\
+\(\mathsf L_{\rm LL}(\mathbf g)\) & \texttt{Lmat} & the real
+\(4\times4\) matrix of the Lorentz transformation
+\(\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger\) of M31: its
+entry in row \(p\) and column \(p'\) is
+\(\tfrac12\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM\sigma^{\rm LL}_{p'}M^\dagger)\)
+with \(M=M_{\rm LL}(\mathbf g)\) & Revision\_SuperLoop, same symbol \\
+\end{longtable}
+
+\textbf{Group 4 The spinor field and its matrices.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\Psi_{\rm LL}\) & \texttt{Psi\_LL} & the spinor field, the doublet
+field: an isospin doublet of four-component Dirac fields, eight complex
+Grassmann (anticommuting) operator components \(\Psi_{{\rm LL},c}\),
+made of two spinor charges of the super-loop. Under the hypotheses of
+this folder \(SU(2)_{\rm v}\) is \(SU(2)_L\) and the field has the
+hypercharge \(Y^{\rm SM}=1/4\) and the electric charges \(3/4\) (isospin
+up) and \(-1/4\) (isospin down); under the earlier hypotheses, which the
+inherited documents still state, it was the DiracLike spinor with the
+electric charge 0 & Revision\_SuperLoop, same symbol \\
+\(\Psi_{{\rm LL},1},\dots,\Psi_{{\rm LL},8}\); \(\Psi^\pm_{\rm LL}\);
+\(\bar\Psi_{\rm LL}\) & \texttt{Psi\_LL\^{}+} \texttt{Psi\_LL\^{}-} &
+the eight components of \(\Psi_{\rm LL}\) (components 1, 2: first Dirac
+component, isospin up and down; 3, 4 the second; 5, 6 the third; 7, 8
+the fourth); the chirality blocks \(\Psi^-_{\rm LL}\) (components 1 to
+4) and \(\Psi^+_{\rm LL}\) (5 to 8); the Dirac adjoint
+\(\bar\Psi_{\rm LL}=\Psi^\dagger_{\rm LL}(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)\)
+& Revision\_SuperLoop, same symbol \\
+\(\psi_{\rm SF}\), \(\psi^\pm_{\rm SF}\) & \texttt{psi1}
+\texttt{psi1\_pm} & a single DiracLike field with four complex Grassmann
+components (no isospin index), and its chirality blocks
+\(\psi^-_{\rm SF}\) (first two components, chirality \(-1\)) and
+\(\psi^+_{\rm SF}\) (last two, chirality \(+1\)); used in the theorem
+that rules out a GEE-invariant mass term for such a field & new \\
+\(\xi_{{\rm SF},f}\), \(\xi_{{\rm SF},f\alpha}\) & \texttt{xi\_W} & the
+two left-handed Weyl spinors of a single DiracLike field,
+\(\xi_{{\rm SF},1}=\psi^-_{\rm SF}\) and
+\(\xi_{{\rm SF},2}=\mathsf E_{\rm LL}(\psi^+_{\rm SF})^*\), and their
+components & new \\
+\(I^{\rm W}_{{\rm SF},ff'}\) & \texttt{I\_W} & the Lorentz-invariant
+bilinears \(\xi_{{\rm SF},f}^T\mathsf E_{\rm LL}\xi_{{\rm SF},f'}\) of
+two left-handed Weyl spinors & new \\
+\(\mathbf b^+_{\rm LL}\), \(\mathbf b^-_{\rm LL}\) & \texttt{bSp}
+\texttt{bSm} & the two spinor charges
+\(\mathbf b^\pm_{\rm LL}\mathbf e_4\) of which \(\Psi_{\rm LL}\) is
+made: \(\Psi^-_{\rm LL}=\psi'_{\rm LL}(\mathbf b^-_{\rm LL})\),
+\(\Psi^+_{\rm LL}=\psi'_{\rm LL}(\mathbf b^+_{\rm LL})\), the rows of
+the matrices read one after the other & Revision\_SuperLoop, same
+symbol \\
+\(\gamma^p_{\rm LL}\), \(\gamma^{\rm ch}_{\rm LL}\), \(C_{\rm LL}\),
+\(\alpha^j_{\rm LL}\), \(\beta_{\rm LL}\) & \texttt{gamma\_LL\^{}p}
+\texttt{gamma\_ch} \texttt{C\_LL} \texttt{alpha\_LL\^{}j}
+\texttt{beta\_LL} & the Dirac matrices of the canonical frame in the
+chiral basis,
+\(\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}\),
+\(\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}\);
+the chirality matrix
+\(\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)\);
+the charge-conjugation matrix
+\(C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}\);
+\(\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}\),
+\(\beta_{\rm LL}=\gamma^0_{\rm LL}\) (on the eight components each acts
+as its tensor product with \(\sigma^{\rm LL}_0\)) & Revision\_SuperLoop,
+same symbol \\
+\(\mathsf S_{\rm LL}(\mathbf g)\) & \texttt{Sspin} & the spinor matrix
+of a unit bi-quaternion,
+\(\mathrm{diag}(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g))\)
+(blocks of \(2\times2\)) & Revision\_SuperLoop, same symbol \\
+\(\mathsf s_{\rm LL}(\mathbf u)\) & \texttt{sgen} & the action of a
+Lorentz generator on the Dirac index,
+\(\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))\)
+& Revision\_SuperLoop, same symbol \\
+\(\mathsf K^\iota_{\rm LL}\), \(\mathsf K'^\iota_{\rm LL}\) &
+\texttt{Kch\_iota} \texttt{Kch\textquotesingle{}\_iota} & the
+\(8\times8\) pair matrices of the spin-zero isotriplet channels: scalar
+\(\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\)
+and pseudoscalar
+\(\mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\);
+antisymmetric and unitary & Revision\_SuperLoop, same symbol \\
+\(\Pi^\iota_{\rm LL}(x_{\rm LL})\) & \texttt{Pi\_iota(x)} & the local
+pair operator
+\(\Psi_{\rm LL}(x_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(x_{\rm LL})\),
+which annihilates two spinor charges at one point & Revision\_SuperLoop,
+same symbol \\
+\(\Pi^\iota_{\rm LL}\) & \texttt{Pi\_iota} & the pair operators of the
+momenta: the sum over \(\vec q_{\rm LL}\) of
+\(\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})\);
+they annihilate two spinor charges of opposite momenta &
+Revision\_SuperLoop, same symbol \\
+\(\Pi'^\iota_{\rm LL}\) & \texttt{Pi\textquotesingle{}\_iota} & the
+pseudoscalar pair operators, with \(\mathsf K'^\iota_{\rm LL}\) in the
+place of \(\mathsf K^\iota_{\rm LL}\) & Revision\_SuperLoop, same
+symbol \\
+\(\vec q_{\rm LL}\), \(q_{\rm LL}\), \(q^j_{\rm LL}\) & \texttt{q} & the
+momentum of a plane wave of the spinor field, its length and its
+components & Revision\_SuperLoop, same symbol \\
+\(m_{\rm LL}\), \(\mu_{\rm LL}\), \(\Lambda_{\rm LL}\) & \texttt{m}
+\texttt{mu} \texttt{Lambda} & the mass of the spinor charges, the
+chemical potential, and the momentum cutoff
+(\(q_{\rm LL}<\Lambda_{\rm LL}\); \(\Lambda_{\rm LL}=1\) sets the units)
+& Revision\_SuperLoop, same symbol \\
+\(\mathsf h_{\rm LL}(\vec q_{\rm LL})\) & \texttt{h(q)} & the
+\(8\times8\) matrix of the free Hamiltonian on a plane wave,
+\(\sum_j\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m_{\rm LL}\);
+eigenvalues \(\pm\varepsilon_{\rm LL}\) & Revision\_SuperLoop, same
+symbol \\
+\(\varepsilon_{\rm LL}\), \(E^\pm_{\rm LL}\) & \texttt{eps}
+\texttt{E\^{}+} \texttt{E\^{}-} & the free energy
+\(\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}\) and the
+quasi-particle energies of the scalar pair channel
+\(E^\pm_{\rm LL}=[(\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2]^{1/2}\)
+& Revision\_SuperLoop, same symbol \\
+\(N^\Lambda_{\rm LL}\) & \texttt{N\_Lambda} & the number of modes per
+volume and per component below the cutoff,
+\(\Lambda_{\rm LL}^3/(6\pi^2)\) & Revision\_SuperLoop, same symbol \\
+\end{longtable}
+
+\textbf{Group 5 The gauge group GEE, the gauge fields and the covariant
+derivatives.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(T^\iota_{\rm LL}\) & \texttt{T\_LL\^{}iota} & the generators of
+\(SU(2)_{\rm v}\) on the spinor field,
+\(\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2\);
+\([T^1_{\rm LL},T^2_{\rm LL}]=iT^3_{\rm LL}\) and cyclically &
+Revision\_SuperLoop, same symbol \\
+\(Q_{\rm LL}\) & \texttt{Q\_LL} & the charge of the rotations about the
+third isospin axis, the generator \(Q_{\rm LL}=T^3_{\rm LL}\) of the
+group \(U(1)^{\rm Q}_{\rm LL}\); \(\pm\tfrac12\) on isospin up and down;
+a charge of \(SU(2)_{\rm v}\), not the electric charge (the DiracLike
+spinor has electric charge 0) & Revision\_SuperLoop, same symbol \\
+\(\theta^{\rm F}_{\rm LL}\) & \texttt{thF} & the phase of a local
+transformation of the fermion number, a real function on M31 &
+Revision\_SuperLoop, same symbol \\
+\(\mathsf U_{\rm LL}\),
+\(\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\) & \texttt{U\_LL}
+\texttt{Rv} & a local isospin rotation, a matrix of \(SU(2)\) that is a
+function on M31 and acts on the isospin index
+(\(\mathsf U_{\rm LL}=M_{\rm LL}(\mathbf v)\));
+\(\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})\), the real orthogonal
+\(3\times3\) matrix with
+\(\mathsf U_{\rm LL}\tau^{\rm LL}_\iota\mathsf U_{\rm LL}^\dagger=\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}]_{\iota'\iota}\tau^{\rm LL}_{\iota'}\)
+& Revision\_SuperLoop, same symbol \\
+\(\mathcal U_{\rm LL}\) & \texttt{Ucal} & a local gauge transformation
+of the spinor field by GEE,
+\(\mathcal U_{\rm LL}=\exp(i\theta^{\rm F}_{\rm LL})\,\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}\)
+& Revision\_SuperLoop, same symbol \\
+\(\mathbf u^\omega_{{\rm LL},p}\); \(\Gamma^{\rm LL}_p\) & \texttt{uLw}
+\texttt{Gamma\_LL} & the Lorentz connection, for each direction \(p\) a
+Lorentz generator, and the spin connection
+\(\Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0\)
+(on flat M31 a pure gauge, zero in the canonical frame) &
+Revision\_SuperLoop, same symbol \\
+\(g^{\rm v}_{\rm LL}\), \(g^{\rm F}_{\rm LL}\) & \texttt{g\_v}
+\texttt{g\_F} & the gauge couplings of \(SU(2)_{\rm v}\) and of
+\(U(1)^{\rm F}_{\rm LL}\) (real numbers) & Revision\_SuperLoop, same
+symbol \\
+\(W^\iota_{{\rm SF},p}\) & \texttt{W\_p} \texttt{W\^{}iota\_p} & the
+gauge field of \(SU(2)_{\rm v}\): three real vector fields on M31 (they
+enter the covariant derivative with \(+ig^{\rm v}_{\rm LL}\)) &
+Revision\_SuperLoop wrote \(A^\iota_{{\rm LL},p}\) \\
+\(B_{{\rm SF},p}\) & \texttt{B\_p} & the gauge field of
+\(U(1)^{\rm F}_{\rm LL}\): a real vector field on M31 (it enters the
+covariant derivative with \(+ig^{\rm F}_{\rm LL}F_{\rm LL}\)) &
+Revision\_SuperLoop wrote \(A^{\rm F}_{{\rm LL},p}\) \\
+\(\nabla^{\rm GEE}_p\) & \texttt{nabla\_GEE} & the GEE gauge-covariant
+derivative; on the spinor field
+\(\partial_p+\Gamma^{\rm LL}_p+ig^{\rm v}_{\rm LL}\sum_\iota W^\iota_{{\rm SF},p}T^\iota_{\rm LL}+ig^{\rm F}_{\rm LL}B_{{\rm SF},p}\),
+on a field of fermion number \(F_{\rm LL}\) and isospin generators
+\(\mathsf t\) the same with these in place of 1 and
+\(T^\iota_{\rm LL}\), and without \(\Gamma^{\rm LL}_p\) on a Lorentz
+scalar & new \\
+\(\mathsf t^\iota_{\rm SF}\) & \texttt{t\_adj} & the generators of
+\(SU(2)_{\rm v}\) on an isospin vector (the adjoint representation),
+\((\mathsf t^\iota_{\rm SF})_{\iota'\iota''}=-i\epsilon^{\rm LL}_{\iota\iota'\iota''}\)
+& new \\
+\(W^\iota_{{\rm SF},pp'}\), \(B_{{\rm SF},pp'}\) & \texttt{W\_pq}
+\texttt{B\_pq} & the field strengths
+\(\partial_pW^\iota_{{\rm SF},p'}-\partial_{p'}W^\iota_{{\rm SF},p}-g^{\rm v}_{\rm LL}\sum\epsilon^{\rm LL}_{\iota\iota'\iota''}W^{\iota'}_{{\rm SF},p}W^{\iota''}_{{\rm SF},p'}\)
+and \(\partial_pB_{{\rm SF},p'}-\partial_{p'}B_{{\rm SF},p}\) & new \\
+\(\mathsf W_{{\rm SF},p}\) & \texttt{Wmat\_p} & the gauge field of
+\(SU(2)_{\rm v}\) as a Hermitian traceless \(2\times2\) matrix,
+\(\sum_\iota W^\iota_{{\rm SF},p}\tau^{\rm LL}_\iota/2\); with two
+indices, \(\mathsf W_{{\rm SF},pp'}\), its field strength
+\(\partial_p\mathsf W_{{\rm SF},p'}-\partial_{p'}\mathsf W_{{\rm SF},p}+ig^{\rm v}_{\rm LL}[\mathsf W_{{\rm SF},p},\mathsf W_{{\rm SF},p'}]\)
+& new \\
+\(\Omega^{\rm L}_{{\rm SF},pp'}\) & \texttt{Omega\_L} & the curvature of
+the Lorentz connection,
+\(\partial_p\Gamma^{\rm LL}_{p'}-\partial_{p'}\Gamma^{\rm LL}_p+[\Gamma^{\rm LL}_p,\Gamma^{\rm LL}_{p'}]\)
+(zero on flat M31) & new \\
+\(j^{\iota,p}_{\rm SF}\), \(j^{{\rm F},p}_{\rm SF}\) & \texttt{j\_iota}
+\texttt{j\_F} & the isospin current
+\(\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL}\) and
+the fermion-number current
+\(\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}\) of the spinor field
+& new \\
+\(W^\pm_{{\rm SF},p}\), \(Z_{{\rm SF},p}\), \(A_{{\rm SF},p}\) &
+\texttt{Wplus} \texttt{Wminus} \texttt{Z\_p} \texttt{A\_p} & the gauge
+fields of definite mass after the breaking of the symmetry of
+\(SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\), named after the Standard
+Model (the names only: the group is a new one): the fields
+\((W^1_{{\rm SF},p}\mp iW^2_{{\rm SF},p})/\sqrt2\) of the charges
+\(Q_{\rm LL}=\pm1\), the massive field of charge 0 and the massless
+gauge boson of \(U(1)^{\rm Q}_{\rm LL}\), which is not the photon and is
+named the zeugon (their expressions in \(W^3_{{\rm SF},p}\) and
+\(B_{{\rm SF},p}\) are derived in the solution) & new \\
+\(\theta^{\rm W}_{\rm SF}\), \(g^{\rm Q}_{\rm SF}\) & \texttt{theta\_W}
+\texttt{g\_Q} & the mixing angle: the angle between the massless gauge
+boson \(A_{{\rm SF},p}\) and the axis \(W^3_{{\rm SF},p}\) in the plane
+of \(W^3_{{\rm SF},p}\) and \(B_{{\rm SF},p}\); the coupling of
+\(A_{{\rm SF},p}\) to the charge \(Q_{\rm LL}\) & new \\
+\end{longtable}
+
+\textbf{Group 6 The Lagrangian, the field equations and their numerical
+form.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mathcal L_{\rm SF}\), \(\mathcal L^\Psi_{\rm SF}\),
+\(\mathcal L^{\rm self}_{\rm SF}\), \(\mathcal L^{\rm YM}_{\rm SF}\) &
+\texttt{Lagr} \texttt{Lagr\_Psi} \texttt{Lagr\_self} \texttt{Lagr\_YM} &
+the Lagrangian density of the solution and its parts: the Dirac part
+with the covariant derivative and the mass term, the self-interaction
+(four field components at one point) and the Yang-Mills part of the
+gauge fields & new \\
+\(G^{\rm S}_{\rm SF}\), \(G^{\rm V}_{\rm SF}\) & \texttt{G\_S}
+\texttt{G\_V} & the couplings of the scalar and of the vector contact
+terms,
+\(\tfrac12G^{\rm S}_{\rm SF}:(\bar\Psi_{\rm LL}\Psi_{\rm LL})^2:\) and
+\(\tfrac12G^{\rm V}_{\rm SF}\sum_p\eta^{\rm LL}_{pp}:(j^{{\rm F},p}_{\rm SF})^2:\)
+of the Hamiltonian density, formed after the author's Kohn-Sham ansatz
+of the project (attraction in the scalar density for
+\(G^{\rm S}_{\rm SF}<0\), repulsion of the densities for
+\(G^{\rm V}_{\rm SF}>0\)) & after the author's Kohn-Sham ansatz \\
+\(G_S\), \(G_V\) & & the author's scalar and vector couplings of his
+Kohn-Sham ansatz of uniform matter in the earlier work of the project
+(fields of 16 components on the eight-dimensional deflating spacetimes):
+the interaction energy density \(\tfrac12G_Vn^2+\tfrac12G_Sn_S^2\),
+attraction for \(G_S<0\), repulsion for \(G_V>0\); quoted only where
+that ansatz is described & the author's symbol
+(Revision\_Deflation\_CJT\_and\_Kohn-Sham) \\
+\(n\), \(n_S\) & & in the author's Kohn-Sham ansatz: the number density
+and the scalar density of uniform matter; quoted only where that ansatz
+is described & the author's symbol
+(Revision\_Deflation\_CJT\_and\_Kohn-Sham) \\
+\(G_{\rm LL}\), \(G^{\rm crit}_{\rm LL}\) & \texttt{G} \texttt{G\_crit}
+& the coupling of the attractive spin-zero contact interaction
+\(-\tfrac14G_{\rm LL}\sum_\iota:(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}:\)
+of the Hamiltonian density, and its critical value for the condensation
+of the vacuum with this interaction alone & Revision\_SuperLoop, same
+symbol \\
+\(V^{(0)}_{\rm SF}\), \(V^{(1)}_{\rm SF}\), \(V^{(n)}_{\rm SF}\) &
+\texttt{V0} \texttt{V1} \texttt{Vn} & the self-interaction of the step
+\(n\) of the recursion of the potential: the set of contact terms (with
+their couplings) and of gauge-boson exchanges examined at that step &
+new \\
+\(\mathsf X_{\rm SF}\), \(\mathsf Y_{\rm SF}\) & \texttt{Xmat}
+\texttt{Ymat} & two arbitrary \(8\times8\) matrices in the general
+statements of Wick's theorem and of the self-energies of a contact term
+\(\nu{:}(\Psi^\dagger\mathsf X_{\rm SF}\Psi)(\Psi^\dagger\mathsf Y_{\rm SF}\Psi){:}\)
+& new \\
+\(\mathsf R_{\rm SF}(\vec q_{\rm LL})\) & \texttt{Rgen} & the
+generalized density of a uniform quasi-free state at the momentum
+\(\vec q_{\rm LL}\): the \(16\times16\) Hermitian matrix of the
+expectation values
+\(\langle\mathcal N_{{\rm LL},b}^\dagger\mathcal N_{{\rm LL},a}\rangle\)
+of the Nambu spinor, with the blocks
+\(\mathsf C^{\rm n}_{\rm LL}(\vec q_{\rm LL})\),
+\(-\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})\),
+\(-\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})^\dagger\),
+\(\mathsf 1_8-\mathsf C^{\rm n}_{\rm LL}(-\vec q_{\rm LL})^*\) & new \\
+\(\mathcal H_{\rm SF}\) & \texttt{Hdens} & the Hamiltonian density of
+the spinor field, minus the Lagrangian density without the time
+derivative terms & new \\
+\end{longtable}
+
+\textbf{Group 7 The analytic solutions.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\vec d_{\rm LL}\), \(d^\iota_{\rm LL}\); \(\zeta_{\rm LL}\) &
+\texttt{dvec} \texttt{d\_iota} \texttt{zeta} & the order parameter, the
+isospin vector
+\(d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle\)
+in \(\mathbb C^3\), and its non-unitarity
+\(\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2\)
+& Revision\_SuperLoop, same symbol \\
+\(\Delta_{\rm LL}\), \(\Delta^\pm_{\rm LL}\) & \texttt{Delta}
+\texttt{Delta\_+} \texttt{Delta\_-} & the gap
+\(\lvert\vec d_{\rm LL}\rvert\) of a unitary state
+(\(\zeta_{\rm LL}=0\)), and the two gaps
+\((\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})\)
+of a general state & Revision\_SuperLoop, same symbol \\
+\(\mathsf P_{\rm LL}\); \(\mathsf H_{\rm LL}(\vec q_{\rm LL})\);
+\(\mathcal N_{\rm LL}(\vec q_{\rm LL})\) & \texttt{Ppair}
+\texttt{H\_BdG} & the pairing block
+\(\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger\); the
+\(16\times16\) Bogoliubov-de Gennes matrix of \(8\times8\) blocks: upper
+left \(\mathsf h_{\rm LL}(\vec q_{\rm LL})-\mu_{\rm LL}\), upper right
+\(\mathsf P_{\rm LL}\), lower left \(\mathsf P_{\rm LL}^\dagger\), lower
+right \(-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})-\mu_{\rm LL})^T\); and
+the Nambu spinor
+\((\Psi_{\rm LL}(\vec q_{\rm LL}),\Psi^*_{\rm LL}(-\vec q_{\rm LL}))\)
+on which it acts & Revision\_SuperLoop, same symbol \\
+\(M^{\rm q}_{\rm LL}\) & \texttt{M\_q} & the quasi-particle mass of a
+uniform polar state at \(\mu_{\rm LL}=0\),
+\((m_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}\) & Revision\_SuperLoop, same
+symbol \\
+\(\omega^{\rm pw}_{\rm SF}\), \(\chi^{\rm pw}_{\rm SF}\) &
+\texttt{omega\_pw} \texttt{chi\_pw} & the frequency and the constant
+eight-component spinor of a plane-wave solution of the field equation in
+constant gauge fields & new \\
+\(\chi^{\rm ch}_{\rm SF}(\omega)\), \(M^{\rm B}_{\rm SF}\) &
+\texttt{chi\_ch} \texttt{M\_B\_SF} & the pair susceptibility of the
+normal vacuum in a pair channel at the frequency \(\omega\) and zero
+momentum, and the mass of the bound state of two spinor charges in that
+channel (the solution of
+\(G^{\rm ch}_{\rm SF}\chi^{\rm ch}_{\rm SF}(M^{\rm B}_{\rm SF})=1\)
+below \(2m_{\rm LL}\)) & new \\
+\(\mathsf H^{\rm pw}_{\rm SF}(\vec q_{\rm LL})\),
+\(\mathsf k_{{\rm SF},j}\) & \texttt{H\_pw} \texttt{k\_j} & the
+Hermitian \(8\times8\) matrix whose eigenvalues are the frequencies of
+the plane waves of momentum \(\vec q_{\rm LL}\) in constant gauge
+fields,
+\(\beta_{\rm LL}m_{\rm LL}+g^{\rm v}_{\rm LL}\mathsf 1_4\otimes\mathsf W_{{\rm SF},0}+g^{\rm F}_{\rm LL}B_{{\rm SF},0}+\sum_j\alpha^j_{\rm LL}\mathsf k_{{\rm SF},j}\),
+and the kinetic momenta
+\(\mathsf k_{{\rm SF},j}=q^j_{\rm LL}+g^{\rm v}_{\rm LL}\mathsf 1_4\otimes\mathsf W_{{\rm SF},j}+g^{\rm F}_{\rm LL}B_{{\rm SF},j}\)
+& new \\
+\(w^{\rm lk}_{\rm SF}\) & \texttt{w\_lk} & the amplitude of the
+spin-isospin locked constant gauge field
+\(W^\iota_{{\rm SF},j}=w^{\rm lk}_{\rm SF}\delta_{\iota j}\) & new \\
+\(\Sigma^j_{\rm SF}\) & \texttt{Sigma\_j} & the spin matrices
+\(\mathrm{diag}(\sigma^{\rm LL}_j,\sigma^{\rm LL}_j)\) on the Dirac
+index (twice the spin) & new \\
+\(g^{\rm c}_{\rm SF}\) & \texttt{g\_c} & the strength with which an
+isospin component couples to an abelian gauge field:
+\(g^{\rm v}_{\rm LL}Q_{\rm LL}\) for the field \(W^3_{{\rm SF},p}\),
+\(g^{\rm F}_{\rm LL}\) for \(B_{{\rm SF},p}\) & new \\
+\(\mathcal E^{\rm MF}_{\rm SF}(\Delta_{\rm LL})\) & \texttt{E\_MF} & the
+energy per volume of the uniform polar state of the pairing interaction
+in the mean-field (pairing-only) approximation at \(\mu_{\rm LL}=0\), as
+a function of the gap, measured from the normal vacuum: the ground-state
+energy of the mean-field Hamiltonian plus
+\(\Delta_{\rm LL}^2/G_{\rm LL}\) & new \\
+\(I^{(1)}_{\rm SF}\), \(I^{(3)}_{\rm SF}\) & \texttt{I1} \texttt{I3} &
+the integrals \(\int_0^{\Lambda_{\rm LL}}q^2(q^2+M^2)^{\mp1/2}dq\)
+(upper sign \(I^{(1)}_{\rm SF}\), lower \(I^{(3)}_{\rm SF}\)) as
+functions of the mass \(M\) in their argument; at the temperature \(T\),
+\(I^{(1)}_{\rm SF}(M,T)=\int_0^{\Lambda_{\rm LL}}q^2\tanh(E/2T)E^{-1}dq\)
+with \(E=(q^2+M^2)^{1/2}\), which equals \(I^{(1)}_{\rm SF}(M)\) at
+\(T=0\) & new \\
+\(\mathsf A^{\rm K}_{\rm SF}\), \(\mathsf P^{\rm K}_{\rm SF}\),
+\(\mathsf B^{\rm K}_{\rm SF}\), \(\mathsf G^{\rm K}_{\rm SF}\) &
+\texttt{A\_K} \texttt{P\_K} \texttt{B\_K} \texttt{G\_K} & the
+\(16\times16\) matrices of the kink problem:
+\(\mathrm{diag}(\alpha^1_{\rm LL},(\alpha^1_{\rm LL})^*)\), the pairing
+matrix with the blocks \((\mathsf K^3_{\rm LL})^\dagger\) (upper right)
+and \(\mathsf K^3_{\rm LL}\) (lower left),
+\(\mathrm{diag}(\beta_{\rm LL},-\beta_{\rm LL})\), and
+\(-i\mathsf A^{\rm K}_{\rm SF}\mathsf P^{\rm K}_{\rm SF}\) & new \\
+\(\mathsf H^{\rm K}_{\rm SF}\), \(\mathsf H^{{\rm K},0}_{\rm SF}\) &
+\texttt{H\_K} \texttt{H\_K0} & the Bogoliubov-de Gennes operator of the
+quasi-particles in the kink of the pair field,
+\(-i\mathsf A^{\rm K}_{\rm SF}\partial_1+\Delta_{\rm LL}(x)\mathsf P^{\rm K}_{\rm SF}+m_{\rm LL}\mathsf B^{\rm K}_{\rm SF}\),
+and the same without the mass term & new \\
+\(E^{\rm K}_{{\rm SF},n}\), \(s^{\rm K}_{\rm SF}\) & \texttt{E\_Kn}
+\texttt{s\_K} & the energies of the bound states of the kink problem
+without the mass,
+\((E^{\rm K}_{{\rm SF},n})^2=(\Delta^\infty_{\rm LL})^2-(\Delta^\infty_{\rm LL}-n/\ell^{\rm K}_{\rm LL})^2\),
+and the index
+\(s^{\rm K}_{\rm SF}=\Delta^\infty_{\rm LL}\ell^{\rm K}_{\rm LL}\) of
+the Poeschl-Teller potential & new \\
+\(\Delta^\infty_{\rm LL}\), \(\ell^{\rm K}_{\rm LL}\) &
+\texttt{Delta\_inf} \texttt{ell\_K} & the gap far from a domain wall
+(kink) of the pair field, and the width of the wall &
+Revision\_SuperLoop, same symbol \\
+\(\varphi^{\rm K}_{\rm SF}\), \(\varphi^{\rm K}_{{\rm SF},n}\),
+\(\chi^{\rm K}_{\rm SF}\) & \texttt{phi\_K} \texttt{chi\_K} & the
+profile of a bound state of a kink of the pair field (with the number
+\(n\) of the state: \(n=0\), \(1\), \ldots), and the constant
+16-component spinor of that state & new \\
+\(\mathcal B_{\rm SF}\), \(n^{\rm L}_{\rm SF}\),
+\(\ell^{\rm B}_{\rm SF}\) & \texttt{Bmag} \texttt{n\_L} \texttt{l\_B} &
+the strength of a constant magnetic field (of the gauge field
+\(W^3_{{\rm SF},p}\) or of \(B_{{\rm SF},p}\), as said in the text), the
+number of a Landau level (0, 1, 2, \ldots), and the magnetic length &
+new \\
+\end{longtable}
+
+\textbf{Group 8 The pair channels and the gauge bosons that mediate the
+pairing.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mathsf K_{\rm SF}[\Gamma,\mathsf t]\) & \texttt{Kpair} & the general
+pair matrix \(C_{\rm LL}\Gamma\otimes\mathsf E_{\rm LL}\mathsf t\) for a
+\(4\times4\) Dirac matrix \(\Gamma\) and a \(2\times2\) isospin matrix
+\(\mathsf t\) (antisymmetric \(8\times8\) when \(C_{\rm LL}\Gamma\) and
+\(\mathsf E_{\rm LL}\mathsf t\) have opposite symmetry) & new \\
+\(\Gamma\) & \texttt{Gamma\_D} & one of the sixteen Dirac matrices
+\(\mathsf 1_4\), \(\gamma^p_{\rm LL}\),
+\(\sigma^{pp'}_{\rm SF}=\tfrac i2[\gamma^p_{\rm LL},\gamma^{p'}_{\rm LL}]\),
+\(\gamma^p_{\rm LL}\gamma^{\rm ch}_{\rm LL}\),
+\(\gamma^{\rm ch}_{\rm LL}\) (without scripts and in square brackets: a
+placeholder for any of them) & new \\
+\(\sigma^{pp'}_{\rm SF}\) & \texttt{sigma\_pq} & the six antisymmetric
+Dirac matrices
+\(\tfrac i2(\gamma^p_{\rm LL}\gamma^{p'}_{\rm LL}-\gamma^{p'}_{\rm LL}\gamma^p_{\rm LL})\)
+& new \\
+\(\lvert\mathsf K\rangle\) & \texttt{pairstate} & the normalized state
+of two spinor charges at one point with the antisymmetric pair matrix
+\(\mathsf K\):
+\(\tfrac12\sum\mathsf K^*_{cc'}\Psi^\dagger_{{\rm LL},c}\Psi^\dagger_{{\rm LL},c'}\)
+applied to the empty state, divided by its norm & new \\
+\(E^{\rm pair}_{\rm SF}[\mathcal O;\mathsf K]\) & \texttt{E\_pair} & the
+energy of a normal-ordered contact term \(\mathcal O\) (an operator
+built from four field components at one point) in the pair state
+\(\lvert\mathsf K\rangle\), per unit coupling: negative means attraction
+& new \\
+\(G^{\rm ch}_{\rm SF}\) & \texttt{G\_ch} & the effective coupling of a
+self-interaction in a pair channel, normalized like \(G_{\rm LL}\):
+\(-\tfrac14\) times the pair energy of the channel & new \\
+\(D^{\rm b}_{\rm SF}(\vec k)\), \(M^{\rm b}_{\rm SF}\) & \texttt{D\_b}
+\texttt{M\_b} & the static kernel
+\(1/(\lvert\vec k\rvert^2+(M^{\rm b}_{\rm SF})^2)\) of the exchange of
+the gauge boson b (b = \(A\), \(W\), \(Z\)) with the momentum transfer
+\(\vec k\), and the mass of that boson & new \\
+\(\mathsf t^{\rm b}_{\rm SF}\), \(\mathsf A^{\rm b}_{{\rm SF},p}\) &
+\texttt{t\_b} \texttt{A\_b} & the isospin matrix of the gauge boson b
+(\(\tfrac12\tau^{\rm LL}_\iota\) for \(W^\iota_{{\rm SF},p}\),
+\(\mathsf 1_2\) for \(B_{{\rm SF},p}\)) and its vertex matrices
+\((\gamma^0_{\rm LL}\gamma^p_{\rm LL})\otimes\mathsf t^{\rm b}_{\rm SF}\)
+(the current of b is
+\(\Psi^\dagger_{\rm LL}\mathsf A^{\rm b}_{{\rm SF},p}\Psi_{\rm LL}\)) &
+new \\
+\(\lambda^{\rm T}_{\rm SF}\), \(g^{\rm crit}_{\rm SF}\) &
+\texttt{lambda\_T} \texttt{g\_crit} & the largest eigenvalue of the
+linearized gap equation of the normal vacuum in the channel
+\(\mathsf K^3_{\rm LL}\) with the exchange of gauge bosons (the normal
+vacuum is unstable against pairing when it exceeds 1), and the coupling
+at which \(W^3_{\rm SF}\) alone would make it 1 & new \\
+\(\mathcal E^{\rm ex,b}_{\rm SF}\) & \texttt{E\_ex\_b} & the energy per
+volume of the static exchange of the gauge boson b in a uniform state,
+measured from the normal vacuum & new \\
+\end{longtable}
+
+\textbf{Group 9 The three methods and the recursion of the potential.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+HS, CJT, KS; \(X\) & \texttt{HS} \texttt{CJT} \texttt{KS} \texttt{X} &
+the labels of the three methods: Hubbard-Stratonovich,
+Cornwall-Jackiw-Tomboulis, Kohn-Sham; \(X\) stands for any one of them &
+the author's name \\
+\(\sigma^{\rm HS}_{\rm SF}\), \(\omega^{{\rm HS},p}_{\rm SF}\),
+\(\vec\Phi^{\rm HS}_{\rm SF}\) & \texttt{sigma\_HS} \texttt{omega\_HS}
+\texttt{Phi\_HS} & the auxiliary (Hubbard-Stratonovich) fields of the
+scalar density, of the vector current and of the pair channel & new \\
+\(s^{\rm HS,S}_{\rm SF}\), \(s^{\rm HS,V}_{\rm SF}\) & \texttt{s\_S}
+\texttt{s\_V} & the HS parameters: the shares (between 0 and 1) of the
+scalar and of the vector contact term that are decoupled in the density
+channels (their direct contraction); the rest of each term is decoupled
+in the pair channels (its pair contraction) & new \\
+\(w^{\rm H}_{\rm SF}\), \(w^{\rm F}_{\rm SF}\), \(w^{\rm P}_{\rm SF}\) &
+\texttt{w\_h} \texttt{w\_f} \texttt{w\_p} & the weights with which a
+method keeps the direct (Hartree), the exchange (Fock) and the pair
+(Bogoliubov) contraction of a contact term in its energy per volume &
+new \\
+\(\mathcal P^{\rm KS}_{\rm SF}\) & \texttt{ks\_project} & the projection
+of an \(8\times8\) matrix \(\mathsf X\) onto the span of \(\mathsf 1_8\)
+and \(\beta_{\rm LL}\otimes\mathsf 1_2\):
+\(\mathcal P^{\rm KS}_{\rm SF}(\mathsf X)=\tfrac18\mathrm{tr}(\mathsf X)\,\mathsf 1_8+\tfrac18\mathrm{tr}(\beta_{\rm LL}\mathsf X)\,\beta_{\rm LL}\)
+(the Kohn-Sham densities are the number density and the scalar density)
+& new \\
+\(g^{X,{\rm S}}_{\rm SF}\), \(g^{X,{\rm P}}_{\rm SF}\) & \texttt{g\_S}
+\texttt{g\_P} & the effective couplings of method \(X\) in the
+scalar-density channel (a uniform scalar density \(n^{\rm S}_{\rm SF}\)
+shifts the Dirac mass by \(g^{X,{\rm S}}_{\rm SF}n^{\rm S}_{\rm SF}\))
+and in the pair channel \(\mathsf K^3_{\rm LL}\) (normalized so that the
+pairing term alone has \(g^{X,{\rm P}}_{\rm SF}=G_{\rm LL}\)) & new \\
+\(\chi^{\rm S}_{\rm SF}\) & \texttt{chi\_S} & the scalar susceptibility
+of the normal vacuum,
+\(-\partial n^{\rm S}_{\rm SF}/\partial M=(2/\pi^2)\int_0^{\Lambda_{\rm LL}}q^4(q^2+m_{\rm LL}^2)^{-3/2}dq\)
+& new \\
+\(D^X_{\rm SF}\) & \texttt{D\_X} & the pair amplitude of a polar state
+of method \(X\): its pair self-energy is
+\(D^X_{\rm SF}(\mathsf K^3_{\rm LL})^\dagger\) & new \\
+\(\boldsymbol\chi_{\rm SF}(\omega)\), \(\mathsf F^X_{\rm SF}\),
+\(\mathsf Q^X_{\rm SF}(\omega)\) & \texttt{chi\_resp} \texttt{F\_kern}
+\texttt{Q\_resp} & the linear response of a uniform state at the
+frequency \(\omega\) (the map from the amplitudes of the self-energies
+to the amplitudes of the local correlation matrices, a \(120\times120\)
+matrix), the kernel of method \(X\) (the map from the amplitudes of the
+correlation matrices to those of the self-energies), and their product
+\(\boldsymbol\chi_{\rm SF}(\omega)\mathsf F^X_{\rm SF}\) & new \\
+\(\lambda^{\rm S}_{\rm SF}\), \(\lambda^{\rm P}_{\rm SF}\) &
+\texttt{lambda\_S} \texttt{lambda\_P} & the eigenvalues of
+\(\mathsf Q^X_{\rm SF}(0)\) of the normal vacuum in the scalar-density
+channel and in the pair channel (an eigenvalue larger than 1 means that
+the normal vacuum is unstable in that channel);
+\(\lambda^{\rm P}_{\rm SF}(T)\) is the eigenvalue of the pair channel of
+the normal state at the temperature \(T\) & new \\
+\(\Omega_{\rm SF}\) & \texttt{Omega} & the energy of a transition
+between an occupied and an empty eigenvector of
+\(\mathsf H_{\rm SF}(\vec q_{\rm LL})\), the difference of their
+eigenvalues & new \\
+\(\Gamma^{\rm CJT}_{\rm LL}\); \(\mathcal G_{\rm LL}\) &
+\texttt{Gamma\_CJT} \texttt{G\_prop} & the effective action of the
+propagator in the method of Cornwall, Jackiw and Tomboulis, and the
+propagator of the Nambu spinor of 16 components & Revision\_SuperLoop,
+same symbol \\
+\(\mathsf C^{\rm n}_{\rm LL}\), \(\mathsf C^{\rm p}_{\rm LL}\);
+\(\mathsf C^{\rm vac}_{\rm LL}\) & \texttt{C\_n} \texttt{C\_p}
+\texttt{C\_vac} & the correlation matrices of a uniform state:
+\((\mathsf C^{\rm n}_{\rm LL})_{cc'}=\langle\Psi^\dagger_{{\rm LL},c'}\Psi_{{\rm LL},c}\rangle\)
+(normal, Hermitian) and
+\((\mathsf C^{\rm p}_{\rm LL})_{cc'}=\langle\Psi_{{\rm LL},c}\Psi_{{\rm LL},c'}\rangle\)
+(pair, antisymmetric), both fields at one point, and the normal
+correlation matrix of the normal vacuum; with the argument
+\(\vec q_{\rm LL}\), their parts of one momentum & Revision\_SuperLoop,
+same symbol \\
+\(\mathsf N_{\rm SF}(\vec q_{\rm LL})\),
+\(\mathsf P_{\rm SF}(\vec q_{\rm LL})\) & \texttt{N\_self}
+\texttt{P\_self} & the normal and the pair self-energy of a method
+(Hermitian and antisymmetric \(8\times8\) matrices), which may depend on
+the momentum & new \\
+\(\mathsf H_{\rm SF}(\vec q_{\rm LL})\) & \texttt{H\_SF} & the
+Bogoliubov-de Gennes matrix with the self-energies, of \(8\times8\)
+blocks: upper left
+\(\mathsf h_{\rm LL}(\vec q_{\rm LL})+\mathsf N_{\rm SF}(\vec q_{\rm LL})\),
+upper right \(\mathsf P_{\rm SF}(\vec q_{\rm LL})\), lower left its
+Hermitian conjugate, lower right minus the transpose of
+\(\mathsf h_{\rm LL}(-\vec q_{\rm LL})+\mathsf N_{\rm SF}(-\vec q_{\rm LL})\)
+& new \\
+\(\mathcal E^X_{\rm SF}\) & \texttt{E\_X} & the energy per volume of a
+uniform state in the approximation of method \(X\), measured from the
+normal vacuum & new \\
+\(n_{\rm SF}\), \(n^{\rm S}_{\rm SF}\) & \texttt{n\_SF} \texttt{nS\_SF}
+& the number density
+\(\langle\Psi^\dagger_{\rm LL}\Psi_{\rm LL}\rangle\) and the scalar
+density \(\langle\bar\Psi_{\rm LL}\Psi_{\rm LL}\rangle\) of a uniform
+state, each measured from its value in the normal vacuum & new \\
+\(m^{\rm KS}_{\rm SF}\), \(V^{\rm KS}_{0,{\rm SF}}\),
+\(\vec\Phi^{\rm KS}_{\rm SF}\) & \texttt{m\_KS} \texttt{V0\_KS}
+\texttt{Phi\_KS} & the Kohn-Sham potentials: the Dirac mass, the vector
+potential and the pair potential of the auxiliary system of independent
+spinor charges & after the author's Kohn-Sham ansatz \\
+\(G^{\rm KS,S}_{\rm SF}\), \(G^{\rm KS,V}_{\rm SF}\),
+\(G^{\rm KS,P}_{\rm SF}\) & \texttt{GKS\_S} \texttt{GKS\_V}
+\texttt{GKS\_P} & the couplings of the Kohn-Sham functional in the
+scalar density, in the number density and in the pair channel & after
+the author's Kohn-Sham ansatz \\
+\(T^{\rm s}_{\rm SF}\), \(E^{\rm xc}_{\rm SF}\) & \texttt{T\_s}
+\texttt{E\_xc} & the energy of the independent spinor charges of the
+Kohn-Sham system, and the exchange-correlation part of the Kohn-Sham
+functional & new \\
+\(E^{X,{\rm gap}}_{\rm SF}\), \(M^{X,{\rm D}}_{\rm SF}\) &
+\texttt{E\_gap} \texttt{M\_D} & the gap of method \(X\) (the lowest
+energy of one quasi-particle) and the Dirac mass of its ground state &
+new \\
+\end{longtable}
+
+\textbf{Group 10 The effective Lagrangians, the breaking of the symmetry
+and SFBSv.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\vec\Phi^X_{\rm SF}\), \(\Phi^{X,\iota}_{\rm SF}\) & \texttt{Phi\_X} &
+the field of the superfluid boson singlet state in method \(X\), a
+complex isospin vector of fermion number 2 and spin 0: the amplitudes of
+the pair self-energy of a uniform state,
+\(\mathsf P_{\rm SF}=\sum_\iota\Phi^{X,\iota}_{\rm SF}(\mathsf K^\iota_{\rm LL})^\dagger\)
+(the value of the auxiliary pair field in HS, the anomalous self-energy
+in CJT, the Kohn-Sham pair potential in KS) & new \\
+\(\Phi^X_{0,{\rm SF}}\) & \texttt{Phi0} & the modulus of the field
+\(\vec\Phi^X_{\rm SF}\) in the vacuum of method \(X\) (the minimum of
+\(\mathcal V^X_{\rm SF}\)); \(\Phi^X_{0,{\rm SF}}(T)\) is the modulus in
+the superfluid at the temperature \(T\) (the minimum of
+\(\mathcal F^X_{\rm SF}\)), with
+\(\Phi^X_{0,{\rm SF}}(0)=\Phi^X_{0,{\rm SF}}\) & new \\
+\(Z^X_{\rm SF}\), \(Y^X_{\rm SF}\) & \texttt{Z\_X} \texttt{Y\_X} & the
+two coefficients of the kinetic part of the effective Lagrangian of
+method \(X\): of \((\nabla\vec\Phi)^\dagger\cdot\nabla\vec\Phi\) and of
+\(\lvert\vec\Phi^\dagger\cdot\nabla\vec\Phi\rvert^2/\lvert\vec\Phi\rvert^2\)
+(each contracted over the coordinates with \(\eta^{\rm LL}_{pp}\)) &
+new \\
+\(f^{X,{\rm F}}_{\rm SF}\), \(f^{X,{\rm I}}_{\rm SF}\);
+\(\tilde f^{X,{\rm F}}_{\rm SF}\), \(\tilde f^{X,{\rm I}}_{\rm SF}\),
+\(\tilde f^{X,3}_{\rm SF}\) & \texttt{fF} \texttt{fI} \texttt{fF\_s}
+\texttt{fI\_s} \texttt{f3\_s} & the decay constants of the Goldstone
+field of the phase (F) and of the isospin rotations (I) in method \(X\),
+from the time components (the static susceptibilities); the same from
+the space components (states with a uniform twist), and the
+space-component stiffness of the unbroken generator \(T^3_{\rm LL}\),
+which vanishes in a gauge-invariant regularization & new \\
+\(\nu^X_{{\rm SF},1}\), \(\nu^X_{{\rm SF},2}\) & \texttt{nu\_1}
+\texttt{nu\_2} & the two non-unitary fields of \(\mathrm{SFBSv}^X\) (the
+imaginary parts of the components 1 and 2 of the field relative to its
+phase) & new \\
+\(a^X_{\rm SF}\), \(b^X_{\rm SF}\), \(c^X_{\rm SF}\), \(u^X_{\rm SF}\) &
+\texttt{landau\_a} \texttt{landau\_b} \texttt{landau\_c} \texttt{u\_X}
+\texttt{landau\_res} \texttt{landau\_phifit} \texttt{landau\_depthfit}
+\texttt{landau\_curvfit} \texttt{landau\_signs} \texttt{landau\_resK}
+\texttt{landau\_cK4} \texttt{landau\_rng} & the coefficients of the
+Landau form
+\(a\lvert\vec\Phi\rvert^2+b\lvert\vec\Phi\rvert^4+c\lvert\vec\Phi\rvert^6+u(\lvert\vec\Phi\rvert^4-\lvert\vec\Phi\cdot\vec\Phi\rvert^2)\)
+of \(\mathcal V^X_{\rm SF}\) (the first three fitted along the polar
+states, \(u\) from the curvature along the non-unitary directions) &
+new \\
+\(T^{X,{\rm c}}_{\rm SF}\) & \texttt{Tc} & the critical temperature of
+method \(X\): the temperature at which the eigenvalue
+\(\lambda^{\rm P}_{\rm SF}(T)\) of the static pair response of the
+normal state reaches 1 (with \(k_{\rm B}=1\), in units of
+\(\Lambda_{\rm LL}\)) & new \\
+\(\mathcal S_{\rm SF}\) & \texttt{entropy} \texttt{S\_minus\_S\_normal}
+& the entropy per volume of a uniform quasi-free state: minus one half
+of the integral \(\int d^3q/(2\pi)^3\) over the momenta of
+\(\sum_k[f_k\ln f_k+(1-f_k)\ln(1-f_k)]\), the sum over the 16
+eigenvalues of the matrix of Bogoliubov and de Gennes at the momentum,
+with their occupations \(f_k\) & new \\
+\(\mathcal F^X_{\rm SF}\) & \texttt{F\_min} \texttt{free} & the free
+energy of the field \(\vec\Phi\) in method \(X\) at the temperature
+\(T\): the smallest \(\mathcal E^X_{\rm SF}-T\mathcal S_{\rm SF}\) among
+the thermal states with the field \(\vec\Phi\), measured from the normal
+state at the same temperature; at \(T=0\) the effective potential &
+new \\
+\(M^{X,{\rm n}}_{\rm SF}\) & \texttt{Dirac\_mass\_normal}
+\texttt{mass\_n} & the Dirac mass of the normal state of method \(X\) at
+the temperature \(T\) (the mass plus the scalar part of its normal
+self-energy) & new \\
+\(r^X_{\rm SF}\) & \texttt{radius} & the radius of convergence, up to a
+factor of the order of 1, of the series of the free energy of method
+\(X\) in powers of \(\lvert\vec\Phi\rvert^2\) about the normal state:
+\((M^{X,{\rm n}}_{\rm SF}(T)^2+\pi^2T^2)^{1/2}\) & new \\
+\(b^{X,{\rm Tay}}_{\rm SF}\) & \texttt{b\_Taylor} & the coefficient of
+\(\lvert\vec\Phi\rvert^4\) of the Taylor series of the free energy of
+method \(X\) at \(\vec\Phi=0\) (at the temperature \(T\)) & new \\
+\(a^{X,{\rm Tay}}_{\rm SF}\) & \texttt{a\_taylor} \texttt{a\_Taylor} &
+the coefficient of \(\lvert\vec\Phi\rvert^2\) of the Taylor series of
+the effective potential \(\mathcal V^X_{\rm SF}\) at \(\vec\Phi=0\) (one
+half of its second derivative along the polar fields there), computed
+from states with small applied pair fields; the coefficient
+\(a^X_{\rm SF}\) of the fitted Landau form differs from it;
+\(a^{X,{\rm Tay}}_{\rm SF}(T)\) is the same coefficient of the free
+energy \(\mathcal F^X_{\rm SF}\) at the temperature \(T\), and
+\(a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T)\) that of a pair
+field moving with the momentum \(q^{\rm pair}_{\rm SF}\)
+(\(a^{X,{\rm Tay}}_{\rm SF}(0;T)=a^{X,{\rm Tay}}_{\rm SF}(T)\)) & new \\
+\(\mathcal F^{X,{\rm GL}}_{\rm SF}\) & \texttt{F\_GL} & the free energy
+of Ginzburg and Landau of method \(X\) near its critical temperature:
+the functional of a static field \(\vec\Phi(\vec x)\) that varies slowly
+in space, to second order in the field and in its derivatives and to
+fourth order in the field & new \\
+\(\mathsf c^X_{\rm SF}\), \(\mathsf c^{X,{\rm T3}}_{\rm SF}\),
+\(\mathsf c^{X,{\rm tw}}_{\rm SF}\) & \texttt{gz\_c}
+\texttt{gz\_c\_fixed} \texttt{gz\_c\_T3} \texttt{gz\_c\_twisted}
+\texttt{c\_isospin\_twist} \texttt{c\_fixed\_channels}
+\texttt{c\_T3\_twist} \texttt{c\_twisted\_states} \texttt{c\_k001}
+\texttt{c\_k002} & the gradient coefficient of method \(X\) at its
+critical temperature: the coefficient of
+\(\sum_j(\partial_j\vec\Phi)^\dagger\cdot\partial_j\vec\Phi\) in the
+free energy of a static field, from the static pair response of a moving
+pair with the cutoff on the relative momentum; the spurious coefficient
+of the twist of the unbroken generator \(T^3_{\rm LL}\), which vanishes
+in a gauge-invariant regularization; and the coefficient from the
+twisted states of the nonlinear engine with a self-consistent normal
+self-energy & new \\
+\(\alpha^{X,{\rm GL}}_{\rm SF}\) & \texttt{gz\_alpha} & the slope of the
+coefficient of \(\lvert\vec\Phi\rvert^2\) at the critical temperature of
+method \(X\): \(T^{X,{\rm c}}_{\rm SF}\) times the derivative of
+\(a^{X,{\rm Tay}}_{\rm SF}(T)\) with respect to the temperature & new \\
+\(t^{\rm red}_{\rm SF}\) & & the reduced temperature
+\((T-T^{X,{\rm c}}_{\rm SF})/T^{X,{\rm c}}_{\rm SF}\) & new \\
+\(n^\Phi_{\rm SF}\) & \texttt{N\_COMP} & the number of real components
+of the field \(\vec\Phi^X_{\rm SF}\): 6 (the real and imaginary parts of
+its three isospin components) & new \\
+\({\rm Gi}^{X}_{\rm SF}\) & \texttt{gz\_Gi} \texttt{Gi} \texttt{Gi\_Tc}
+\texttt{gz\_width} & the Ginzburg number of method \(X\): the reduced
+temperature at which the specific heat of the Gaussian fluctuations of
+the field equals the jump of the specific heat of mean-field theory:
+\((n^\Phi_{\rm SF}b^{X,{\rm Tay}}_{\rm SF}T^{X,{\rm c}}_{\rm SF})^2\)
+divided by
+\(64\pi^2\alpha^{X,{\rm GL}}_{\rm SF}(\mathsf c^X_{\rm SF})^3\); the
+critical region has the width
+\({\rm Gi}^{X}_{\rm SF}T^{X,{\rm c}}_{\rm SF}\) in temperature & new \\
+\(C^{X,{\rm fl}}_{\rm SF}\), \(\Delta C^X_{\rm SF}\) & & the specific
+heat per volume of the Gaussian fluctuations of the field above the
+critical temperature of method \(X\), and the jump of the specific heat
+of mean-field theory at the critical temperature & new \\
+\(\xi^{X,{\rm GL}}_{\rm SF}\) & \texttt{gz\_xi0} \texttt{xi0} & the
+amplitude \((\mathsf c^X_{\rm SF}/\alpha^{X,{\rm GL}}_{\rm SF})^{1/2}\)
+of the correlation length of mean-field theory near the critical
+temperature of method \(X\) (the correlation length is
+\(\xi^{X,{\rm GL}}_{\rm SF}\lvert t^{\rm red}_{\rm SF}\rvert^{-1/2}\)) &
+new \\
+\(q^{\rm pair}_{\rm SF}\) & \texttt{K1} \texttt{k\_pair} & the momentum
+of a moving pair field \(\vec\Phi e^{iq^{\rm pair}_{\rm SF}x^3}\), along
+\(\vec e_3\) & new \\
+\(\mathsf T^{\rm tw}_{\rm SF}\) & \texttt{twist\_matrix} & the twist: a
+constant matrix \(Q\,\alpha^3_{\rm LL}\otimes\mathsf t\) added to the
+particle and hole blocks of the BdG matrix, which moves the charges of
+the isospin matrix \(\mathsf t\) with the momentum \(Q\) along
+\(\vec e_3\) (for a moving pair: \(Q=q^{\rm pair}_{\rm SF}/2\),
+\(\mathsf t=\mathsf 1_2\)) & new \\
+\(\mathsf P^{\rm a}_{\rm SF}\) & & the applied pair block (8 x 8,
+antisymmetric) of the BdG matrix of a state with a small moving pair
+field & new \\
+\(\mathsf C^{\rm p,tot}_{\rm SF}\) & \texttt{kap\_tot} & the pair matrix
+of a uniform state summed over the momenta,
+\(\int\frac{d^3q}{(2\pi)^3}\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})\)
+& new \\
+\(\mathcal X^{\rm P}_{\rm SF}\) & \texttt{pair\_response}
+\texttt{pair\_response\_nodes} \texttt{pair\_response\_py} & the static
+pair response: the linear map from the applied pair block
+\(\mathsf P^{\rm a}_{\rm SF}\) to the summed pair matrix of the thermal
+state & new \\
+\(\varepsilon^{\rm A}_{{\rm SF},a}\),
+\(\varepsilon^{\rm D}_{{\rm SF},b}\), \(\mathsf u_{{\rm SF},a}\),
+\(\mathsf w_{{\rm SF},b}\) & & the eigenvalues and the normalized
+eigenvectors of the particle block and of the hole block of the BdG
+matrix of a moving pair at the relative momentum \(\vec q_{\rm LL}\) &
+new \\
+\(\mathcal F^X_{2,{\rm SF}}\) & & the free energy of a state with a
+small applied pair block, to second order in it, measured from the
+normal state at the same temperature & new \\
+\(v^X_{\rm SF}\) & \texttt{vSF} \texttt{v\_SF} & the scale of the
+breaking in method \(X\), \(2f^{X,{\rm I}}_{\rm SF}\): the analogue of
+the vacuum value \(v\) of the Standard Model by the same convention
+(\(M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}v^X_{\rm SF}/2\)); a scale of the
+new group, not the electroweak scale & new \\
+\(\lambda^{X,{\rm H}}_{\rm SF}\) & \texttt{lambda\_SF} & the quartic
+coupling of the amplitude mode of method \(X\) in the convention of the
+Standard Model, \((M^{X,{\rm H}}_{\rm SF})^2/(2(v^X_{\rm SF})^2)\) &
+new \\
+\(\Gamma^{X,{\rm H}}_{\rm SF}\) & \texttt{width\_MH}
+\texttt{Gamma\_over\_M\_H} & the estimate of the width of the amplitude
+mode of method \(X\) from its decays into two Goldstone fields or two
+longitudinal gauge bosons,
+\(3(M^{X,{\rm H}}_{\rm SF})^3/(32\pi(f^{X,{\rm F}}_{\rm SF})^2)\) &
+new \\
+\(\mathcal L^{\rm CJT}\), \(\mathcal L^{\rm HS}\),
+\(\mathcal L^{\rm KS}\); \(\mathcal L^X_{\rm kinetic}\),
+\(\mathcal L^X_{\rm potential}\) & \texttt{L\_CJT} \texttt{L\_HS}
+\texttt{L\_KS} \texttt{L\_kin} \texttt{L\_pot} & the effective
+Lagrangian of the field \(\vec\Phi^X_{\rm SF}\) in method \(X\), and its
+kinetic part (the terms with derivatives, to second order) and potential
+part (the author's names) & the author's name \\
+\(\mathcal V^X_{\rm SF}\) & \texttt{V\_eff\_X} & the effective potential
+of method \(X\), \(-\mathcal L^X_{\rm potential}\): the energy per
+volume of the uniform state with the field \(\vec\Phi^X_{\rm SF}\),
+measured from the normal vacuum & new \\
+\(\kappa^{X,{\rm t}}_{\rm SF}\), \(\kappa^{X,{\rm s}}_{\rm SF}\),
+\(\kappa^{X,{\rm h}}_{\rm SF}\) & \texttt{kappa\_t} \texttt{kappa\_s}
+\texttt{kappa\_h} & the stiffness coefficients of
+\(\mathcal L^X_{\rm kinetic}\): of the time derivatives and of the space
+derivatives of the directions in which the field turns (phase and
+isospin), and of the derivatives of its modulus & Revision\_SuperLoop
+wrote \(Z^{\rm t}_{\rm LL}\), \(Z^{\rm s}_{\rm LL}\) \\
+\(\Delta^X_{\rm SF}\) & \texttt{Delta\_X} & the vacuum value of method
+\(X\): the modulus of \(\vec\Phi^X_{\rm SF}\) at the minima of
+\(\mathcal V^X_{\rm SF}\) & new \\
+\(\mathrm{SFBSv}^X\) & \texttt{SFBSv} & the superfluid solution of
+method \(X\) expanded about its vacuum (the author's name) & the
+author's name \\
+\(h^X_{\rm SF}\); \(\vartheta^X_{{\rm SF},0}\),
+\(\vartheta^X_{{\rm SF},1}\), \(\vartheta^X_{{\rm SF},2}\) &
+\texttt{h\_X} \texttt{th0} \texttt{th1} \texttt{th2} & the amplitude
+(Higgs) field and the three Goldstone fields of \(\mathrm{SFBSv}^X\):
+the phase of the fermion number and the angles of the isospin rotations
+about the first two axes & new \\
+\(\mathcal M^{X,{\rm vac}}_{\rm SF}\), \(H^{\rm vac}_{\rm SF}\) &
+\texttt{M\_vac} \texttt{H\_vac} & the manifold of vacua of method \(X\)
+(the minima of \(\mathcal V^X_{\rm SF}\)) and the stabilizer of a chosen
+vacuum in GEE & new \\
+\(M^{X,{\rm H}}_{\rm SF}\) & \texttt{M\_H} & the mass of the amplitude
+(Higgs) mode of the superfluid in method \(X\) & new \\
+\(M^{X,{\rm NU}}_{\rm SF}\) & \texttt{M\_NU} & the mass of the two
+non-unitary modes of the superfluid in method \(X\) (the oscillations of
+the imaginary parts of the components 1 and 2 of the order parameter of
+a polar state along the third isospin axis) & new \\
+\end{longtable}
+
+\textbf{Group 11 The masses of the gauge bosons and the surviving
+symmetry.}
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mathsf M^X_{\rm SF}\) & \texttt{Mmat} & the real symmetric
+\(4\times4\) mass matrix of the gauge fields \(W^1_{{\rm SF},p}\),
+\(W^2_{{\rm SF},p}\), \(W^3_{{\rm SF},p}\), \(B_{{\rm SF},p}\) in the
+vacuum of method \(X\) & new \\*
+\(\mathsf q^a_{\rm SF}\), \(\mu^a_{\rm SF}\), \(\chi^{ab}_{\rm SF}\) &
+\texttt{q\_a} \texttt{mu\_a} \texttt{chi\_ab} & the charge matrices of
+the four gauge fields (\(a=1,2,3\):
+\(\mathsf 1_4\otimes\tfrac12\tau^{\rm LL}_a\); \(a={\rm F}\):
+\(\mathsf 1_8\)), the chemical potentials of the charges
+\(\Psi^\dagger_{\rm LL}\mathsf q^a_{\rm SF}\Psi_{\rm LL}\), and the
+static susceptibilities
+\(\chi^{ab}_{\rm SF}=\partial\langle\Psi^\dagger_{\rm LL}\mathsf q^a_{\rm SF}\Psi_{\rm LL}\rangle/\partial\mu^b_{\rm SF}\)
+at \(\mu^b_{\rm SF}=0\) & new \\*
+\(s^{\rm g}_{\rm SF}\) & \texttt{s\_g} & a common factor of the two
+gauge couplings, \(g^{\rm v}_{\rm LL}=0.7\,s^{\rm g}_{\rm SF}\) and
+\(g^{\rm F}_{\rm LL}=0.45\,s^{\rm g}_{\rm SF}\) & new \\*
+\(M^X_{W,{\rm SF}}\), \(M^X_{Z,{\rm SF}}\), \(M^X_{A,{\rm SF}}\) &
+\texttt{M\_W} \texttt{M\_Z} \texttt{M\_A} & the masses of
+\(W^\pm_{{\rm SF},p}\), \(Z_{{\rm SF},p}\) and \(A_{{\rm SF},p}\) in
+method \(X\) & new \\
+\end{longtable}
+
+\textbf{Group 12 The dynamics.}
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\ell^{\rm lat}_{\rm SF}\), \(N^{\rm lat}_{\rm SF}\) & \texttt{dx\_lat}
+\texttt{N\_lat} & the spacing and the number of sites of a lattice in
+one space direction & new \\*
+\(\gamma^X_{\rm SF}\) & \texttt{gamma\_RPA} \texttt{gamma\_TD} & the
+growth rate of the unstable pair mode of the normal vacuum in method
+\(X\): the number \(\gamma>0\) at which an eigenvalue of
+\(\mathsf Q^X_{\rm SF}(i\gamma)\) equals 1; a fluctuation of the normal
+vacuum in the pair channel grows as \(e^{\gamma^X_{\rm SF}t}\) & new \\*
+\(\mathsf D^{\rm sp}_{\rm SF}\) & \texttt{dmatrix} & the Fourier
+differentiation matrix of a periodic grid of an odd number
+\(N^{\rm lat}_{\rm SF}\) of points with the spacing
+\(\ell^{\rm lat}_{\rm SF}\): the derivative, at the points, of the
+trigonometric polynomial through the values of a function at the points
+& new \\*
+\(r^{\rm W}_{\rm SF}\) & \texttt{r\_W} & the Wilson parameter of the
+lattice: the coefficient of the Wilson term
+\(\beta_{\rm LL}(r^{\rm W}_{\rm SF}/2\ell^{\rm lat}_{\rm SF})[2\Psi(x)-\Psi(x+\ell^{\rm lat}_{\rm SF})-\Psi(x-\ell^{\rm lat}_{\rm SF})]\)
+(value 1) & new \\
+\end{longtable}
+
+\textbf{Group 13 The Standard Model of the author's conventions.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(D^{\rm SM}_\mu\); \(\Phi^{\rm SM}\), \(\phi^+\), \(\phi^0\) & & the
+covariant derivative of the Higgs doublet of the Standard Model, the
+doublet and its two components & the author's conventions (Standard
+Model) \\
+\(W^a_\mu\), \(B_\mu\); \(g\), \(g'\); \(\tau^a\), \(T^{a,{\rm SM}}\);
+\(Y^{\rm SM}\), \(Q^{\rm SM}\) & & the gauge fields of \(SU(2)_L\) and
+\(U(1)_Y\) of the Standard Model, their couplings, the Pauli matrices
+and generators, the hypercharge and the electric charge (\(a=1,2,3\);
+\(\mu=0,\dots,3\)) & the author's conventions (Standard Model) \\
+\(W^\pm_\mu\), \(Z_\mu\), \(A_\mu\), \(\theta_W\), \(e\), \(v\) & & the
+mass eigenstates of the Standard Model, the weak mixing angle, the
+elementary charge and the vacuum value of the Higgs field & the author's
+conventions (Standard Model) \\
+\(\mu^{\rm SM}\), \(\lambda^{\rm SM}\) & & the two coefficients of the
+Higgs potential
+\(-(\mu^{\rm SM})^2(\Phi^{\rm SM})^\dagger\Phi^{\rm SM}+\lambda^{\rm SM}((\Phi^{\rm SM})^\dagger\Phi^{\rm SM})^2\)
+of the Standard Model & the author's conventions (Standard Model) \\
+\(M_W\), \(M_Z\) & & the masses of \(W^\pm_\mu\) and \(Z_\mu\) in the
+Standard Model, \(gv/2\) and \(\sqrt{g^2+g'^2}\,v/2\) & the author's
+conventions (Standard Model) \\
+\(m_H\), \(\Gamma_H\), \(\lambda_H\), \(G_F\) & \texttt{SM\_MH}
+\texttt{SM\_V} \texttt{SM\_MW} \texttt{SM\_MZ} & the mass and the total
+width of the Higgs boson of the Standard Model, its quartic coupling
+\(m_H^2/(2v^2)\), and the Fermi constant (\(v=(\sqrt2G_F)^{-1/2}\)) &
+the author's conventions (Standard Model) \\
+\(SU(2)_L\), \(U(1)_Y\) & & the electroweak gauge group of the Standard
+Model & the author's conventions (Standard Model) \\
+\(\hat\theta_W\), \(\hat\alpha(M_Z)\) & \texttt{SM\_s2w}
+\texttt{SM\_alpha} & the weak mixing angle and the fine-structure
+constant in the \(\overline{\rm MS}\) scheme at the scale \(M_Z\), the
+inputs of the couplings \(g=e/\sin\hat\theta_W\) and
+\(g'=e/\cos\hat\theta_W\) with \(e^2=4\pi\hat\alpha(M_Z)\) & the
+author's conventions (Standard Model) \\
+\end{longtable}
+
+\textbf{Group 14 The revised hypotheses: the singlet field and the Higgs
+doublet of the superfluid.}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+plain-text names
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+origin
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\chi_{\rm SH}\) & \texttt{chi\_SH} & the singlet field of the revised
+hypotheses: a four-component Dirac field of \(SL(2,\mathbb C)\), a
+singlet of \(SU(2)_L\) and of colour, with the hypercharge
+\(Y^{\rm SM}=1/4\), the fermion number 1 and the electric charge
+\(1/4\); four complex Grassmann (anticommuting) operator components &
+new in the revision of the hypotheses \\
+\(m^\chi_{\rm SH}\) & \texttt{m\_chi} & the mass of the singlet field
+\(\chi_{\rm SH}\) & new in the revision of the hypotheses \\
+\(\Pi^{\rm u}_{\rm SH}\), \(\Pi^{\rm d}_{\rm SH}\) & \texttt{Pi\_u}
+\texttt{Pi\_d} & the pair operators of the doublet-singlet channel:
+\(\Pi^{\rm u}_{\rm SH}\) annihilates an isospin-up particle of
+\(\Psi_{\rm LL}\) and a particle of \(\chi_{\rm SH}\) in the spin-zero
+state built with the matrix \(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\) (a
+Lorentz scalar of positive parity), \(\Pi^{\rm d}_{\rm SH}\) the same
+with an isospin-down particle; together an \(SU(2)_L\) doublet with
+\(Y^{\rm SM}=1/2\) & new in the revision of the hypotheses \\
+\(G_{\rm SH}\) & \texttt{G\_SH} & the coupling of the attractive pairing
+term
+\(-G_{\rm SH}[(\Pi^{\rm u}_{\rm SH})^\dagger\Pi^{\rm u}_{\rm SH}+(\Pi^{\rm d}_{\rm SH})^\dagger\Pi^{\rm d}_{\rm SH}]\)
+of the revised hypotheses, the only pairing term of the interaction &
+new in the revision of the hypotheses \\
+\(\Phi_{\rm SH}\); \(\Phi^{\rm u}_{\rm SH}\), \(\Phi^{\rm d}_{\rm SH}\)
+& \texttt{Phi\_SH} \texttt{Phi\_u} \texttt{Phi\_d} & the pair field of
+the superfluid of the revised hypotheses and its two components, the
+expectation values of the pair operators \(\Pi^{\rm u}_{\rm SH}\),
+\(\Pi^{\rm d}_{\rm SH}\) in the state: a Lorentz scalar, a colour
+singlet, an \(SU(2)_L\) doublet with \(Y^{\rm SM}=+1/2\), whose
+components have the electric charges \(+1\) and \(0\); the quantum
+numbers of the Higgs doublet \(\Phi^{\rm SM}\) & new in the revision of
+the hypotheses \\
+\(v_{\rm SH}\) & \texttt{v\_SH} & the scale of the breaking of
+\(SU(2)_L\times U(1)_Y\) by the superfluid, defined by the mass
+\(M_W=g\,v_{\rm SH}/2\) that the superfluid gives the \(W\) boson (the
+definition that the Standard Model gives \(v\)); identified with \(v\)
+to fix the scale of the model in GeV & new in the revision of the
+hypotheses \\
+\end{longtable}
+
+\end{document}

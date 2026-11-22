@@ -1,0 +1,504 @@
+%apsrev4-2.bst 2019-01-14 (MD) hand-edited version of apsrev4-1.bst
+%Control: key (0)
+%Control: author (8) initials jnrlst
+%Control: editor formatted (1) identically to author
+%Control: production of article title (0) allowed
+%Control: page (0) single
+%Control: year (1) truncated
+%Control: production of eprint (0) enabled
+\begin{thebibliography}{47}%
+\makeatletter
+\providecommand \@ifxundefined [1]{%
+ \@ifx{#1\undefined}
+}%
+\providecommand \@ifnum [1]{%
+ \ifnum #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \@ifx [1]{%
+ \ifx #1\expandafter \@firstoftwo
+ \else \expandafter \@secondoftwo
+ \fi
+}%
+\providecommand \natexlab [1]{#1}%
+\providecommand \enquote  [1]{``#1''}%
+\providecommand \bibnamefont  [1]{#1}%
+\providecommand \bibfnamefont [1]{#1}%
+\providecommand \citenamefont [1]{#1}%
+\providecommand \href@noop [0]{\@secondoftwo}%
+\providecommand \href [0]{\begingroup \@sanitize@url \@href}%
+\providecommand \@href[1]{\@@startlink{#1}\@@href}%
+\providecommand \@@href[1]{\endgroup#1\@@endlink}%
+\providecommand \@sanitize@url [0]{\catcode `\\12\catcode `\$12\catcode
+  `\&12\catcode `\#12\catcode `\^12\catcode `\_12\catcode `\%12\relax}%
+\providecommand \@@startlink[1]{}%
+\providecommand \@@endlink[0]{}%
+\providecommand \url  [0]{\begingroup\@sanitize@url \@url }%
+\providecommand \@url [1]{\endgroup\@href {#1}{\urlprefix }}%
+\providecommand \urlprefix  [0]{URL }%
+\providecommand \Eprint [0]{\href }%
+\providecommand \doibase [0]{https://doi.org/}%
+\providecommand \selectlanguage [0]{\@gobble}%
+\providecommand \bibinfo  [0]{\@secondoftwo}%
+\providecommand \bibfield  [0]{\@secondoftwo}%
+\providecommand \translation [1]{[#1]}%
+\providecommand \BibitemOpen [0]{}%
+\providecommand \bibitemStop [0]{}%
+\providecommand \bibitemNoStop [0]{.\EOS\space}%
+\providecommand \EOS [0]{\spacefactor3000\relax}%
+\providecommand \BibitemShut  [1]{\csname bibitem#1\endcsname}%
+\let\auto@bib@innerbib\@empty
+%</preamble>
+\bibitem [{\citenamefont {{ATLAS Collaboration}}(2012)}]{ATLAS2012}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibnamefont {{ATLAS
+  Collaboration}}},\ }\bibfield  {title} {\bibinfo {title} {Observation of a
+  new particle in the search for the {S}tandard {M}odel {H}iggs boson with the
+  {ATLAS} detector at the {LHC}},\ }\href
+  {https://doi.org/10.1016/j.physletb.2012.08.020} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Lett. B}\ }\textbf {\bibinfo {volume} {716}},\
+  \bibinfo {pages} {1} (\bibinfo {year} {2012})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {{CMS Collaboration}}(2012)}]{CMS2012}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibnamefont {{CMS Collaboration}}},\
+  }\bibfield  {title} {\bibinfo {title} {Observation of a new boson at a mass
+  of 125 {GeV} with the {CMS} experiment at the {LHC}},\ }\href
+  {https://doi.org/10.1016/j.physletb.2012.08.021} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Lett. B}\ }\textbf {\bibinfo {volume} {716}},\
+  \bibinfo {pages} {30} (\bibinfo {year} {2012})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {{ATLAS Collaboration}}(2022)}]{ATLAS2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibnamefont {{ATLAS
+  Collaboration}}},\ }\bibfield  {title} {\bibinfo {title} {A detailed map of
+  {H}iggs boson interactions by the {ATLAS} experiment ten years after the
+  discovery},\ }\href {https://doi.org/10.1038/s41586-022-04893-w} {\bibfield
+  {journal} {\bibinfo  {journal} {Nature}\ }\textbf {\bibinfo {volume} {607}},\
+  \bibinfo {pages} {52} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {{CMS Collaboration}}(2022)}]{CMS2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibnamefont {{CMS Collaboration}}},\
+  }\bibfield  {title} {\bibinfo {title} {A portrait of the {H}iggs boson by the
+  {CMS} experiment ten years after the discovery},\ }\href
+  {https://doi.org/10.1038/s41586-022-04892-x} {\bibfield  {journal} {\bibinfo
+  {journal} {Nature}\ }\textbf {\bibinfo {volume} {607}},\ \bibinfo {pages}
+  {60} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Navas}\ \emph {et~al.}(2024)\citenamefont {Navas}
+  \emph {et~al.}}]{PDG2024}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Navas}} \emph {et~al.} (\bibinfo {collaboration} {Particle Data Group}),\
+  }\bibfield  {title} {\bibinfo {title} {Review of particle physics},\ }\href
+  {https://doi.org/10.1103/PhysRevD.110.030001} {\bibfield  {journal} {\bibinfo
+   {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {110}},\ \bibinfo
+  {pages} {030001} (\bibinfo {year} {2024})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Weinberg}(1976)}]{Weinberg1976}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Weinberg}},\ }\bibfield  {title} {\bibinfo {title} {Implications of
+  dynamical symmetry breaking},\ }\href
+  {https://doi.org/10.1103/PhysRevD.13.974} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {13}},\ \bibinfo
+  {pages} {974} (\bibinfo {year} {1976})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Susskind}(1979)}]{Susskind1979}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {L.}~\bibnamefont
+  {Susskind}},\ }\bibfield  {title} {\bibinfo {title} {Dynamics of spontaneous
+  symmetry breaking in the {W}einberg-{S}alam theory},\ }\href
+  {https://doi.org/10.1103/PhysRevD.20.2619} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {20}},\ \bibinfo
+  {pages} {2619} (\bibinfo {year} {1979})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Miransky}\ \emph {et~al.}(1989)\citenamefont
+  {Miransky}, \citenamefont {Tanabashi},\ and\ \citenamefont
+  {Yamawaki}}]{Miransky1989}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.~A.}\ \bibnamefont
+  {Miransky}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Tanabashi}},\ and\ \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Yamawaki}},\ }\bibfield  {title} {\bibinfo {title} {Dynamical electroweak
+  symmetry breaking with large anomalous dimension and t quark condensate},\
+  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Phys. Lett. B}\
+  }\textbf {\bibinfo {volume} {221}},\ \bibinfo {pages} {177} (\bibinfo {year}
+  {1989})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Bardeen}\ \emph {et~al.}(1990)\citenamefont
+  {Bardeen}, \citenamefont {Hill},\ and\ \citenamefont {Lindner}}]{BHL1990}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {W.~A.}\ \bibnamefont
+  {Bardeen}}, \bibinfo {author} {\bibfnamefont {C.~T.}\ \bibnamefont {Hill}},\
+  and\ \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Lindner}},\
+  }\bibfield  {title} {\bibinfo {title} {Minimal dynamical symmetry breaking of
+  the standard model},\ }\href {https://doi.org/10.1103/PhysRevD.41.1647}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo
+  {volume} {41}},\ \bibinfo {pages} {1647} (\bibinfo {year}
+  {1990})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kaplan}\ and\ \citenamefont
+  {Georgi}(1984)}]{KaplanGeorgi1984}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.~B.}\ \bibnamefont
+  {Kaplan}}\ and\ \bibinfo {author} {\bibfnamefont {H.}~\bibnamefont
+  {Georgi}},\ }\bibfield  {title} {\bibinfo {title} {{SU(2)} $\times$ {U(1)}
+  breaking by vacuum misalignment},\ }\href@noop {} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Lett. B}\ }\textbf {\bibinfo {volume} {136}},\
+  \bibinfo {pages} {183} (\bibinfo {year} {1984})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Agashe}\ \emph {et~al.}(2005)\citenamefont {Agashe},
+  \citenamefont {Contino},\ and\ \citenamefont {Pomarol}}]{Agashe2005}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Agashe}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Contino}},\
+  and\ \bibinfo {author} {\bibfnamefont {A.}~\bibnamefont {Pomarol}},\
+  }\bibfield  {title} {\bibinfo {title} {The minimal composite {H}iggs model},\
+  }\href {https://doi.org/10.1016/j.nuclphysb.2005.04.035} {\bibfield
+  {journal} {\bibinfo  {journal} {Nucl. Phys. B}\ }\textbf {\bibinfo {volume}
+  {719}},\ \bibinfo {pages} {165} (\bibinfo {year} {2005})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Hill}\ and\ \citenamefont
+  {Simmons}(2003)}]{HillSimmons2003}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {C.~T.}\ \bibnamefont
+  {Hill}}\ and\ \bibinfo {author} {\bibfnamefont {E.~H.}\ \bibnamefont
+  {Simmons}},\ }\bibfield  {title} {\bibinfo {title} {Strong dynamics and
+  electroweak symmetry breaking},\ }\href
+  {https://doi.org/10.1016/S0370-1573(03)00140-6} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rep.}\ }\textbf {\bibinfo {volume} {381}},\
+  \bibinfo {pages} {235} (\bibinfo {year} {2003})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nambu}\ and\ \citenamefont
+  {Jona-Lasinio}(1961)}]{NJL1961}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {Y.}~\bibnamefont
+  {Nambu}}\ and\ \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Jona-Lasinio}},\ }\bibfield  {title} {\bibinfo {title} {Dynamical model of
+  elementary particles based on an analogy with superconductivity. {I}},\
+  }\href {https://doi.org/10.1103/PhysRev.122.345} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rev.}\ }\textbf {\bibinfo {volume} {122}},\
+  \bibinfo {pages} {345} (\bibinfo {year} {1961})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nash}(2026{\natexlab{a}})}]{Nash2026}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~L.}\ \bibnamefont
+  {Nash}},\ }\href@noop {} {\bibinfo {title} {The {L}orentz super-loop of the
+  bi-octonions: Non-associative counterexamples to the no-go theorems and a
+  spin-zero spinor superfluid}} (\bibinfo {year} {2026}{\natexlab{a}}),\
+  \bibinfo {note} {manuscript dated November 16, 2026, PROJECT
+  spacetimes}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Lord}(1971)}]{Lord1971}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {E.~A.}\ \bibnamefont
+  {Lord}},\ }\bibfield  {title} {\bibinfo {title} {General relativity from
+  gauge invariance},\ }\href {https://doi.org/10.1017/S0305004100046879}
+  {\bibfield  {journal} {\bibinfo  {journal} {Proc. Cambridge Philos. Soc.}\
+  }\textbf {\bibinfo {volume} {69}},\ \bibinfo {pages} {423} (\bibinfo {year}
+  {1971})}\BibitemShut {NoStop}%
+\bibitem [{SM()}]{SM}%
+  \BibitemOpen
+  \href@noop {} {\bibinfo {title} {See {S}upplemental {M}aterial at [url will
+  be inserted by publisher] for the derivations, the numerical checks, the data
+  files with their checksums, and the notation}}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hubbard}(1959)}]{Hubbard1959}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Hubbard}},\ }\bibfield  {title} {\bibinfo {title} {Calculation of partition
+  functions},\ }\href {https://doi.org/10.1103/PhysRevLett.3.77} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo
+  {volume} {3}},\ \bibinfo {pages} {77} (\bibinfo {year} {1959})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Stratonovich}(1957)}]{Stratonovich1957}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.~L.}\ \bibnamefont
+  {Stratonovich}},\ }\bibfield  {title} {\bibinfo {title} {On a method of
+  calculating quantum distribution functions},\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Sov. Phys. Dokl.}\ }\textbf {\bibinfo
+  {volume} {2}},\ \bibinfo {pages} {416} (\bibinfo {year} {1957})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Hohenberg}\ and\ \citenamefont
+  {Kohn}(1964)}]{HohenbergKohn1964}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Hohenberg}}\ and\ \bibinfo {author} {\bibfnamefont {W.}~\bibnamefont
+  {Kohn}},\ }\bibfield  {title} {\bibinfo {title} {Inhomogeneous electron
+  gas},\ }\href {https://doi.org/10.1103/PhysRev.136.B864} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev.}\ }\textbf {\bibinfo {volume}
+  {136}},\ \bibinfo {pages} {B864} (\bibinfo {year} {1964})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Kohn}\ and\ \citenamefont
+  {Sham}(1965)}]{KohnSham1965}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {W.}~\bibnamefont
+  {Kohn}}\ and\ \bibinfo {author} {\bibfnamefont {L.~J.}\ \bibnamefont
+  {Sham}},\ }\bibfield  {title} {\bibinfo {title} {Self-consistent equations
+  including exchange and correlation effects},\ }\href
+  {https://doi.org/10.1103/PhysRev.140.A1133} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev.}\ }\textbf {\bibinfo {volume} {140}},\ \bibinfo {pages}
+  {A1133} (\bibinfo {year} {1965})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Mermin}(1965)}]{Mermin1965}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {N.~D.}\ \bibnamefont
+  {Mermin}},\ }\bibfield  {title} {\bibinfo {title} {Thermal properties of the
+  inhomogeneous electron gas},\ }\href
+  {https://doi.org/10.1103/PhysRev.137.A1441} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev.}\ }\textbf {\bibinfo {volume} {137}},\ \bibinfo {pages}
+  {A1441} (\bibinfo {year} {1965})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Cornwall}\ \emph
+  {et~al.}(1974{\natexlab{a}})\citenamefont {Cornwall}, \citenamefont
+  {Jackiw},\ and\ \citenamefont {Tomboulis}}]{CJT1974}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+  {Cornwall}}, \bibinfo {author} {\bibfnamefont {R.}~\bibnamefont {Jackiw}},\
+  and\ \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont {Tomboulis}},\
+  }\bibfield  {title} {\bibinfo {title} {Effective action for composite
+  operators},\ }\href {https://doi.org/10.1103/PhysRevD.10.2428} {\bibfield
+  {journal} {\bibinfo  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume}
+  {10}},\ \bibinfo {pages} {2428} (\bibinfo {year}
+  {1974}{\natexlab{a}})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hindmarsh}\ \emph {et~al.}(2005)\citenamefont
+  {Hindmarsh}, \citenamefont {Brown}, \citenamefont {Grant}, \citenamefont
+  {Lee}, \citenamefont {Serban}, \citenamefont {Shumaker},\ and\ \citenamefont
+  {Woodward}}]{SUNDIALS2005}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~C.}\ \bibnamefont
+  {Hindmarsh}}, \bibinfo {author} {\bibfnamefont {P.~N.}\ \bibnamefont
+  {Brown}}, \bibinfo {author} {\bibfnamefont {K.~E.}\ \bibnamefont {Grant}},
+  \bibinfo {author} {\bibfnamefont {S.~L.}\ \bibnamefont {Lee}}, \bibinfo
+  {author} {\bibfnamefont {R.}~\bibnamefont {Serban}}, \bibinfo {author}
+  {\bibfnamefont {D.~E.}\ \bibnamefont {Shumaker}},\ and\ \bibinfo {author}
+  {\bibfnamefont {C.~S.}\ \bibnamefont {Woodward}},\ }\bibfield  {title}
+  {\bibinfo {title} {{SUNDIALS}: Suite of nonlinear and differential/algebraic
+  equation solvers},\ }\href {https://doi.org/10.1145/1089014.1089020}
+  {\bibfield  {journal} {\bibinfo  {journal} {ACM Trans. Math. Softw.}\
+  }\textbf {\bibinfo {volume} {31}},\ \bibinfo {pages} {363} (\bibinfo {year}
+  {2005})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Gardner}\ \emph {et~al.}(2022)\citenamefont
+  {Gardner}, \citenamefont {Reynolds}, \citenamefont {Woodward},\ and\
+  \citenamefont {Balos}}]{SUNDIALS2022}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {D.~J.}\ \bibnamefont
+  {Gardner}}, \bibinfo {author} {\bibfnamefont {D.~R.}\ \bibnamefont
+  {Reynolds}}, \bibinfo {author} {\bibfnamefont {C.~S.}\ \bibnamefont
+  {Woodward}},\ and\ \bibinfo {author} {\bibfnamefont {C.~J.}\ \bibnamefont
+  {Balos}},\ }\bibfield  {title} {\bibinfo {title} {Enabling new flexibility in
+  the {SUNDIALS} suite of nonlinear and differential/algebraic equation
+  solvers},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {ACM
+  Trans. Math. Softw.}\ }\textbf {\bibinfo {volume} {48}},\ \bibinfo {pages}
+  {31} (\bibinfo {year} {2022})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nash}(2026{\natexlab{b}})}]{Repo}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.~L.}\ \bibnamefont
+  {Nash}},\ }\href@noop {} {\bibinfo {title} {{PROJECT} spacetimes}},\ \bibinfo
+  {howpublished} {\url{https://github.com/once-ere/spacetimes}} (\bibinfo
+  {year} {2026}{\natexlab{b}}),\ \bibinfo {note} {folder
+  \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kiskis}(1978)}]{Kiskis1978}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Kiskis}},\ }\bibfield  {title} {\bibinfo {title} {Disconnected gauge groups
+  and the global violation of charge conservation},\ }\href
+  {https://doi.org/10.1103/PhysRevD.17.3196} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {17}},\ \bibinfo
+  {pages} {3196} (\bibinfo {year} {1978})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Schwarz}(1982)}]{Schwarz1982}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~S.}\ \bibnamefont
+  {Schwarz}},\ }\bibfield  {title} {\bibinfo {title} {Field theories with no
+  local conservation of the electric charge},\ }\href@noop {} {\bibfield
+  {journal} {\bibinfo  {journal} {Nucl. Phys. B}\ }\textbf {\bibinfo {volume}
+  {208}},\ \bibinfo {pages} {141} (\bibinfo {year} {1982})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Bucher}\ \emph {et~al.}(1992)\citenamefont {Bucher},
+  \citenamefont {Lo},\ and\ \citenamefont {Preskill}}]{BucherLoPreskill1992}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Bucher}}, \bibinfo {author} {\bibfnamefont {H.-K.}\ \bibnamefont {Lo}},\
+  and\ \bibinfo {author} {\bibfnamefont {J.}~\bibnamefont {Preskill}},\
+  }\bibfield  {title} {\bibinfo {title} {Topological approach to {A}lice
+  electrodynamics},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal}
+  {Nucl. Phys. B}\ }\textbf {\bibinfo {volume} {386}},\ \bibinfo {pages} {3}
+  (\bibinfo {year} {1992})},\ \Eprint {https://arxiv.org/abs/hep-th/9112039}
+  {hep-th/9112039} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Leonhardt}\ and\ \citenamefont
+  {Volovik}(2000)}]{LeonhardtVolovik2000}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {U.}~\bibnamefont
+  {Leonhardt}}\ and\ \bibinfo {author} {\bibfnamefont {G.~E.}\ \bibnamefont
+  {Volovik}},\ }\bibfield  {title} {\bibinfo {title} {How to create an {A}lice
+  string (half-quantum vortex) in a vector {B}ose-{E}instein condensate},\
+  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {JETP Lett.}\
+  }\textbf {\bibinfo {volume} {72}},\ \bibinfo {pages} {46} (\bibinfo {year}
+  {2000})},\ \Eprint {https://arxiv.org/abs/cond-mat/0003428}
+  {cond-mat/0003428} \BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Amelino-Camelia}\ and\ \citenamefont
+  {Pi}(1993)}]{AmelinoCamelia1993}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Amelino-Camelia}}\ and\ \bibinfo {author} {\bibfnamefont {S.-Y.}\
+  \bibnamefont {Pi}},\ }\bibfield  {title} {\bibinfo {title} {Self-consistent
+  improvement of the finite-temperature effective potential},\ }\href
+  {https://doi.org/10.1103/PhysRevD.47.2356} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {47}},\ \bibinfo
+  {pages} {2356} (\bibinfo {year} {1993})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Bardeen}\ \emph {et~al.}(1957)\citenamefont
+  {Bardeen}, \citenamefont {Cooper},\ and\ \citenamefont
+  {Schrieffer}}]{BCS1957}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.}~\bibnamefont
+  {Bardeen}}, \bibinfo {author} {\bibfnamefont {L.~N.}\ \bibnamefont
+  {Cooper}},\ and\ \bibinfo {author} {\bibfnamefont {J.~R.}\ \bibnamefont
+  {Schrieffer}},\ }\bibfield  {title} {\bibinfo {title} {Theory of
+  superconductivity},\ }\href {https://doi.org/10.1103/PhysRev.108.1175}
+  {\bibfield  {journal} {\bibinfo  {journal} {Phys. Rev.}\ }\textbf {\bibinfo
+  {volume} {108}},\ \bibinfo {pages} {1175} (\bibinfo {year}
+  {1957})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Levanyuk}(1959)}]{Levanyuk1959}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~P.}\ \bibnamefont
+  {Levanyuk}},\ }\bibfield  {title} {\bibinfo {title} {Contribution to the
+  theory of light scattering near the second-order phase-transition points},\
+  }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Sov. Phys. JETP}\
+  }\textbf {\bibinfo {volume} {9}},\ \bibinfo {pages} {571} (\bibinfo {year}
+  {1959})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Ginzburg}(1961)}]{Ginzburg1960}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {V.~L.}\ \bibnamefont
+  {Ginzburg}},\ }\bibfield  {title} {\bibinfo {title} {Some remarks on phase
+  transitions of the second kind and the microscopic theory of ferroelectric
+  materials},\ }\href@noop {} {\bibfield  {journal} {\bibinfo  {journal} {Sov.
+  Phys. Solid State}\ }\textbf {\bibinfo {volume} {2}},\ \bibinfo {pages}
+  {1824} (\bibinfo {year} {1961})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Pelissetto}\ and\ \citenamefont
+  {Vicari}(2002)}]{PelissettoVicari2002}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.}~\bibnamefont
+  {Pelissetto}}\ and\ \bibinfo {author} {\bibfnamefont {E.}~\bibnamefont
+  {Vicari}},\ }\bibfield  {title} {\bibinfo {title} {Critical phenomena and
+  renormalization-group theory},\ }\href
+  {https://doi.org/10.1016/S0370-1573(02)00219-3} {\bibfield  {journal}
+  {\bibinfo  {journal} {Phys. Rep.}\ }\textbf {\bibinfo {volume} {368}},\
+  \bibinfo {pages} {549} (\bibinfo {year} {2002})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Halperin}\ \emph {et~al.}(1974)\citenamefont
+  {Halperin}, \citenamefont {Lubensky},\ and\ \citenamefont {Ma}}]{HLM1974}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.~I.}\ \bibnamefont
+  {Halperin}}, \bibinfo {author} {\bibfnamefont {T.~C.}\ \bibnamefont
+  {Lubensky}},\ and\ \bibinfo {author} {\bibfnamefont {S.-k.}\ \bibnamefont
+  {Ma}},\ }\bibfield  {title} {\bibinfo {title} {First-order phase transitions
+  in superconductors and smectic-{A} liquid crystals},\ }\href
+  {https://doi.org/10.1103/PhysRevLett.32.292} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {32}},\ \bibinfo
+  {pages} {292} (\bibinfo {year} {1974})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kajantie}\ \emph {et~al.}(1996)\citenamefont
+  {Kajantie}, \citenamefont {Laine}, \citenamefont {Rummukainen},\ and\
+  \citenamefont {Shaposhnikov}}]{Kajantie1996}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Kajantie}}, \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Laine}},
+  \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont {Rummukainen}},\ and\
+  \bibinfo {author} {\bibfnamefont {M.}~\bibnamefont {Shaposhnikov}},\
+  }\bibfield  {title} {\bibinfo {title} {Is there a hot electroweak phase
+  transition at $m_h \gtrsim m_w$?},\ }\href
+  {https://doi.org/10.1103/PhysRevLett.77.2887} {\bibfield  {journal} {\bibinfo
+   {journal} {Phys. Rev. Lett.}\ }\textbf {\bibinfo {volume} {77}},\ \bibinfo
+  {pages} {2887} (\bibinfo {year} {1996})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {D'Onofrio}\ and\ \citenamefont
+  {Rummukainen}(2016)}]{DOnofrio2016}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {D'Onofrio}}\ and\ \bibinfo {author} {\bibfnamefont {K.}~\bibnamefont
+  {Rummukainen}},\ }\bibfield  {title} {\bibinfo {title} {Standard model
+  cross-over on the lattice},\ }\href
+  {https://doi.org/10.1103/PhysRevD.93.025003} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {93}},\ \bibinfo
+  {pages} {025003} (\bibinfo {year} {2016})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Nozi\`eres}\ and\ \citenamefont
+  {Schmitt-Rink}(1985)}]{NozieresSchmittRink1985}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {P.}~\bibnamefont
+  {Nozi\`eres}}\ and\ \bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Schmitt-Rink}},\ }\bibfield  {title} {\bibinfo {title} {{B}ose condensation
+  in an attractive fermion gas: From weak to strong coupling
+  superconductivity},\ }\href {https://doi.org/10.1007/BF00683774} {\bibfield
+  {journal} {\bibinfo  {journal} {J. Low Temp. Phys.}\ }\textbf {\bibinfo
+  {volume} {59}},\ \bibinfo {pages} {195} (\bibinfo {year} {1985})}\BibitemShut
+  {NoStop}%
+\bibitem [{\citenamefont {Cornwall}\ \emph
+  {et~al.}(1974{\natexlab{b}})\citenamefont {Cornwall}, \citenamefont {Levin},\
+  and\ \citenamefont {Tiktopoulos}}]{CLT1974}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont
+  {Cornwall}}, \bibinfo {author} {\bibfnamefont {D.~N.}\ \bibnamefont
+  {Levin}},\ and\ \bibinfo {author} {\bibfnamefont {G.}~\bibnamefont
+  {Tiktopoulos}},\ }\bibfield  {title} {\bibinfo {title} {Derivation of gauge
+  invariance from high-energy unitarity bounds on the {S} matrix},\ }\href
+  {https://doi.org/10.1103/PhysRevD.10.1145} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {10}},\ \bibinfo
+  {pages} {1145} (\bibinfo {year} {1974}{\natexlab{b}})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Chanowitz}\ and\ \citenamefont
+  {Gaillard}(1985)}]{ChanowitzGaillard1985}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.~S.}\ \bibnamefont
+  {Chanowitz}}\ and\ \bibinfo {author} {\bibfnamefont {M.~K.}\ \bibnamefont
+  {Gaillard}},\ }\bibfield  {title} {\bibinfo {title} {The {TeV} physics of
+  strongly interacting {W}'s and {Z}'s},\ }\href@noop {} {\bibfield  {journal}
+  {\bibinfo  {journal} {Nucl. Phys. B}\ }\textbf {\bibinfo {volume} {261}},\
+  \bibinfo {pages} {379} (\bibinfo {year} {1985})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Lee}\ \emph {et~al.}(1977)\citenamefont {Lee},
+  \citenamefont {Quigg},\ and\ \citenamefont {Thacker}}]{LQT1977}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {B.~W.}\ \bibnamefont
+  {Lee}}, \bibinfo {author} {\bibfnamefont {C.}~\bibnamefont {Quigg}},\ and\
+  \bibinfo {author} {\bibfnamefont {H.~B.}\ \bibnamefont {Thacker}},\
+  }\bibfield  {title} {\bibinfo {title} {Weak interactions at very high
+  energies: The role of the {H}iggs-boson mass},\ }\href
+  {https://doi.org/10.1103/PhysRevD.16.1519} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev. D}\ }\textbf {\bibinfo {volume} {16}},\ \bibinfo
+  {pages} {1519} (\bibinfo {year} {1977})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Utiyama}(1956)}]{Utiyama1956}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {R.}~\bibnamefont
+  {Utiyama}},\ }\bibfield  {title} {\bibinfo {title} {Invariant theoretical
+  interpretation of interaction},\ }\href
+  {https://doi.org/10.1103/PhysRev.101.1597} {\bibfield  {journal} {\bibinfo
+  {journal} {Phys. Rev.}\ }\textbf {\bibinfo {volume} {101}},\ \bibinfo {pages}
+  {1597} (\bibinfo {year} {1956})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Kibble}(1961)}]{Kibble1961}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {T.~W.~B.}\
+  \bibnamefont {Kibble}},\ }\bibfield  {title} {\bibinfo {title} {Lorentz
+  invariance and the gravitational field},\ }\href
+  {https://doi.org/10.1063/1.1703702} {\bibfield  {journal} {\bibinfo
+  {journal} {J. Math. Phys.}\ }\textbf {\bibinfo {volume} {2}},\ \bibinfo
+  {pages} {212} (\bibinfo {year} {1961})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Hehl}\ \emph {et~al.}(1976)\citenamefont {Hehl},
+  \citenamefont {von~der Heyde}, \citenamefont {Kerlick},\ and\ \citenamefont
+  {Nester}}]{Hehl1976}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {F.~W.}\ \bibnamefont
+  {Hehl}}, \bibinfo {author} {\bibfnamefont {P.}~\bibnamefont {von~der Heyde}},
+  \bibinfo {author} {\bibfnamefont {G.~D.}\ \bibnamefont {Kerlick}},\ and\
+  \bibinfo {author} {\bibfnamefont {J.~M.}\ \bibnamefont {Nester}},\ }\bibfield
+   {title} {\bibinfo {title} {General relativity with spin and torsion:
+  Foundations and prospects},\ }\href
+  {https://doi.org/10.1103/RevModPhys.48.393} {\bibfield  {journal} {\bibinfo
+  {journal} {Rev. Mod. Phys.}\ }\textbf {\bibinfo {volume} {48}},\ \bibinfo
+  {pages} {393} (\bibinfo {year} {1976})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Weinberg}(1989)}]{Weinberg1989}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {S.}~\bibnamefont
+  {Weinberg}},\ }\bibfield  {title} {\bibinfo {title} {The cosmological
+  constant problem},\ }\href {https://doi.org/10.1103/RevModPhys.61.1}
+  {\bibfield  {journal} {\bibinfo  {journal} {Rev. Mod. Phys.}\ }\textbf
+  {\bibinfo {volume} {61}},\ \bibinfo {pages} {1} (\bibinfo {year}
+  {1989})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Sakharov}(1968)}]{Sakharov1967}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {A.~D.}\ \bibnamefont
+  {Sakharov}},\ }\bibfield  {title} {\bibinfo {title} {Vacuum quantum
+  fluctuations in curved space and the theory of gravitation},\ }\href@noop {}
+  {\bibfield  {journal} {\bibinfo  {journal} {Sov. Phys. Dokl.}\ }\textbf
+  {\bibinfo {volume} {12}},\ \bibinfo {pages} {1040} (\bibinfo {year}
+  {1968})}\BibitemShut {NoStop}%
+\bibitem [{\citenamefont {Visser}(2002)}]{Visser2002}%
+  \BibitemOpen
+  \bibfield  {author} {\bibinfo {author} {\bibfnamefont {M.}~\bibnamefont
+  {Visser}},\ }\bibfield  {title} {\bibinfo {title} {Sakharov's induced
+  gravity: A modern perspective},\ }\href
+  {https://doi.org/10.1142/S0217732302006886} {\bibfield  {journal} {\bibinfo
+  {journal} {Mod. Phys. Lett. A}\ }\textbf {\bibinfo {volume} {17}},\ \bibinfo
+  {pages} {977} (\bibinfo {year} {2002})}\BibitemShut {NoStop}%
+\end{thebibliography}%

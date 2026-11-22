@@ -1,0 +1,53 @@
+sf_part2: checks of part II of superfluid.md (Revision_HS_CJT_and_Kohn-Sham, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS P2-0a   deviation 0.000e0 (tolerance 1.0e-12): the pair-channel energies are real (largest imaginary part)
+PASS P2-0b   deviation 0.000e0 (tolerance 1.0e-12): the pairing term -(G/4) sum Pi^dag Pi has the pair energy -4 G in the channel K^3 (so G^ch = G)
+PASS P2-0c   deviation 0.000e0 (tolerance 1.0e-12): the vector term and the contact limit of the exchange of B have equal pair energies in the six channels
+PASS P2-0d   deviation 0.000e0 (tolerance 1.0e-12): sum over W^1, W^2, W^3 = 1/4 of B in every channel (isospin Casimir of the triplet pair, +1/4)
+PASS P2-0e   deviation 0.000e0 (tolerance 1.0e-12): the pair contraction of the mean field = 4 x the exact two-body energy, every operator and channel (42 cases)
+PASS P2-0L1  deviation 5.625e-15 (tolerance 1.0e-11): eigenvalues of random complex 7x7, 30x30, 120x120 matrices: sum and sum of squares = tr M, tr M^2 (relative)
+PASS P2-0L2  deviation 8.802e-16 (tolerance 1.0e-11): eigenvectors by inverse iteration: |M v - lambda v| / |M| for every eigenvalue
+PASS P2-0L3  deviation 5.450e-14 (tolerance 1.0e-11): Gaussian elimination: residual of M x = b
+PASS P2-1a   deviation 6.262e-14 (tolerance 1.0e-9): self-energies = derivatives of the energy (6.3), six kinds of terms incl. HS shares and the KS projection, 30 random states (central differences, relative)
+PASS P2-1b   deviation 1.110e-16 (tolerance 1.0e-13): the normal self-energies are Hermitian and the pair self-energies antisymmetric
+PASS P2-2a   deviation 2.919e-11 (tolerance 2.0e-10): pairing-only limit = AS3 of Part I: |d^3| = 0.2094933033 (AS3 0.2094933033; 237 iterations)
+PASS P2-2b   deviation 1.566e-11 (tolerance 2.0e-10): pairing-only limit: the gap 0.2896332925 = M^q of AS3 (0.2896332925)
+PASS P2-2c   deviation 2.013e-8 (tolerance 2.0e-6): pairing-only limit: the energy per volume -5.288449e-5 = AS3 (-5.288449e-5)
+PASS P2-2d   deviation 0.000e0 (tolerance 1.0e-12): pairing-only limit: no normal self-energy (N = 0)
+PASS P2-3a   deviation 1.475e-17 (tolerance 1.0e-12): exchange of W^1 and B with a constant kernel = exchange and pair contractions of the contact terms (g^2 V0/2) eta :(Psi^dag A_p Psi)^2: (self-energies)
+PASS P2-3b   deviation 5.309e-15 (tolerance 1.0e-11): the same for the exchange energy (relative)
+PASS P2-4    deviation 0.000e0 (tolerance 0.0e0): the normal vacuum (zero self-energies) is a stationary state of HS, KS and CJT for V^(1) (zero residual and energy)
+PASS P2-5a   deviation 2.997e-11 (tolerance 1.0e-9): radial nodes: |d^3| - AS3 for 12/16/24/32/48 nodes: 6.9e-10, 3.2e-11, 3.0e-11, 3.0e-11, 3.0e-11
+PASS P2-5b   deviation 4.441e-16 (tolerance 1.0e-10): the six directions are exact for the uniform states of the contact terms: CJT solution of V^(1), six directions vs 72 directions (self-energies)
+PASS P2-6a   deviation 8.882e-15 (tolerance 1.0e-11): V^(2) from the two conditions on the CJT effective couplings: G^S = 2.800000000000, G = 25.200000000000
+PASS P2-6b   deviation 1.776e-15 (tolerance 1.0e-9): static response of the normal vacuum, pair channel: eigenvalue of M(0) = g_P I1(m)/pi^2 = g_P/G_crit (all potentials and methods with g_P > 1)
+PASS P2-6c   deviation 3.486e-14 (tolerance 1.0e-9): static response of the normal vacuum, scalar channel: eigenvalue = -g_S chi_S, chi_S = 0.0831601473 (400-node quadrature)
+PASS P2-6d   deviation 0.000e0 (tolerance 0.0e0): V^(2): the ground state of every method (HS with three parameter sets, KS, CJT) is the polar superfluid
+PASS P2-6e   deviation 0.000e0 (tolerance 0.0e0): V^(0): every start of every method ends in the normal vacuum (no superfluid, no other state)
+PASS P2-6f   deviation 0.000e0 (tolerance 0.0e0): V^(1): the HS ground states are polar superfluids; KS and CJT have no superfluid state, their ground state is massive
+PASS P2-7a HS_1_1 deviation 1.816e-13 (tolerance 1.0e-9): HS(s_S=1,s_V=1): three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1)
+PASS P2-7a HS_0_1 deviation 1.954e-13 (tolerance 1.0e-9): HS(s_S=0,s_V=1): three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1)
+PASS P2-7a HS_0_0 deviation 2.403e-13 (tolerance 1.0e-9): HS(s_S=0,s_V=0): three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1)
+PASS P2-7a KS deviation 2.502e-13 (tolerance 1.0e-9): KS: three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1)
+PASS P2-7a CJT deviation 2.485e-13 (tolerance 1.0e-9): CJT: three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1)
+PASS P2-8a HS_1_1 deviation 2.278e-15 (tolerance 1.0e-10): HS(s_S=1,s_V=1): the zeugon (W^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi_33 = -1.47e-15; no mixing (largest off-diagonal chi 2.3e-15)
+PASS P2-8b HS_1_1 deviation 8.820e-9 (tolerance 1.0e-7): HS(s_S=1,s_V=1): thermodynamic consistency -d2 Omega/d mu^2 = d<Q>/d mu (relative); chi_11 = chi_22 = 0.0051186247, chi_FF = 0.0201445392
+PASS P2-8a KS deviation 2.159e-15 (tolerance 1.0e-10): KS: the zeugon (W^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi_33 = -3.69e-16; no mixing (largest off-diagonal chi 2.2e-15)
+PASS P2-8b KS deviation 4.283e-9 (tolerance 1.0e-7): KS: thermodynamic consistency -d2 Omega/d mu^2 = d<Q>/d mu (relative); chi_11 = chi_22 = 0.0043170062, chi_FF = 0.0203622430
+PASS P2-8a CJT deviation 1.879e-15 (tolerance 1.0e-10): CJT: the zeugon (W^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi_33 = -1.86e-16; no mixing (largest off-diagonal chi 1.9e-15)
+PASS P2-8b CJT deviation 3.584e-9 (tolerance 1.0e-7): CJT: thermodynamic consistency -d2 Omega/d mu^2 = d<Q>/d mu (relative); chi_11 = chi_22 = 0.0045778739, chi_FF = 0.0203622430
+PASS P2-8c   deviation 5.102e-12 (tolerance 1.0e-9): Thouless eigenvalues of the exchange: the four bosons together = the sum of the four alone (one radial eigenvector)
+PASS P2-8d   deviation 2.041e-11 (tolerance 1.0e-9): Thouless eigenvalues: W^3 attracts and W^1 repels the pair K^3 equally, B repels four times as strongly
+PASS P2-8j   deviation 0.000e0 (tolerance 1.0e-4): the masses used in the final CJT state are those of its own susceptibilities
+PASS P2-8i   deviation 8.163e-16 (tolerance 1.0e-9): CJT with exchange: the zeugon stays massless (chi_33 = 8.2e-16) and does not mix with B (chi_3F = 1.7e-16)
+PASS P2-8e   deviation 1.355e-20 (tolerance 1.0e-14): CJT with exchange: the energies of the four bosons add up to the exchange energy
+PASS P2-8f   deviation 0.000e0 (tolerance 0.0e0): CJT with exchange at g_v = 0.7, g_F = 0.45: still superfluid (|D| = 0.276176), the zeugon attracts (E_W3 = -4.835e-5 < 0), W^1, W^2, B repel
+PASS P2-8g   deviation 3.223e-14 (tolerance 1.0e-8): KS with local potentials and no exchange reproduces the KS (= CJT) contact solution (energy)
+PASS P2-8h   deviation 0.000e0 (tolerance 0.0e0): variational order: with the same boson masses, the KS energy with local potentials (-1.32250207e-4) lies above the CJT energy (-1.32402018e-4)
+
+Notes:
+  run time 498.0 s
+
+VERDICT: ALL PASS (44 of 44)

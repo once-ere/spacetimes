@@ -1,0 +1,188 @@
+---
+title: "Revision_SM_Higgs: the superfluid of the spinor fields on the 3+1 manifold of the Lorentz super-loop, revised so that it has the quantum numbers of the Higgs doublet of the Standard Model"
+subtitle: "README of the folder Revision_SM_Higgs of PROJECT spacetimes"
+author: "Prepared for Patrick Lee Nash, Ph.D."
+date: "November 21, 2026"
+---
+
+<!-- This file is generated from docs_src/README.src.md by code/scripts/assemble_docs.py; edit the source. -->
+
+# 0. The revised hypotheses (read this first)
+
+This folder was made on 21 November 2026 as a copy of the folder `Revision_HS_CJT_and_Kohn-Sham` at the commit
+`19db425`, which stays unchanged as the record of the earlier hypotheses; the commit also carries the git tag
+`backup/pre-SM-Higgs-2026-11-21`. The author asked that the hypotheses be modified so that the superfluid can be the
+Higgs field of the Standard Model, with the same quantum numbers as the Higgs, and chose the construction:
+
+* the isodoublet $\Psi_{\rm LL}$ is joined by a singlet field $\chi_{\rm SH}$, both Dirac fields and colour singlets;
+* $SU(2)_{\rm v}$ is $SU(2)_L$, and the fermion number is the hypercharge, $Y^{\rm SM}=F_{\rm LL}/4$, so both fields have
+  $Y^{\rm SM}=1/4$ and the electric charges are $3/4$, $-1/4$ (the doublet) and $1/4$ (the singlet);
+* the superfluid is the condensate of the spin-zero pairs of a particle of $\Psi_{\rm LL}$ and a particle of $\chi_{\rm SH}$:
+  its pair field $\Phi_{\rm SH}$ is a Lorentz scalar, a colour singlet and an $SU(2)_L$ doublet with $Y^{\rm SM}=+1/2$, the
+  quantum numbers of the Higgs doublet;
+* the gauge couplings are the measured ones, and the scale of the model is fixed by $v_{\rm SH}=246.22$ GeV.
+
+The hypotheses, their reasons and their immediate consequences are stated in `provenance/H0_hypotheses.md`
+(`.tex`, `.pdf`); the request, the choices and the plan are in the task record `provenance/P0_task_record.md`.
+
+**What is current and what is inherited.** The hypotheses document and the task record are current. The other
+documents, the programs, the data, the notebook and the article in `paper_prd/` are inherited unchanged from the
+earlier hypotheses and are rewritten in stages: (1) the folder, the hypotheses and the task record; (2) the quantum
+numbers and the pattern of the breaking, checked by programs in Rust, Python and the Wolfram Language; (3) the
+mean-field superfluid of the two fields with the methods HS, KS and CJT; (4) the effective potential and the mass of
+the amplitude mode against $m_H$; (5) the masses of $W^\pm_\mu$ and $Z_\mu$, the massless photon and the parameter $\rho$;
+(6) the dynamics in time, the notebook and the article. Every inherited document begins with a note that says so.
+
+# 1. What this folder is
+
+This folder of PROJECT spacetimes (repository `https://github.com/once-ere/spacetimes.git`) contains the solution of
+the problem that the author posed on 20 November 2026: the gauge-covariant field equations of a self-interacting
+spinor field on the $3+1$ manifold of the Lorentz super-loop, their analytic solutions, and the condensation of the
+spinor field into a superfluid boson singlet state of spin zero, described by three methods (Hubbard-Stratonovich,
+Cornwall-Jackiw-Tomboulis and Kohn-Sham), with the effective Lagrangian of each method, the spontaneous breaking of the
+symmetry and the masses of the gauge bosons.
+
+Every document of the folder is complete in itself: every equation, symbol and definition that it uses is written in
+it. This README is the list of contents of the folder.
+
+# 2. State
+
+**20 November 2026.** The folder has been created; the task record and this README are written. The work paused
+after that, as the author's Rule 2 requires after a false statement has been recorded with its cause (I had stated
+that the reading of four symbol registries of the earlier work was complete when two of them had not yet been read
+completely; the statement was corrected in the next message). At 18:28 PST the author instructed to continue and to
+complete all stages; at 19:25 PST, to push every item as soon as it is complete. The work continues; this table is
+updated with every item.
+
+**Part I of the manuscript** (items 1 to 5 of the problem: the manifold M31, the spinor field and theorem D1, the gauge
+group GEE and its covariant derivatives, the Lagrangian and the field equations with their numerical formulation,
+and four analytic solutions) is complete: `superfluid.md`, `.tex`, `.pdf`, with the Rust workspace `rust/` (program
+`sf_part1`: VERDICT: ALL PASS (78 of 78)) and the Python programs `python/sf_part1.py` (VERDICT: ALL PASS (34 of 34)) and
+`python/sf_part1_figures.py`.
+
+**Part II of the manuscript** (item 6 of the problem and the three methods: the pair channels and the gauge bosons
+that mediate the pairing, the methods HS, KS and CJT and their numerical engine, the recursion of the potential to
+$V^{(2)}_{\rm SF}$, the ground states, the first excited states and the gaps, and the gauge bosons in the superfluid) is
+complete, with the program `sf_part2` (VERDICT: ALL PASS (44 of 44)) and the Python programs `python/sf_part2.py`
+(VERDICT: ALL PASS (23 of 23)) and `python/sf_part2_figures.py`.
+
+**Part III of the manuscript** (the effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their potential parts
+(the Mexican hat) and kinetic parts, the vacua and the breaking of the symmetry, and $\mathrm{SFBSv}^X$) is complete, with the
+program `sf_part3` (VERDICT: ALL PASS (155 of 155)) and the Python programs `python/sf_part3.py` (VERDICT: ALL PASS (112 of 112)) and
+`python/sf_part3_figures.py`. Section 12.1 now also defines the Landau form, with examples, and states its accuracy,
+the cause of its error and why the error matters (Table 12.2, Figure 9); the answer to the author's questions on this
+remark is kept in `provenance/P4_remarks.md`. Section 12.4, added at the author's request of 21 November 2026, computes
+the free energy of the five methods at finite temperature (whose value at zero temperature is the effective potential),
+the critical temperatures, the gap equation and the radius of convergence at finite temperature, and answers whether
+the order parameter is then smaller and more physically reasonable (Table 12.4, Figure 10); this addendum, and the
+remark R2 on the mean-field free energies that it contains, are kept in `provenance/P4_remarks.md` as well.
+
+**Part IV of the manuscript** (the mass matrix of the gauge bosons in every vacuum and its diagonalization, the
+theorem that the massless gauge bosons are the generators that leave the condensate unchanged, the surviving group
+$SL(2,\mathbb C)\times O(2)$ and its $U(1)$ with the massless gauge boson, named the zeugon (not the photon: the spinor
+field, the DiracLike spinor, has electric charge 0 and no electroweak quantum numbers); the dynamics of the superfluid and of its gauge
+fields, integrated with CVODE and IDA; two videos) is complete, with the program `sf_part4` (VERDICT: ALL PASS (120 of 120)),
+the integrators `sfsundials` and their C interface `sfsundials_c`, and the Python programs `python/sf_part4.py`
+(VERDICT: ALL PASS (20 of 20)) and `python/sf_part4_figures.py`.
+
+**The Mathematica notebook `superfluid.nb`** (object O8) is written part by part. This version contains the
+introduction, the register of the checks, Part I, Part II, the first section of Part III (the Landau form: its
+definition, examples, accuracy, the cause of its error and why the error matters), and the second section of Part III
+(Section III.T: the free energy of the five methods at finite temperature, the critical temperatures, the size of the
+order parameter, and the remark that the free energies are mean-field free energies), and the third section of
+Part III (Section III.G: the gradient coefficient at the critical temperature, the Ginzburg number and the width of the
+critical region, and the superfluid as the Higgs sector of its own gauge group): 153 checks, each
+repeated by the Rust and the Python programs (verdict of the evaluation in the front end of Wolfram:
+ALL PASS (153 of 153), 0 messages). Its provenance is `provenance/P3_notebook.md`. The rest of Part III and Part IV of the notebook
+follow.
+
+**The article for Physical Review D** (folder `paper_prd/`), asked for by the author on 21 November 2026 at 11:29 PST:
+the Regular Article "Higgs as a Composite, and Quantum Gravity", which answers how wide the critical region near the
+critical temperature is (the Ginzburg number, from the gradient coefficient at the critical temperature: $7.6$ (KS, CJT) to $11$ (HS (1, 1))),
+whether the superfluid of each method can play the role of the Higgs particle (it is the Higgs field of its own gauge
+group $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, with the massless zeugon and an amplitude mode that becomes a resonance
+broader than its mass once it can decay, $2.1$ (KS, CJT) to $3.9$ (HS (1, 1)) times its mass; it cannot be the Higgs field of the Standard
+Model, because the DiracLike spinor carries no electroweak quantum numbers), and whether the Higgs is a composite particle
+(yes, by construction); with its
+Supplemental Material, the cover letter, the information for the submission server of the APS and the folder of the
+files to upload, all built from the data files and the reports of the checks by `paper_prd/scripts/build_paper.py`. The
+gravitational sector of the title is outlined, not computed. The submission itself is the author's.
+
+# 3. Contents
+
+| file or folder | what it is | state |
+|:---|:---|:---|
+| `README.md`, `.tex`, `.pdf` | this list of contents | written |
+| `provenance/P0_task_record.md`, `.tex`, `.pdf` | the task (paraphrased), how the author's rules are kept, the record of a false statement and its correction, the decisions of interpretation, the plan, the log of errors and changes | written |
+| `provenance/H0_hypotheses.md`, `.tex`, `.pdf` | the revised hypotheses of this folder: the fields, the gauge group with the hypercharge, the pairing term of the doublet-singlet channel, the quantum numbers of the superfluid and why they are those of the Higgs doublet, the scale, and the consequences that follow at once | written (current) |
+| `provenance/P1_master_symbols.md`, `.tex`, `.pdf` | the MASTER provenance of the symbols of PROJECT spacetimes for this solution: the convention of the symbols (suffix LL: taken unchanged from the earlier work on the super-loop; suffix SF: introduced by this solution), the seven registries of the project read by a program, the identifications and remedies file by file, the collisions and their resolution, the machine checks, and the table of all symbols | written; grows with the solution |
+| `provenance/symbols_sf.csv` | the registry of the symbols of the solution, written by `code/scripts/write_symbol_registry.py` from `code/scripts/symbol_entries.py` | written |
+| `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | parts I to IV written |
+| `superfluid.nb`, `superfluid_notebook.pdf` | the Mathematica notebook of the whole solution, evaluated in the front end of Wolfram, and its printed copy | introduction, Parts I and II and the sections of Part III on the Landau form (III.L), on the free energy at finite temperature (III.T) and on the gradient coefficient, the Ginzburg number and the Higgs sector (III.G) written; the rest planned |
+| `provenance/P3_notebook.md`, `.tex`, `.pdf` | the provenance of the notebook: its task, files, build and evaluation, the checks with their counterparts in Rust and Python, the symbols of its code, the corrections | written for Part I; grows with the notebook |
+| `provenance/P4_remarks.md`, `.tex`, `.pdf` | the remarks on the results (an approximation, a fit, an accuracy, a limitation): for each, what it means, why it holds, why it matters, the corrections of the first answer, and the provenance; first remark R1: the accuracy of the Landau form, with its definition and examples; the addendum A1 (the free energy of the five methods at finite temperature, and whether the order parameter is smaller and more physically reasonable) and remark R2 (the free energies are mean-field free energies); the addendum A2 (the gradient coefficient at the critical temperature and the width of the critical region; the superfluid as a Higgs sector and the compositeness of the Higgs) with its remarks | written for R1, A1, R2 and A2; grows with every such remark |
+| `provenance/` (further documents) | the provenance of the code, the computed values and the checks | planned |
+| `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?); the registry of the symbols: `symbol_entries.py` (the entries), `write_symbol_registry.py` (reads the seven registries of the project, writes the registry of the solution and the tables of the MASTER provenance) and `check_symbols.py` (the checks of the symbols) | written |
+| `docs_src/` | the hand-edited sources of the documents | written |
+| `rust/` | the Rust workspace: the library `sfcore` (bi-quaternions and bi-octonions, Dirac matrices, automatic differentiation to second order, Fock-space operators, eigenvalues of block-tridiagonal matrices, quadrature, reports; for part II the uniform quasi-free states of the three methods, the linear response, the eigenvalues of general complex matrices and the exchange of gauge bosons; for part III the states with a fixed pair field and the thermal states at a temperature $T$; for part IV the response at complex frequencies), the program `sf_part1` (the checks and analytic solutions of part I), the program `sf_part2` (part II), the program `sf_part3` (part III), the program `sf_part4` (part IV), the integrators CVODE and IDA of the vendored pure-Rust SUNDIALS 7.8.0 with a plain interface (`sfsundials`), and their C interface for Python, the shared library `libsfsundials_c` (`sfsundials_c`) | parts I to IV written |
+| `python/` | `sfcommon.py` (common definitions), `sfsundials.py` (CVODE and IDA through the C interface), `sf_part1.py`, `sf_part2.py`, `sf_part3.py`, `sf_part4.py` (the second, independent computations of parts I to IV), `sf_part1_figures.py`, `sf_part2_figures.py`, `sf_part3_figures.py`, `sf_part4_figures.py` (the figures, and the videos of part IV) | parts I to IV written |
+| `wolfram/` | the Wolfram-language parts of the notebook: the sources `wolfram/source/superfluid.source.wl`, `part1.source.wl`, `part2.source.wl`, `part3_landau.source.wl`, `part3_thermal.source.wl` and `part3_ginzburg.source.wl`, and the data cells `data_part2.wl`, `data_part3.wl`, `data_part3_thermal.wl` and `data_part3_ginzburg.wl`; in `wolfram/tools/` the builder of the notebook from its source (`build_notebook.wls`), the reader of formulas that turns the TeX of the texts into two-dimensional formulas (`sf_formula.wl`), the evaluation of the notebook in the front end of Wolfram (`guirun.wl` and the three calls `gui_start.wl`, `gui_go.wl`, `gui_status.wl`), the dry run (`make_dryrun.py`), and the writer of the data cells (`make_data_cells.py`) | Parts I and II and the sections III.L, III.T and III.G of Part III written |
+| `data/` | the reports of the checks (`hck_part1_checks.txt`, `hck_part1_checks_python.txt`, `hck_part2_checks.txt`, `hck_part2_checks_python.txt`, `hck_part3_checks.txt`, `hck_part3_checks_python.txt`, `hck_part4_checks.txt`, `hck_part4_checks_python.txt`, `hck_symbol_checks.txt`, `hck_self_contained_checks.txt`) and the data of parts I to IV (`part1_*.csv`, `part2_*.csv`, `part3_*.csv`, `part4_*.csv`) | parts I to IV written |
+| `figures/`, `videos/` | the figures (`fig_part1_*`, `fig_part2_*`, `fig_part3_*`, `fig_part4_*`, each `.pdf` and `.png`) and the videos (`video_part4_v1_condensate_growth.mp4`, `video_part4_v2_gauge_fields.mp4`) | written |
+| `code/scripts/write_part1_fragments.py`, `write_part2_fragments.py`, `write_part3_fragments.py`, `write_part4_fragments.py` | turn the reports and values of parts I to IV into the tables and numbers of the manuscript | written |
+| `code/scripts/write_bound_fragments.py` | writes every bound of agreement stated in the manuscript and in `provenance/P4_remarks.md` from the reports of the checks (the largest deviation, rounded up) into `provenance/generated/bounds.md` | written |
+| `paper_prd/` | the Regular Article "Higgs as a Composite, and Quantum Gravity" for Physical Review D (`higgs_composite_qg.pdf`, `.tex`, `.md`), its Supplemental Material (`higgs_composite_qg_SM.*`), the cover letter (`cover_letter.*`), the information for the submission server (`submission_info.*`), the folder `submission/` with exactly the files to upload, the templates `src/`, the build `scripts/build_paper.py` with its record `generated/numbers.csv` and `generated/build_report.txt`, and its README (`paper_prd/README.md`, `.tex`, `.pdf`) | written; not submitted (the submission is the author's) |
+
+# 4. How to build the documents
+
+The programs are run first, then the documents are built, from the folder `Revision_SM_Higgs`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_SM_Higgs"
+(cd rust && cargo build --release && ./target/release/sf_part1)   # part I: checks and data
+python3 python/sf_part1.py                    # part I: the Python computation of the checks
+python3 python/sf_part1_figures.py            # part I: the figures
+python3 code/scripts/write_part1_fragments.py # the tables and numbers of part I for the manuscript
+(cd rust && ./target/release/sf_part2)        # part II: checks and data (about nine minutes)
+python3 python/sf_part2.py                    # part II: the Python computation (after sf_part2)
+python3 python/sf_part2_figures.py            # part II: the figures
+python3 code/scripts/write_part2_fragments.py # the tables and numbers of part II for the manuscript
+(cd rust && ./target/release/sf_part3)        # part III: checks and data (after sf_part2)
+python3 python/sf_part3.py                    # part III: the Python computation
+python3 python/sf_part3_figures.py            # part III: the figures
+python3 code/scripts/write_part3_fragments.py # the tables and numbers of part III for the manuscript
+(cd rust && ./target/release/sf_part4)        # part IV: checks and data (after sf_part3; about twenty minutes)
+python3 python/sf_part4.py                    # part IV: the Python computation (uses the library of cargo build)
+python3 python/sf_part4_figures.py            # part IV: the figures and the two videos (needs ffmpeg)
+python3 code/scripts/write_part4_fragments.py # the tables and numbers of part IV for the manuscript
+python3 code/scripts/write_bound_fragments.py # the bounds of agreement of the documents (after the programs of parts I to IV)
+python3 code/scripts/write_notebook_fragments.py # the tables of the provenance of the notebook (from data/hck_notebook_log.txt)
+python3 code/scripts/write_symbol_registry.py # the registry of the symbols and its tables
+python3 code/scripts/check_symbols.py         # writes data/hck_symbol_checks.txt
+python3 code/scripts/assemble_docs.py         # docs_src/*.src.md -> the .md documents
+bash code/scripts/build_docs.sh               # .md -> .tex -> .pdf, with the layout check
+python3 code/scripts/check_self_contained.py  # writes data/hck_self_contained_checks.txt
+python3 paper_prd/scripts/build_paper.py      # the article for Physical Review D, its companions
+bash code/scripts/build_docs.sh paper_prd/README.md  # the README of paper_prd/ (named)
+```
+
+The Rust programs need the Rust toolchain (`cargo`; no crate is downloaded: the integrators are the pure-Rust SUNDIALS
+7.8.0 vendored in PROJECT spacetimes as `vendor/sundials_rs-7.8.0`); the Python programs need Python 3 with numpy,
+scipy, sympy and matplotlib, and the videos the program ffmpeg. `assemble_docs.py` writes each document from its source in `docs_src/`;
+`build_docs.sh` needs pandoc (version 2.11 or later), a TeX distribution with XeLaTeX and latexmk, the DejaVu fonts
+and the font Latin Modern Math; `check_self_contained.py` checks that no document refers its reader to another
+document. `build_paper.py` needs a TeX installation with REVTeX 4.2 and pdfLaTeX, and pandoc; the default run of
+`build_docs.sh` leaves the folder `paper_prd/` alone, because the `.tex` files there are REVTeX sources written by
+`build_paper.py`.
+
+The notebook is opened in Wolfram (version 15 or later) and evaluated with Evaluation > Evaluate Notebook. It is made
+from its source on a computer with Wolfram by
+
+```bash
+wolframscript -file wolfram/tools/build_notebook.wls wolfram/source/superfluid.source.wl built.nb wolfram/tools/sf_formula.wl
+```
+
+which writes the unevaluated notebook `built.nb`; evaluating it gives `superfluid.nb` (the evaluation of record, with
+its log `data/hck_notebook_log.txt`, is made in the front end by `wolfram/tools/guirun.wl`;
+`python3 wolfram/tools/make_dryrun.py dry.wls wolfram/source/superfluid.source.wl` and `wolframscript -file dry.wls`
+evaluate the code of all input cells without the front end).

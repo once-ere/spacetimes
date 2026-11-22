@@ -1,0 +1,12 @@
+[package]
+name = "sfpart3"
+version = "0.1.0"
+edition = "2021"
+description = "Part III of superfluid.md: the effective Lagrangians of the three methods, the Mexican hat, the breaking of the symmetry and SFBSv"
+
+[dependencies]
+sfcore = { path = "../sfcore" }
+
+[[bin]]
+name = "sf_part3"
+path = "src/main.rs"

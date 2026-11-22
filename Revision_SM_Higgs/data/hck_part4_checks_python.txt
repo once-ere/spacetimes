@@ -1,0 +1,29 @@
+sf_part4.py: the Python checks of part IV of superfluid.md (Revision_HS_CJT_and_Kohn-Sham, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YP4-0a  deviation 2.857e-08 (tolerance 1.0e-07): CVODE (Adams, complex weights) through the C interface: z' = 2 i z to t = 50, largest error; 1255 steps (Rust: 1255)
+PASS YP4-0b  deviation 7.603e-08 (tolerance 1.0e-06): CVODE (BDF, real weights): the same problem, largest error; 4669 steps (Rust: 4669)
+PASS YP4-0c  deviation 7.442e-09 (tolerance 1.0e-06): IDA (exact matrix) through the C interface: y1' = y3, y2' = -y1, 0 = y3 - y2 to t = 20, largest error; 1150 steps (Rust: 1150)
+PASS YP4-0d  deviation 8.725e-09 (tolerance 1.0e-06): IDA (difference quotients) through the C interface: y1' = y3, y2' = -y1, 0 = y3 - y2 to t = 20, largest error; 1392 steps (Rust: 1392)
+PASS YP4-0e  deviation 7.764e-09 (tolerance 1.0e-06): IDACalcIC corrects y3(0) = 0.3 to 1.000000000000 and y1'(0) to 1.000000000000; largest error to t = 20
+PASS YP4-M1 HS_1_1 deviation 9.568e-14 (tolerance 1.0e-08): HS_1_1: the mass matrix of the vacuum Phi_0 e^(i pi/5) e_1 (Python engine, largest residual 9.7e-14): eigenvalues ['-4.445635061e-17', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'] = Rust ['-1.167443970e-16', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'], the zeugon W^1 (1 minus the overlap 0.0e+00); largest difference relative to M_Z^2 (8 s)
+PASS YP4-M2 HS_1_1 deviation 8.163e-13 (tolerance 1.0e-07): HS_1_1: the mass matrix (14.3) at the vacuum along (1,1,1)/sqrt3: zero eigenvalue 1.1e-19 with the eigenvector n.W (1 minus the overlap), the others equal to those along e_1 (relative)
+PASS YP4-M1 CJT deviation 1.548e-13 (tolerance 1.0e-08): CJT: the mass matrix of the vacuum Phi_0 e^(i pi/5) e_1 (Python engine, largest residual 1.0e-13): eigenvalues ['-2.935364260e-17', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'] = Rust ['-1.278819494e-16', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'], the zeugon W^1 (1 minus the overlap 0.0e+00); largest difference relative to M_Z^2 (15 s)
+PASS YP4-M2 CJT deviation 2.215e-12 (tolerance 1.0e-07): CJT: the mass matrix (14.3) at the vacuum along (1,1,1)/sqrt3: zero eigenvalue -4.3e-19 with the eigenvector n.W (1 minus the overlap), the others equal to those along e_1 (relative)
+PASS YP4-M3  deviation 1.805e-12 (tolerance 1.0e-10): the field Phi_0 (e_3 + i e_1)/sqrt2 of CJT: one zero eigenvalue (4.3e-19) with the eigenvector cos(th') W^2 - sin(th') B, th' = 37.874984 degrees = Rust 37.874984
+PASS YP4-W2  deviation 2.411e-10 (tolerance 1.0e-06): the zeugon A and the W driven by the source to t = 900 (CVODE through the C interface, 1897 steps, 3749 evaluations of the right side, 4 rejected steps, 3746 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-01; 1 s) equal the fields of the Rust program (sum of the largest differences relative to the largest fields)
+PASS YP4-W3  deviation 8.406e-09 (tolerance 1.0e-06): the zeugon A and the W at t = 900 equal the exact solutions of every Fourier mode (sum of the largest relative differences)
+PASS YP4-W4  deviation 2.194e-08 (tolerance 1.0e-06): the free Goldstone field and the temporal gauge (CVODE: 932 steps, 1710 evaluations of the right side, 5 rejected steps, 1707 fixed-point iterations (0 convergence failures), last order 6, last step 3.8197e-01; 1028 steps, 1828 evaluations of the right side, 5 rejected steps, 1825 fixed-point iterations (0 convergence failures), last order 6, last step 3.4660e-01) and the unitary gauge (IDA: 2356 steps, 2398 residual evaluations, 33 matrix evaluations, 33 factorizations, 2 rejected steps, 2398 Newton iterations (0 convergence failures), last order 5, last step 1.5403e-01) through the C interface equal the Rust fields (sum of five largest relative differences; 3 s)
+PASS YP4-W5  deviation 2.011e-08 (tolerance 1.0e-06): a - D theta/(2 g) and E of the temporal gauge equal a_u and E of the unitary gauge (sum of the largest relative differences)
+PASS YP4-W6  deviation 1.153e-08 (tolerance 1.0e-06): a_u of IDA equals the exact solution a_m(t) = a_m(0) cos(w_m t) + a_m'(0) sin(w_m t)/w_m, w_m = (k_m^2 + M_Z^2)^(1/2) (largest difference relative to the largest value)
+PASS YP4-W7  deviation 2.238e-10 (tolerance 1.0e-06): the energy of the free Goldstone packet moves at the speed of light (slope of its centre 0.999999999776; difference from 1)
+PASS YP4-T1  deviation 2.229e-08 (tolerance 1.0e-06): CJT on 8 radial nodes, polar sector, from the normal vacuum with the seed 1e-7 (K^3)^dag to t = 60 (CVODE through the C interface, 967 steps, 1489 evaluations of the right side, 16 rejected steps, 1486 fixed-point iterations (0 convergence failures), last order 6, last step 4.2705e-02; 2 s): Phi^3(t) equals the Rust run (largest difference relative to the largest |Phi^3| = 0.435614)
+PASS YP4-T1e deviation 1.057e-08 (tolerance 1.0e-06): the energy of this run is conserved (largest change relative to the depth of the minimum, |E0| of the 24-node grid)
+PASS YP4-T2  deviation 1.053e-05 (tolerance 1.0e-04): the growth rate on this grid, 0.416516158 (fit of ln|Phi^3| on 22 outputs), equals the rate of the unstable mode of the linear response at imaginary frequency, 0.416520543 (LAPACK; lambda^P = 1.113373070); relative
+PASS YP4-T3  deviation 1.073e-06 (tolerance 2.0e-04): after the kick (1 + 1e-3) P_0 of the ground state on this grid (5263 steps, 10061 evaluations of the right side, 4 rejected steps, 10058 fixed-point iterations (0 convergence failures), last order 6, last step 7.6470e-02; 25 s), |Phi^3| oscillates at 0.603477242; the amplitude mode of the linear response of this grid (modes ['0.603478 x1', '0.644007 x2']) is at 0.603477890 (relative)
+
+Notes:
+  run time 59 s
+
+VERDICT: ALL PASS (20 of 20)

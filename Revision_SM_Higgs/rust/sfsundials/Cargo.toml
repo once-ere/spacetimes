@@ -1,0 +1,21 @@
+# sfsundials: the time integrators of the folder Revision_SM_Higgs (PROJECT spacetimes).
+#
+# CVODE and IDA of SUNDIALS 7.8.0 in the pure-Rust translation of the author's repository
+# rustSolveIt_macos-silicon_SUNDIALS_7_8_0, vendored in PROJECT spacetimes as vendor/sundials_rs-7.8.0 (no foreign
+# library, no unsafe code in this crate).  The crate offers two functions with a plain interface of real vectors:
+# cvode::integrate (dy/dt = f(t, y)) and ida::integrate (F(t, y, y') = 0).  The programs sf_part4 and the C interface
+# sfsundials_c (for the Python programs) use them.
+[package]
+name = "sfsundials"
+version = "0.1.0"
+edition = "2021"
+description = "CVODE and IDA (SUNDIALS 7.8.0, pure Rust) with a plain interface of real vectors, for the dynamics of Part IV of superfluid.md"
+
+[lib]
+path = "src/lib.rs"
+# the comments of the modules contain indented formulas, which are not code examples
+doctest = false
+
+[dependencies]
+cvode_rs = { path = "../../../vendor/sundials_rs-7.8.0/crates/cvode_rs" }
+ida_rs = { path = "../../../vendor/sundials_rs-7.8.0/crates/ida_rs" }

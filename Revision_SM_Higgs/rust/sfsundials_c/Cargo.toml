@@ -1,0 +1,16 @@
+# sfsundials_c: the C interface of the integrators CVODE and IDA of the crate sfsundials, through which the Python
+# programs of the folder python/ use the same pure-Rust SUNDIALS 7.8.0 as the Rust programs.
+[package]
+name = "sfsundials_c"
+version = "0.1.0"
+edition = "2021"
+description = "C interface of CVODE and IDA (SUNDIALS 7.8.0, pure Rust) for the Python programs of superfluid.md"
+
+# a shared library with the C calling convention: libsfsundials_c.so (Linux), libsfsundials_c.dylib (macOS)
+[lib]
+name = "sfsundials_c"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+sfsundials = { path = "../sfsundials" }

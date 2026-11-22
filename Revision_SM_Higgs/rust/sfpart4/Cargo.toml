@@ -1,0 +1,13 @@
+[package]
+name = "sfpart4"
+version = "0.1.0"
+edition = "2021"
+description = "Part IV of superfluid.md: the mass matrix of the gauge bosons, its diagonalization, the surviving U(1) and the massless photon; the dynamics of the superfluid and of the gauge fields, integrated with CVODE and IDA"
+
+[dependencies]
+sfcore = { path = "../sfcore" }
+sfsundials = { path = "../sfsundials" }
+
+[[bin]]
+name = "sf_part4"
+path = "src/main.rs"
