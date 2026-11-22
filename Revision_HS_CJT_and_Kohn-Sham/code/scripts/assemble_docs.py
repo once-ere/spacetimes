@@ -4,9 +4,9 @@
 Adapted from code/scripts/assemble_docs.py of the main project; every path is relative to the
 folder Revision_HS_CJT_and_Kohn-Sham.
 
-The documents print numbers, tables and reports that programs computed.  They are not typed by
-hand: the source of a document, docs_src/<name>.src.md, contains placeholders that this script
-replaces with machine-written text, so that no number can be mistyped:
+The documents print numbers, tables and reports that programs computed.  The source of a document,
+docs_src/<name>.src.md, contains placeholders for them that this script replaces with machine-written
+text, so that a number written through a placeholder cannot be mistyped:
 
     {{GEN:name}}      the fragment  <!-- BEGIN name --> ... <!-- END name -->  of any file in
                       provenance/generated/
@@ -14,6 +14,12 @@ replaces with machine-written text, so that no number can be mistyped:
                       (a fragment that is a number is written as the formula $...$)
     {{FILE:path}}     the verbatim content of a text file (path relative to Revision_HS_CJT_and_Kohn-Sham)
     {{SHA256:path}}   the SHA-256 checksum of a file (path relative to Revision_HS_CJT_and_Kohn-Sham)
+
+Not every number of a source is a placeholder.  The parameters of the programs (tolerances, seeds,
+steps, grids), exact values of the model (the couplings, the cutoff), the numbers of earlier runs in
+the records of corrections and some numbers of the text are written by hand; only the placeholders are
+protected against mistyping.  (An earlier version of this note said that no number is typed by hand;
+that was false.)
 
 Usage (from the folder Revision_HS_CJT_and_Kohn-Sham):
     python3 code/scripts/assemble_docs.py                     # all sources in docs_src/

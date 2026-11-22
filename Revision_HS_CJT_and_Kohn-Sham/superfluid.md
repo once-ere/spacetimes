@@ -32,7 +32,7 @@ This manuscript solves the problem that the author posed on 20 November 2026 for
   that the massless gauge bosons are the generators that leave the condensate unchanged, the surviving group
   $SL(2,\mathbb C)\times O(2)$ and its $U(1)$ with the massless gauge boson $A_{{\rm SF},p}$; the dynamics of the superfluid (the
   growth of the condensate from the unstable normal vacuum, the collective modes in time, the stability of the train of
-  pulses) and of its gauge fields (the massless $A_{{\rm SF},p}$ that radiates and the massive $W^1_{{\rm SF},p}$ that stays bound; the
+  pulses) and of its gauge fields (the zeugon $A_{{\rm SF},p}$, massless, that radiates and the massive $W^1_{{\rm SF},p}$ that stays bound; the
   Goldstone wave that the gauge field turns into the longitudinal $Z_{{\rm SF},p}$), computed with the integrators CVODE and IDA, with two videos; and, as part of the second addendum,
   whether the superfluid of each method can play the role of the Higgs particle and whether the Higgs is a composite
   particle (Section 14.6).
@@ -1166,7 +1166,7 @@ $M^{X,{\rm D}}_{\rm SF}=m_{\rm LL}+\tfrac18\mathrm{tr}((\beta_{\rm LL}\otimes\ma
 
 **Checks.** *P2-2a to P2-2d:* with only the pair contraction of the pairing term, the engine reproduces the analytic
 solution AS3 of Part I: $\lvert d^3_{\rm LL}\rvert=0.2094933033$, the gap $M^{\rm q}_{\rm LL}=0.2896332925$ and
-$\mathcal E^{\rm MF}_{\rm SF}=-5.288449\times10^{-5}$ (to $3\times10^{-11}$, $2\times10^{-11}$ and $2\times10^{-8}$ relative), with
+$\mathcal E^{\rm MF}_{\rm SF}=-5.288449106\times10^{-5}$ (to $3\times10^{-11}$, $2\times10^{-11}$ and $3\times10^{-8}$ relative), with
 $\mathsf N_{\rm SF}=0$. *P2-5a:* the radial convergence of the same solution (the deviation from AS3 is
 $7\times10^{-10}$, $3\times10^{-11}$, $3\times10^{-11}$ for 12, 16, 24 radial nodes, the last value being the convergence of the
 iteration). *P2-4:* the normal vacuum (zero self-energies) is a stationary state of every method (the normal order
@@ -1201,7 +1201,7 @@ the shift feeds back as $\delta M^{X,{\rm D}}_{\rm SF}=g^{X,{\rm S}}_{\rm SF}\de
 linearized gap equation (7.9) of AS3 at $\Delta_{\rm LL}\to0$ gives the eigenvalue $\lambda^{\rm P}_{\rm SF}=g^{X,{\rm P}}_{\rm SF}I^{(1)}_{\rm SF}(m_{\rm LL})/\pi^2=g^{X,{\rm P}}_{\rm SF}/G^{\rm crit}_{\rm LL}$
 with $G^{\rm crit}_{\rm LL}=21.28660976$, and the normal vacuum is unstable towards pairing (the Thouless criterion) when
 $\lambda^{\rm P}_{\rm SF}>1$. *Checks P2-6b and P2-6c:* the eigenvalues of the full $120\times120$ static response of the normal
-vacuum in the two channels agree with these formulas to $10^{-14}$, for all potentials and methods.
+vacuum in the two channels agree with these formulas to $4\times10^{-14}$, for all potentials and methods.
 
 # 10. The recursion of the potential; the ground state, the first excited states and the gap
 
@@ -1289,7 +1289,7 @@ author's $V^{(0)}_{\rm SF}$ (stable) and the pair channel the effective coupling
 $$g^{{\rm CJT},{\rm S}}_{\rm SF}(V^{(2)}_{\rm SF})=g^{{\rm CJT},{\rm S}}_{\rm SF}(V^{(0)}_{\rm SF})=-7.4,\qquad g^{{\rm CJT},{\rm P}}_{\rm SF}(V^{(2)}_{\rm SF})=g^{{\rm CJT},{\rm P}}_{\rm SF}(V^{(1)}_{\rm SF})=23.7.\tag{10.1}$$
 By (9.6), (9.7) these are two linear equations, $\tfrac78G^{\rm S}-\tfrac38G=-7.4+0.4$ and $-\tfrac14G^{\rm S}+G=23.7+0.8$, with the
 solution $G^{\rm S}_{\rm SF}=2.8$ and $G_{\rm LL}=25.2$ (*check P2-6a*: the program solves the system from the
-computed couplings and obtains these values to $10^{-14}$). Hence
+computed couplings and obtains these values to $9\times10^{-15}$). Hence
 $$V^{(2)}_{\rm SF}=\tfrac12(2.8):(\bar\Psi_{\rm LL}\Psi_{\rm LL})^2:+\tfrac12(0.8)\sum_p\eta^{\rm LL}_{pp}:(j^{{\rm F},p}_{\rm SF})^2:-\tfrac14(25.2)\sum_\iota:(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}:.\tag{10.2}$$
 The explicit scalar term is now repulsive: the scalar attraction of the author's ansatz is supplied, in KS and CJT, by
 the exchange contraction of the pairing term. With $V^{(2)}_{\rm SF}$ the static response of the normal vacuum is unstable
@@ -1412,7 +1412,7 @@ $D$) and the isospin rotations $T^1_{\rm LL}$, $T^2_{\rm LL}$ (which turn $\math
 (an $8\times8$ charge matrix doubled to the Nambu spinor as $\mathrm{diag}(\mathsf G,-\mathsf G^T)$) the rotated state
 $\mathsf R_{\rm SF}+i\epsilon[\mathsf G,\mathsf R_{\rm SF}]$ is again stationary, so $\delta\mathsf R=i[\mathsf G,\mathsf R_{\rm SF}]$ solves the linearized
 equation at $\omega=0$: $\mathsf Q^X_{\rm SF}(0)$ has the eigenvalue 1 three times. *Check P2-7a:* in all five methods exactly three
-eigenvalues of $\mathsf Q^X_{\rm SF}(0)$ equal 1, to $2.5\times10^{-13}$ (the Goldstone theorem, a test of the self-consistency of the
+eigenvalues of $\mathsf Q^X_{\rm SF}(0)$ equal 1, to $3\times10^{-13}$ (the Goldstone theorem, a test of the self-consistency of the
 ground state and of the response). The unbroken generator $T^3_{\rm LL}$ gives no mode. With the gauge fields, the three
 Goldstone modes become the longitudinal parts of the massive $W^\pm_{\rm SF}$ and $Z_{\rm SF}$ (Sections 11, 14.2 and 15.4).
 
@@ -1447,7 +1447,7 @@ the largest components of their amplitudes. Data: `data/part2_modes.csv`.
 
 All massive modes lie below the threshold, so they are stable excitations (bosonic bound states of two spinor
 charges). Figure 6 shows how the eigenvalues of $\mathsf Q^X_{\rm SF}(\omega)$ cross 1. The Python program finds the same
-Goldstone modes and the same frequencies to $10^{-13}$, with the eigenvalues of LAPACK (*checks YP2-7a, YP2-7b*).
+Goldstone modes and the same frequencies to $3\times10^{-13}$, with the eigenvalues of LAPACK (*checks YP2-7a, YP2-7b*).
 
 ![](figures/fig_part2_p2_modes.png){width=100%}
 
@@ -1490,7 +1490,7 @@ error; a constant space component shifts the momenta inside a fixed cutoff, whic
 boundary $\lvert\vec q_{\rm LL}\rvert=\Lambda_{\rm LL}$ and would give the massless boson a spurious mass.) In the normal vacuum, which has a gap, the
 susceptibilities vanish and all four bosons are massless. The program computes $\chi^{ab}_{\rm SF}$ by central differences of the
 induced charges of the self-consistent states at $\mu^b_{\rm SF}=\pm h,\pm2h$ ($h=2\times10^{-3}$) with Richardson extrapolation, and
-checks the thermodynamic identity $-\partial^2\mathcal E/\partial\mu^2=\chi$ (*checks P2-8b*, $10^{-8}$ relative).
+checks the thermodynamic identity $-\partial^2\mathcal E/\partial\mu^2=\chi$ (*checks P2-8b*, $9\times10^{-9}$ relative).
 
 | state | $\chi^{11}_{\rm SF}=\chi^{22}_{\rm SF}$ | $\chi^{33}_{\rm SF}$ | $\chi^{\rm FF}_{\rm SF}$ | largest off-diagonal entry | $\chi^{\rm FF}_{\rm SF}/\chi^{11}_{\rm SF}$ |
 |:---|---:|---:|---:|---:|---:|
@@ -1502,7 +1502,7 @@ checks the thermodynamic identity $-\partial^2\mathcal E/\partial\mu^2=\chi$ (*c
 **Table 11.1.** The susceptibilities of the four charges in the ground states of $V^{(2)}_{\rm SF}$ (the matrix is diagonal;
 $\chi^{22}=\chi^{11}$). Data: `data/part2_chi.csv`.
 
-**The mass eigenstates.** In every method $\chi^{33}_{\rm SF}=0$ and the matrix is diagonal (*checks P2-8a*, $10^{-15}$): the gauge
+**The mass eigenstates.** In every method $\chi^{33}_{\rm SF}=0$ and the matrix is diagonal (*checks P2-8a*, $3\times10^{-15}$): the gauge
 field $W^3_{\rm SF}$ of the unbroken generator is massless, it is the **massless gauge boson** $A_{{\rm SF},p}=W^3_{{\rm SF},p}$ ($\theta^{\rm W}_{\rm SF}=0$: no
 mixing with $B_{\rm SF}$, because the charge $\mathsf q^3$ of the condensate is zero while its fermion number is 2); $W^1_{\rm SF}$ and
 $W^2_{\rm SF}$ have the common mass $M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}(\chi^{11}_{\rm SF})^{1/2}$, and their combinations
@@ -1534,7 +1534,7 @@ $\mathfrak F(x)=x\ln(x^2+(M^{\rm b}_{\rm SF})^2)-2x+2M^{\rm b}_{\rm SF}\arctan(x
 $x\ln x^2-2x$) is the exact integral of the logarithm. *Check P2-3:* with a constant kernel ($\mathfrak d_0$ a constant
 $\mathfrak d^{\rm c}$, $\mathfrak d_1=0$) the exchange self-energies and energy equal those of the contact terms
 $\tfrac12g_{\rm b}^2\mathfrak d^{\rm c}\eta^{\rm LL}_{pp}{:}(\Psi^\dagger\mathsf A^{\rm b}_{{\rm SF},p}\Psi)^2{:}$ with $w^{\rm H}_{\rm SF}=0$, $w^{\rm F}_{\rm SF}=w^{\rm P}_{\rm SF}=1$, to
-$10^{-17}$ (self-energies) and $5\times10^{-15}$ (energy, relative).
+$2\times10^{-17}$ (self-energies) and $6\times10^{-15}$ (energy, relative).
 
 ## 11.3 Can the gauge bosons pair the normal vacuum?
 
@@ -1559,7 +1559,7 @@ vacuum is unstable against pairing when $\lambda^{\rm T}_{\rm SF}>1$.
 **Table 11.2.** The largest eigenvalues of the linearized gap equation of the normal vacuum, per unit coupling squared
 for the single bosons. Data: `data/part2_thouless.csv`.
 
-The massless $W^3_{\rm SF}$ alone attracts, $\lambda^{\rm T}_{\rm SF}=0.03573178316\,(g^{\rm v}_{\rm LL})^2$, and would pair the normal
+The zeugon $W^3_{\rm SF}$ (massless) alone attracts, $\lambda^{\rm T}_{\rm SF}=0.03573178316\,(g^{\rm v}_{\rm LL})^2$, and would pair the normal
 vacuum by itself for $g^{\rm v}_{\rm LL}>g^{\rm crit}_{\rm SF}=5.290206869$, almost eight times the coupling of the project. But in the
 normal vacuum all four bosons are massless, $W^1_{\rm SF}$ and $W^2_{\rm SF}$ repel exactly as strongly as $W^3_{\rm SF}$ attracts and
 $B_{\rm SF}$ four times as strongly (*checks P2-8c, P2-8d*, the linear structure of (8.5)), and the sum is
@@ -1605,10 +1605,11 @@ radial nodes. Data: `data/part2_gauge_cjt.csv`.
 
 The superfluid survives (*check P2-8f*): $\lvert D^{\rm CJT}_{\rm SF}\rvert=0.2761755673$ (without the gauge bosons
 $0.3284861084$), the gap $0.3176663895$ and the energy $-0.0001324020178$. The exchange energies show the roles of
-the bosons in the condensate: the **massless $W^3_{\rm SF}$ attracts**, $\mathcal E^{{\rm ex},W^3}_{\rm SF}=-4.834663821\times10^{-5}$, while $W^1$, $W^2$ and
+the bosons in the condensate: the **zeugon $W^3_{\rm SF}$ (massless) attracts**, $\mathcal E^{{\rm ex},W^3}_{\rm SF}=-4.834663821\times10^{-5}$, while $W^1$, $W^2$ and
 $B$ repel ($4.013221351\times10^{-5}$ each and $6.455007785\times10^{-5}$); the net effect,
 $9.646786667\times10^{-5}$, weakens the condensate. The energies of the bosons add up to the exchange energy (*check
-P2-8e*), and the results of 16, 24 and 32 radial nodes agree to $2\times10^{-7}$. The Python program, with the masses of the
+P2-8e*), and with 16, 24 and 32 radial nodes the pair amplitudes $\lvert D^{\rm CJT}_{\rm SF}\rvert$ agree to $2\times10^{-7}$ and the
+energies to $2\times10^{-6}$ (relative). The Python program, with the masses of the
 Rust program, finds the same energy (*check YP2-8d*).
 
 **The strength of the couplings.** Table 11.4 and Figure 7 follow the CJT solution as the common scale
@@ -1710,13 +1711,13 @@ self-energy $\mathsf P_{\rm SF}(\mathsf R)+2\lambda(\mathsf K^3)^\dagger$, that 
 field defines a $\lambda$. Along the applied fields, the derivative of the energy vanishes where the applied field equals
 the state's own pair self-energy, so the stationary points of $\mathcal V^X_{\rm SF}$ are the self-consistent states of
 Part II and its minimum is the ground state (*checks P3-1, P3-2*: the applied field $\Phi^X_{0,{\rm SF}}=\lvert D^X_{\rm SF}\rvert$
-returns the field $\Phi^X_{0,{\rm SF}}$ and the ground-state energy of Table 10.2 to $10^{-13}$, and the slope there is below
+returns the field $\Phi^X_{0,{\rm SF}}$ and the ground-state energy of Table 10.2 to $4\times10^{-14}$, and the slope there is at most
 $4\times10^{-8}$ of $\Phi^X_{0,{\rm SF}}$ times the curvature, the accuracy of the five-point derivative).
 
 **Symmetry.** Since $\mathcal E^X_{\rm SF}$ is GEE-invariant, $\mathcal V^X_{\rm SF}$ depends on $\vec\Phi$ only through the two invariants
 $\lvert\vec\Phi\rvert^2$ and $\lvert\vec\Phi\cdot\vec\Phi\rvert^2$ (the latter equals $\lvert\vec\Phi\rvert^4$ for the polar fields
 $\vec\Phi=e^{i\vartheta}\lvert\vec\Phi\rvert\vec n$ with a real unit vector $\vec n$, and is smaller for the others). *Check P3-3:* a phase
-of the applied field and the isospin direction 1 instead of 3 give the same energy to $10^{-10}$ (relative).
+of the applied field and the isospin direction 1 instead of 3 give the same energy to $7\times10^{-14}$ (relative).
 
 **The Mexican hat.** Figure 8 shows $\mathcal V^X_{\rm SF}$ along the polar fields $\Phi^{X,3}_{\rm SF}$ (real) for the five methods.
 It vanishes at $\vec\Phi=0$ (the normal vacuum), is negative next to it (*check P3-5*: the normal vacuum is a maximum,
@@ -1792,7 +1793,7 @@ Mexican hat of CJT over the complex plane of $\Phi^3$. Data: `data/part3_effpot_
 from the theory: they minimize the sum of the squares of the residuals $\mathcal V_{\rm L}(\Phi_i)-\mathcal V^X_{\rm SF}(\Phi_i)$ over the
 computed points $\Phi_i\le1.4\Phi^X_{0,{\rm SF}}$ (47 to 51 points), where
 $\mathcal V_{\rm L}(\Phi)=a^X_{\rm SF}\Phi^2+b^X_{\rm SF}\Phi^4+c^X_{\rm SF}\Phi^6$ is (12.2) along the polar fields $\vec\Phi=\Phi\vec e_3$. The
-computed points are accurate to about $10^{-13}$ (*check P3-1*), so every deviation of (12.2) from them is an error of
+computed points are accurate to $4\times10^{-14}$ (*check P3-1*), so every deviation of (12.2) from them is an error of
 the form, not of the computation. The largest residual is $0.27$ per cent (HS (0, 0)) to $0.70$ per cent (HS (1, 1)) of the depth
 $\lvert\mathcal V^X_{\rm SF}(\Phi^X_{0,{\rm SF}})\rvert$ of the minimum (Table 12.1, last column). Figure 9 (left) shows the residual along
 the interval: it changes its sign $3$ times, it is largest at the upper end ($\Phi\approx1.39\Phi^X_{0,{\rm SF}}$), and at
@@ -1819,8 +1820,8 @@ properties of the fit:
 * $a^X_{\rm SF}$ differs by $0.68$ per cent (KS, CJT) to $2.0$ per cent (HS (1, 1)) from the Taylor coefficient $a^{X,{\rm Tay}}_{\rm SF}$ of $\lvert\vec\Phi\rvert^2$ at the
   origin, computed directly from the states with the small applied fields $\Phi_{\rm a}=0.004$, $0.008$, $0.016$ (the
   quotient $\mathcal V^X_{\rm SF}/\Phi^2$ at two of them, with the term proportional to $\Phi^2$ eliminated by the Richardson
-  extrapolation; the two pairs agree to $10^{-7}$, *check P3-10*, and the Python program finds the same value to
-  $10^{-10}$, *check YP3-10*);
+  extrapolation; the two pairs agree to $8\times10^{-8}$, *check P3-10*, and the Python program finds the same value to
+  $4\times10^{-11}$, *check YP3-10*);
 * $b^X_{\rm SF}$ and $c^X_{\rm SF}$ change with the fitted interval and with the number of powers: for CJT, $10^3c^{\rm CJT}_{\rm SF}$ is
   $16.34$, $19.94$ and $23.62$ when (12.2) is fitted on $[0,\Phi^X_{0,{\rm SF}}]$, on $[0,1.4\Phi^X_{0,{\rm SF}}]$ and on the whole computed
   curve, and $11.61$ when the power $\Phi^8$ is added (Table 12.2).
@@ -1983,7 +1984,7 @@ $$\mathcal F^X_{\rm SF}(\vec\Phi;T)=\min\{\mathcal E^X_{\rm SF}-T\mathcal S_{\rm
 computed as in Section 12.1 with an applied pair field and a self-consistent normal self-energy (the argument of
 Section 12.1 holds at every temperature). At $T=0$ the entropy vanishes and $\mathcal F^X_{\rm SF}(\vec\Phi;0)=\mathcal V^X_{\rm SF}(\vec\Phi)$:
 **the effective potential is the free energy at zero temperature.** *Checks P3-T1, YP3-T1:* at $T=0.005$ the thermal
-states reproduce the ground states of $T=0$ to $10^{-12}$; *check P3-T7:* the Landau form fitted to the free energy at
+states reproduce the ground states of $T=0$ to $2\times10^{-13}$; *check P3-T7:* the Landau form fitted to the free energy at
 $T=0$ has the residual of Table 12.1. The minimum of $\mathcal F^X_{\rm SF}(\vec\Phi;T)$ lies at $\lvert\vec\Phi\rvert=\Phi^X_{0,{\rm SF}}(T)$, the
 order parameter at the temperature $T$, with $\Phi^X_{0,{\rm SF}}(0)=\Phi^X_{0,{\rm SF}}$.
 
@@ -1997,7 +1998,7 @@ the static pair response of Section 9.4 at finite temperature ($\tanh(E/2T)=1-2f
 quasi-particles; at $T=0$, $I^{(1)}_{\rm SF}(M,0)=I^{(1)}_{\rm SF}(M)$). The critical temperature $T^{X,{\rm c}}_{\rm SF}$ solves
 $\lambda^{\rm P}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})=1$ (*check P3-T3*: by bisection, with the normal state computed at every step; at $T=0$
 the formula gives the eigenvalue of Table 10.1; *check YP3-T3*: the Python program finds the same $T^{X,{\rm c}}_{\rm SF}$ to
-$10^{-10}$; *checks P3-T9 and YP3-T9*: in every method $\lambda^{\rm P}_{\rm SF}(T)$ does not increase from $T=0.01$ to $T=0.6$
+$3\times10^{-13}$; *checks P3-T9 and YP3-T9*: in every method $\lambda^{\rm P}_{\rm SF}(T)$ does not increase from $T=0.01$ to $T=0.6$
 (60 temperatures with the normal state of the thermal engine; in Python 600 temperatures from $T=0.001$, with the normal
 state from its scalar self-consistency), so $T^{X,{\rm c}}_{\rm SF}$ is the only solution there). Below $T^{X,{\rm c}}_{\rm SF}$ a polar start ends in a superfluid, above it in the normal state (*check P3-T4*). The
 critical temperatures are $0.214$ (HS (0, 0)) to $0.260$ (HS (1, 1)); KS and CJT coincide also at finite temperature.
@@ -2005,8 +2006,8 @@ critical temperatures are $0.214$ (HS (0, 0)) to $0.260$ (HS (1, 1)); KS and CJT
 **The gap equation and the Dirac mass.** The polar superfluid with the Dirac mass $M^{X,{\rm D}}_{\rm SF}$ and the pair
 amplitude $\Phi^X_{0,{\rm SF}}(T)$ has the quasi-particle energies (10.3), and its pair self-consistency is
 $$1=\frac{g^{X,{\rm P}}_{\rm SF}}{\pi^2}\,I^{(1)}_{\rm SF}\Big(\big((M^{X,{\rm D}}_{\rm SF})^2+\Phi^X_{0,{\rm SF}}(T)^2\big)^{1/2},T\Big)\tag{12.10}$$
-(*check P3-T2*: the self-consistent states satisfy it to $10^{-12}$ at every temperature of Table 12.4; *check YP3-T4*: the
-Python program solves (12.10) alone for HS $(0,0)$ and finds the same order parameter to $10^{-9}$). The pair coupling
+(*check P3-T2*: the self-consistent states satisfy it to $2\times10^{-12}$ at every temperature of Table 12.4; *check YP3-T4*: the
+Python program solves (12.10) alone for HS $(0,0)$ and finds the same order parameter to $10^{-11}$). The pair coupling
 alone fixes $(M^{X,{\rm D}}_{\rm SF})^2+\Phi^X_{0,{\rm SF}}(T)^2$ at every temperature. The scalar density of the superfluid, the
 density $n^{\rm S}_{\rm SF}$ of Section 9.4 at the temperature $T$,
 $$n^{\rm S}_{\rm SF}=\int\!\frac{d^3q}{(2\pi)^3}\Big[-\frac{4M^{X,{\rm D}}_{\rm SF}\tanh(E/2T)}{E}+\frac{4m_{\rm LL}}{(q^2+m_{\rm LL}^2)^{1/2}}\Big],$$
@@ -2229,8 +2230,8 @@ of the free energy with a Lagrange multiplier for the field). Then
 $a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T)=\mathcal F^X_{2,{\rm SF}}/\lvert\Phi^{X,3}_{\rm SF}\rvert^2$.
 
 **Checks of the method.** At $q^{\rm pair}_{\rm SF}=0$ no other pair channel is induced (the norm of the self-consistent
-other components is below $4\times10^{-16}$, *check P3-G4*), and the computation reproduces Section 12.4: at
-$0.9\,T^{X,{\rm c}}_{\rm SF}$ it gives the Taylor coefficient of the nonlinear free energy to $10^{-9}$ (*P3-G1*), and at every
+other components is at most $4\times10^{-16}$, *check P3-G4*), and the computation reproduces Section 12.4: at
+$0.9\,T^{X,{\rm c}}_{\rm SF}$ it gives the Taylor coefficient of the nonlinear free energy to $9\times10^{-10}$ (*P3-G1*), and at every
 temperature
 $$a^{X,{\rm Tay}}_{\rm SF}(0;T)=\frac{1-\lambda^{\rm P}_{\rm SF}(T)}{\lambda^{\rm P}_{\rm SF}(T)\,g^{X,{\rm P}}_{\rm SF}}\tag{12.16}$$
 (*P3-G2*, to $6\times10^{-12}$ at $T/T^{X,{\rm c}}_{\rm SF}=0.9$, $0.998$, $1.002$), with the eigenvalue (12.9). (12.16) is (12.15) in
@@ -2238,9 +2239,9 @@ the channel $\mathsf K^3_{\rm LL}$ alone: there the pair self-energy is $\mathsf
 (the definition of the effective pair coupling, Section 9.4), the applied block $(\mathsf K^3_{\rm LL})^\dagger$ produces the field
 $\Phi^{X,3}_{\rm SF}=\lambda^{\rm P}_{\rm SF}(T)$ (the definition of the eigenvalue), and (12.15) is
 $\tfrac12(1-\lambda^{\rm P}_{\rm SF})\cdot2\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$. At $T^{X,{\rm c}}_{\rm SF}$, $a^{X,{\rm Tay}}_{\rm SF}(0;T)$ vanishes to
-$10^{-14}\alpha^{X,{\rm GL}}_{\rm SF}$ (*P3-G3*), and $\alpha^{X,{\rm GL}}_{\rm SF}$ is $-T^{X,{\rm c}}_{\rm SF}\partial_T\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$ (the
+$10^{-14}\,\alpha^{X,{\rm GL}}_{\rm SF}$ (*P3-G3*), and $\alpha^{X,{\rm GL}}_{\rm SF}$ is $-T^{X,{\rm c}}_{\rm SF}\partial_T\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$ (the
 programs compute it also in this closed form, with the Dirac mass of the normal state from its scalar self-consistency
-and no BdG engine, and it agrees with the central differences below to $5\times10^{-12}$: *check P3-G10*).
+and no BdG engine, and it agrees with the central differences below to $6\times10^{-12}$: *check P3-G10*).
 
 **The momenta of the pair and the regularization.** The model has the cutoff $\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$ on the
 momenta of the uniform states, and for a moving pair the cutoff must be placed on one of two momenta. With the cutoff on
@@ -2273,7 +2274,7 @@ remaining error of the regularization is measured by two quantities:
    at second order in the field.
 
 **The coefficients.** $\mathsf c^X_{\rm SF}$ is $[a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T^{X,{\rm c}}_{\rm SF})-a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})]/(q^{\rm pair}_{\rm SF})^2$
-at $q^{\rm pair}_{\rm SF}=0.01$ and $0.02$ with the Richardson extrapolation (the two values differ by $3\times10^{-5}$ of
+at $q^{\rm pair}_{\rm SF}=0.01$ and $0.02$ with the Richardson extrapolation (the two values differ by at most $3\times10^{-5}$ of
 $\mathsf c^X_{\rm SF}$, *P3-G6*); $\alpha^{X,{\rm GL}}_{\rm SF}$ comes from central differences of $a^{X,{\rm Tay}}_{\rm SF}(0;T)$ at
 $T^{X,{\rm c}}_{\rm SF}(1\pm0.002)$ and $T^{X,{\rm c}}_{\rm SF}(1\pm0.004)$ (the normal state recomputed at every temperature) with the Richardson
 extrapolation, and $b^{X,{\rm Tay}}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})$ from the nonlinear free energy of four small applied fields at
@@ -2283,7 +2284,7 @@ $q^{\rm pair}_{\rm SF}$ (as for the twisted states of Section 12.2): 64 directio
 $2\times10^{-10}$ (*P3-G8*). The two forms of (12.13) give the same Ginzburg number (*P3-G11*). The Python program
 repeats every one of the checks P3-G1 to P3-G12 with its own implementation of (12.14), (12.15) on 64 directions and
 with its own nonlinear thermal states (the checks YP3-G1 to YP3-G12, each with the identifier of the Rust check of the
-same statement and the prefix Y; its gradient coefficients agree with those of the Rust program to $2\times10^{-10}$,
+same statement and the prefix Y; its gradient coefficients agree with those of the Rust program to $3\times10^{-10}$,
 *YP3-G8*). The notebook `superfluid.nb` repeats them with a third implementation in the Wolfram Language, except the
 twisted states of HS $(0,0)$ (its checks WP3-G1 to WP3-G6 and WP3-G8 to WP3-G12, all passed).
 
@@ -2502,7 +2503,7 @@ $\nu^X_{{\rm SF},1}\mp i\nu^X_{{\rm SF},2}$ of charge $\pm1$ (they rotate like t
 
 **The count of the degrees of freedom.** Before the breaking: four massless vector fields with two polarizations each
 (8) and the six real components of $\vec\Phi$: 14. After the breaking: three massive vector fields $W^+$, $W^-$, $Z$ with three
-polarizations each (9), the massless $A_{{\rm SF},p}$ (2), and the three massive scalar fields $h^X_{\rm SF}$, $\nu^X_{{\rm SF},1}$,
+polarizations each (9), the zeugon $A_{{\rm SF},p}$ (massless, 2), and the three massive scalar fields $h^X_{\rm SF}$, $\nu^X_{{\rm SF},1}$,
 $\nu^X_{{\rm SF},2}$ (3): 14. The three Goldstone fields $\vartheta^X_{{\rm SF},0}$, $\vartheta^X_{{\rm SF},1}$, $\vartheta^X_{{\rm SF},2}$
 have become the third (longitudinal) polarizations of $Z$, $W^+$, $W^-$: the Higgs mechanism, which the author calls
 "give mass to the Goldstone bosons" (decision D8). Section 15.4 shows it in time.
@@ -2631,7 +2632,7 @@ $g_ag_b\chi^{ab}_{\rm SF}$ by the cyclic Jacobi method (plane rotations that ann
 | (14.3) $-$ microscopic | $4.7\times10^{-13}$ | $6.9\times10^{-13}$ | $2\times10^{-12}$ | $2.3\times10^{-12}$ | $2.1\times10^{-12}$ |
 
 **Table 14.1.** The eigenvalues $\lambda_0\le\lambda_1\le\lambda_2\le\lambda_3$ of the microscopic mass matrix of the vacuum
-$\Phi_0e^{i\pi/5}\vec e_1$ ($\lambda_1$ and $\lambda_2$ agree to $10^{-12}\lambda_3$ and share a row), the masses $M^X_{W,{\rm SF}}=\lambda_1^{1/2}$ and $M^X_{Z,{\rm SF}}=\lambda_3^{1/2}$, the distance
+$\Phi_0e^{i\pi/5}\vec e_1$ ($\lambda_1$ and $\lambda_2$ agree to $3\times10^{-13}\,\lambda_3$ and share a row), the masses $M^X_{W,{\rm SF}}=\lambda_1^{1/2}$ and $M^X_{Z,{\rm SF}}=\lambda_3^{1/2}$, the distance
 $1-\lvert\langle v_0,(1,0,0,0)\rangle\rvert$ of the eigenvector $v_0$ of $\lambda_0$ from $W^1$ (in the order $(W^1,W^2,W^3,B)$), and the largest difference between (14.3) and the microscopic matrix, relative to
 $(M^X_{Z,{\rm SF}})^2$. Data: `data/part4_massmatrix.csv`.
 
@@ -2864,8 +2865,8 @@ mean field has no mechanism that carries this energy away (it is collisionless: 
 radiation, the state stays uniform), so it stays in the motion, which exchanges it between the kinetic and the
 interaction energy (Figure 13, right). The same pulse train is known from the collisionless dynamics of the BCS pairing
 problem started near the normal state; relaxation to the minimum needs processes beyond the mean field. The charges stay
-zero to $10^{-16}$ (*P4-T4*), $\mathsf R_{\rm SF}$ stays a Hermitian projector with the block relation of (6.4a) to $6\times10^{-10}$ (*P4-T5*), and
-the run with ten times smaller tolerances agrees to $5\times10^{-8}\Phi_0$ (*P4-T12*).
+zero to $7\times10^{-17}$ (*P4-T4*), $\mathsf R_{\rm SF}$ stays a Hermitian projector with the block relation of (6.4a) to $6\times10^{-10}$ (*P4-T5*), and
+the run with ten times smaller tolerances agrees to $5\times10^{-8}\,\Phi_0$ (*P4-T12*).
 
 **The polar sector and its stability.** The seed lies in the channel $\mathsf K^3_{\rm LL}$, which is invariant under
 $U(1)^{\rm Q}_{\rm LL}$ (the pair has $Q_{\rm LL}=0$); so is the normal vacuum, and the equations keep the invariance: the state stays in
@@ -2910,7 +2911,7 @@ seeds, the growth of the departure (15.1) per pulse (seed $10^{-13}$) and the ti
 ![](figures/fig_part4_r2_growth.png){width=100%}
 
 **Figure 13.** Left: $\lvert\Phi^{X,3}_{\rm SF}(t)\rvert$ from the normal vacuum with the seed $10^{-7}$, for the five methods (KS and CJT
-coincide to $10^{-8}$), with the growth $e^{\gamma^X_{\rm SF}t}$ of the linear response (dotted). Right: CJT, $\lvert\Phi^3\rvert/\Phi_0$ and the kinetic, the interaction and the
+coincide to $8\times10^{-9}$ of the largest $\lvert\Phi^3\rvert$), with the growth $e^{\gamma^X_{\rm SF}t}$ of the linear response (dotted). Right: CJT, $\lvert\Phi^3\rvert/\Phi_0$ and the kinetic, the interaction and the
 total energy per volume. Data: `data/part4_td_growth_*.csv`.
 
 ## 15.2 The small oscillations: the collective modes in time
@@ -2935,10 +2936,10 @@ begins at the threshold $2E^{X,{\rm gap}}_{\rm SF}$, above the modes, and its co
 **Table 15.2.** The frequencies of the time-dependent runs after the two changes of the ground state, and the collective
 modes of the linear response of Section 10.5 (Table 10.4). Data: `data/part4_td_summary.csv`, `data/part4_td_kicks_CJT.csv`.
 
-The frequencies of the runs equal those of the linear response to $1.5\times10^{-6}$ (*checks P4-T7, P4-T8*), with the energy
-conserved to $10^{-11}$ of the depth (*P4-T9*): the amplitude mode and the non-unitary doublet are undamped oscillations of
+The frequencies of the runs equal those of the linear response to $2\times10^{-6}$ (*checks P4-T7, P4-T8*), with the energy
+conserved to $6\times10^{-12}$ of the depth (*P4-T9*): the amplitude mode and the non-unitary doublet are undamped oscillations of
 the superfluid (they lie below the threshold), and in HS $(0,1)$, $(0,0)$ the two changes give the same frequency, the
-triple mode of Table 10.4. The ground state does not move (*P4-T10*, $dR/dt$ below $10^{-14}$), and neither does the ground state
+triple mode of Table 10.4. The ground state does not move (*P4-T10*, $dR/dt$ at most $8\times10^{-15}$), and neither does the ground state
 turned by a phase rotation or an isospin rotation (*P4-T11*): these are the Goldstone directions, of zero frequency. The
 Python program repeats the growth and the amplitude mode on the grid of 8 radial nodes with its own response (*YP4-T1 to
 YP4-T3*).
@@ -2950,7 +2951,7 @@ collective modes of the linear response (dotted) and the threshold of two quasi-
 the polar sector with the full equations and the non-unitary seed $10^{-13}$. Data: `data/part4_td_kicks_CJT.csv`,
 `data/part4_td_growth_*.csv`.
 
-## 15.3 The massless $A_{{\rm SF},p}$ and the massive $W^1_{{\rm SF},p}$: radiation and a bound cloud
+## 15.3 The zeugon $A_{{\rm SF},p}$ and the massive $W^1_{{\rm SF},p}$: radiation and a bound cloud
 
 **The equations.** In the unitary gauge and to first order in the gauge fields, (12.6) gives every component of every
 gauge field the Yang-Mills kinetic term (5.3) and the mass term (14.6). A component transverse to the direction of
@@ -2976,7 +2977,7 @@ $$u_m(t)=\mathcal J_m\int_0^t\frac{\sin(\omega_m(t-t'))}{\omega_m}\,r_{\rm s}(t'
 quadrature (12 points on every interval of length 1).
 
 **The results.** CVODE (Adams, real weights, $10^{-10}$, $10^{-13}$) integrates (15.2) to $t=900$; the fields equal (15.5) to
-$5\times10^{-9}$ of their largest value (*checks P4-W2, P4-W3*). The massless $A_{{\rm SF},p}$ **radiates**: for $100<x<400$ its amplitude at $t=900$ is
+$5\times10^{-9}$ of their largest value (*checks P4-W2, P4-W3*). The zeugon $A_{{\rm SF},p}$ (massless) **radiates**: for $100<x<400$ its amplitude at $t=900$ is
 $0.020539$, the amplitude $\mathcal J_0\lvert\hat\varsigma(\omega_{\rm s})\rvert/(2\omega_{\rm s})=0.0205392$ of the
 outgoing wave of the steady state ($\hat\varsigma(\omega)=(2\pi)^{1/2}\sigma_{\rm s}^3\omega^2e^{-\omega^2\sigma_{\rm s}^2/2}$, the Fourier
 transform of the profile; *check P4-W4*). The massive $W^1_{{\rm SF},p}$ **stays bound**: below its mass a wave cannot propagate, $k^2=\omega_{\rm s}^2-M^2<0$,
@@ -3026,7 +3027,7 @@ $\partial_0\vartheta=-\partial_1\vartheta$ (moving to the right at the speed 1 w
 $g^{\rm F}_{\rm LL}=0.45$, $M^X_{Z,{\rm SF}}=0.064213$ (*check P4-W0*: $2g^{\rm F}_{\rm LL}f^{X,{\rm F}}_{\rm SF}$ equals
 $g^{\rm F}_{\rm LL}(\chi^{\rm FF}_{\rm SF})^{1/2}$ of Part III):
 * without the gauge field the packet keeps its shape and its energy moves at the speed 1 (*checks P4-W6*, the exact
-  solution to $1.3\times10^{-9}$; *P4-W12*, the slope of the centre of the energy $1-2\times10^{-10}$);
+  solution to $1.4\times10^{-9}$; *P4-W12*, the slope of the centre of the energy differs from 1 by at most $3\times10^{-10}$);
 * with the gauge field the same packet becomes the longitudinal Z: its energy, $\tfrac12B_{{\rm SF},01}^2+\tfrac12M^2(\mathcal C_0^2+(\mathcal C^1)^2)$,
   moves at $0.76505$ (the group velocity $k/(k^2+M^2)^{1/2}$ of the central wave number is
   $0.77985$) and the packet disperses (*P4-W13*: the same velocity in the exact solution);
@@ -3819,6 +3820,12 @@ VERDICT: ALL PASS (112 of 112)
 
       python3 code/scripts/write_part4_fragments.py
 
+* **The bounds of agreement.** `code/scripts/write_bound_fragments.py` writes every bound of agreement that Sections 9
+  to 15 state (Section 17.7) from the reports of the checks of all four parts and from four data files, into
+  `provenance/generated/bounds.md` (run after the programs of Parts I to IV):
+
+      python3 code/scripts/write_bound_fragments.py
+
 ## 16.14 Part IV: the report of the Rust program
 
 | check | result | deviation | tolerance | statement |
@@ -4265,6 +4272,44 @@ the spontaneous breaking of the new group. The earlier versions were wrong in th
    boson that appears after the breaking and is not the photon, and offered the solution its naming. Section 14.4 names
    it the zeugon and states what the computation establishes about it, including that its charge conjugation is a gauge
    symmetry (Alice electrodynamics), with the strings and monopoles that follow from it not computed.
+6. **The name used throughout.** Since the name was given, the text calls the massless gauge boson the zeugon wherever it
+   had called it only massless: in Section 0, Sections 11.3 and 11.4, the count of the degrees of freedom in Section
+   14.2, the title and the results of Section 15.3, and the captions and labels of Figures 7 and 15.
+
+## 17.7 The bounds of agreement typed by hand
+
+The text states for many checks that two computations agree "to" some number, a bound on the deviation. On 21 November
+2026 every such bound of Sections 9 to 15 was compared with the reports of the checks it summarizes (the largest
+deviation over the methods). Eleven sentences stated a bound smaller than the measured deviation, so they were false:
+
+1. Section 9.3, the energy of the pairing-only limit (*check P2-2c*): $2\times10^{-8}$; the deviation is $2.013\times10^{-8}$.
+2. Section 9.4 (*checks P2-6b, P2-6c*): $10^{-14}$; the deviation of P2-6c is $3.486\times10^{-14}$.
+3. Section 10.5, the Goldstone eigenvalues (*check P2-7a*): $2.5\times10^{-13}$; the deviation of KS is $2.502\times10^{-13}$.
+4. Section 10.5, the Python program (*checks YP2-7a, YP2-7b*): $10^{-13}$; the deviations are $2.329\times10^{-13}$ and
+   $1.333\times10^{-13}$.
+5. Section 11.1, the massless $W^3_{\rm SF}$ (*checks P2-8a*): $10^{-15}$; the deviation is $2.278\times10^{-15}$.
+6. Section 11.2, the contact terms (*checks P2-3a, P2-3b*): $10^{-17}$ and $5\times10^{-15}$; the deviations are
+   $1.475\times10^{-17}$ and $5.309\times10^{-15}$.
+7. Section 11.4: "the results of 16, 24 and 32 radial nodes agree to $2\times10^{-7}$". That holds for the pair amplitude;
+   the energies differ by up to $1.118\times10^{-6}$ (relative).
+8. Section 12.4, the gap equation (*check P3-T2*): $10^{-12}$; the deviation is $1.214\times10^{-12}$.
+9. Section 12.5, the closed form of $\alpha^{X,{\rm GL}}_{\rm SF}$ (*check P3-G10*): $5\times10^{-12}$; the deviation is
+   $5.127\times10^{-12}$.
+10. Section 12.5, the gradient coefficients of the Python program (*check YP3-G8*): $2\times10^{-10}$; the deviation is
+    $2.334\times10^{-10}$.
+11. Section 15.4, the free Goldstone field (*check P4-W6*): $1.3\times10^{-9}$; the deviation is $1.308\times10^{-9}$.
+
+They happened because the bounds were typed by hand: some from the order of magnitude of a deviation, rounded to the
+nearest digit rather than up, and one (item 7) from the pair amplitude alone. The same kind of error had been found
+earlier in the drafts of the article for Physical Review D, whose numbers were then all computed by its build program.
+Every bound of agreement of Sections 9 to 15, true or false, is now written by
+`code/scripts/write_bound_fragments.py` from the reports of the checks: the largest deviation over the methods,
+rounded up to one significant digit (to two where the text gives two), so that a stated bound is never smaller than
+the deviation it summarizes; four bounds come from data files (the three radial grids of Section 11.4, the two
+extrapolations of the gradient coefficient, the eigenvalues $\lambda_1$, $\lambda_2$ of Table 14.1 and the growth runs of KS
+and CJT). The values of the analytic solution AS3 in Section 9.3 are now the fragments of Part I. Numbers that are
+parameters of the programs (the tolerances of the iterations and of the integrators, the seeds, the steps of the
+differences) are still written in the text, as are the numbers of earlier runs in this Section 17.
 
 # 18. The symbols
 

@@ -474,6 +474,11 @@ videos (\texttt{video\_part4\_v1\_condensate\_growth.mp4},
 \texttt{write\_part3\_fragments.py}, \texttt{write\_part4\_fragments.py}
 & turn the reports and values of parts I to IV into the tables and
 numbers of the manuscript & written \\
+\texttt{code/scripts/write\_bound\_fragments.py} & writes every bound of
+agreement stated in the manuscript and in
+\texttt{provenance/P4\_remarks.md} from the reports of the checks (the
+largest deviation, rounded up) into
+\texttt{provenance/generated/bounds.md} & written \\
 \texttt{paper\_prd/} & the Regular Article ``Higgs as a Composite, and
 Quantum Gravity'' for Physical Review D
 (\texttt{higgs\_composite\_qg.pdf}, \texttt{.tex}, \texttt{.md}), its
@@ -514,6 +519,7 @@ folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham}:
 \ExtensionTok{python3}\NormalTok{ python/sf\_part4.py                    }\CommentTok{\# part IV: the Python computation (uses the library of cargo build)}
 \ExtensionTok{python3}\NormalTok{ python/sf\_part4\_figures.py            }\CommentTok{\# part IV: the figures and the two videos (needs ffmpeg)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_part4\_fragments.py }\CommentTok{\# the tables and numbers of part IV for the manuscript}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_bound\_fragments.py }\CommentTok{\# the bounds of agreement of the documents (after the programs of parts I to IV)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_notebook\_fragments.py }\CommentTok{\# the tables of the provenance of the notebook (from data/hck\_notebook\_log.txt)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}

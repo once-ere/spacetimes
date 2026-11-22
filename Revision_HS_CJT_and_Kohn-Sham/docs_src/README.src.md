@@ -104,6 +104,7 @@ gravitational sector of the title is outlined, not computed. The submission itse
 | `data/` | the reports of the checks (`hck_part1_checks.txt`, `hck_part1_checks_python.txt`, `hck_part2_checks.txt`, `hck_part2_checks_python.txt`, `hck_part3_checks.txt`, `hck_part3_checks_python.txt`, `hck_part4_checks.txt`, `hck_part4_checks_python.txt`, `hck_symbol_checks.txt`, `hck_self_contained_checks.txt`) and the data of parts I to IV (`part1_*.csv`, `part2_*.csv`, `part3_*.csv`, `part4_*.csv`) | parts I to IV written |
 | `figures/`, `videos/` | the figures (`fig_part1_*`, `fig_part2_*`, `fig_part3_*`, `fig_part4_*`, each `.pdf` and `.png`) and the videos (`video_part4_v1_condensate_growth.mp4`, `video_part4_v2_gauge_fields.mp4`) | written |
 | `code/scripts/write_part1_fragments.py`, `write_part2_fragments.py`, `write_part3_fragments.py`, `write_part4_fragments.py` | turn the reports and values of parts I to IV into the tables and numbers of the manuscript | written |
+| `code/scripts/write_bound_fragments.py` | writes every bound of agreement stated in the manuscript and in `provenance/P4_remarks.md` from the reports of the checks (the largest deviation, rounded up) into `provenance/generated/bounds.md` | written |
 | `paper_prd/` | the Regular Article "Higgs as a Composite, and Quantum Gravity" for Physical Review D (`higgs_composite_qg.pdf`, `.tex`, `.md`), its Supplemental Material (`higgs_composite_qg_SM.*`), the cover letter (`cover_letter.*`), the information for the submission server (`submission_info.*`), the folder `submission/` with exactly the files to upload, the templates `src/`, the build `scripts/build_paper.py` with its record `generated/numbers.csv` and `generated/build_report.txt`, and its README (`paper_prd/README.md`, `.tex`, `.pdf`) | written; not submitted (the submission is the author's) |
 
 # 4. How to build the documents
@@ -128,6 +129,7 @@ python3 code/scripts/write_part3_fragments.py # the tables and numbers of part I
 python3 python/sf_part4.py                    # part IV: the Python computation (uses the library of cargo build)
 python3 python/sf_part4_figures.py            # part IV: the figures and the two videos (needs ffmpeg)
 python3 code/scripts/write_part4_fragments.py # the tables and numbers of part IV for the manuscript
+python3 code/scripts/write_bound_fragments.py # the bounds of agreement of the documents (after the programs of parts I to IV)
 python3 code/scripts/write_notebook_fragments.py # the tables of the provenance of the notebook (from data/hck_notebook_log.txt)
 python3 code/scripts/write_symbol_registry.py # the registry of the symbols and its tables
 python3 code/scripts/check_symbols.py         # writes data/hck_symbol_checks.txt

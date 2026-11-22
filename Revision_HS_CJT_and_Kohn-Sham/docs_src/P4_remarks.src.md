@@ -70,7 +70,7 @@ It is computed point by point: a fixed pair self-energy $\Phi_{\rm a}(\mathsf K^
 $\Phi_{\rm a}$) is put into $\mathsf H_{\rm SF}$, the normal self-energy is made self-consistent, and the ground state of $\mathsf H_{\rm SF}$
 gives one point: its own field $\vec\Phi=\Phi\vec e_3$ and its energy per volume. The program computes 61 points per
 method, with $\Phi_{\rm a}$ from $0$ to $2\Phi^X_{0,{\rm SF}}$, each self-consistent to $10^{-13}$; the applied field
-$\Phi^X_{0,{\rm SF}}$ gives back the ground state of method $X$ to $10^{-13}$. The **polar** fields are
+$\Phi^X_{0,{\rm SF}}$ gives back the ground state of method $X$ to {{GEN:bnd_P3-1}} (*check P3-1*). The **polar** fields are
 $\vec\Phi=e^{i\vartheta}\Phi\,\vec n$ with a real phase $\vartheta$, a real unit vector $\vec n$ and $\Phi=\lvert\vec\Phi\rvert$; along them the
 potential is a function of $\Phi$ alone. Its minimum lies at $\Phi=\Phi^X_{0,{\rm SF}}$ (the vacuum), and the **depth** is
 $\lvert\mathcal V^X_{\rm SF}(\Phi^X_{0,{\rm SF}})\rvert$, the energy per volume by which the superfluid lies below the normal vacuum.
@@ -138,8 +138,8 @@ $\Phi_i\le1.4\Phi^X_{0,{\rm SF}}$ of the polar curve (47 to 51 points per method
 function, neither an exact formula nor a derived expansion.
 
 **"Its largest residual is 0.27–0.7 % of the depth."** The largest residual $\max_i\lvert\mathcal V_{\rm L}(\Phi_i)-\mathcal V^X_{\rm SF}(\Phi_i)\rvert$,
-divided by the depth, is {{GEN:p3_lf_res6}} (row 8 of Table R1). Since the computed points are accurate to about
-$10^{-13}$, every deviation of (R1.3) from them is an error of the form, not of the computation. Figure R1 (left) shows
+divided by the depth, is {{GEN:p3_lf_res6}} (row 8 of Table R1). Since the computed points are accurate to
+{{GEN:bnd_P3-1}}, every deviation of (R1.3) from them is an error of the form, not of the computation. Figure R1 (left) shows
 the residual along the fitted interval: it changes its sign {{GEN:p3_lf_signs}} times (four arcs of alternating sign), it is
 largest at the upper end ($\Phi\approx1.39\Phi^X_{0,{\rm SF}}$), and at the minimum it is {{GEN:p3_lf_resmin}} of the depth. Such an
 oscillation about the curve is the mark of a polynomial that approximates a function which is not a polynomial; it is
@@ -198,7 +198,7 @@ quartic form $a\Phi^2+b\Phi^4$, the form of the Higgs potential of the Standard 
    $a^{X,{\rm Tay}}_{\rm SF}$ of $\lvert\vec\Phi\rvert^2$ at the origin (rows 5 and 6). $a^{X,{\rm Tay}}_{\rm SF}$ is computed directly from three
    states with the small applied fields $\Phi_{\rm a}=0.004$, $0.008$, $0.016$: the quotient $f=\mathcal V^X_{\rm SF}/\Phi^2$ equals
    $a^{X,{\rm Tay}}_{\rm SF}+f_2\Phi^2+O(\Phi^4)$ with an unknown $f_2$, and two of the points eliminate $f_2$ (Richardson); the two pairs
-   agree to $10^{-7}$ (*check P3-10*), and the Python program finds the same value to $10^{-10}$ (*check YP3-10*).
+   agree to {{GEN:bnd_P3-10}} (*check P3-10*), and the Python program finds the same value to {{GEN:bnd_YP3-10}} (*check YP3-10*).
    $b^X_{\rm SF}$ and $c^X_{\rm SF}$ change with the fitted interval and with the number of powers: for CJT, $10^3c^{\rm CJT}_{\rm SF}$ is
    {{GEN:p3_lf_c_cjt}} when (R1.3) is fitted on $[0,\Phi^X_{0,{\rm SF}}]$, on $[0,1.4\Phi^X_{0,{\rm SF}}]$ and on the whole computed curve,
    and {{GEN:p3_lf_cK4_cjt}} when the power $\Phi^8$ is added (rows 13 to 15 and 18). No physical meaning may be given to
@@ -363,7 +363,7 @@ self-consistent superfluid at $T$ (both self-energies self-consistent), computed
 $T/T^{X,{\rm c}}_{\rm SF}=0,0.1,\dots,0.8,0.85,0.9,0.95,0.98$. **At $T=0$ the entropy vanishes, and
 $\mathcal F^X_{\rm SF}(\vec\Phi;0)=\mathcal V^X_{\rm SF}(\vec\Phi)$: the effective potential is the free energy at zero temperature,** and
 $\Phi^X_{0,{\rm SF}}(0)=\Phi^X_{0,{\rm SF}}$. *Checks P3-T1 and YP3-T1:* the thermal states at $T=0.005$ reproduce the ground states
-to $10^{-12}$ (the field and the free energy); *check P3-T7:* the Landau form (R1.3) fitted to the free energy at $T=0$
+to {{GEN:bnd_P3-T1y}} (the field and the free energy); *check P3-T7:* the Landau form (R1.3) fitted to the free energy at $T=0$
 has the largest residual of row 8 of Table R1.
 
 ## 3.2 The critical temperature
@@ -395,9 +395,10 @@ the eigenvalue of the static response of the normal state in the pair channel: t
 superfluid when $\lambda^{\rm P}_{\rm SF}(T)>1$ (the criterion of Thouless). At $T=0$, $\lambda^{\rm P}_{\rm SF}>1$ in every method (row 3 of
 Table A1); the thermal factor $\tanh(E/2T)<1$ lowers it at higher temperatures. The **critical temperature**
 $T^{X,{\rm c}}_{\rm SF}$ solves $\lambda^{\rm P}_{\rm SF}(T^{X,{\rm c}}_{\rm SF})=1$. *Check P3-T3:* the
-program finds it by bisection, with the normal state computed at every step, to $10^{-12}$, and at $T=0$ (A1.4) gives
+program finds it by bisection, with the normal state computed at every step ($\lambda^{\rm P}_{\rm SF}=1$ at the result to
+{{GEN:bnd_P3-T3}}), and at $T=0$ (A1.4) gives
 the eigenvalue of the full static response of the normal vacuum (row 3 of Table A1); *check YP3-T3:* the Python program
-finds the same $T^{X,{\rm c}}_{\rm SF}$ to $10^{-10}$; *checks P3-T9 and YP3-T9:* in every method $\lambda^{\rm P}_{\rm SF}(T)$ does
+finds the same $T^{X,{\rm c}}_{\rm SF}$ to {{GEN:bnd_YP3-T3}}; *checks P3-T9 and YP3-T9:* in every method $\lambda^{\rm P}_{\rm SF}(T)$ does
 not increase from $T=0.01$ to $T=0.6$ (60 temperatures with the normal state of the thermal engine; in Python 600
 temperatures from $T=0.001$, with the normal state from its scalar self-consistency), so $T^{X,{\rm c}}_{\rm SF}$ is the
 only solution there; *check P3-T4:* below $T^{X,{\rm c}}_{\rm SF}$ (at $0.99\,T^{X,{\rm c}}_{\rm SF}$) a polar start
@@ -409,14 +410,14 @@ ends in a superfluid, above it (at $1.01\,T^{X,{\rm c}}_{\rm SF}$) in the normal
 The polar superfluid at the temperature $T$ has the pair field $\Phi^X_{0,{\rm SF}}(T)$, and its pair self-consistency is the
 **gap equation**
 $$1=\frac{g^{X,{\rm P}}_{\rm SF}}{\pi^2}\,I^{(1)}_{\rm SF}\Big(\big((M^{X,{\rm D}}_{\rm SF})^2+\Phi^X_{0,{\rm SF}}(T)^2\big)^{1/2},T\Big).\tag{A1.5}$$
-*Check P3-T2:* the self-consistent superfluids satisfy it to $10^{-12}$ at every temperature of the table; *check
+*Check P3-T2:* the self-consistent superfluids satisfy it to {{GEN:bnd_P3-T2}} at every temperature of the table; *check
 YP3-T4:* the Python program solves (A1.5) alone for HS $(0,0)$ (where $M^{X,{\rm D}}_{\rm SF}=m_{\rm LL}$) and finds the same order
-parameter to $10^{-9}$. The pair coupling alone fixes the gap $E^{X,{\rm gap}}_{\rm SF}$ at every temperature. The scalar density
+parameter to {{GEN:bnd_YP3-T4}}. The pair coupling alone fixes the gap $E^{X,{\rm gap}}_{\rm SF}$ at every temperature. The scalar density
 (A1.3) of the superfluid contains the same integral, which (A1.5) fixes to $\pi^2/g^{X,{\rm P}}_{\rm SF}$:
 $n^{\rm S}_{\rm SF}=-2M^{X,{\rm D}}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}+2m_{\rm LL}I^{(1)}_{\rm SF}(m_{\rm LL},0)/\pi^2$. The scalar self-consistency
 $M^{X,{\rm D}}_{\rm SF}-m_{\rm LL}=g^{X,{\rm S}}_{\rm SF}n^{\rm S}_{\rm SF}$ therefore contains no temperature, and it has the same solution at every
 temperature below $T^{X,{\rm c}}_{\rm SF}$: **the Dirac mass of the superfluid does not depend on the temperature** (*check
-P3-T8*, to $10^{-12}$; row 8 of Table A1), and the order parameter follows from (A1.5) alone. In the normal state the
+P3-T8*, to {{GEN:bnd_P3-T8}}; row 8 of Table A1), and the order parameter follows from (A1.5) alone. In the normal state the
 integral is $I^{(1)}_{\rm SF}(M^{X,{\rm n}}_{\rm SF}(T),T)$, which nothing fixes, and $M^{X,{\rm n}}_{\rm SF}(T)$ changes with the temperature.
 
 ## 3.4 The radius of convergence at the temperature $T$
@@ -757,9 +758,9 @@ self-energy is $-\tfrac12g^{X,{\rm P}}_{\rm SF}\mathrm{tr}(\mathsf K^3_{\rm LL}(
 $(\mathsf K^3_{\rm LL})^\dagger$ produces the field $\lambda^{\rm P}_{\rm SF}(T)$, (A2.5) gives
 $$a^{X,{\rm Tay}}_{\rm SF}(0;T)=\frac{1-\lambda^{\rm P}_{\rm SF}(T)}{\lambda^{\rm P}_{\rm SF}(T)\,g^{X,{\rm P}}_{\rm SF}}\tag{A2.6}$$
 (*checks P3-G1 to P3-G3*: (A2.6) and the Taylor coefficient of Section 3 at $0.9\,T^{X,{\rm c}}_{\rm SF}$ agree with the linear response to
-$10^{-9}$, and $a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})$ vanishes). Hence $\alpha^{X,{\rm GL}}_{\rm SF}=-T^{X,{\rm c}}_{\rm SF}\partial_T\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$
+{{GEN:bnd_P3-G1G2}}, and $a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})$ vanishes). Hence $\alpha^{X,{\rm GL}}_{\rm SF}=-T^{X,{\rm c}}_{\rm SF}\partial_T\lambda^{\rm P}_{\rm SF}/g^{X,{\rm P}}_{\rm SF}$
 at $T^{X,{\rm c}}_{\rm SF}$ (the programs compute it also in this closed form, with the Dirac mass of the normal state from its
-scalar self-consistency and no BdG engine, and it agrees with the central differences of (A2.6) to $5\times10^{-12}$:
+scalar self-consistency and no BdG engine, and it agrees with the central differences of (A2.6) to {{GEN:bnd_P3-G10y}}:
 *checks P3-G10, YP3-G10*).
 
 **The routing of the momenta.** With the cutoff on the momenta of the two charges of a pair,
@@ -1090,3 +1091,12 @@ electrodynamics, Nuclear Physics B 386, 3 (1992); U. Leonhardt and G. E. Volovik
    amplitude mode broader than its mass) and whether it can be the Higgs field of the Standard Model (no, by its quantum
    numbers); Table A3 and Figure A3 no longer contain values in GeV or values of the Standard Model; the massless gauge
    boson is the zeugon (remark R7); and the spinor field is called the DiracLike field.
+3. **The bounds of agreement typed by hand** (Sections 2, 3 and 5 of this document). Two sentences stated a bound smaller
+   than the deviation of the checks they summarize: Section 3.3, the gap equation (*check P3-T2*), $10^{-12}$ against the
+   deviation $1.214\times10^{-12}$; Section 5.3, the closed form of $\alpha^{X,{\rm GL}}_{\rm SF}$ (*checks P3-G10, YP3-G10*),
+   $5\times10^{-12}$ against $5.127\times10^{-12}$. They were typed by hand, rounded to the nearest digit rather than up.
+   Found on 21 November 2026, when every bound typed in the documents was compared with the reports of the checks; every
+   bound of agreement of Sections 2, 3 and 5 is now written by `code/scripts/write_bound_fragments.py` from the reports
+   (the largest deviation over the methods, rounded up), so that a stated bound is never smaller than the deviation it
+   summarizes. The tolerance of the self-consistency of the computed points (Section 2) is a parameter of the program
+   and stays written in the text.
