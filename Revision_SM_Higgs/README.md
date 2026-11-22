@@ -54,6 +54,14 @@ the manuscript `higgs_superfluid.md` state the second version (stages 1 to 3 of 
 manuscript computes the first version alongside, as the comparison. The first version is kept under the git tag
 `backup/SM-Higgs-one-singlet-2026-11-21`.
 
+**The determinant interaction** (22 November 2026, from 06:00 PST). In the second version the particle number is an
+exact global symmetry that the condensate breaks, so the superfluid has a fourth Goldstone mode, a massless physical
+particle besides the three modes that $W^\pm_\mu$ and $Z_\mu$ absorb. Of the three remedies put to him, the author chose
+the determinant interaction $-G^{\rm det}_{\rm SH}(\epsilon_{st}\Pi^s_{\rm SH}\Pi'^t_{\rm SH}+{\rm h.c.})$: it is invariant under
+$SU(2)_L\times U(1)_Y$ and the custodial symmetry, breaks the particle number explicitly, and gives the boson a mass. The
+document of the hypotheses states it (H3, consequence 3), and the task record states the decisions of interpretation
+(D36) and the plan (object O19, stage 7). The stages computed before the decision are its case $G^{\rm det}_{\rm SH}=0$.
+
 # 1. What this folder is
 
 This folder of PROJECT spacetimes (repository `https://github.com/once-ere/spacetimes.git`) contains the solution of

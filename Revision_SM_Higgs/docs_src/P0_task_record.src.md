@@ -15,13 +15,16 @@ the folder `Revision_HS_CJT_and_Kohn-Sham` at the commit `19db425` (entry E34 of
 17:09 PST, to make backups and then to modify the hypotheses so that the superfluid can be the Higgs field of the
 Standard Model; "the superfluid must have the same quantum numbers as the Higgs" (entry C21). Sections 1 to 8 below
 describe the task as it stood under the earlier hypotheses, in the folder where that work was done; the decisions
-D19 to D34 of Section 6, the objects O10 to O18 of Section 7 and the entries from C20 on in Section 9 belong to the
+D19 to D36 of Section 6, the objects O10 to O19 of Section 7 and the entries from C20 on in Section 9 belong to the
 revision. Under the revised hypotheses $SU(2)_{\rm v}$ is $SU(2)_L$. In their first version the fermion number is the
 hypercharge ($Y^{\rm SM}=F_{\rm LL}/4$), the singlet field $\chi_{\rm SH}$ is added to $\Psi_{\rm LL}$, and the superfluid is the
 condensate of the doublet-singlet pairs, whose pair field $\Phi_{\rm SH}$ has the quantum numbers of $\Phi^{\rm SM}$. In their
 second version (D30), the current one, a second singlet field $\chi'_{\rm SH}$ with the hypercharge $-\tfrac34$ is added; the
 pairs of $\Psi_{\rm LL}$ with the two singlets form two pair fields, $\Phi_{\rm SH}$ and $\Phi'_{\rm SH}$, a bidoublet of
-$SU(2)_L\times SU(2)_{\rm R}$.
+$SU(2)_L\times SU(2)_{\rm R}$. On 22 November 2026 the author decided how the second version treats its extra Goldstone
+boson, the mode of the particle number: by the determinant interaction
+$-G^{\rm det}_{\rm SH}(\epsilon_{st}\Pi^s_{\rm SH}\Pi'^t_{\rm SH}+{\rm h.c.})$, which breaks the particle number explicitly and gives
+the boson a mass (entry C26, decisions D32 and D36, object O19).
 
 # 1. What this document is
 
@@ -708,7 +711,7 @@ working copy and in the author's repository.
 $SU(2)_{\rm R}$ acting on $(\chi_{\rm SH},\chi'_{\rm SH})$. This makes $\rho=1$ when $g'$ is neglected, which is the purpose of
 the field.
 
-**D32. The extra Goldstone boson (pending the author's choice, 21 November 2026).** In the second version the particle
+**D32. The extra Goldstone boson (put to the author on 21 November 2026; he chose (c) on 22 November 2026).** In the second version the particle
 number $F^{\rm tot}_{\rm SH}$ is no longer four times the hypercharge, so it is an exact global symmetry. Every pair carries
 2 of it, so the condensate breaks it and leaves a massless, neutral Goldstone boson of spin 0, besides the three
 absorbed by $W^\pm_\mu$ and $Z_\mu$. I put three choices to the author in my answer to C25:
@@ -718,7 +721,10 @@ absorbed by $W^\pm_\mu$ and $Z_\mu$. I put three choices to the author in my ans
 * (c) add the determinant interaction $\epsilon_{st}\Pi^s_{\rm SH}\Pi'^t_{\rm SH}+{\rm h.c.}$, which breaks $F^{\rm tot}_{\rm SH}$ and gives
   the boson a mass.
 
-Until he decides, the stages compute (a), the hypotheses as he stated them.
+Until he decided, the stages computed (a), the hypotheses as he had stated them. On 22 November 2026 at 06:00 PST he
+chose (c) (entry C26). The stages 3 to 6 computed the case $G^{\rm det}_{\rm SH}=0$ of the hypotheses with the determinant
+interaction, and their results stand for that case; the stage that computes (c) is object O19, with the decisions of
+interpretation D36.
 
 **D33. The Kohn-Sham densities of the second version (my decision of interpretation, 21 November 2026).** The
 Kohn-Sham method of stage 3 of the second version projects the local normal matrix onto sixteen densities:
@@ -757,6 +763,35 @@ sector stays a program, as in the earlier article, until the task C23.
 the quantum numbers of $SU(2)_L\times U(1)_Y$), so the earlier answers do not carry over. A thermal stage of the revision
 would be a new stage of work, which the author can ask for; the article states what it does not compute.
 
+**D36. The determinant interaction (my decisions of interpretation, 22 November 2026).** The author's choice (c) of D32
+is carried out as follows.
+
+* *The term.* The Hamiltonian density gains
+  $$\mathcal V^{\rm det}=-G^{\rm det}_{\rm SH}\big(\epsilon_{st}\Pi^s_{\rm SH}\Pi'^t_{\rm SH}+{\rm h.c.}\big),\qquad\epsilon_{\rm ud}=-\epsilon_{\rm du}=1,$$
+  with the pair operators of D31 and a new coupling $G^{\rm det}_{\rm SH}$. The author wrote the operators as
+  $\Pi^{s\chi}$ and $\Pi^{t\chi'}$; they are $\Pi^s_{\rm SH}$ and $\Pi'^t_{\rm SH}$ of this record.
+* *The sign.* $G^{\rm det}_{\rm SH}\ge0$. The rotation by the particle number through the angle $\pi/4$ multiplies the term by
+  $-1$ and leaves the rest of the Hamiltonian unchanged, so the two signs give the same physics.
+* *The normal ordering.* The term contains no adjoint field, so it has no contraction of a field with its adjoint, and
+  its normal ordering with respect to the normal vacuum changes nothing.
+* *The weights of the contractions.* A product of two pair operators has three Wick contractions, and all three are pair
+  contractions: the direct one, $\langle\Pi^s_{\rm SH}\rangle\langle\Pi'^t_{\rm SH}\rangle$, and two exchange contractions, which
+  pair the four fields the other two ways. HS decouples the term in the pair channels of $\Pi^s_{\rm SH}$ and $\Pi'^t_{\rm SH}$,
+  with the auxiliary fields of the pairing terms, and keeps the direct contraction with the weight 1 and no exchange
+  contraction, as for the pairing terms. KS and CJT keep all three with the weight 1. KS projects only the normal
+  correlation matrix onto its densities, and this term contains only the pair correlation matrix, so KS and CJT treat it
+  alike.
+* *The range.* $0\le G^{\rm det}_{\rm SH}<G_{\rm SH}$. The pairing terms and the determinant term together are a quadratic form in
+  the four pair operators and their adjoints whose eigenvalues are $G_{\rm SH}\pm G^{\rm det}_{\rm SH}$. For
+  $G^{\rm det}_{\rm SH}<G_{\rm SH}$ all of them are attractive, and the identity of Hubbard and Stratonovich, on which HS rests, holds.
+* *What is held fixed.* The fields, their masses, the cutoff, the couplings $G^{\rm S}_{\rm SF}=-8$, $G^{\rm V}_{\rm SF}=0.8$ and
+  $G_{\rm SH}=100.8$, and the five methods stay those of stages 3 and 4; the new coupling is varied.
+
+*Reasons.* The term is the one the author wrote. The sign convention removes a redundancy without loss of generality.
+The weights follow the rule by which each method treats every other contact term: HS keeps the contraction of the
+channels in which it decouples the term, KS and CJT keep every contraction. The range keeps the attraction in every pair
+channel. With the other couplings fixed, every change of a result is the effect of the new term.
+
 **D11. Documents.** The manuscript `superfluid.md` (with `.tex` and `.pdf`); this record; the MASTER provenance of
 the symbols; a provenance of the code, the computed values and the checks; a provenance of the notebook; and the
 README of the folder. Each document is complete in itself (Rules 4 and 10).
@@ -785,6 +820,7 @@ The work is done as a sequence of objects; each is committed and pushed as soon 
 | O16 | the second version (D30), stage 1: the document of the hypotheses for the three fields, this record, the README and the registry |
 | O17 | the second version, stage 2: the quantum numbers of the three fields, of their pairs and of the bidoublet, the custodial symmetry and the breaking, checked in Rust, Python and the Wolfram Language |
 | O18 | the second version, stage 3: the mean-field superfluid of the three fields by HS, KS and CJT, with the first version as the comparison |
+| O19 | stage 7, the determinant interaction of D32 (c) (decision D36): its mean field in the three methods, the ground state, the mass of the boson of the particle number against the coupling $G^{\rm det}_{\rm SH}$, and the effect of the term on the scale, $\rho$ and the amplitude mode, checked in Rust, Python and the Wolfram Language; the manuscript of the stage, the remarks, the notebook and the article |
 
 The objects O13 and O14 are carried out for the second version, with the first version as the comparison, and as one
 stage. The susceptibilities that give the scale $v_{\rm SH}$ also give $M_Z$ and $\rho$ (decided on 21 November 2026, at the start of the
@@ -861,6 +897,10 @@ introduced by the revision of the hypotheses.
 | $\chi_{\rm SH}$ | the singlet field of the revised hypotheses: a Dirac field, a singlet of $SU(2)_L$ and of colour, with $Y^{\rm SM}=1/4$ |
 | $\Phi_{\rm SH}$ | the pair field of the superfluid of the revised hypotheses, an $SU(2)_L$ doublet with $Y^{\rm SM}=+1/2$ |
 | $G_{\rm SH}$ | the coupling of the pairing term of the doublet-singlet channel |
+| $G^{\rm det}_{\rm SH}$; $\epsilon_{st}$ | the coupling of the determinant interaction of D36; the antisymmetric symbol of two isospin indices, $\epsilon_{\rm ud}=-\epsilon_{\rm du}=1$ |
+| $\Pi^s_{\rm SH}$, $\Pi'^s_{\rm SH}$ | the pair operators of $\Psi_{\rm LL}$ with $\chi_{\rm SH}$ and with $\chi'_{\rm SH}$ (D31), $s={\rm u},{\rm d}$ |
+| $\chi'_{\rm SH}$; $\Phi'_{\rm SH}$ | the second singlet field, with $Y^{\rm SM}=-3/4$ (D30); the second pair field, an $SU(2)_L$ doublet with $Y^{\rm SM}=-1/2$ |
+| $F^{\rm tot}_{\rm SH}$ | the particle number: 1 on every particle of the three fields, $-1$ on every antiparticle |
 | $v_{\rm SH}$ | the scale of the breaking by the superfluid, defined by $M_W=g\,v_{\rm SH}/2$ |
 | $SU(2)_L$, $U(1)_Y$; $Y^{\rm SM}$, $Q^{\rm SM}$; $\Phi^{\rm SM}$ | the electroweak group of the Standard Model, the hypercharge and the electric charge, and the Higgs doublet |
 | $\sin^2\hat\theta_W$, $\hat\alpha(M_Z)$ | the weak mixing angle and the fine-structure constant in the $\overline{\rm MS}$ scheme at the scale $M_Z$ |
@@ -961,3 +1001,5 @@ introduced by the revision of the hypotheses.
 | E61 | 22 Nov 2026, drafted in a test copy before and alongside E60 (until 04:07 PST), finished 04:10 to 04:35 PST | object O15, stage 6 of the second version, part three: the article. The folder `paper_prd` holds the Regular Article "Higgs as a Composite, and Quantum Gravity" for Physical Review D on the second version of the revised hypotheses, with the first version as the comparison: the article (7 pages, REVTeX 4.2 in two columns, with three figures drawn by the new program `python/sh_article_figures.py`), its Supplemental Material (30 pages, with the figure of the effective potential drawn by `python/sh_higgs_figures.py`, every check of the Rust and the Python programs with its deviation and tolerance, and the SHA-256 checksums of the data files and reports), the cover letter (2 pages), the submission information (5 pages) and the folder `submission/` with exactly the files to upload. The new program `paper_prd/scripts/build_paper.py` builds them from the templates of `paper_prd/src/` (rewritten for the revision; the bibliography gains six entries), the fragments of `provenance/generated/` and the data files, and its checks all pass: no undefined or multiply defined reference, labels settled, no lost float, no overfull box wider than 1 pt, and the folder `submission/` compiles alone to the same 7 pages. The article answers, for the second version, whether the superfluid can be the Higgs field of the Standard Model (in its quantum numbers and its gauge-boson masses yes; in the mass of its amplitude mode no, $M_H/v_{\rm SH}={{GENM:hg_mh_over_v_rpa2}}$ against $m_H/v={{GENM:hg_mh_over_v_sm}}$) and whether the Higgs is then composite (yes, by construction). The width of the critical region is not recomputed (D35), and the gravitational sector is an outline (its Sec. X) until task C23. The article replaces that of the earlier hypotheses in this folder: the five figures of that article and its files to upload leave `paper_prd`; they stay in `Revision_HS_CJT_and_Kohn-Sham/paper_prd` and in the history of the repository |
 | E62 | 22 Nov 2026, between the draft and the commit (04:35 PST) | the corrections of the statements of stage 6, part three, each found before the commit by proofreading the built documents; none changed a number of the programs: (1) a draft gave the lightest fermionic excitations masses of a few hundred GeV; the gap of the second version is {{GEN:hg_gap2_gev_range}} GeV; (2) a draft said that $M_H/v_{\rm SH}$ grows near the critical coupling; it is smallest there and grows with the coupling, and the build now checks this at each mass of the second version; (3) statements about the scan, the checks and the broken generators were written for more cases than were computed and now name the cases; (4) the tables of the Supplemental Material printed the symbols of the manuscripts and are now mapped to those of the article, whose symbol table gains $V^{(0)}$ and $V^{(1)}$; (5) the free Hamiltonian of the singlets used an undefined mass $m$; (6) the Supplemental Material did not say why KS and CJT differ in the response of the normal vacuum to the mixings of the fields (such changes leave the span of the Kohn-Sham densities, and only CJT keeps their exchange contraction); (7) the pairing-only methods were named before their definition, the integral of the critical coupling was written $I_1(m)$, and the stages that the tables of the checks name were not explained; (8) the mass matrix of the gauge bosons indexed the hypercharge with 4 without listing the eight generators; (9) in the first version the rank of the susceptibilities is counted among $T^1$, $T^2$, $T^3$, $R_{\rm SH}$ and $F^{\rm tot}_{\rm SH}$, because $SU(2)_{\rm R}$ is not a symmetry there, and the text now says so; (10) the abstract said that the ratio of the scan "stays above" its smallest value; (11) the article said that $\rho_{\rm SH}=1$ at every point of the scan, which holds in the second version only; (12) the factor of 16 to 19 did not say which estimate gives which end |
 | E63 | 22 Nov 2026, between the draft and the commit (04:35 PST) | the corrections of the layout and of the build of stage 6, part three, each found before the commit by proofreading the built documents or by a check of the build: (1) the source named the figures without their folder (found by the check of `submission/`); (2) overfull lines: the equation of the critical coupling is split, and the column widths of the tables of the Supplemental Material are set; (3) the legends of two figures of the article covered curves and were moved; (4) the table of the scale in the Supplemental Material broke across a page and its last two rows appeared under the header of the next table (long tables under REVTeX 4.2); the short tables are now floats; (5) the statements of the checks cited the document of the hypotheses and equations of the manuscripts of the stages; the build replaces these citations by places of the Supplemental Material and stops on any other; (6) the build did not check that the labels had settled, and now runs more passes of LaTeX and fails if they do not; (7) the submission information wrote "2 page(s)" |
+| C26 | 22 Nov 2026, 06:00 | the author's decision on D32: "my decision: (c) Break the symmetry explicitly with a determinant interaction, $\epsilon_{st}\Pi^{s\chi}\Pi^{t\chi'}+{\rm h.c.}$". He added that the term is invariant under $SU(2)_L\times U(1)_Y$ and the custodial symmetry and that its new coupling gives the Goldstone boson a mass. I acknowledged it and said that I would finish and push the stage of task C23 then in hand and then carry out the decision |
+| E64 | 22 Nov 2026, 06:50 to 07:15 | object O19 begun: the decision recorded (D32 now names the author's choice; the decisions of interpretation D36; the object O19 of Section 7; Section 0); the document of the hypotheses states the determinant interaction (4.2a) in H3 with its symmetries, its sign convention and its form in the language of two Higgs doublets, the particle number as a symmetry only for $G^{\rm det}_{\rm SH}=0$ (H4, H5), consequence 3 with the author's choice and the relation of Gell-Mann, Oakes and Renner of the effective Lagrangian, and the new symbols; the README |

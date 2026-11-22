@@ -681,6 +681,11 @@ ENTRIES = [
     (G14, "$G_{\\rm SH}$", "G_SH", "the coupling of the attractive pairing term "
      "$-G_{\\rm SH}\\sum_s[(\\Pi^s_{\\rm SH})^\\dagger\\Pi^s_{\\rm SH}+(\\Pi'^s_{\\rm SH})^\\dagger\\Pi'^s_{\\rm SH}]$ ($s$ = u, d) of the "
      "revised hypotheses, the only pairing term of the interaction; in their first version without the primed terms", "new-SH"),
+    (G14, "$G^{\\rm det}_{\\rm SH}$", "G_det", "the coupling of the determinant interaction "
+     "$-G^{\\rm det}_{\\rm SH}(\\epsilon_{st}\\Pi^s_{\\rm SH}\\Pi'^t_{\\rm SH}+{\\rm h.c.})$ ($\\epsilon_{\\rm ud}=-\\epsilon_{\\rm du}=1$; "
+     "$s$, $t$ = u, d) of the second version of the revised hypotheses, the author's choice of 22 November 2026 for the "
+     "Goldstone boson of the particle number: the term is invariant under $SU(2)_L\\times U(1)_Y$ and the custodial "
+     "symmetry and breaks the particle number explicitly; $G^{\\rm det}_{\\rm SH}\\ge0$ by a convention of the phase", "new-SH"),
     (G14, "$\\Phi_{\\rm SH}$; $\\Phi^{\\rm u}_{\\rm SH}$, $\\Phi^{\\rm d}_{\\rm SH}$", "Phi_SH Phi_u Phi_d", "the pair field of the "
      "superfluid of the revised hypotheses and its two components, the expectation values of the pair operators "
      "$\\Pi^{\\rm u}_{\\rm SH}$, $\\Pi^{\\rm d}_{\\rm SH}$ in the state: a Lorentz scalar, a colour singlet, an $SU(2)_L$ doublet with "
