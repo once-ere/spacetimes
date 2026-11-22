@@ -65,6 +65,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "shhiggs"
+version = "0.1.0"
+dependencies = [
+ "sfcore",
+]
+
+[[package]]
 name = "shquantum"
 version = "0.1.0"
 dependencies = [

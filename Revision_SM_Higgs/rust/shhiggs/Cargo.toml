@@ -1,0 +1,11 @@
+[package]
+name = "shhiggs"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sh_higgs"
+path = "src/main.rs"
+
+[dependencies]
+sfcore = { path = "../sfcore" }

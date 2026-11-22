@@ -261,7 +261,7 @@ KS and CJT; (4) the effective potential, the mass of the amplitude mode
 against \(m_H\), the masses of \(W^\pm_\mu\) and \(Z_\mu\), the massless
 photon and the parameter \(\rho\) (the former stages 4 and 5, merged);
 (6) the dynamics in time, the notebook and the article. Every inherited
-document begins with a note that says so. Stages 1 to 3 are complete for
+document begins with a note that says so. Stages 1 to 4 are complete for
 the second version of the hypotheses (below): the quantum numbers and
 the breaking are checked in Section 6 of the hypotheses document (Rust:
 ALL PASS (55 of 55); Python: ALL PASS (14 of 14); Wolfram, in exact
@@ -272,7 +272,13 @@ of the three fields is computed in the manuscript
 first version as the comparison: in all five methods the ground state is
 the custodial Higgs superfluid, which keeps the electric charge and the
 custodial symmetry and is stable (Rust: ALL PASS (25 of 25); Python: ALL
-PASS (8 of 8); Wolfram: ALL PASS (5 of 5)).
+PASS (8 of 8); Wolfram: ALL PASS (5 of 5)). The scale, the masses of the
+gauge bosons and the amplitude mode are computed in the manuscript
+\texttt{higgs\_masses.md} (\texttt{.tex}, \texttt{.pdf}): the photon is
+massless and \(\rho_{\rm SH}=1\) in the second version, but the
+amplitude mode is \(16\) to \(19\) times too heavy relative to the scale
+(Rust: ALL PASS (27 of 27); Python: ALL PASS (9 of 9); Wolfram: ALL PASS
+(5 of 5)).
 
 \textbf{The second version of the revised hypotheses} (21 November 2026,
 from 19:38 PST). Exploratory computations of stage 4 found that the
@@ -464,6 +470,32 @@ condensate (with the correction of R8), the charges of the lightest
 quasi-particles in both versions, and an artifact of the sharp cutoff in
 the current response of the vacuum.
 
+\textbf{Stage 4 of the revision of the hypotheses} (21 November 2026,
+from 21:50 PST; the former stages 4 and 5, merged). The manuscript
+\texttt{higgs\_masses.md} (\texttt{.tex}, \texttt{.pdf}) computes, for
+the five methods and both versions, the effective potential of the pair
+fields along the direction of the vacuum, the susceptibilities of the
+superfluid to the chemical potentials of the eight generators, the scale
+\(v_{\rm SH}\) and the masses of the gauge bosons, the parameter
+\(\rho_{\rm SH}\), and the amplitude mode by the effective Lagrangian
+and by the linear response at a frequency, with a scan of the coupling
+and the mass. The programs: \texttt{sh\_higgs} of the crate
+\texttt{rust/shhiggs} (ALL PASS (27 of 27)), built on the module
+\texttt{rpa\_n} of the library \texttt{sfcore};
+\texttt{python/sh\_higgs.py} (ALL PASS (9 of 9)); and
+\texttt{wolfram/source/sh\_higgs.wls} (ALL PASS (5 of 5)). The
+superfluid is a minimum of its effective potential; the photon is
+massless; in the second version \(\rho_{\rm SH}=1\) and four generators
+are broken. With \(v_{\rm SH}=246.22\) GeV the cutoff is \(2207\) to
+\(2413\) GeV, and the amplitude mode is \(16\) to \(19\) times heavier
+relative to the scale than the Higgs boson of the Standard Model. In the
+pairing-only methods the linear response has the closed form of the
+theory of Bardeen, Cooper and Schrieffer, which puts the amplitude mode
+exactly at the pair self-energy \(d^0_{\rm SH}\). In the second version
+the amplitude mode comes with a custodial triplet of massive scalars at
+the same frequency: the second version has the scalars of two Higgs
+doublets.
+
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
 
@@ -495,6 +527,13 @@ the hypercharge, the pairing term of the doublet-singlet channel, the
 quantum numbers of the superfluid and why they are those of the Higgs
 doublet, the scale, and the consequences that follow at once & written
 (current) \\
+\texttt{higgs\_masses.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript
+of stage 4 of the revision: the effective potential, the
+susceptibilities to the chemical potentials of the generators, the scale
+and the masses of the gauge bosons, the parameter \(\rho\), the
+amplitude mode by the effective Lagrangian and by the linear response,
+the scan of the coupling and the mass, the checks & written (current,
+second version) \\
 \texttt{higgs\_superfluid.md}, \texttt{.tex}, \texttt{.pdf} & the
 manuscript of stage 3 of the revision: the mean-field superfluid of the
 three fields of the second version of the revised hypotheses by the
@@ -581,10 +620,13 @@ interface for Python, the shared library \texttt{libsfsundials\_c}
 the fields and of their bilinears, the breaking, the masses of the gauge
 fields from the pair field), the module \texttt{uniform\_n} of
 \texttt{sfcore} (the uniform quasi-free states of several Dirac fields
-and their static response) and the program \texttt{sh\_superfluid}
-(crate \texttt{shsuperfluid}: the mean-field superfluid of the two
-fields) & parts I to IV written; stages 2 and 3 of the revision
-written \\
+and their static response) the program \texttt{sh\_superfluid} (crate
+\texttt{shsuperfluid}: the mean-field superfluid of the three fields),
+the module \texttt{rpa\_n} of \texttt{sfcore} (the linear response at a
+frequency of the states of several Dirac fields) and the program
+\texttt{sh\_higgs} (crate \texttt{shhiggs}: the effective potential, the
+susceptibilities, the masses of the gauge bosons and the amplitude mode)
+& parts I to IV written; stages 2 to 4 of the revision written \\
 \texttt{python/} & \texttt{sfcommon.py} (common definitions),
 \texttt{sfsundials.py} (CVODE and IDA through the C interface),
 \texttt{sf\_part1.py}, \texttt{sf\_part2.py}, \texttt{sf\_part3.py},
@@ -595,8 +637,10 @@ figures, and the videos of part IV); \texttt{sh\_quantum.py} (the second
 computation of \texttt{sh\_quantum}); \texttt{sh\_superfluid.py} (the
 second computation of \texttt{sh\_superfluid}, with its own engine and
 the closed forms of the pairing-only ground state and of the current
-response) & parts I to IV written; stages 2 and 3 of the revision
-written \\
+response); \texttt{sh\_higgs.py} (the second computation of
+\texttt{sh\_higgs}: the susceptibilities from the energy, the curvature
+and the amplitude mode of the pairing-only method) & parts I to IV
+written; stages 2 to 4 of the revision written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
 \texttt{part1.source.wl}, \texttt{part2.source.wl},
@@ -614,9 +658,10 @@ the dry run (\texttt{make\_dryrun.py}), and the writer of the data cells
 (\texttt{make\_data\_cells.py}); the exact computations of the checks of
 \texttt{sh\_quantum} and \texttt{sh\_superfluid},
 \texttt{wolfram/source/sh\_quantum.wls} and
-\texttt{wolfram/source/sh\_superfluid.wls} & Parts I and II and the
-sections III.L, III.T and III.G of Part III written; stages 2 and 3 of
-the revision written \\
+\texttt{wolfram/source/sh\_superfluid.wls}, and of \texttt{sh\_higgs},
+\texttt{wolfram/source/sh\_higgs.wls} & Parts I and II and the sections
+III.L, III.T and III.G of Part III written; stages 2 to 4 of the
+revision written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},
@@ -641,8 +686,14 @@ stage 3 the reports \texttt{hck\_sh\_superfluid\_checks.txt},
 \texttt{hck\_sh\_superfluid\_checks\_python.txt},
 \texttt{hck\_sh\_superfluid\_checks\_wolfram.txt} and the data
 \texttt{sh\_sf\_normal\_vacuum.csv}, \texttt{sh\_sf\_states.csv},
-\texttt{sh\_sf\_ground.csv}, \texttt{sh\_sf\_values.csv} & parts I to IV
-written; stages 2 and 3 of the revision written \\
+\texttt{sh\_sf\_ground.csv}, \texttt{sh\_sf\_values.csv}; of stage 4 the
+reports \texttt{hck\_sh\_higgs\_checks.txt},
+\texttt{hck\_sh\_higgs\_checks\_python.txt},
+\texttt{hck\_sh\_higgs\_checks\_wolfram.txt} and the data
+\texttt{sh\_hg\_potential.csv}, \texttt{sh\_hg\_minimum.csv},
+\texttt{sh\_hg\_susceptibility.csv}, \texttt{sh\_hg\_masses.csv},
+\texttt{sh\_hg\_scan.csv}, \texttt{sh\_hg\_values.csv} & parts I to IV
+written; stages 2 to 4 of the revision written \\
 \texttt{figures/}, \texttt{videos/} & the figures
 (\texttt{fig\_part1\_*}, \texttt{fig\_part2\_*}, \texttt{fig\_part3\_*},
 \texttt{fig\_part4\_*}, each \texttt{.pdf} and \texttt{.png}) and the
@@ -661,6 +712,10 @@ written \\
 reports and data of stage 3 of the revision into the tables and numbers
 of \texttt{higgs\_superfluid.md} and of the remarks R8 to R10
 (\texttt{provenance/generated/sh\_superfluid.md}) & written \\
+\texttt{code/scripts/write\_sh\_higgs\_fragments.py} & turns the reports
+and data of stage 4 of the revision into the tables and numbers of
+\texttt{higgs\_masses.md} (\texttt{provenance/generated/sh\_higgs.md}) &
+written \\
 \texttt{code/scripts/write\_bound\_fragments.py} & writes every bound of
 agreement stated in the manuscript and in
 \texttt{provenance/P4\_remarks.md} from the reports of the checks (the
@@ -717,6 +772,11 @@ folder \texttt{Revision\_SM\_Higgs}:
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_superfluid.wls data/sh\_sf\_normal\_vacuum.csv data/sh\_sf\_ground.csv }\DataTypeTok{\textbackslash{}}
 \NormalTok{    data/hck\_sh\_superfluid\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_superfluid\_fragments.py }\CommentTok{\# the tables and numbers of stage 3}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_higgs}\KeywordTok{)}        \CommentTok{\# revision, stage 4: the masses (about 35 minutes on two threads)}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ python }\KeywordTok{\&\&} \ExtensionTok{python3}\NormalTok{ sh\_higgs.py}\KeywordTok{)}            \CommentTok{\# revision, stage 4: the Python computation (after sh\_higgs)}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_higgs.wls data/sh\_hg\_minimum.csv data/sh\_hg\_masses.csv data/sh\_hg\_values.csv }\DataTypeTok{\textbackslash{}}
+\NormalTok{    data/hck\_sh\_higgs\_checks\_wolfram.txt}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_higgs\_fragments.py }\CommentTok{\# the tables and numbers of stage 4}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_notebook\_fragments.py }\CommentTok{\# the tables of the provenance of the notebook (from data/hck\_notebook\_log.txt)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}

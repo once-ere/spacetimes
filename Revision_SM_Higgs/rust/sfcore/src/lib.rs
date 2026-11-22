@@ -24,6 +24,9 @@
 //! * `rpa` -- the linear response of uniform states (the static stability and the collective modes);
 //! * `uniform_n` -- the uniform quasi-free states of a field of several Dirac fields (the isodoublet and the singlet of
 //!   the revised hypotheses), the generalization of `uniform`, with the static response by central differences.
+//! * `rpa_n` -- the linear response at a frequency of the uniform states of `uniform_n` in a chosen sector of the
+//!   amplitudes (the collective modes at zero momentum, among them the amplitude mode of the Higgs superfluid), the
+//!   generalization of `rpa`.
 pub mod algebra;
 pub mod c64;
 pub mod cmat;
@@ -39,4 +42,5 @@ pub mod rng;
 pub mod rpa;
 pub mod sturm;
 pub mod uniform;
+pub mod rpa_n;
 pub mod uniform_n;
