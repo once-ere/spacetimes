@@ -9,9 +9,15 @@
    checks of the Rust program sh_quantum repeated in EXACT arithmetic (rational numbers, square
    roots and symbols), so that the floating-point tolerances of the Rust and Python programs are not
    needed.  The identifier of a check is W and the name of the family of checks of the Rust program
-   that tests the same statements: WQN-n tests those of QN-na, QN-nb, ... (and the Python check
-   YQN-n), except that WQN-10e tests those of QN-10e and QN-10f, WQN-11f those of QN-11f and QN-11g,
-   and the family QN-3 (the free Hamiltonians) has no check here.
+   to which its statements belong (and of the Python check YQN-n of the same family); a check need
+   not test every statement of its family.  The Rust checks that each one tests:
+     WQN-1 QN-1a to QN-1e; WQN-2 QN-2a, QN-2b; WQN-4 QN-4a to QN-4c; WQN-5 QN-5a to QN-5c;
+     WQN-6 QN-6a to QN-6e (and, infinitesimally, the Lorentz invariance of QN-9e: its spaces are the
+     null spaces of the Lorentz generators); WQN-7 QN-7; WQN-8 QN-8a to QN-8g; WQN-9 QN-9a to QN-9d
+     (infinitesimally); WQN-10 QN-10a to QN-10c and QN-10g; WQN-10e QN-10e, QN-10f; WQN-11 QN-11b,
+     QN-11d, QN-11e; WQN-11f QN-11f, QN-11g; WQN-12 QN-12b, QN-12d, QN-12f.  The families QN-3 (the
+     free Hamiltonians) and the checks QN-10d, QN-11a, QN-11c, QN-12a, QN-12c, QN-12e and QN-12g have
+     no counterpart here.
 
    The finite transformations of the checks QN-9 are replaced by their infinitesimal form (WQN-9):
    the groups are connected, so every element is a product of exponentials of generators, and the
@@ -346,7 +352,7 @@ along (0, 0, g', g), and rho = 1 (symbolic couplings and lengths)", ok12,
 out = StringJoin[
   "sh_quantum.wls: the exact computation of the checks of sh_quantum, second version (Revision_SM_Higgs, PROJECT \
 spacetimes)\n",
-  "Each line: PASS or FAIL, the identifier (W and the family of checks of the Rust program that test the same statements), the statement and, in brackets, the\n",
+  "Each line: PASS or FAIL, the identifier (W and the family of checks of the Rust program to which its statements belong), the statement and, in brackets, the\n",
   "facts that decide it.  Exact arithmetic: no tolerance.\n\n",
   StringRiffle[lines, "\n"], "\n\nNotes:\n",
   "  Wolfram Language " <> ToString[IntegerPart[$VersionNumber]] <> "." <> ToString[Round[10 FractionalPart[$VersionNumber]]] <>

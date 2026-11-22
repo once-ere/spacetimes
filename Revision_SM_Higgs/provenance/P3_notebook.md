@@ -7,13 +7,15 @@ date: "November 21, 2026"
 
 <!-- This file is generated from docs_src/P3_notebook.src.md by code/scripts/assemble_docs.py; edit the source. -->
 
-**The state of this document under the revised hypotheses (21 November 2026).** This document was inherited
-unchanged from the earlier hypotheses, under which the spinor field was the DiracLike spinor with the electric charge 0
-and $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ was a new gauge group. The hypotheses of this folder are different:
-$SU(2)_{\rm v}$ is $SU(2)_L$, the fermion number is the hypercharge ($Y^{\rm SM}=F_{\rm LL}/4$), a singlet field $\chi_{\rm SH}$
-is added, and the superfluid is the condensate of the pairs of a particle of $\Psi_{\rm LL}$ and a particle of
-$\chi_{\rm SH}$, which has the quantum numbers of the Higgs doublet. Every statement below that depends on the earlier
-hypotheses is replaced as this document is rewritten for the revised ones.
+**The state of this document under the revised hypotheses (21 and 22 November 2026).** Sections 1 to 9 were written
+for the notebook of the earlier hypotheses, under which the spinor field was the DiracLike spinor with the electric
+charge 0 and $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ was a new gauge group; Parts I to III of the notebook state those
+hypotheses. Under the revised hypotheses of this folder, in their second version, $SU(2)_{\rm v}$ is $SU(2)_L$, the
+isodoublet $\Psi_{\rm LL}$ is joined by the singlets $\chi_{\rm SH}$ (hypercharge $\tfrac14$) and $\chi'_{\rm SH}$ (hypercharge
+$-\tfrac34$), and the superfluid is the condensate of the pairs of a particle of $\Psi_{\rm LL}$ with a particle of a singlet,
+whose two pair fields have the quantum numbers of the Higgs doublet. Part R of the notebook, added on 22 November 2026,
+states the revised hypotheses and repeats the checks of the four stages of the revision; Section 10 records it, and
+Sections 2 to 6 and 9 name it where they describe the whole notebook.
 
 # 1. What this document is
 
@@ -53,7 +55,7 @@ width of the critical region; the superfluid as the Higgs sector of its own gaug
 Higgs field of the Standard Model (the DiracLike spinor has electric charge 0 and no electroweak quantum numbers), the
 couplings of the amplitude field by exact differentiation, and whether the Higgs is a composite particle; the second
 addendum asked for by the author on 21 November 2026, with its three remarks; and, at the end of Part II, the remark on
-the zeugon, the massless gauge boson of the superfluid), with 153 checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
+the zeugon, the massless gauge boson of the superfluid), with 181 checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
 in every vacuum, the surviving symmetry and the dynamics with IDA) follow in the next versions. The first section of
 Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
 cell of data with the SHA-256 checksums of its files) and recomputes every number from them; Section III.T computes the
@@ -64,16 +66,23 @@ modules `ginzburg` and `higgs` of the Rust program from a fourth closed cell; Pa
 them with the values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time
 integration.
 
+**Part R (22 November 2026).** The notebook now ends with Part R, the revised hypotheses (Section 10): the quantum
+numbers of the three fields and of their pairs (stage 2 of the revision), the ground state of the superfluid (stage 3),
+the masses of the gauge bosons and the modes (stage 4) and the dynamics in time (stage 6), with the remarks R8 to R12,
+in 28 checks; with them the notebook has 181 checks. Part R takes the tables of the Rust programs of the
+revision from a fifth closed cell of data and integrates the reduced model of stage 6 with the method IDA inside
+`NDSolve`.
+
 # 3. The files
 
 The files of the notebook, each with its SHA-256 checksum:
 
 * `superfluid.nb`: the notebook, evaluated in the front end of Wolfram (inputs, printed checks, the table of all checks);\
-  `b0e1def3bdf55f3762fb33f3b879c24bc4dbe4991727250bda44353e226ecc35`
+  `133a3b14343b90f2adbe17d31d038639f2bb53feab1b2f0a5ffe9afabe570b99`
 * `superfluid_notebook.pdf`: the evaluated notebook printed by the front end, for readers without Wolfram;\
-  `a327324e13741d2a42a67497eb2303fa3e75f8445ad2ad85748a01749b69b962`
+  `13b2f9bfae8ede21eb4afb8e055ab6e53d3c2586268f42f7b846d9cbf76ec2ee`
 * `wolfram/source/superfluid.source.wl`: the source of the notebook: the title, the introduction, chapter 0 (the register of the checks) and the final list of all checks; it includes the sources of the parts;\
-  `4eca9dfd3023b14a4840197277922416887c7ad55d310a76fb240844840ef753`
+  `182d76d75e5416c249b6979690253b441c7078ef329d6f88e3018bc15b789e5c`
 * `wolfram/source/part1.source.wl`: the source of Part I;\
   `82e6e590de5995275a920f1a96ea97c43d49ab364d02a7a01988b81110eb0879`
 * `wolfram/source/part2.source.wl`: the source of Part II;\
@@ -104,6 +113,13 @@ The files of the notebook, each with its SHA-256 checksum:
   included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
   first lines name the data files and their SHA-256 checksums);\
   `8aabc404d7c5ef67f5670eb73da39446c8289e240d299706d9b409fc6344089c`
+* `wolfram/source/part_revision.source.wl`: the source of Part R (the revised hypotheses; Section 10);\
+  `16b1307c9db03357369c791a8d2a92b401e96ca9dc5c4af0a2d7d7cb02c9f8bf`
+* `wolfram/source/data_partR.wl`: the tables of the Rust programs of the revision (the channels of stage 2, the normal
+  vacuum and the ground states of stage 3, the minimum, the masses and the values of stage 4, the runs and, of the
+  signals of stage 6, the rows that the checks use), every field as a string, included in a closed cell of the notebook
+  (written by `wolfram/tools/make_data_cells.py R`; its first lines name the data files and their SHA-256 checksums);\
+  `0df097f31f5630e03838f8054ff6c696e278b693383ffb571dfa08a5ad4a50c2`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
   `89584b3fb5c1bd6d576f076695be37ec716b88aa0157b6d5acf497354738fcbb`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
@@ -121,14 +137,14 @@ The files of the notebook, each with its SHA-256 checksum:
 * `wolfram/tools/make_dryrun.py`: writes the code of all input cells into one file for a test run by `wolframscript` without the front end;\
   `e08e498dbae36ade3664a5a4a4ffdac4da5ee9ecc45a1189f25e03d18eca2fa1`
 * `data/hck_notebook_log.txt`: the log of the evaluation: the version of Wolfram, the counts of the cells, every message and printed line, one line per check;\
-  `81751603dad3553440e2726d316f004212cca0e1c4eea0ee88bbb1529f2f7eae`
+  `8599108efc70155d07a6c7d93cdbdc9729b2803640afdc558247dc60e1f9b29e`
 * `data/hck_notebook_results.wl`: the register of the checks, written by the kernel at the end of the evaluation;\
-  `34428f32d6b820e829144ffa83a4f55aecabf6353eaa8f0e9b719cf25abf08d8`
+  `3a785c6515d231be2f49b909ec0c2d505558b53eca87df8a1dd209b812ce7a93`
 * `data/hck_notebook_build.txt`: the report of the builder when it built the notebook that was evaluated (the
   counts of the cells, of the closed cells of data, of the formulas in the texts and of the warnings);\
-  `f5a6a8e402fdb1953635f31f819913f112746102af95d514070c462da066be8e`
+  `c2a48bd1d3cb7f96d0122e0edff448bab2f5aa1f3e6e32fc3a44ab685b8a9610`
 * `code/scripts/write_notebook_fragments.py`: writes the tables and numbers of this document from the log and the reports;\
-  `cebc6154da523aca00c27cfe68b6dbe7f6a39ebef72e87883795434b55777a6f`
+  `732101dc280ca1a37ccf6187a2f544143ca60a2260b26bb7f3093007de028ecd`
 
 The builder, the reader of formulas and the evaluation script were first written for the notebook `3+1super-loop.nb` of
 the project; they are copied into this folder with their contexts renamed (from `SL31` to `SFNB`), so that this folder
@@ -148,13 +164,13 @@ which every cell begins with a marker line such as `(* ::Text:: *)` or `(* ::Inp
         wolfram/tools/sf_formula.wl
 
 The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)`,
-`(* @@INCLUDECELLS part3_landau.source.wl@@ *)`, `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)` and
-`(* @@INCLUDECELLS part3_ginzburg.source.wl@@ *)` of the main source
+`(* @@INCLUDECELLS part3_landau.source.wl@@ *)`, `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)`,
+`(* @@INCLUDECELLS part3_ginzburg.source.wl@@ *)` and `(* @@INCLUDECELLS part_revision.source.wl@@ *)` of the main source
 by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
 every input cell (so that comments, line breaks and indentation stay as written), and reports every formula that the
-reader cannot read as a warning. This version: 262 cells (4 of them closed cells of data), 995 formulas in the texts, 0 warnings (the builder's own count, printed when it ran
+reader cannot read as a warning. This version: 403 cells (5 of them closed cells of data), 1574 formulas in the texts, 0 warnings (the builder's own count, printed when it ran
 and kept in `data/hck_notebook_build.txt`).
 
 **How it is evaluated.** The notebook is evaluated in the front end of the running Wolfram application, exactly as by
@@ -175,14 +191,14 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (246 seconds in this version, of which Part II takes about two minutes, Section III.T about half a minute and
-Section III.G about 83 seconds, by the times that the dry run prints after its checks); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
+kernel (243 seconds in this version, of which Part II takes about two minutes, Section III.T about half a minute,
+Section III.G about 80 seconds and Part R about 3 seconds, by the times that the dry run prints after its checks); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
 # 5. The evaluation of this version
 
-15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 263 seconds; 56 input cells, 56 of them evaluated; 16 output cells; 171 printed lines; **0 messages** (no error and no
-warning of the Wolfram language); verdict: **ALL PASS (153 of 153), 0 messages**.
+15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026); 305 seconds; 93 input cells, 93 of them evaluated; 16 output cells; 211 printed lines; **0 messages** (no error and no
+warning of the Wolfram language); verdict: **ALL PASS (181 of 181), 0 messages**.
 
 # 6. The checks and their counterparts
 
@@ -192,7 +208,12 @@ its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Pa
 P3-T1 to P3-T9 of Section III.T and whose modules `ginzburg` and `higgs` make the checks P3-G1 to P3-G12 and P3-H1 to
 P3-H3 of Section III.G) and in the Python program
 (`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
-steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
+steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The checks of Part R carry the
+identifiers of the Wolfram scripts of the revision instead: W, the letters of the stage (QN, SF, H, D) and a number
+(decision D34 of the task record). They name as counterparts the checks of the Rust programs `sh_quantum`,
+`sh_superfluid`, `sh_higgs` and `sh_dynamics` and of the Python programs `python/sh_quantum.py`, `sh_superfluid.py`,
+`sh_higgs.py` and `sh_dynamics.py` that test the same statements, as ranges ("QN-1a to QN-1e", each of which must have
+passed) or "none" where no program of the other language tests the statement. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
 program that writes the table stops with an error if a counterpart is missing from its report or did not pass.
 
@@ -351,10 +372,40 @@ program that writes the table stops with an error if a counterpart is missing fr
 | WP3-H3 KS | PASS | $2.253\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 KS (PASS), $3.369\times10^{-16}$ | YP3-H3 KS (PASS), $2.514\times10^{-13}$ | KS: the numbers of the Higgs sector (v\_SF = 0.13140786, M\_H/v\_SF = 4.59239, lambda = 10.545, Gamma/M\_H = 2.1349) = Rust (largest relative difference) |
 | WP3-H1 CJT | PASS | -- | -- | P3-H1 CJT (PASS), $0$ | YP3-H1 CJT (PASS), -- | CJT: the amplitude mode lies below the threshold of two quasi-particles: M\_H = 0.603476 &lt; 2 E\_gap = 0.7327813 (the gap of the ground state computed by the notebook) [M\_H / 2 E\_gap = 0.82354] |
 | WP3-H3 CJT | PASS | $3.085\times10^{-13}$ | $1.000\times10^{-9}$ | P3-H3 CJT (PASS), $3.573\times10^{-16}$ | YP3-H3 CJT (PASS), $3.085\times10^{-13}$ | CJT: the numbers of the Higgs sector (v\_SF = 0.13531998, M\_H/v\_SF = 4.45962, lambda = 9.94412, Gamma/M\_H = 2.1349) = Rust (largest relative difference) |
+| WQN-1 | PASS | -- | -- | QN-1a (PASS), $0$; QN-1b (PASS), $0$; QN-1c (PASS), $0$; QN-1d (PASS), $0$; QN-1e (PASS), -- | YQN-1 (PASS), -- | the algebra of SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F\_tot, Hermitian generators, Y = T\^3\_R + R/4 (4.3), Q = T\^3 + T\^3\_R + R/4, and [Y, T\^1\_R] != 0 [identities of exact matrices] |
+| WQN-2 | PASS | -- | -- | QN-2a (PASS), --; QN-2b (PASS), $0$ | YQN-2 (PASS), -- | the six real Lorentz generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting with the ten internal generators [identities of exact matrices; real rank 6] |
+| WQN-4 | PASS | -- | -- | QN-4a (PASS), $0$; QN-4b (PASS), $0$; QN-4c (PASS), $0$ | YQN-4 (PASS), -- | Q = 3/4 (up), -1/4 (down) on Psi\_LL, 1/4 on chi\_SH, -3/4 on chi'\_SH; 4 Y = F\_tot on Psi\_LL and chi\_SH, -3 F\_tot on chi'\_SH; the Casimir operators 3/4 of SU(2)\_L on Psi\_LL and of SU(2)\_R on the singlets [Q on the components 0..15: {3/4, -1/4, 3/4, -1/4, 3/4, -1/4, 3/4, -1/4, 1/4, 1/4, 1/4, 1/4, -3/4, -3/4, -3/4, -3/4}] |
+| WQN-5 | PASS | -- | -- | QN-5a (PASS), $0$; QN-5b (PASS), $0$; QN-5c (PASS), -- | YQN-5 (PASS), -- | no anomaly (47 traces exactly 0), vector-like fields, an even number of Weyl doublets [2 Weyl doublets] |
+| WQN-6 | PASS | -- | -- | QN-6a (PASS), --; QN-6b (PASS), --; QN-6c (PASS), --; QN-6d (PASS), $3.201\times10^{-16}$; QN-6e (PASS), -- | YQN-6 (PASS), -- | the dimensions 6, 4, 4, 2, 2, 2 (pairs Psi Psi, Psi chi, Psi chi', chi chi, chi chi', chi' chi'), 8, 4, 4, 2, 2, 2 (particle-antiparticle), 2, 0, 0 (symmetric Psi Psi, chi chi, chi' chi'), 8, 6, 8, 8 (the pair of singlets as one field); C gamma\^ch (x) e\_s, C (x) e\_s are invariant and span the pairs Psi chi and Psi chi' [dimensions {6, 4, 4, 2, 2, 2, 8, 4, 4, 2, 2, 2}, symmetric {2, 0, 0}, custodial {8, 6, 8, 8}] |
+| WQN-7 | PASS | -- | -- | QN-7 (PASS), $0$ | YQN-7 (PASS), $0$ | parity: +1 for C gamma\^ch (x) e\_s, -1 for C (x) e\_s, with either singlet [identities of exact matrices] |
+| WQN-8 | PASS | -- | -- | QN-8a (PASS), $0$; QN-8b (PASS), $0$; QN-8c (PASS), $0$; QN-8d (PASS), $0$; QN-8e (PASS), $0$; QN-8f (PASS), $0$; QN-8g (PASS), -- | YQN-8 (PASS), -- | on Phi\_SH: tau\^a/2, Y = 1/2, Q = diag(1, 0); on Phi'\_SH: tau\^a/2, Y = -1/2, Q = diag(0, -1); F\_tot = 2, R = 0, T\^3\_R = +-1/2, Casimir 3/4, closure; i tau\^2 Phi'\^\* has tau\^a/2 and Y = 1/2; the bidoublet has (tau\^a/2) (x) 1 and 1 (x) (tau\^a/2): M\_SH -> L M\_SH R\^T [G\_Y = {{1/2, 0}, {0, 1/2}} and {{-1/2, 0}, {0, -1/2}}] |
+| WQN-9 | PASS | -- | -- | QN-9a (PASS), $1.056\times10^{-14}$; QN-9b (PASS), $1.754\times10^{-14}$; QN-9c (PASS), $5.251\times10^{-14}$; QN-9d (PASS), -- | YQN-9a (PASS), $3.629\times10^{-15}$; YQN-9b (PASS), $1.494\times10^{-15}$ | the generators on Phi\_SH, Phi'\_SH and M\_SH are Hermitian, so the pairing term (4.2) is invariant; det M\_SH has the charges 0 under T\^a, T\^a\_R, R and Y and 4 under F\_tot (the determinant term breaks only U(1)\_F\_tot) [charges of det M\_SH {0, 0, 0, 0, 0, 0, 0, 0, 4}] |
+| WQN-10 | PASS | -- | -- | QN-10a (PASS), $3.159\times10^{-15}$; QN-10b (PASS), --; QN-10c (PASS), --; QN-10g (PASS), -- | YQN-10 (PASS), -- | the 24 channels (parity split, closure, SU(2) multiplets, Y, Q, F\_tot, R, T\^3\_R) and the 8 custodial channels (SU(2)\_L x SU(2)\_R multiplets) agree with the tables of the Rust program [all 24 and all 8 agree; custodial: Psi (chi, chi') (2,2); (chi, chi') (chi, chi') (1,3); Psi\^dag (chi, chi') (2,2); (chi, chi')\^dag (chi, chi') (1,1) + (1,3)] |
+| WQN-10e | PASS | -- | -- | QN-10e (PASS), --; QN-10f (PASS), -- | YQN-10 (PASS), -- | no pair of two particles of one field and no chi chi' pair is neutral; the pair channels have exactly one neutral component each in Psi chi and Psi chi' and none elsewhere [smallest absolute value of Q 1/2; neutral components of the 12 pair channels {0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0}] |
+| WQN-11 | PASS | -- | -- | QN-11b (PASS), --; QN-11d (PASS), --; QN-11e (PASS), -- | YQN-11 (PASS), -- | the stabilizer of (0, phi) and of the neutral vacuum of H5 in SU(2)\_L x U(1)\_Y is spanned by Q; that of i tau\^2 among the eight generators is spanned by T\^a + T\^a\_R and R, three gauged generators and F\_tot are broken; other phases with equal lengths keep four generators, unequal lengths only T\^3 + T\^3\_R and R [stabilizer of i tau\^2 {{0, 0, 0, 0, 0, 0, 1, 0}, {0, 0, 1, 0, 0, 1, 0, 0}, {0, 1, 0, 0, 1, 0, 0, 0}, {1, 0, 0, 1, 0, 0, 0, 0}}] |
+| WQN-11f | PASS | -- | -- | QN-11f (PASS), --; QN-11g (PASS), -- | YQN-11 (PASS), -- | a generic second condensate with a charged component, added to the neutral vacuum of H5, breaks Q; one in the neutral part of a channel keeps exactly Q [24 of 24 channels as expected] |
+| WQN-12 | PASS | -- | -- | QN-12b (PASS), $1.094\times10^{-16}$; QN-12d (PASS), $5.551\times10^{-17}$; QN-12f (PASS), $4.375\times10^{-16}$ | YQN-12 (PASS), $4.375\times10^{-16}$ | the mass matrix of (W\^1, W\^2, W\^3, B) from Phi\_SH = (0, phi) and Phi'\_SH = (phi', 0): eigenvalues 0, g\^2 v\_SH\^2/4 (twice), (g\^2 + g'\^2) v\_SH\^2/4 with v\_SH\^2 = 2 (phi\^2 + phi'\^2) for any phi, phi', the massless vector along (0, 0, g', g), and rho = 1 (symbolic couplings and lengths) [eigenvalues {0, (g\^2\*(ph\^2 + php\^2))/2, (g\^2\*(ph\^2 + php\^2))/2, ((g\^2 + gp\^2)\*(ph\^2 + php\^2))/2}] |
+| WSF-2a | PASS | -- | -- | SF-2a (PASS), $3.508\times10^{-11}$ | YSF-2 (PASS), $4.270\times10^{-11}$ | the triplet matrix K\^3 couples the up and down components of Psi\_LL by -C gamma\^ch in both blocks (Psi\^T K\^3 Psi = -2 Psi\_u\^T C gamma\^ch Psi\_d); K\_d couples the down components and chi\_SH, K'\_u the up components and chi'\_SH, by C gamma\^ch / 2 in both blocks: the same channel with half the coefficient, so the pairing term -(G/4) /Psi\^T K Psi/\^2 has the critical coupling G\^crit\_SH = 4 G\^crit\_LL [identities of exact matrices] |
+| WSF-2b | PASS | -- | -- | SF-2a (PASS), $3.508\times10^{-11}$ | YSF-2 (PASS), $4.270\times10^{-11}$ | I1(m) = int\_0\^1 q\^2 / sqrt(q\^2 + m\^2) dq = (sqrt(1 + m\^2) - m\^2 arsinh(1/m)) / 2 (the exact integral equals it at ten masses, to 40 digits); G\^crit\_SH = 4 pi\^2 / I1(1/5) = 85.146439022198692144 and G\_SH / G\^crit\_SH = 1.183842814303957 (G\_SH = 504/5), against the Rust values of both versions [deviation 3.508e-11] |
+| WSF-3 | PASS | -- | -- | SF-3a (PASS), $7.517\times10^{-12}$; SF-3b (PASS), -- | YSF-3 (PASS), $8.011\times10^{-12}$ | the exchange contraction of the pairing terms: a scalar density n of Psi\_LL gives each paired singlet the self-energy -(G\_SH/16) n beta and a scalar density of a paired singlet gives Psi\_LL -(G\_SH/16) n beta (x) 1\_2 (exact); the susceptibility chi\_S = (2/pi\^2) int\_0\^1 q\^4/(q\^2 + m\^2)\^(3/2) dq = 0.08316014730342272 (Psi\_LL; half for a singlet); the largest eigenvalue of the 3 x 3 scalar response of CJT for V\^(1)\_SH = 0.915274035123 (second version) and 0.789268068370 (first), against the Rust values [deviation 1.063e-11] |
+| WSF-4 | PASS | -- | -- | SF-4a (PASS), $1.350\times10^{-11}$ | none | the scalar triplet pair coupling of KS and CJT, -(1/4) G\^S - G\^V = 6/5, and its eigenvalue in the normal vacuum, (6/5) I1(1/5) / pi\^2 = 0.05637346734780750, against the Rust value [deviation 8.097e-12] |
+| WSF-5 | PASS | -- | -- | SF-6a (PASS), --; SF-6b (PASS), -- | YSF-6 (PASS), $4.955\times10^{-10}$; YSF-12 (PASS), $1.562\times10^{-12}$ | HS (0, 1) and HS (0, 0), where only the pairing terms act: the gap equation G\_SH I1(M\_eff) / (4 pi\^2) = 1 gives M\_eff = 0.4529674056079986 and /D/ = 2 (M\_eff\^2 - m\^2)\^(1/2) = 0.8128455463204339 (30 digits); the singular values of the bidoublet of the Rust program are /D/ and /D/ in the second version and /D/ and 0 in the first [deviation 4.841e-12] |
+| WH-1 | PASS | -- | -- | H-4f (PASS), $2.447\times10^{-13}$; H-4g (PASS), $8.096\times10^{-13}$; H-5a (PASS), $1.703\times10^{-13}$; H-5b (PASS), $2.018\times10^{-13}$; H-6b (PASS), $1.569\times10^{-13}$ | YH-2 (PASS), $2.882\times10^{-9}$ | the effective Lagrangian Z tr((dM)\^dag dM) of the bidoublet at M = phi i tau\^2: chi(T\^a, T\^b) = chi(T\^a\_R, T\^b\_R) = -chi(T\^a, T\^b\_R) = Z phi\^2 delta\_ab; with Y = T\^3\_R + R/4 the charge Q = T\^3 + Y does not respond; the mass matrix of (W\^1, W\^2, W\^3, B) has the eigenvalues 0, g\^2 Z phi\^2 (twice), (g\^2 + g'\^2) Z phi\^2, so M\_W = g v/2 and M\_Z = (g\^2 + g'\^2)\^(1/2) v/2 with v\^2 = 4 Z phi\^2, and rho = 1 (symbolic) [eigenvalues {0, g\^2\*phi\^2\*zz, g\^2\*phi\^2\*zz, (g\^2 + gp\^2)\*phi\^2\*zz}] |
+| WH-2 | PASS | -- | -- | none (the column M_EFT) | YH-5 (PASS), $1.768\times10^{-16}$ | the effective Lagrangian of the pair fields gives the mass of the amplitude mode M\^2 = V'' phi\_0\^2 / (4 chi\^{33}) in both versions: second version chi\^{33} = phi0\^2\*zz, M\^2 = V''/(4 Z); first version chi\^{33} = (phi0\^2\*zz)/2, M\^2 = V''/(2 Z) (symbolic) [identities] |
+| WH-3 | PASS | -- | -- | H-2b (PASS), --; H-2c (PASS), $2.302\times10^{-4}$; H-8a (PASS), $8.549\times10^{-14}$ | YH-1 (PASS), $6.455\times10^{-13}$; YH-3 (PASS), $2.016\times10^{-10}$ | HS (0, 0): the gap equation (G\_SH / 4 pi\^2) I1(M\_eff) = 1 gives M\_eff = 0.4529674056079986, d\_0 = 0.8128455463204339, phi\_0 = d\_0 I1 / (4 pi\^2) = d\_0 / G\_SH = 0.008063943911909066; dI1/dM = -M J with J = arsinh(1/M) - (1 + M\^2)\^(-1/2) (exact; J equals its integral to 40 digits); V''(phi\_0) = 2 pi\^2 d\_0\^2 J / (I1 (I1 - d\_0\^2 J/4)) = 71.68031758679552 for one pair (first version) and twice that, 143.3606351735910, for the two pairs of the second version; against the Rust values (relative) [deviation 1.260e-8] |
+| WH-4 | PASS | -- | -- | none (the columns in GeV) | YH-5 (PASS), $1.768\times10^{-16}$ | m\_H / v = 125.13 / v = 0.5082047224 (the inputs of stage 2); for every row of the masses, Lambda\_LL = v / v\_SH, M\_H = omega\_H Lambda\_LL and M\_H / v = omega\_H / v\_SH (relative); the amplitude modes of the linear response give M\_H / v from 7.96732 to 10.1624, 15.68 to 20.00 times the value of the Standard Model [deviation 8.766e-17] |
+| WH-5 | PASS | -- | -- | H-7d (PASS), $1.990\times10^{-13}$; H-8d (PASS), $1.030\times10^{-12}$ | YH-7 (PASS), $9.853\times10^{-16}$ | HS (0, 0): the identity (k\^2 + m\^2) / (E (E\^2 - w\^2/4)) - 1/E = (w\^2 - d\^2) / (4 E (E\^2 - w\^2/4)) with E\^2 = k\^2 + m\^2 + d\^2/4 holds for every momentum (symbolic) and E\^2 - w\^2/4 > 0 for w &lt; 2 M\_eff (symbolic), so that lambda\_amp(w) = 1 only at w = d\_0; the continuum integrals give /lambda\_amp(d\_0) - 1/ = 0 and /lambda\_phase(0) - 1/ = 0 (the gap equation), the root of lambda\_amp = 1 is 0.81284554632043386736 against d\_0 = 0.81284554632043386736, below 2 M\_eff = 0.9059348112159973 (binding 0.0930893); the amplitude modes of the Rust program (HS (0, 1) and HS (0, 0), both versions) equal d\_0 (relative) [identity True, positivity True; Rust deviation 8.442e-13] |
+| WD-1 | PASS | -- | -- | D-3a (PASS), $1.097\times10^{-6}$; D-3b (PASS), $6.115\times10^{-10}$; D-3c (PASS), $1.991\times10^{-8}$ | YD-2a (PASS), $3.611\times10^{-7}$; YD-2b (PASS), $5.922\times10^{-9}$ | the time-dependent mean field i dR/dt = [H, R] conserves tr(H R) when H is the derivative of the energy (d tr(H R)/dt = -i tr(H [H, R]) = 0), keeps R Hermitian, and keeps a projector a projector (symbolic, 3 x 3 Hermitian matrices with symbolic entries; the projector of rank 1 along the first axis) [energy True, hermiticity True, projector True] |
+| WD-2 | PASS | -- | -- | D-6a (PASS), $1.045\times10^{-9}$; D-6b (PASS), $1.481\times10^{-9}$ | YD-5 (PASS), $1.045\times10^{-9}$ | the Josephson relation: exp(i mu F t) R\_0 exp(-i mu F t) solves i dR/dt = [H - mu F, R] for a stationary R\_0 and multiplies the pair block by exp(2 i mu t) (symbolic); the phases of d(t) of the Josephson runs of the Rust program grow at the rate 2 mu = 0.02 (straight-line fit in exact arithmetic on the numbers of the file; relative) [rates josephson\_second\_HS0\_0 0.0199999999791, josephson\_second\_CJT 0.0200000000125; deviation 1.045e-9] |
+| WD-3 | PASS | -- | -- | D-4a (PASS), $1.239\times10^{-6}$ | YD-3 (PASS), $1.241\times10^{-6}$ | the peaks of the amplitude runs of HS (0, 1) and HS (0, 0) of the Rust program (both versions) lie at d\_0 = 0.81284554632043386736 of the gap equation (relative) [deviation 1.239e-6] |
+| WD-4 | PASS | -- | -- | D-4b (PASS), $5.048\times10^{-6}$ | none | the Hann window: its normalized transform has the modulus /sin(x pi) / (x pi (1 - x\^2))/ at the offset x 2 pi / T (the squared modulus of the exact integral equals that of the closed form at nine rational offsets, exactly) and the value 1/2 at x = 1 (limit), so that the half width at half maximum of a pure cosine is 2 pi / T = 0.020943951 for the runs of length 300; the widths of the sampled cosines of the Rust program against it (relative) [form True, half True, deviation 5.037e-7] |
+| WD-5 | PASS | -- | -- | none | YD-6 (PASS), $6.022\times10^{-9}$ | HS (0, 0): the reduced model of 48 Anderson pseudospins (one at +eps\_k and one at -eps\_k for each of the 24 radial nodes, eps\_k = (k\^2 + m\^2)\^(1/2)), integrated here by NDSolve with the method IDA, gives d\_0 = 2 Delta\_0 = 0.812845546320434 from its gap equation and, after the kick 1e-3, the d(t) of the Rust program for 0 &lt;= t &lt;= 50 (largest /difference/ / d\_0, at the 51 stored times) [d\_0 against the gap equation of WD-3 6.032e-22; deviation 1.749e-9] |
 
 **Table 1.** The checks of the notebook. Data: `data/hck_notebook_log.txt`, `data/hck_part1_checks.txt`,
 `data/hck_part1_checks_python.txt`, `data/hck_part2_checks.txt`, `data/hck_part2_checks_python.txt`,
-`data/hck_part3_checks.txt`, `data/hck_part3_checks_python.txt`.
+`data/hck_part3_checks.txt`, `data/hck_part3_checks_python.txt`, and for Part R `data/hck_sh_quantum_checks.txt`,
+`data/hck_sh_superfluid_checks.txt`, `data/hck_sh_higgs_checks.txt`, `data/hck_sh_dynamics_checks.txt` and their
+Python reports (`data/hck_sh_quantum_checks_python.txt` and so on).
 
 # 7. The methods of the notebook and of its counterparts
 
@@ -422,6 +473,15 @@ repeat itself in the others:
   `ComplexExpand`, `Simplify`) in the notebook, from finite differences of the field in Python and of the kinetic part
   in Rust. The twisted states of the nonlinear engine of HS $(0,0)$ (P3-G7) are not repeated by the notebook.
 
+* **the revised hypotheses** (Part R, WQN-1 to WD-5): exact arithmetic and symbolic algebra in the notebook, as in the
+  Wolfram scripts of the revision whose code it repeats (the generators as exact rational matrices, the invariant
+  bilinears and the stabilizers as exact null spaces, the identities of the effective Lagrangian and of the
+  time-dependent mean field with symbolic entries, the integrals by `Integrate` or by `NIntegrate` with 30 to 40 digits,
+  the positivity of the factor of remark R11 by `Resolve` over the real numbers, and the reduced model of stage 6 by
+  `NDSolve` with the method IDA); the Rust programs of the revision compute the same quantities in double precision with
+  their own eigensolvers and, for the dynamics, with CVODE of SUNDIALS on all sixteen components; the Python programs
+  with numpy and LAPACK and, for the dynamics, with the same CVODE through its C interface.
+
 # 8. The symbols of the code of Part I
 
 Every name of the code that stands for an object of the physics is introduced in the notebook with a comment that
@@ -478,6 +538,32 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 | `thSF`, `thGapPhi`, `thPhiGap00` | $\Phi^X_{0,{\rm SF}}(T)$ | Section III.T: the superfluid and the normal state of CJT at $0.5$ and $0.9\,T^{\rm CJT,c}_{\rm SF}$, the order parameter from the gap equation alone, and its values for HS $(0,0)$ |
 | `thCurveTaus`, `thRes`, `thRustRes` | -- | Section III.T: the reduced temperatures of the free-energy curves, and the residuals of the Landau form and of the quartic form recomputed by the notebook and of the Rust program |
 | `thRadius`, `thCross`, `thShown`, `thLegend`, `thColors` | $r^X_{\rm SF}(T)$ | Section III.T: the radius of convergence with the Dirac mass of the normal state computed by the notebook, the reduced temperature above which the order parameter lies inside it, and the curves, the legend and the colors of the figure |
+
+**The names of the code of Part R.** Part R starts from a clean slate (Section 10), so its names do not collide with
+those above; each of its Sections R.2 to R.4 starts from a clean slate again, and a name may stand for different
+objects in different sections of Part R (as `mEff`, which is $M^{\rm eff}_{\rm SH}$ wherever it occurs). The names that
+stand for objects of the physics:
+
+| name in the code | printed form | meaning |
+|:---|:---|:---|
+| `rvKeep`, `rvClean`, `rvCheck`, `rvRust`, `rvPython`, `rvData`, `readTable`, `num`, `col` | -- | R.0: the clean slate, the check of Part R with its counterparts, the tables of the Rust programs and the reading of their fields |
+| `sig[p]`, `sigbar[p]`, `gam[p]`, `gch`, `cC`, `bet` | $\sigma^p$, $\bar\sigma^p$, $\gamma^p_{\rm LL}$, $\gamma^{\rm ch}_{\rm LL}$, $C_{\rm LL}$, $\beta_{\rm LL}$ | R.1, R.2: the Pauli and the Dirac matrices of the chiral basis |
+| `d8`, `blk`, `dirac16` | -- | R.1: a Dirac matrix on $\Psi_{\rm LL}$, a block-diagonal matrix, a Dirac matrix on the sixteen components |
+| `T[a]`, `TR[a]`, `FF`, `YY`, `RR`, `QQ`, `gens`, `gensAll` | $T^{a,{\rm SM}}$, $T^{a,{\rm R}}_{\rm SH}$, $F^{\rm tot}_{\rm SH}$, $Y^{\rm SM}$, $R_{\rm SH}$, $Q^{\rm SM}$ | R.1: the internal generators on the sixteen components, in the order of the tables of the Rust program |
+| `lb`, `sGen`, `l16` | $u$, $S(u)$ | R.1: the six real generators of $SL(2,\mathbb C)$ and their action on the fields |
+| `invOps`, `chargeOp`, `parityOp`, `spaces`, `cspaces` | $L_X$ | R.1: the conditions of Lorentz invariance of a bilinear, the action $L_X$ of a generator and of parity on it, and the invariant spaces of the twelve and of the four custodial sectors |
+| `kp`, `km` | $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}$, $C_{\rm LL}\otimes\mathbf e^s_{\rm SH}$ | R.1: the pair matrices of positive and of negative parity |
+| `hg`, `hg2`, `bg` | $G_X$ | R.1: the generators on $\Phi_{\rm SH}$, on $\Phi'_{\rm SH}$ and on the bidoublet $\mathcal M_{\rm SH}$ |
+| `channels`, `cchannels`, `stab`, `st8`, `m2`, `ev12` | -- | R.1: the 24 and the 8 channels with their quantum numbers, the stabilizer of a condensate, that of $i\tau^2$, the mass matrix of $(W^1,W^2,W^3,B)$ and its eigenvalues |
+| `k3`, `kP[a, s]` | $\mathsf K^3$, $\mathsf K^{\rm d}_{\rm SH}$, $\mathsf K'^{\rm u}_{\rm SH}$ | R.2: the triplet pair matrix of Parts II and III and the pair matrices of the revision |
+| `i1closed`, `i1`, `gcritSH`, `lamExact`, `lamS`, `lamTrip` | $I^{(1)}_{\rm SF}$, $G^{\rm crit}_{\rm SH}$, $\lambda^{\rm H}_{\rm SH}$, $\lambda^{\rm S}_{\rm SH}$, $\lambda^{\rm T}_{\rm SH}$ | R.2, R.3: the integral of the gap equation, the critical coupling and the eigenvalues of the normal vacuum |
+| `mLL`, `gSH`, `mEff`, `dAbs`, `d0`, `phi0` | $m_{\rm LL}$, $G_{\rm SH}$, $M^{\rm eff}_{\rm SH}$, $\lvert D^{\rm d}_{\rm SH}\rvert$, $d^0_{\rm SH}$, $\varphi^0_{\rm SH}$ | R.2 to R.4: the mass, the pairing coupling $504/5$, and the ground state of the pairing-only methods |
+| `chi6`, `chi4`, `zz`, `phi`, `vppOne`, `jj` | $\chi^{ab}_{\rm SH}$, $Z_{\rm SH}$, $\phi$, $V^{\rm eff\,\prime\prime}_{\rm SH}(\varphi^0_{\rm SH})$, $J^{(3)}_{\rm SH}$ | R.3: the susceptibilities of the effective Lagrangian, its normalization and the length of the vacuum, the curvature of the potential of one pair, the integral of its derivative |
+| `lamAmp`, `lamPh`, `wFound`, `thr` | $\lambda^{\rm amp}_{\rm SH}$, $\lambda^{\rm ph}_{\rm SH}$, $\omega^{\rm H}_{\rm SH}$, $2M^{\rm eff}_{\rm SH}$ | R.3: the eigenvalues of the response, the amplitude mode and the threshold |
+| `r12Dirs`, `r12Tv`, `r12Cas`, `r12Broken` | $T^{a,{\rm SM}}+T^{a,{\rm R}}_{\rm SH}$ | R.3: the eight directions of a fluctuation of the bidoublet, the custodial generators on it, their Casimir operator and the directions of the broken generators (remark R12) |
+| `hh`, `rr`, `fN`, `rates` | $\mathsf H_{\rm SH}$, $\mathcal R_{\rm SH}$, $F^{\rm tot}_{\rm SH}$ | R.4: the symbolic Hermitian matrices of the conservation laws, the particle number on the Nambu space, the Josephson rates |
+| `wHann`, `ww`, `hw` | $h^{\rm Hann}_{\rm SH}$, $\Gamma^{\rm win}_{\rm SH}$ | R.4: the transform of the Hann window and the width of a pure cosine |
+| `eps2`, `w2`, `dl0`, `vx`, `vy`, `vz`, `sol`, `dps` | $\pm\varepsilon_{\rm LL}(q_i)$, $w_i/2$, $\Delta_{\rm SH}$, $\mathbf n^\pm_{\rm SH}$, $d_{\rm SH}(t)$ | R.4: the reduced model of the pseudospins, its solution by `NDSolve` with the method IDA, and the pair self-energy it gives |
 
 # 9. Errors and corrections found while this version was written
 
@@ -577,12 +663,62 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     electrodynamics); the spinor field is called the DiracLike field. The data cells were written again from the
     data of the programs run again after the correction (their kept numbers are unchanged; the cell of Section
     III.G no longer holds the columns in GeV and the row of the Standard Model), and the notebook was built and
-    evaluated again on 21 November 2026: ALL PASS (153 of 153), 0 messages. Since this evaluation the counts of the builder are
+    evaluated again on 21 November 2026: ALL PASS (181 of 181), 0 messages. Since this evaluation the counts of the builder are
     no longer typed in Section 4 but written from its report.
 
-# 10. What follows
+17. *Part R (22 November 2026).* (1) The cell of remark R12
+    multiplied a matrix halved, written `r12Tau[[a]]/2 . m`; the product of matrices binds more strongly than the
+    division, so that this was `r12Tau[[a]]/(2 . m)`. The first dry run of Part R reported seven independent directions
+    of the broken generators instead of four and did not find the charges of the triplet; the products are now in
+    parentheses, and the cell gives four Goldstone directions, the singlet and the triplet. (2) The clean slate of Part
+    R also cleared the two names with which the dry run measures its times, so that it printed no times; names that
+    begin with `SFNB`, those of the tools that evaluate the notebook, are now kept. (3) Numbers formatted by
+    `NumberForm` inside `Print` appeared in the output of the dry run, which is plain text, as `NumberForm[...]`; they
+    are now turned into strings first. (4) When the counterparts of the checks of Part R were worked out from the reports,
+    it was found that the checking programs of the revision had said that their identifiers were those of the Rust
+    programs; that was false for stages 3, 4 and 6, and the programs were corrected first (Section 4.3 of the task
+    record). (5) In the printed copy of the first evaluation of Part R two display formulas were too long for one line and broke
+    inside a symbol, the pairing terms with the pair operators of Section R.0 and the two eigenvalues of remark R11 in
+    Section R.3.5; each is now two display formulas, and the notebook was built and evaluated again. (1) to (3) were found
+    by dry runs, (5) by looking at the printed copy.
 
-The rest of Part III and Part IV of the notebook (the effective Lagrangians, the masses of the gauge bosons in every
-vacuum, the surviving symmetry, the dynamics with IDA inside `NDSolve`, the figures and the videos) are added in the
-same way: the checks of the Python programs `sf_part3.py` and `sf_part4.py`, each with its counterparts, and this
-document is extended with each part.
+# 10. Part R: the revised hypotheses (22 November 2026)
+
+**The task.** On 21 November 2026 the author asked to modify the hypotheses so that the superfluid can be the Higgs
+field of the Standard Model, with the quantum numbers of the Higgs doublet, and then to add a second singlet of
+hypercharge $-\tfrac34$. The revision was carried out in stages, each with a Rust program, a Python program and a
+Wolfram script; its stage 6 has three parts: the dynamics in time, the notebook, and the article. The notebook is the
+second part, and the remarks made during the revision, R8 to R12, go into it as into the manuscripts and the document
+of the remarks.
+
+**What Part R holds.** Section R.0 states the fields, their charges, the symmetries and the interaction of the second
+version, explains how its checks are named, and defines its tools: the clean slate, the check `rvCheck` with the
+counterparts of every check, and the reading of the tables of the closed cell of data. Section R.1 builds the
+generators on the sixteen components as exact matrices and derives the quantum numbers (WQN-1 to WQN-12), with remark
+R8 and the products of the charges on which it rests. Section R.2 derives the formulas of the ground state (WSF-2a to
+WSF-5), with remark R9 and the charges of the quasi-particles of the second version, and remark R10 with the surface
+integral of the sharp cutoff in closed form, against the eigenvalue of the Rust program. Section R.3 derives the
+custodial algebra of the effective Lagrangian, the mass of its amplitude mode, the closed forms of HS (0, 0), the scale
+in GeV, and the amplitude mode at $d^0_{\rm SH}$ (WH-1 to WH-5), with remark R11 and remark R12, whose cell finds the four
+Goldstone directions, the massive singlet and the massive custodial triplet of the bidoublet and the charges $+1$, 0,
+$-1$ of the triplet. Section R.4 derives the conservation laws, the relation of Josephson and the width of the Hann
+window, compares the peaks of the Rust program, and integrates the 48 pseudospins of the reduced model with `NDSolve`
+and the method IDA (WD-1 to WD-5).
+
+**How it is made.** The code of the 28 checks is that of the four Wolfram scripts of the revision, copied by a program
+and not retyped, without the lines that read the arguments, define the report and write it; the scripts' own check
+`check[id, text, ok, detail]` became `rvCheck` with the same arguments, which records the check in the register of
+Chapter 0 together with its counterparts. Every table that a script read from a file is in the closed cell of data.
+Each of the four scripts ran in a kernel of its own; in the notebook each section of Part R starts from a clean slate
+that clears every name of the global context except those of the register, of the tools of Part R and of the tools that
+evaluate the notebook, so that a short name of the algebra cannot carry a value from an earlier part or section.
+
+**The evaluation.** The whole notebook, Parts I to III and Part R, was built and evaluated in the front end on 22
+November 2026 (Section 5): ALL PASS (181 of 181), 0 messages.
+
+# 11. What follows
+
+The rest of Part III and Part IV of the notebook for the earlier hypotheses (the effective Lagrangians, the masses of
+the gauge bosons in every vacuum, the surviving symmetry, the dynamics with IDA inside `NDSolve`, the figures and the
+videos) would be added in the same way, with the checks of the Python programs `sf_part3.py` and `sf_part4.py`. Under
+the revised hypotheses, Part R grows with every further stage of the revision, and this document with it.

@@ -649,17 +649,20 @@ identifier as in the Rust program'', with the prefix Y),
 before they were committed.
 
 \textbf{What was true.} The rule of the identifiers of the earlier work
-(E13, E18) holds for the families of checks of stage 2: WQN-\(n\) and
-YQN-\(n\) test the statements of the Rust checks QN-\(n\)a, QN-\(n\)b,
-and so on, with the exceptions that the programs now name. In the other
-stages it does not hold. WSF-2b and WSF-5 test statements of SF-2a and
-of SF-6a, SF-6b. YSF-12 and YSF-13 test the closed forms of the ground
-states of SF-6a, SF-6b and the eigenvalue of the normal self-energies of
-SF-4b, while SF-12 and SF-13 are other statements. WH-1 to WH-5 and YH-1
-to YH-9 are numbered in the order of their programs: WH-1, for example,
-tests the statements of H-4f to H-6b, not that of H-1. So are WD-1 to
-WD-5 and YD-1 to YD-6, and WD-5 and YD-6, the reduction to pseudospins,
-have no Rust counterpart. For these stages the statements were false.
+(E13, E18) holds for the families of checks of stage 2: the statements
+of WQN-\(n\) and of YQN-\(n\) belong to the Rust checks QN-\(n\)a,
+QN-\(n\)b, and so on, though a check does not test every statement of
+its family (the first correction said that it did; E59), and the
+programs now name, for each check, the Rust checks whose statements it
+tests. In the other stages it does not hold. WSF-2b and WSF-5 test
+statements of SF-2a and of SF-6a, SF-6b. YSF-12 and YSF-13 test the
+closed forms of the ground states of SF-6a, SF-6b and the eigenvalue of
+the normal self-energies of SF-4b, while SF-12 and SF-13 are other
+statements. WH-1 to WH-5 and YH-1 to YH-9 are numbered in the order of
+their programs: WH-1, for example, tests the statements of H-4f to H-6b,
+not that of H-1. So are WD-1 to WD-5 and YD-1 to YD-6, and WD-5 and
+YD-6, the reduction to pseudospins, have no Rust counterpart. For these
+stages the statements were false.
 
 \textbf{Why I made it.} The second line of the Python reports is written
 by the report class of \texttt{python/sfcommon.py} of the earlier work,
@@ -1482,7 +1485,7 @@ that give the scale \(v_{\rm SH}\) also give \(M_Z\) and \(\rho\)
 (decided on 21 November 2026, at the start of the second version). They
 were completed on 21 November 2026 (entries E50 to E53 of Section 9).
 Object O15 is carried out in three parts: the dynamics in time (entries
-E54 to E56), the notebook, and the article.
+E54 to E57), the notebook (entries E58 and E59), and the article.
 
 The plan is changed only with a record in Section 9.
 
@@ -1903,7 +1906,7 @@ accepts the Krylov solver
 dense Jacobian matrix \\
 C9 & 21 Nov 2026 & object O8, first version: the notebook
 \texttt{superfluid.nb} with the introduction, the register of the checks
-and Part I (153 checks; ALL PASS (153 of 153), 0 messages in the front
+and Part I (181 checks; ALL PASS (181 of 181), 0 messages in the front
 end of Wolfram 15.0.1), its sources in \texttt{wolfram/source/}, its
 tools in \texttt{wolfram/tools/}, its printed copy
 \texttt{superfluid\_notebook.pdf}, its log
@@ -1975,7 +1978,7 @@ ground states of 15 cases, the Goldstone and the collective modes, the
 susceptibilities, the exchange of the gauge bosons with the Thouless
 eigenvalues and the CJT state with the exchange; 23 checks, each with
 its counterparts in \texttt{sf\_part2} and \texttt{python/sf\_part2.py}
-(153 checks in all; ALL PASS (153 of 153), 0 messages);
+(181 checks in all; ALL PASS (181 of 181), 0 messages);
 \texttt{code/scripts/write\_notebook\_fragments.py} now accepts several
 counterparts of one check (``P2-6b, P2-6c''); one warning of
 \texttt{NIntegrate} in the first dry run removed (error E8 of
@@ -2031,7 +2034,7 @@ temperatures and their uniqueness, the superfluid of CJT at \(0.5\) and
 theory, the residuals of the Landau forms, the answer, and the remark on
 the mean-field free energies with its importance; 26 checks, each with
 its counterparts in \texttt{sf\_part3} and \texttt{python/sf\_part3.py}
-(153 checks in all; ALL PASS (153 of 153), 0 messages); the new Rust
+(181 checks in all; ALL PASS (181 of 181), 0 messages); the new Rust
 check P3-T9 and the new Python checks YP3-T5 to YP3-T8, so that every
 check of the section has counterparts in both programs (VERDICT: ALL
 PASS (155 of 155); VERDICT: ALL PASS (112 of 112)); the corrections E9
@@ -2104,8 +2107,8 @@ of the amplitude field by exact symbolic differentiation, the numbers of
 the Higgs sector and the row of the Standard Model, with the answers and
 the three remarks (the factors of the Ginzburg number, the
 regularization, the width); every check with its counterparts in
-\texttt{sf\_part3} and \texttt{python/sf\_part3.py} (153 checks in all;
-ALL PASS (153 of 153), 0 messages); the new Rust checks P3-G10 to
+\texttt{sf\_part3} and \texttt{python/sf\_part3.py} (181 checks in all;
+ALL PASS (181 of 181), 0 messages); the new Rust checks P3-G10 to
 P3-G12, P3-H3, P3-H4 and the Python counterparts of every Rust check of
 C14 (E18; VERDICT: ALL PASS (155 of 155); VERDICT: ALL PASS (112 of
 112)); in Section III.T of the notebook the answer qualified as in E14
@@ -2240,7 +2243,7 @@ computes for every method the larger ratio of the masses of \(W\) and
 the masses of the effective Lagrangian exceed those of the linear
 response; dry run (request 273 of the watcher, no message) and build
 (261 cells, 0 warnings) on the author's computer, evaluation in the
-front end of Wolfram (ALL PASS (153 of 153), 0 messages); the
+front end of Wolfram (ALL PASS (181 of 181), 0 messages); the
 Supplemental Material of the article lists the new checksums of the
 notebook and its source \\
 C18 & 21 Nov 2026, 14:57 and 15:11 & the author's statement and request:
@@ -2393,7 +2396,7 @@ E30 & 21 Nov 2026, 16:35 to 16:47 & fifth part of C18: the notebook
 \texttt{superfluid.nb} built and evaluated again on the author's
 computer (Wolfram 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)), from
 the sources corrected in E29 and the data cells written from the
-programs run again in E28: ALL PASS (153 of 153), 0 messages (263 s).
+programs run again in E28: ALL PASS (181 of 181), 0 messages (305 s).
 The check WP3-H4 of the row of the Standard Model is gone, and the texts
 of the checks of Part II and the remark at its end name the zeugon.
 Before the build, a dry run of the input cells in a plain kernel found
@@ -3004,6 +3007,56 @@ of stages 2 to 4 run again (lines of checks unchanged), and the four
 Wolfram scripts run again on the author's computer (lines of checks
 unchanged, except that WD-4 now writes the length of the runs as 300
 instead of 300.00000000000000); the decision D34 \\
+E58 & 22 Nov 2026, 01:50 to 02:24 & object O15, stage 6 of the second
+version, part two: the notebook. Part R of \texttt{superfluid.nb}
+(source \texttt{wolfram/source/part\_revision.source.wl}, included by
+\texttt{superfluid.source.wl}; the closed cell of data
+\texttt{wolfram/source/data\_partR.wl}, written by
+\texttt{wolfram/tools/make\_data\_cells.py\ R} from nine tables of the
+Rust programs of the revision): the fields, the charges and the
+interaction of the second version; the 28 checks of the four Wolfram
+scripts of the revision with their explanations, each naming its
+counterparts; the remarks R8 to R12 with the computations they rest on;
+a clean slate at the start of each section. The dry runs (Part R alone;
+then the whole notebook, 181 checks in 243 s), the build on the author's
+computer (403 cells, 5 closed cells of data, 1574 formulas in the texts,
+no warning) and the evaluation in the front end there: ALL PASS (181 of
+181), 0 messages, in 305 s. The evaluated notebook, its printed copy,
+the log, the register of the checks, the report of the builder and the
+three sources were committed on the author's computer (\texttt{9b350ca},
+and after the correction (5) of E59 \texttt{9e3c04d}), because the
+transfer of files from it to the workspace was refused (its sign-in had
+expired); this entry and the documents follow in the next commit.
+\texttt{provenance/P3\_notebook.md} describes Part R (Sections 2 to 11;
+Section 10 is new), \texttt{code/scripts/write\_notebook\_fragments.py}
+finds the counterparts of Part R (ranges such as QN-1a to QN-1e, and
+none), and the document of the remarks names the sections of the
+notebook that state R8 to R12 \\
+E59 & 22 Nov 2026, 01:50 to 02:24 & the corrections of stage 6, part
+two, each found before the commit: (1) the cell of remark R12 wrote
+\texttt{r12Tau{[}{[}a{]}{]}/2\ .\ m}, which is
+\texttt{r12Tau{[}{[}a{]}{]}/(2\ .\ m)} because the product of matrices
+binds more strongly than the division; the first dry run of Part R found
+seven directions of the broken generators instead of four, and the
+products are now in parentheses; (2) the clean slate cleared the two
+names of the dry run that measure its times; names that begin with SFNB
+are kept; (3) numbers formatted by \texttt{NumberForm} inside
+\texttt{Print} appeared in the plain output of the dry run as
+expressions; they are turned into strings; (4) the first correction of
+the identifiers (E57, commit \texttt{e092368}) said in
+\texttt{wolfram/source/sh\_quantum.wls} and
+\texttt{python/sh\_quantum.py} that each check of stage 2 tests the
+statements of its whole family; WQN-11, for example, does not test those
+of QN-11a and QN-11c. The headers now name the Rust checks of every
+check, the reports say that the statements of a check belong to its
+family, and the two programs were run again (their lines of checks are
+unchanged); Section 4.3 is corrected likewise; (5) in the printed copy
+of the first evaluation (commit \texttt{9b350ca}) two display formulas
+of Part R were too long for one line and broke inside a symbol: the
+pairing terms with the pair operators (Section R.0) and the two
+eigenvalues of remark R11 (Section R.3.5); each is now two display
+formulas, and the notebook was built and evaluated again (commit
+\texttt{9e3c04d}) \\
 \end{longtable}
 
 \end{document}

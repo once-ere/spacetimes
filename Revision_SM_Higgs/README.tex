@@ -262,23 +262,24 @@ against \(m_H\), the masses of \(W^\pm_\mu\) and \(Z_\mu\), the massless
 photon and the parameter \(\rho\) (the former stages 4 and 5, merged);
 (6) the dynamics in time, the notebook and the article. Every inherited
 document begins with a note that says so. Stages 1 to 4 and the first
-part of stage 6 are complete for the second version of the hypotheses
-(below): the quantum numbers and the breaking are checked in Section 6
-of the hypotheses document (Rust: ALL PASS (55 of 55); Python: ALL PASS
-(14 of 14); Wolfram, in exact arithmetic: ALL PASS (13 of 13)), with the
-measured inputs of the 2026 edition of the Review of Particle Physics;
-and the mean-field superfluid of the three fields is computed in the
-manuscript \texttt{higgs\_superfluid.md} (\texttt{.tex}, \texttt{.pdf}),
-with the first version as the comparison: in all five methods the ground
-state is the custodial Higgs superfluid, which keeps the electric charge
-and the custodial symmetry and is stable (Rust: ALL PASS (25 of 25);
-Python: ALL PASS (8 of 8); Wolfram: ALL PASS (5 of 5)). The scale, the
-masses of the gauge bosons and the amplitude mode are computed in the
-manuscript \texttt{higgs\_masses.md} (\texttt{.tex}, \texttt{.pdf}): the
-photon is massless and \(\rho_{\rm SH}=1\) in the second version, but
-the amplitude mode is \(16\) to \(19\) times too heavy relative to the
-scale (Rust: ALL PASS (27 of 27); Python: ALL PASS (9 of 9); Wolfram:
-ALL PASS (5 of 5)).
+two parts of stage 6 (the dynamics in time and the notebook) are
+complete for the second version of the hypotheses (below): the quantum
+numbers and the breaking are checked in Section 6 of the hypotheses
+document (Rust: ALL PASS (55 of 55); Python: ALL PASS (14 of 14);
+Wolfram, in exact arithmetic: ALL PASS (13 of 13)), with the measured
+inputs of the 2026 edition of the Review of Particle Physics; and the
+mean-field superfluid of the three fields is computed in the manuscript
+\texttt{higgs\_superfluid.md} (\texttt{.tex}, \texttt{.pdf}), with the
+first version as the comparison: in all five methods the ground state is
+the custodial Higgs superfluid, which keeps the electric charge and the
+custodial symmetry and is stable (Rust: ALL PASS (25 of 25); Python: ALL
+PASS (8 of 8); Wolfram: ALL PASS (5 of 5)). The scale, the masses of the
+gauge bosons and the amplitude mode are computed in the manuscript
+\texttt{higgs\_masses.md} (\texttt{.tex}, \texttt{.pdf}): the photon is
+massless and \(\rho_{\rm SH}=1\) in the second version, but the
+amplitude mode is \(16\) to \(19\) times too heavy relative to the scale
+(Rust: ALL PASS (27 of 27); Python: ALL PASS (9 of 9); Wolfram: ALL PASS
+(5 of 5)).
 
 \textbf{The second version of the revised hypotheses} (21 November 2026,
 from 19:38 PST). Exploratory computations of stage 4 found that the
@@ -391,11 +392,16 @@ and the remark that the free energies are mean-field free energies), and
 the third section of Part III (Section III.G: the gradient coefficient
 at the critical temperature, the Ginzburg number and the width of the
 critical region, and the superfluid as the Higgs sector of its own gauge
-group): 153 checks, each repeated by the Rust and the Python programs
-(verdict of the evaluation in the front end of Wolfram: ALL PASS (153 of
-153), 0 messages). Its provenance is
+group): 181 checks, each repeated by the Rust and the Python programs
+(verdict of the evaluation in the front end of Wolfram: ALL PASS (181 of
+181), 0 messages). Since 22 November 2026 it ends with Part R, the
+revised hypotheses: the fields and the interaction of the second
+version, the 28 checks of the Wolfram scripts of stages 2, 3, 4 and 6 of
+the revision with their explanations and their counterparts in Rust and
+Python, and the remarks R8 to R12 with the computations they rest on;
+the checks above include those of Part R. Its provenance is
 \texttt{provenance/P3\_notebook.md}. The rest of Part III and Part IV of
-the notebook follow.
+the notebook for the earlier hypotheses are not written.
 
 \textbf{The article for Physical Review D} (folder
 \texttt{paper\_prd/}), asked for by the author on 21 November 2026 at
@@ -514,8 +520,10 @@ Josephson relation). The programs: \texttt{sh\_dynamics} of the crate
 at \(d^0_{\rm SH}\), undamped, as stage 4 found. In HS (1, 1) the
 amplitude mode is bound below the energy that breaks a pair and the
 triplet lies 2.2 per cent above it; in KS and CJT the amplitude mode
-lies above the energy that breaks a pair and decays. The notebook and
-the article (parts two and three of stage 6) follow.
+lies above the energy that breaks a pair and decays. The notebook (part
+two of stage 6) is complete: Part R of \texttt{superfluid.nb} holds the
+checks and the remarks of the revision. The article (part three)
+follows.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -589,11 +597,14 @@ Mathematica notebook of the whole solution, evaluated in the front end
 of Wolfram, and its printed copy & introduction, Parts I and II and the
 sections of Part III on the Landau form (III.L), on the free energy at
 finite temperature (III.T) and on the gradient coefficient, the Ginzburg
-number and the Higgs sector (III.G) written; the rest planned \\
+number and the Higgs sector (III.G) written, and Part R (the revised
+hypotheses); the rest of Parts III and IV for the earlier hypotheses not
+written \\
 \texttt{provenance/P3\_notebook.md}, \texttt{.tex}, \texttt{.pdf} & the
 provenance of the notebook: its task, files, build and evaluation, the
 checks with their counterparts in Rust and Python, the symbols of its
-code, the corrections & written for Part I; grows with the notebook \\
+code, the corrections & written for Parts I to III and Part R; grows
+with the notebook \\
 \texttt{provenance/P4\_remarks.md}, \texttt{.tex}, \texttt{.pdf} & the
 remarks on the results (an approximation, a fit, an accuracy, a
 limitation): for each, what it means, why it holds, why it matters, the
@@ -677,11 +688,12 @@ written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
 \texttt{part1.source.wl}, \texttt{part2.source.wl},
-\texttt{part3\_landau.source.wl}, \texttt{part3\_thermal.source.wl} and
-\texttt{part3\_ginzburg.source.wl}, and the data cells
-\texttt{data\_part2.wl}, \texttt{data\_part3.wl},
-\texttt{data\_part3\_thermal.wl} and \texttt{data\_part3\_ginzburg.wl};
-in \texttt{wolfram/tools/} the builder of the notebook from its source
+\texttt{part3\_landau.source.wl}, \texttt{part3\_thermal.source.wl},
+\texttt{part3\_ginzburg.source.wl} and \texttt{part\_revision.source.wl}
+(Part R), and the data cells \texttt{data\_part2.wl},
+\texttt{data\_part3.wl}, \texttt{data\_part3\_thermal.wl},
+\texttt{data\_part3\_ginzburg.wl} and \texttt{data\_partR.wl}; in
+\texttt{wolfram/tools/} the builder of the notebook from its source
 (\texttt{build\_notebook.wls}), the reader of formulas that turns the
 TeX of the texts into two-dimensional formulas
 (\texttt{sf\_formula.wl}), the evaluation of the notebook in the front
@@ -693,9 +705,9 @@ the dry run (\texttt{make\_dryrun.py}), and the writer of the data cells
 \texttt{wolfram/source/sh\_quantum.wls} and
 \texttt{wolfram/source/sh\_superfluid.wls}, of \texttt{sh\_higgs},
 \texttt{wolfram/source/sh\_higgs.wls}, and of \texttt{sh\_dynamics},
-\texttt{wolfram/source/sh\_dynamics.wls} & Parts I and II and the
-sections III.L, III.T and III.G of Part III written; stages 2 to 4 and
-the first part of stage 6 of the revision written \\
+\texttt{wolfram/source/sh\_dynamics.wls} & Parts I and II, the sections
+III.L, III.T and III.G of Part III and Part R written; stages 2 to 4 and
+the first two parts of stage 6 of the revision written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},

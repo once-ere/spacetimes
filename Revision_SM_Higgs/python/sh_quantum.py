@@ -16,10 +16,10 @@ Differences of method from the Rust program:
     eigenvectors of its Gram matrix);
   * the channel tables, the couplings and the mass matrix are compared with the data files of the Rust program.
 
-The identifier of a check is Y and the name of the family of checks of the Rust program that tests the same statements:
-YQN-n tests those of QN-na, QN-nb, ... (n = 1 to 12), except in the family 9, where YQN-9a tests those of QN-9a, YQN-9b
-those of QN-9b, QN-9c and QN-9d, and YQN-9c those of QN-9e.  The report is written to
-data/hck_sh_quantum_checks_python.txt.
+The identifier of a check is Y and the name of the family of checks of the Rust program to which its statements belong
+(QN-n for the statements of QN-na, QN-nb, ...; n = 1 to 12); a check need not test every statement of its family.  In
+the family 9, YQN-9a tests the statements of QN-9a, YQN-9b those of QN-9b, QN-9c and QN-9d, and YQN-9c that of QN-9e.
+The report is written to data/hck_sh_quantum_checks_python.txt.
 
 Run (from the folder python/, after the Rust program sh_quantum):   python3 sh_quantum.py
 Requires: Python 3, numpy.  Run time: a few seconds.
@@ -264,8 +264,8 @@ def read_csv(name):
 # --------------------------------------------------------------------------------------------- the checks
 rep_ = Report("sh_quantum.py: the Python computation of the checks of sh_quantum, second version (Revision_SM_Higgs, "
               "PROJECT spacetimes)",
-              ident="the identifier of the check (Y and the family of checks of the Rust program that test the same "
-                    "statements)")
+              ident="the identifier of the check (Y and the family of checks of the Rust program to which its "
+                    "statements belong)")
 
 # YQN-1 the internal generators
 d = 0.0

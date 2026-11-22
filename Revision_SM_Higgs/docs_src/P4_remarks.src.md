@@ -1223,7 +1223,7 @@ corresponds to about $0.002$.
    strengthens a condensate made by the pairing term, but in the symmetric vacuum, where all gauge bosons of that group
    are massless, their sum repels. The author chose this pair, bound by the zeugon, as the subject of the next task.
 
-**Provenance.** No number of this remark is computed by the programs. The charges are those of the hypotheses. The
+**Provenance.** No number of this remark is computed by the Rust and the Python programs. The notebook `superfluid.nb` states the remark in Section R.1.13 of its Part R and computes there the products of the charges from its exact generators, and the ratio of $\pi/3$ to $\tfrac9{16}\cdot\tfrac1{137.036}$, about 255. The charges are those of the hypotheses. The
 potential of the exchange of one boson is that of the Born approximation of quantum electrodynamics. The critical
 strength of the ladder approximation is the result of Maskawa and Nakajima. The values of $e^2/4\pi$ and $g'^2/4\pi$ are
 rounded values of the Review of Particle Physics of the Particle Data Group. References: T. Maskawa and H. Nakajima,
@@ -1301,6 +1301,7 @@ first version their gap is the bare mass 0.2 of the unpaired up component.
 **Provenance.** The checks SF-11a, SF-11b, SF-11c (report `data/hck_sh_superfluid_checks.txt`), YSF-11 and YSF-12 (report
 `data/hck_sh_superfluid_checks_python.txt`). The masses and the gaps are from `data/sh_sf_ground.csv` (SHA-256
 `{{SHA256:data/sh_sf_ground.csv}}`), written into this section by `code/scripts/write_sh_superfluid_fragments.py`.
+The notebook `superfluid.nb` states the remark in Section R.2.5 of its Part R and computes there, from the charges of the hypotheses, that the two constituents of each pair of the second version have the same charges and that the two pairs form a doublet of $SU(2)_{\rm V}$; it prints the gaps of the Rust program.
 
 ## 6.3 Remark R10: "The current response of the normal vacuum is an artifact of the sharp cutoff"
 
@@ -1341,6 +1342,7 @@ the momenta and would change nothing.
 current by central differences and compares it with the closed form. It compares the closed form of the eigenvalue
 with the largest eigenvalue of the normal self-energies of HS (0, 1) in the data file of the Rust program
 `data/sh_sf_normal_vacuum.csv` (SHA-256 `{{SHA256:data/sh_sf_normal_vacuum.csv}}`), for the three potentials of stage 3.
+The notebook `superfluid.nb` states the remark in Section R.2.6 of its Part R, derives the closed form of $\chi^{\rm J}_{\rm SH}$ there as the surface integral of the sharp cutoff, exactly, and prints it against the eigenvalue of the Rust program.
 
 # 7. Remarks on the modes of the superfluid of the revised hypotheses (stage 4 of the revision)
 
@@ -1452,6 +1454,7 @@ H-7e and H-8d; data `data/sh_hg_masses.csv`, SHA-256 `{{SHA256:data/sh_hg_masses
 `{{SHA256:data/sh_hg_scan.csv}}`), the Python program `python/sh_higgs.py` (report `data/hck_sh_higgs_checks_python.txt`,
 checks YH-4 and YH-7) and the Wolfram script `wolfram/source/sh_higgs.wls` (report `data/hck_sh_higgs_checks_wolfram.txt`,
 check WH-5).
+The notebook `superfluid.nb` states the remark in Section R.3.5 of its Part R, with the check WH-5 of the Wolfram script.
 
 ## 7.2 Remark R12: "The second version has the scalars of two Higgs doublets"
 
@@ -1498,3 +1501,4 @@ second version and three in the first (check H-7a), and, for the amplitude mode,
 (checks H-7a and H-7b) of the programs named in Section 7.1; for the splitting of the triplet, the Rust program
 `sh_dynamics` (crate `rust/shdynamics`, report `data/hck_sh_dynamics_checks.txt`, check D-8; data `data/sh_dyn_runs.csv`,
 SHA-256 `{{SHA256:data/sh_dyn_runs.csv}}`).
+The notebook `superfluid.nb` states the remark in Section R.3.6 of its Part R and computes there the eight real directions of a fluctuation of the bidoublet: the four that the broken generators produce from the vacuum (the Goldstone directions), the massive singlet and the massive triplet of $SU(2)_{\rm V}$, and the charges $+1$, 0 and $-1$ of the triplet.

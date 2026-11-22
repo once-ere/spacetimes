@@ -8,13 +8,15 @@ date: "November 21, 2026"
 
 <!-- This file is generated from docs_src/P3_notebook.src.md by code/scripts/assemble_docs.py; edit the source. -->
 
-**The state of this document under the revised hypotheses (21 November 2026).** This document was inherited
-unchanged from the earlier hypotheses, under which the spinor field was the DiracLike spinor with the electric charge 0
-and $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ was a new gauge group. The hypotheses of this folder are different:
-$SU(2)_{\rm v}$ is $SU(2)_L$, the fermion number is the hypercharge ($Y^{\rm SM}=F_{\rm LL}/4$), a singlet field $\chi_{\rm SH}$
-is added, and the superfluid is the condensate of the pairs of a particle of $\Psi_{\rm LL}$ and a particle of
-$\chi_{\rm SH}$, which has the quantum numbers of the Higgs doublet. Every statement below that depends on the earlier
-hypotheses is replaced as this document is rewritten for the revised ones.
+**The state of this document under the revised hypotheses (21 and 22 November 2026).** Sections 1 to 9 were written
+for the notebook of the earlier hypotheses, under which the spinor field was the DiracLike spinor with the electric
+charge 0 and $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ was a new gauge group; Parts I to III of the notebook state those
+hypotheses. Under the revised hypotheses of this folder, in their second version, $SU(2)_{\rm v}$ is $SU(2)_L$, the
+isodoublet $\Psi_{\rm LL}$ is joined by the singlets $\chi_{\rm SH}$ (hypercharge $\tfrac14$) and $\chi'_{\rm SH}$ (hypercharge
+$-\tfrac34$), and the superfluid is the condensate of the pairs of a particle of $\Psi_{\rm LL}$ with a particle of a singlet,
+whose two pair fields have the quantum numbers of the Higgs doublet. Part R of the notebook, added on 22 November 2026,
+states the revised hypotheses and repeats the checks of the four stages of the revision; Section 10 records it, and
+Sections 2 to 6 and 9 name it where they describe the whole notebook.
 
 # 1. What this document is
 
@@ -65,6 +67,13 @@ modules `ginzburg` and `higgs` of the Rust program from a fourth closed cell; Pa
 them with the values of the Rust program `sf_part2` (another closed cell of data). No part so far has a time
 integration.
 
+**Part R (22 November 2026).** The notebook now ends with Part R, the revised hypotheses (Section 10): the quantum
+numbers of the three fields and of their pairs (stage 2 of the revision), the ground state of the superfluid (stage 3),
+the masses of the gauge bosons and the modes (stage 4) and the dynamics in time (stage 6), with the remarks R8 to R12,
+in 28 checks; with them the notebook has {{GEN:nb_ntests}} checks. Part R takes the tables of the Rust programs of the
+revision from a fifth closed cell of data and integrates the reduced model of stage 6 with the method IDA inside
+`NDSolve`.
+
 # 3. The files
 
 The files of the notebook, each with its SHA-256 checksum:
@@ -105,6 +114,13 @@ The files of the notebook, each with its SHA-256 checksum:
   included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
   first lines name the data files and their SHA-256 checksums);\
   `{{SHA256:wolfram/source/data_part3_ginzburg.wl}}`
+* `wolfram/source/part_revision.source.wl`: the source of Part R (the revised hypotheses; Section 10);\
+  `{{SHA256:wolfram/source/part_revision.source.wl}}`
+* `wolfram/source/data_partR.wl`: the tables of the Rust programs of the revision (the channels of stage 2, the normal
+  vacuum and the ground states of stage 3, the minimum, the masses and the values of stage 4, the runs and, of the
+  signals of stage 6, the rows that the checks use), every field as a string, included in a closed cell of the notebook
+  (written by `wolfram/tools/make_data_cells.py R`; its first lines name the data files and their SHA-256 checksums);\
+  `{{SHA256:wolfram/source/data_partR.wl}}`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
   `{{SHA256:wolfram/tools/make_data_cells.py}}`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
@@ -149,8 +165,8 @@ which every cell begins with a marker line such as `(* ::Text:: *)` or `(* ::Inp
         wolfram/tools/sf_formula.wl
 
 The builder replaces the lines `(* @@INCLUDECELLS part1.source.wl@@ *)`, `(* @@INCLUDECELLS part2.source.wl@@ *)`,
-`(* @@INCLUDECELLS part3_landau.source.wl@@ *)`, `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)` and
-`(* @@INCLUDECELLS part3_ginzburg.source.wl@@ *)` of the main source
+`(* @@INCLUDECELLS part3_landau.source.wl@@ *)`, `(* @@INCLUDECELLS part3_thermal.source.wl@@ *)`,
+`(* @@INCLUDECELLS part3_ginzburg.source.wl@@ *)` and `(* @@INCLUDECELLS part_revision.source.wl@@ *)` of the main source
 by the cells of these parts, a line such as
 `(* @@INCLUDE data_part3.wl@@ *)` inside an input cell by that file, turns
 every formula of a text (TeX between dollar signs) into boxes with the reader of formulas, lets the front end parse
@@ -176,8 +192,8 @@ with the same two Wolfram lines that the files `gui_start.wl`, `gui_go.wl` and `
 
 **The dry run.** Before every build, `python3 wolfram/tools/make_dryrun.py OUT.wls wolfram/source/superfluid.source.wl`
 writes the code of all input cells, in order, into one file, and `wolframscript -file OUT.wls` evaluates it in a plain
-kernel (246 seconds in this version, of which Part II takes about two minutes, Section III.T about half a minute and
-Section III.G about 83 seconds, by the times that the dry run prints after its checks); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
+kernel (243 seconds in this version, of which Part II takes about two minutes, Section III.T about half a minute,
+Section III.G about 80 seconds and Part R about 3 seconds, by the times that the dry run prints after its checks); the only difference from the notebook is that it prints the computing time after every check. The dry run finds errors of the code in seconds; the evaluation in the front end stays the only evidence for the
 results reported here.
 
 # 5. The evaluation of this version
@@ -193,7 +209,12 @@ its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Pa
 P3-T1 to P3-T9 of Section III.T and whose modules `ginzburg` and `higgs` make the checks P3-G1 to P3-G12 and P3-H1 to
 P3-H3 of Section III.G) and in the Python program
 (`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
-steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
+steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The checks of Part R carry the
+identifiers of the Wolfram scripts of the revision instead: W, the letters of the stage (QN, SF, H, D) and a number
+(decision D34 of the task record). They name as counterparts the checks of the Rust programs `sh_quantum`,
+`sh_superfluid`, `sh_higgs` and `sh_dynamics` and of the Python programs `python/sh_quantum.py`, `sh_superfluid.py`,
+`sh_higgs.py` and `sh_dynamics.py` that test the same statements, as ranges ("QN-1a to QN-1e", each of which must have
+passed) or "none" where no program of the other language tests the statement. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
 program that writes the table stops with an error if a counterpart is missing from its report or did not pass.
 
@@ -201,7 +222,9 @@ program that writes the table stops with an error if a counterpart is missing fr
 
 **Table 1.** The checks of the notebook. Data: `data/hck_notebook_log.txt`, `data/hck_part1_checks.txt`,
 `data/hck_part1_checks_python.txt`, `data/hck_part2_checks.txt`, `data/hck_part2_checks_python.txt`,
-`data/hck_part3_checks.txt`, `data/hck_part3_checks_python.txt`.
+`data/hck_part3_checks.txt`, `data/hck_part3_checks_python.txt`, and for Part R `data/hck_sh_quantum_checks.txt`,
+`data/hck_sh_superfluid_checks.txt`, `data/hck_sh_higgs_checks.txt`, `data/hck_sh_dynamics_checks.txt` and their
+Python reports (`data/hck_sh_quantum_checks_python.txt` and so on).
 
 # 7. The methods of the notebook and of its counterparts
 
@@ -269,6 +292,15 @@ repeat itself in the others:
   `ComplexExpand`, `Simplify`) in the notebook, from finite differences of the field in Python and of the kinetic part
   in Rust. The twisted states of the nonlinear engine of HS $(0,0)$ (P3-G7) are not repeated by the notebook.
 
+* **the revised hypotheses** (Part R, WQN-1 to WD-5): exact arithmetic and symbolic algebra in the notebook, as in the
+  Wolfram scripts of the revision whose code it repeats (the generators as exact rational matrices, the invariant
+  bilinears and the stabilizers as exact null spaces, the identities of the effective Lagrangian and of the
+  time-dependent mean field with symbolic entries, the integrals by `Integrate` or by `NIntegrate` with 30 to 40 digits,
+  the positivity of the factor of remark R11 by `Resolve` over the real numbers, and the reduced model of stage 6 by
+  `NDSolve` with the method IDA); the Rust programs of the revision compute the same quantities in double precision with
+  their own eigensolvers and, for the dynamics, with CVODE of SUNDIALS on all sixteen components; the Python programs
+  with numpy and LAPACK and, for the dynamics, with the same CVODE through its C interface.
+
 # 8. The symbols of the code of Part I
 
 Every name of the code that stands for an object of the physics is introduced in the notebook with a comment that
@@ -325,6 +357,32 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
 | `thSF`, `thGapPhi`, `thPhiGap00` | $\Phi^X_{0,{\rm SF}}(T)$ | Section III.T: the superfluid and the normal state of CJT at $0.5$ and $0.9\,T^{\rm CJT,c}_{\rm SF}$, the order parameter from the gap equation alone, and its values for HS $(0,0)$ |
 | `thCurveTaus`, `thRes`, `thRustRes` | -- | Section III.T: the reduced temperatures of the free-energy curves, and the residuals of the Landau form and of the quartic form recomputed by the notebook and of the Rust program |
 | `thRadius`, `thCross`, `thShown`, `thLegend`, `thColors` | $r^X_{\rm SF}(T)$ | Section III.T: the radius of convergence with the Dirac mass of the normal state computed by the notebook, the reduced temperature above which the order parameter lies inside it, and the curves, the legend and the colors of the figure |
+
+**The names of the code of Part R.** Part R starts from a clean slate (Section 10), so its names do not collide with
+those above; each of its Sections R.2 to R.4 starts from a clean slate again, and a name may stand for different
+objects in different sections of Part R (as `mEff`, which is $M^{\rm eff}_{\rm SH}$ wherever it occurs). The names that
+stand for objects of the physics:
+
+| name in the code | printed form | meaning |
+|:---|:---|:---|
+| `rvKeep`, `rvClean`, `rvCheck`, `rvRust`, `rvPython`, `rvData`, `readTable`, `num`, `col` | -- | R.0: the clean slate, the check of Part R with its counterparts, the tables of the Rust programs and the reading of their fields |
+| `sig[p]`, `sigbar[p]`, `gam[p]`, `gch`, `cC`, `bet` | $\sigma^p$, $\bar\sigma^p$, $\gamma^p_{\rm LL}$, $\gamma^{\rm ch}_{\rm LL}$, $C_{\rm LL}$, $\beta_{\rm LL}$ | R.1, R.2: the Pauli and the Dirac matrices of the chiral basis |
+| `d8`, `blk`, `dirac16` | -- | R.1: a Dirac matrix on $\Psi_{\rm LL}$, a block-diagonal matrix, a Dirac matrix on the sixteen components |
+| `T[a]`, `TR[a]`, `FF`, `YY`, `RR`, `QQ`, `gens`, `gensAll` | $T^{a,{\rm SM}}$, $T^{a,{\rm R}}_{\rm SH}$, $F^{\rm tot}_{\rm SH}$, $Y^{\rm SM}$, $R_{\rm SH}$, $Q^{\rm SM}$ | R.1: the internal generators on the sixteen components, in the order of the tables of the Rust program |
+| `lb`, `sGen`, `l16` | $u$, $S(u)$ | R.1: the six real generators of $SL(2,\mathbb C)$ and their action on the fields |
+| `invOps`, `chargeOp`, `parityOp`, `spaces`, `cspaces` | $L_X$ | R.1: the conditions of Lorentz invariance of a bilinear, the action $L_X$ of a generator and of parity on it, and the invariant spaces of the twelve and of the four custodial sectors |
+| `kp`, `km` | $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}$, $C_{\rm LL}\otimes\mathbf e^s_{\rm SH}$ | R.1: the pair matrices of positive and of negative parity |
+| `hg`, `hg2`, `bg` | $G_X$ | R.1: the generators on $\Phi_{\rm SH}$, on $\Phi'_{\rm SH}$ and on the bidoublet $\mathcal M_{\rm SH}$ |
+| `channels`, `cchannels`, `stab`, `st8`, `m2`, `ev12` | -- | R.1: the 24 and the 8 channels with their quantum numbers, the stabilizer of a condensate, that of $i\tau^2$, the mass matrix of $(W^1,W^2,W^3,B)$ and its eigenvalues |
+| `k3`, `kP[a, s]` | $\mathsf K^3$, $\mathsf K^{\rm d}_{\rm SH}$, $\mathsf K'^{\rm u}_{\rm SH}$ | R.2: the triplet pair matrix of Parts II and III and the pair matrices of the revision |
+| `i1closed`, `i1`, `gcritSH`, `lamExact`, `lamS`, `lamTrip` | $I^{(1)}_{\rm SF}$, $G^{\rm crit}_{\rm SH}$, $\lambda^{\rm H}_{\rm SH}$, $\lambda^{\rm S}_{\rm SH}$, $\lambda^{\rm T}_{\rm SH}$ | R.2, R.3: the integral of the gap equation, the critical coupling and the eigenvalues of the normal vacuum |
+| `mLL`, `gSH`, `mEff`, `dAbs`, `d0`, `phi0` | $m_{\rm LL}$, $G_{\rm SH}$, $M^{\rm eff}_{\rm SH}$, $\lvert D^{\rm d}_{\rm SH}\rvert$, $d^0_{\rm SH}$, $\varphi^0_{\rm SH}$ | R.2 to R.4: the mass, the pairing coupling $504/5$, and the ground state of the pairing-only methods |
+| `chi6`, `chi4`, `zz`, `phi`, `vppOne`, `jj` | $\chi^{ab}_{\rm SH}$, $Z_{\rm SH}$, $\phi$, $V^{\rm eff\,\prime\prime}_{\rm SH}(\varphi^0_{\rm SH})$, $J^{(3)}_{\rm SH}$ | R.3: the susceptibilities of the effective Lagrangian, its normalization and the length of the vacuum, the curvature of the potential of one pair, the integral of its derivative |
+| `lamAmp`, `lamPh`, `wFound`, `thr` | $\lambda^{\rm amp}_{\rm SH}$, $\lambda^{\rm ph}_{\rm SH}$, $\omega^{\rm H}_{\rm SH}$, $2M^{\rm eff}_{\rm SH}$ | R.3: the eigenvalues of the response, the amplitude mode and the threshold |
+| `r12Dirs`, `r12Tv`, `r12Cas`, `r12Broken` | $T^{a,{\rm SM}}+T^{a,{\rm R}}_{\rm SH}$ | R.3: the eight directions of a fluctuation of the bidoublet, the custodial generators on it, their Casimir operator and the directions of the broken generators (remark R12) |
+| `hh`, `rr`, `fN`, `rates` | $\mathsf H_{\rm SH}$, $\mathcal R_{\rm SH}$, $F^{\rm tot}_{\rm SH}$ | R.4: the symbolic Hermitian matrices of the conservation laws, the particle number on the Nambu space, the Josephson rates |
+| `wHann`, `ww`, `hw` | $h^{\rm Hann}_{\rm SH}$, $\Gamma^{\rm win}_{\rm SH}$ | R.4: the transform of the Hann window and the width of a pure cosine |
+| `eps2`, `w2`, `dl0`, `vx`, `vy`, `vz`, `sol`, `dps` | $\pm\varepsilon_{\rm LL}(q_i)$, $w_i/2$, $\Delta_{\rm SH}$, $\mathbf n^\pm_{\rm SH}$, $d_{\rm SH}(t)$ | R.4: the reduced model of the pseudospins, its solution by `NDSolve` with the method IDA, and the pair self-energy it gives |
 
 # 9. Errors and corrections found while this version was written
 
@@ -427,9 +485,59 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     evaluated again on 21 November 2026: {{GEN:nb_verdict}}. Since this evaluation the counts of the builder are
     no longer typed in Section 4 but written from its report.
 
-# 10. What follows
+17. *Part R (22 November 2026).* (1) The cell of remark R12
+    multiplied a matrix halved, written `r12Tau[[a]]/2 . m`; the product of matrices binds more strongly than the
+    division, so that this was `r12Tau[[a]]/(2 . m)`. The first dry run of Part R reported seven independent directions
+    of the broken generators instead of four and did not find the charges of the triplet; the products are now in
+    parentheses, and the cell gives four Goldstone directions, the singlet and the triplet. (2) The clean slate of Part
+    R also cleared the two names with which the dry run measures its times, so that it printed no times; names that
+    begin with `SFNB`, those of the tools that evaluate the notebook, are now kept. (3) Numbers formatted by
+    `NumberForm` inside `Print` appeared in the output of the dry run, which is plain text, as `NumberForm[...]`; they
+    are now turned into strings first. (4) When the counterparts of the checks of Part R were worked out from the reports,
+    it was found that the checking programs of the revision had said that their identifiers were those of the Rust
+    programs; that was false for stages 3, 4 and 6, and the programs were corrected first (Section 4.3 of the task
+    record). (5) In the printed copy of the first evaluation of Part R two display formulas were too long for one line and broke
+    inside a symbol, the pairing terms with the pair operators of Section R.0 and the two eigenvalues of remark R11 in
+    Section R.3.5; each is now two display formulas, and the notebook was built and evaluated again. (1) to (3) were found
+    by dry runs, (5) by looking at the printed copy.
 
-The rest of Part III and Part IV of the notebook (the effective Lagrangians, the masses of the gauge bosons in every
-vacuum, the surviving symmetry, the dynamics with IDA inside `NDSolve`, the figures and the videos) are added in the
-same way: the checks of the Python programs `sf_part3.py` and `sf_part4.py`, each with its counterparts, and this
-document is extended with each part.
+# 10. Part R: the revised hypotheses (22 November 2026)
+
+**The task.** On 21 November 2026 the author asked to modify the hypotheses so that the superfluid can be the Higgs
+field of the Standard Model, with the quantum numbers of the Higgs doublet, and then to add a second singlet of
+hypercharge $-\tfrac34$. The revision was carried out in stages, each with a Rust program, a Python program and a
+Wolfram script; its stage 6 has three parts: the dynamics in time, the notebook, and the article. The notebook is the
+second part, and the remarks made during the revision, R8 to R12, go into it as into the manuscripts and the document
+of the remarks.
+
+**What Part R holds.** Section R.0 states the fields, their charges, the symmetries and the interaction of the second
+version, explains how its checks are named, and defines its tools: the clean slate, the check `rvCheck` with the
+counterparts of every check, and the reading of the tables of the closed cell of data. Section R.1 builds the
+generators on the sixteen components as exact matrices and derives the quantum numbers (WQN-1 to WQN-12), with remark
+R8 and the products of the charges on which it rests. Section R.2 derives the formulas of the ground state (WSF-2a to
+WSF-5), with remark R9 and the charges of the quasi-particles of the second version, and remark R10 with the surface
+integral of the sharp cutoff in closed form, against the eigenvalue of the Rust program. Section R.3 derives the
+custodial algebra of the effective Lagrangian, the mass of its amplitude mode, the closed forms of HS (0, 0), the scale
+in GeV, and the amplitude mode at $d^0_{\rm SH}$ (WH-1 to WH-5), with remark R11 and remark R12, whose cell finds the four
+Goldstone directions, the massive singlet and the massive custodial triplet of the bidoublet and the charges $+1$, 0,
+$-1$ of the triplet. Section R.4 derives the conservation laws, the relation of Josephson and the width of the Hann
+window, compares the peaks of the Rust program, and integrates the 48 pseudospins of the reduced model with `NDSolve`
+and the method IDA (WD-1 to WD-5).
+
+**How it is made.** The code of the 28 checks is that of the four Wolfram scripts of the revision, copied by a program
+and not retyped, without the lines that read the arguments, define the report and write it; the scripts' own check
+`check[id, text, ok, detail]` became `rvCheck` with the same arguments, which records the check in the register of
+Chapter 0 together with its counterparts. Every table that a script read from a file is in the closed cell of data.
+Each of the four scripts ran in a kernel of its own; in the notebook each section of Part R starts from a clean slate
+that clears every name of the global context except those of the register, of the tools of Part R and of the tools that
+evaluate the notebook, so that a short name of the algebra cannot carry a value from an earlier part or section.
+
+**The evaluation.** The whole notebook, Parts I to III and Part R, was built and evaluated in the front end on 22
+November 2026 (Section 5): {{GEN:nb_verdict}}.
+
+# 11. What follows
+
+The rest of Part III and Part IV of the notebook for the earlier hypotheses (the effective Lagrangians, the masses of
+the gauge bosons in every vacuum, the surviving symmetry, the dynamics with IDA inside `NDSolve`, the figures and the
+videos) would be added in the same way, with the checks of the Python programs `sf_part3.py` and `sf_part4.py`. Under
+the revised hypotheses, Part R grows with every further stage of the revision, and this document with it.

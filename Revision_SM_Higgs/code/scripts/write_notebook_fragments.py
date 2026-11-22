@@ -12,6 +12,9 @@ Reads
     data/hck_part1_checks.txt, data/hck_part1_checks_python.txt (and the reports of the later parts, when the notebook
                                    has checks of them): the deviations of the same checks in the Rust and the Python
                                    programs
+    data/hck_sh_quantum_checks.txt, data/hck_sh_superfluid_checks.txt, data/hck_sh_higgs_checks.txt,
+    data/hck_sh_dynamics_checks.txt and their Python reports (..._python.txt): the counterparts of the checks of Part R
+                                   (the revision of the hypotheses), whose identifiers begin with WQN, WSF, WH and WD
 and writes provenance/generated/notebook.md with the fragments
     nb_version, nb_seconds, nb_counts, nb_messages, nb_ntests, nb_npass      facts of the evaluation
     nb_build                                                                 the counts of the builder
@@ -47,6 +50,24 @@ def report_values(name):
             if m2 and m2.group(3) == m2.group(4):
                 out.setdefault("%s %s" % (m2.group(2), m2.group(3)), (m2.group(1), "--"))
     return out
+
+
+def expand(ids):
+    """the counterparts named by a check of Part R: "QN-1a to QN-1e, QN-2a" -> [QN-1a, ..., QN-1e, QN-2a]; a name that
+    begins with "none" stands for no counterpart and gives the empty list"""
+    out = []
+    for part in ids.split(", "):
+        if part.startswith("none"):
+            continue
+        m = re.match(r"(\S+?)([a-z]) to (\S+?)([a-z])$", part)
+        if m and m.group(1) == m.group(3):
+            out += [m.group(1) + chr(c) for c in range(ord(m.group(2)), ord(m.group(4)) + 1)]
+        else:
+            out.append(part)
+    return out
+
+
+PART_R = ("WQN-", "WSF-", "WH-", "WD-")
 
 
 def wl_string(s, key):
@@ -108,6 +129,14 @@ def main():
     for name in ("hck_part1_checks_python.txt", "hck_part2_checks_python.txt", "hck_part3_checks_python.txt",
                  "hck_part4_checks_python.txt"):
         py.update(report_values(name))
+    # Part R: the reports of the programs of the revision, kept apart from those of Parts I to IV
+    rust_r, py_r = {}, {}
+    for name in ("hck_sh_quantum_checks.txt", "hck_sh_superfluid_checks.txt", "hck_sh_higgs_checks.txt",
+                 "hck_sh_dynamics_checks.txt"):
+        rust_r.update(report_values(name))
+    for name in ("hck_sh_quantum_checks_python.txt", "hck_sh_superfluid_checks_python.txt",
+                 "hck_sh_higgs_checks_python.txt", "hck_sh_dynamics_checks_python.txt"):
+        py_r.update(report_values(name))
     rows = ["| check | result | deviation in the notebook | tolerance | Rust: check, deviation | Python: check, deviation | statement |",
             "|:-------|:-----|:----------|:---------|:------------|:------------|:-----------------------------------|"]
     npass = 0
@@ -128,8 +157,24 @@ def main():
                 out.append("%s (%s), %s" % (one, v[0], num(v[1])))
             return "; ".join(out), allpass
 
-        rcell, rok = cells(r, rust)
-        pcell, pok = cells(p, py)
+        # a check of Part R names ranges of counterparts ("QN-1a to QN-1e") or none; each named check must have passed
+        def cells_r(ids, table):
+            names = expand(ids)
+            if not names:
+                return ids, True
+            out, allpass = [], True
+            for one in names:
+                v = table.get(one, ("--", "--"))
+                allpass = allpass and v[0] == "PASS"
+                out.append("%s (%s), %s" % (one, v[0], num(v[1])))
+            return "; ".join(out), allpass
+
+        if tid.startswith(PART_R):
+            rcell, rok = cells_r(r, rust_r)
+            pcell, pok = cells_r(p, py_r)
+        else:
+            rcell, rok = cells(r, rust)
+            pcell, pok = cells(p, py)
         rows.append("| %s | %s | %s | %s | %s | %s | %s |" % (
             tid, "PASS" if ok else "FAIL", fmt(dev) if dev is not None else "--", fmt(tol) if tol is not None else "--",
             rcell, pcell, esc(wl_string(t, "text"))))

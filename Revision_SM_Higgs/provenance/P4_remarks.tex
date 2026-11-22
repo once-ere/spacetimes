@@ -3768,17 +3768,20 @@ the scale \(M_Z\), it corresponds to about \(0.002\).
   next task.
 \end{enumerate}
 
-\textbf{Provenance.} No number of this remark is computed by the
-programs. The charges are those of the hypotheses. The potential of the
-exchange of one boson is that of the Born approximation of quantum
-electrodynamics. The critical strength of the ladder approximation is
-the result of Maskawa and Nakajima. The values of \(e^2/4\pi\) and
-\(g'^2/4\pi\) are rounded values of the Review of Particle Physics of
-the Particle Data Group. References: T. Maskawa and H. Nakajima,
-Spontaneous breaking of chiral symmetry in a vector-gluon model,
-Progress of Theoretical Physics 52, 1326 (1974); W. A. Bardeen, C. T.
-Hill and M. Lindner, Minimal dynamical symmetry breaking of the standard
-model, Physical Review D 41, 1647 (1990).
+\textbf{Provenance.} No number of this remark is computed by the Rust
+and the Python programs. The notebook \texttt{superfluid.nb} states the
+remark in Section R.1.13 of its Part R and computes there the products
+of the charges from its exact generators, and the ratio of \(\pi/3\) to
+\(\tfrac9{16}\cdot\tfrac1{137.036}\), about 255. The charges are those
+of the hypotheses. The potential of the exchange of one boson is that of
+the Born approximation of quantum electrodynamics. The critical strength
+of the ladder approximation is the result of Maskawa and Nakajima. The
+values of \(e^2/4\pi\) and \(g'^2/4\pi\) are rounded values of the
+Review of Particle Physics of the Particle Data Group. References: T.
+Maskawa and H. Nakajima, Spontaneous breaking of chiral symmetry in a
+vector-gluon model, Progress of Theoretical Physics 52, 1326 (1974); W.
+A. Bardeen, C. T. Hill and M. Lindner, Minimal dynamical symmetry
+breaking of the standard model, Physical Review D 41, 1647 (1990).
 
 \hypertarget{remark-r9-the-lightest-quasi-particle-of-the-superfluid-has-the-electric-charge-34-true-in-the-first-version-in-the-second-version-the-lightest-quasi-particles-are-paired}{%
 \subsection{6.2 Remark R9: ``The lightest quasi-particle of the
@@ -3918,7 +3921,12 @@ unpaired up component.
 masses and the gaps are from \texttt{data/sh\_sf\_ground.csv} (SHA-256
 \texttt{519c22b6a098639acf5e7af7356fe78d7cba1b84c8e5acdf28ab81838c23ca58}),
 written into this section by
-\texttt{code/scripts/write\_sh\_superfluid\_fragments.py}.
+\texttt{code/scripts/write\_sh\_superfluid\_fragments.py}. The notebook
+\texttt{superfluid.nb} states the remark in Section R.2.5 of its Part R
+and computes there, from the charges of the hypotheses, that the two
+constituents of each pair of the second version have the same charges
+and that the two pairs form a doublet of \(SU(2)_{\rm V}\); it prints
+the gaps of the Rust program.
 
 \hypertarget{remark-r10-the-current-response-of-the-normal-vacuum-is-an-artifact-of-the-sharp-cutoff}{%
 \subsection{6.3 Remark R10: ``The current response of the normal vacuum
@@ -3990,7 +3998,11 @@ It compares the closed form of the eigenvalue with the largest
 eigenvalue of the normal self-energies of HS (0, 1) in the data file of
 the Rust program \texttt{data/sh\_sf\_normal\_vacuum.csv} (SHA-256
 \texttt{96a0e4c8ee0051b4bb0701dacb78de3c019eee7cbc5c39112c2dc80523bd6822}),
-for the three potentials of stage 3.
+for the three potentials of stage 3. The notebook \texttt{superfluid.nb}
+states the remark in Section R.2.6 of its Part R, derives the closed
+form of \(\chi^{\rm J}_{\rm SH}\) there as the surface integral of the
+sharp cutoff, exactly, and prints it against the eigenvalue of the Rust
+program.
 
 \hypertarget{remarks-on-the-modes-of-the-superfluid-of-the-revised-hypotheses-stage-4-of-the-revision}{%
 \section{7. Remarks on the modes of the superfluid of the revised
@@ -4194,7 +4206,9 @@ and \texttt{data/sh\_hg\_scan.csv}, SHA-256
 the Python program \texttt{python/sh\_higgs.py} (report
 \texttt{data/hck\_sh\_higgs\_checks\_python.txt}, checks YH-4 and YH-7)
 and the Wolfram script \texttt{wolfram/source/sh\_higgs.wls} (report
-\texttt{data/hck\_sh\_higgs\_checks\_wolfram.txt}, check WH-5).
+\texttt{data/hck\_sh\_higgs\_checks\_wolfram.txt}, check WH-5). The
+notebook \texttt{superfluid.nb} states the remark in Section R.3.5 of
+its Part R, with the check WH-5 of the Wolfram script.
 
 \hypertarget{remark-r12-the-second-version-has-the-scalars-of-two-higgs-doublets}{%
 \subsection{7.2 Remark R12: ``The second version has the scalars of two
@@ -4286,5 +4300,11 @@ the Rust program \texttt{sh\_dynamics} (crate \texttt{rust/shdynamics},
 report \texttt{data/hck\_sh\_dynamics\_checks.txt}, check D-8; data
 \texttt{data/sh\_dyn\_runs.csv}, SHA-256
 \texttt{e68a0cac39cb4cfd52183662bfd472ba6cc64fd7881b9aaf8d995351a455a446}).
+The notebook \texttt{superfluid.nb} states the remark in Section R.3.6
+of its Part R and computes there the eight real directions of a
+fluctuation of the bidoublet: the four that the broken generators
+produce from the vacuum (the Goldstone directions), the massive singlet
+and the massive triplet of \(SU(2)_{\rm V}\), and the charges \(+1\), 0
+and \(-1\) of the triplet.
 
 \end{document}
