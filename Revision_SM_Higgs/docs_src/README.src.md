@@ -30,24 +30,25 @@ The hypotheses, their reasons and their immediate consequences are stated in `pr
 documents, the programs, the data, the notebook and the article in `paper_prd/` are inherited unchanged from the
 earlier hypotheses and are rewritten in stages: (1) the folder, the hypotheses and the task record; (2) the quantum
 numbers and the pattern of the breaking, checked by programs in Rust, Python and the Wolfram Language; (3) the
-mean-field superfluid of the two fields with the methods HS, KS and CJT; (4) the effective potential and the mass of
-the amplitude mode against $m_H$; (5) the masses of $W^\pm_\mu$ and $Z_\mu$, the massless photon and the parameter $\rho$;
-(6) the dynamics in time, the notebook and the article. Every inherited document begins with a note that says so.
-Stages 1 to 3 are complete: the quantum numbers and the breaking are checked in Section 6 of the hypotheses document
-(Rust: {{GEN:sh_verdict_rust}}; Python: {{GEN:sh_verdict_python}}; Wolfram, in exact arithmetic:
-{{GEN:sh_verdict_wolfram}}), with the measured inputs of the 2026 edition of the Review of Particle Physics; and the
-mean-field superfluid of the two fields is computed in the manuscript `higgs_superfluid.md` (`.tex`, `.pdf`): in all five
-methods the ground state is the Higgs superfluid, which keeps the electric charge and is stable (Rust:
-{{GEN:sf_verdict_rust}}; Python: {{GEN:sf_verdict_python}}; Wolfram: {{GEN:sf_verdict_wolfram}}).
+mean-field superfluid with the methods HS, KS and CJT; (4) the effective potential, the mass of the amplitude mode
+against $m_H$, the masses of $W^\pm_\mu$ and $Z_\mu$, the massless photon and the parameter $\rho$ (the former stages 4 and
+5, merged); (6) the dynamics in time, the notebook and the article. Every inherited document begins with a note that
+says so. Stages 1 to 3 are complete for the second version of the hypotheses (below): the quantum numbers and the
+breaking are checked in Section 6 of the hypotheses document (Rust: {{GEN:sh_verdict_rust}}; Python:
+{{GEN:sh_verdict_python}}; Wolfram, in exact arithmetic: {{GEN:sh_verdict_wolfram}}), with the measured inputs of the 2026
+edition of the Review of Particle Physics; and the mean-field superfluid of the three fields is computed in the
+manuscript `higgs_superfluid.md` (`.tex`, `.pdf`), with the first version as the comparison: in all five methods the
+ground state is the custodial Higgs superfluid, which keeps the electric charge and the custodial symmetry and is
+stable (Rust: {{GEN:sf_verdict_rust}}; Python: {{GEN:sf_verdict_python}}; Wolfram: {{GEN:sf_verdict_wolfram}}).
 
 **The second version of the revised hypotheses** (21 November 2026, from 19:38 PST). Exploratory computations of
 stage 4 found that the superfluid of the first version, with one singlet field, gives $\rho\approx1.2$: it pairs only
 the down component of $\Psi_{\rm LL}$ and breaks the custodial symmetry. The author then instructed to add a second
 singlet field $\chi'_{\rm SH}$ with the hypercharge $-\tfrac34$. With it the pairs form a bidoublet of
-$SU(2)_L\times SU(2)_{\rm R}$ and the vacuum pairs every constituent. The document of the hypotheses states the second
-version (stage 1 of the second version is complete). The manuscript `higgs_superfluid.md` and Section 6 of the document of
-the hypotheses still report the first version until stages 2 and 3 of the second version replace them. The first version
-is kept under the git tag `backup/SM-Higgs-one-singlet-2026-11-21`.
+$SU(2)_L\times SU(2)_{\rm R}$ and the vacuum pairs every constituent. The document of the hypotheses, its Section 6 and
+the manuscript `higgs_superfluid.md` state the second version (stages 1 to 3 of the second version are complete); the
+manuscript computes the first version alongside, as the comparison. The first version is kept under the git tag
+`backup/SM-Higgs-one-singlet-2026-11-21`.
 
 # 1. What this folder is
 
@@ -137,18 +138,22 @@ generators of $SU(2)_L\times U(1)_Y$ and the particle number. A kinetic term of 
 gives the masses of the $W$ and the $Z$ of the Standard Model, the massless photon and $\rho=1$. The measured inputs are
 those of the 2026 edition of the Review of Particle Physics (`data/sh_inputs.csv`).
 
-**Stage 3 of the revision of the hypotheses** (21 November 2026, 18:15 to 19:22 PST). The manuscript
-`higgs_superfluid.md` (`.tex`, `.pdf`) computes the uniform ground states of the two fields by the methods HS (three
-parameter sets), KS and CJT, with the program `sh_superfluid` of the crate `rust/shsuperfluid` ({{GEN:sf_verdict_rust}}),
-built on the new engine `uniform_n` of the library `sfcore` for several Dirac fields; the Python program
-`python/sh_superfluid.py` ({{GEN:sf_verdict_python}}); and the exact computation `wolfram/source/sh_superfluid.wls`
-({{GEN:sf_verdict_wolfram}}). The normal vacuum is unstable only towards the doublet-singlet pairs, with the critical
-coupling $G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})$ derived in closed form. With the pairing term, the ground state of
-every method is the Higgs superfluid: it keeps exactly the electric charge and the relative number of the two fields,
-has three Goldstone modes, and is stable also against charged condensates. Its lightest quasi-particle is the unpaired up
-component of $\Psi_{\rm LL}$, with the electric charge $\tfrac34$, and the up and the down components are not equivalent in it
-(the custodial symmetry is broken). The remarks R8 to R10 of `provenance/P4_remarks.md` explain what binds the pairs,
-the charge of the lightest quasi-particle, and an artifact of the sharp cutoff in the current response of the vacuum.
+**Stage 3 of the revision of the hypotheses** (first version 21 November 2026, 18:15 to 19:22 PST; second version, with
+the two singlets, 20:35 to 21:50 PST). The manuscript `higgs_superfluid.md` (`.tex`, `.pdf`) computes the uniform ground
+states of the three fields by the methods HS (three parameter sets), KS and CJT, and those of the first version as the
+comparison, with the program `sh_superfluid` of the crate `rust/shsuperfluid` ({{GEN:sf_verdict_rust}}), built on the
+engine `uniform_n` of the library `sfcore` for several Dirac fields; the Python program `python/sh_superfluid.py`
+({{GEN:sf_verdict_python}}); and the exact computation `wolfram/source/sh_superfluid.wls` ({{GEN:sf_verdict_wolfram}}). The
+normal vacuum is unstable only towards the doublet-singlet pairs, with the critical coupling
+$G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})$ derived in closed form. With the pairing terms, the ground state of every
+method is the custodial Higgs superfluid: both pair fields condense with equal lengths, the down particles paired with
+$\chi_{\rm SH}$ and the up particles with $\chi'_{\rm SH}$. It keeps exactly the electric charge, the custodial $SU(2)_{\rm V}$ and
+the relative number, has four Goldstone modes (three for $W^\pm_\mu$ and $Z_\mu$, one of the particle number), and is stable
+also against charged condensates. Every constituent is paired, and the up and the down components are equivalent in it.
+The condensate of one doublet, the ground state of the first version, is an unstable stationary state of the second.
+The remarks R8 to R10 of `provenance/P4_remarks.md` explain what forms the condensate (with the correction of R8), the
+charges of the lightest quasi-particles in both versions, and an artifact of the sharp cutoff in the current response of
+the vacuum.
 
 # 3. Contents
 
@@ -157,13 +162,13 @@ the charge of the lightest quasi-particle, and an artifact of the sharp cutoff i
 | `README.md`, `.tex`, `.pdf` | this list of contents | written |
 | `provenance/P0_task_record.md`, `.tex`, `.pdf` | the task (paraphrased), how the author's rules are kept, the record of a false statement and its correction, the decisions of interpretation, the plan, the log of errors and changes | written |
 | `provenance/H0_hypotheses.md`, `.tex`, `.pdf` | the revised hypotheses of this folder: the fields, the gauge group with the hypercharge, the pairing term of the doublet-singlet channel, the quantum numbers of the superfluid and why they are those of the Higgs doublet, the scale, and the consequences that follow at once | written (current) |
-| `higgs_superfluid.md`, `.tex`, `.pdf` | the manuscript of stage 3 of the revision: the mean-field superfluid of the two fields of the revised hypotheses by the methods HS, KS and CJT (the Hamiltonian density and the two potentials, what binds the pairs, the uniform states and the three methods, the static response of the normal vacuum with the critical coupling in closed form, the stationary states and the Higgs ground states, their symmetry and stability, the quasi-particles and the custodial symmetry, the checks) | written (current) |
+| `higgs_superfluid.md`, `.tex`, `.pdf` | the manuscript of stage 3 of the revision: the mean-field superfluid of the three fields of the second version of the revised hypotheses by the methods HS, KS and CJT, with the first version as the comparison (the Hamiltonian density and the potentials, what forms the condensate, the uniform states and the three methods, the static response of the normal vacuum with the critical coupling in closed form, the stationary states and the custodial Higgs ground states, their symmetry and stability, the instability of the condensate of one doublet, the quasi-particles and the custodial symmetry, the checks) | written (current, second version) |
 | `provenance/P1_master_symbols.md`, `.tex`, `.pdf` | the MASTER provenance of the symbols of PROJECT spacetimes for this solution: the convention of the symbols (suffix LL: taken unchanged from the earlier work on the super-loop; suffix SF: introduced by this solution), the seven registries of the project read by a program, the identifications and remedies file by file, the collisions and their resolution, the machine checks, and the table of all symbols | written; grows with the solution |
 | `provenance/symbols_sf.csv` | the registry of the symbols of the solution, written by `code/scripts/write_symbol_registry.py` from `code/scripts/symbol_entries.py` | written |
 | `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | parts I to IV written |
 | `superfluid.nb`, `superfluid_notebook.pdf` | the Mathematica notebook of the whole solution, evaluated in the front end of Wolfram, and its printed copy | introduction, Parts I and II and the sections of Part III on the Landau form (III.L), on the free energy at finite temperature (III.T) and on the gradient coefficient, the Ginzburg number and the Higgs sector (III.G) written; the rest planned |
 | `provenance/P3_notebook.md`, `.tex`, `.pdf` | the provenance of the notebook: its task, files, build and evaluation, the checks with their counterparts in Rust and Python, the symbols of its code, the corrections | written for Part I; grows with the notebook |
-| `provenance/P4_remarks.md`, `.tex`, `.pdf` | the remarks on the results (an approximation, a fit, an accuracy, a limitation): for each, what it means, why it holds, why it matters, the corrections of the first answer, and the provenance; first remark R1: the accuracy of the Landau form, with its definition and examples; the addendum A1 (the free energy of the five methods at finite temperature, and whether the order parameter is smaller and more physically reasonable) and remark R2 (the free energies are mean-field free energies); the addendum A2 (the gradient coefficient at the critical temperature and the width of the critical region; the superfluid as a Higgs sector and the compositeness of the Higgs) with its remarks; for the revised hypotheses the remarks R8 to R10 of stage 3 (what binds the pairs, the charge $\tfrac34$ of the lightest quasi-particle, the current response of the vacuum with the sharp cutoff) | written for R1, A1, R2, A2 and R8 to R10; grows with every such remark |
+| `provenance/P4_remarks.md`, `.tex`, `.pdf` | the remarks on the results (an approximation, a fit, an accuracy, a limitation): for each, what it means, why it holds, why it matters, the corrections of the first answer, and the provenance; first remark R1: the accuracy of the Landau form, with its definition and examples; the addendum A1 (the free energy of the five methods at finite temperature, and whether the order parameter is smaller and more physically reasonable) and remark R2 (the free energies are mean-field free energies); the addendum A2 (the gradient coefficient at the critical temperature and the width of the critical region; the superfluid as a Higgs sector and the compositeness of the Higgs) with its remarks; for the revised hypotheses the remarks R8 to R10 of stage 3 (what forms the condensate, with the correction of R8; the charges of the lightest quasi-particles in the first and the second version; the current response of the vacuum with the sharp cutoff) | written for R1, A1, R2, A2 and R8 to R10; grows with every such remark |
 | `provenance/` (further documents) | the provenance of the code, the computed values and the checks | planned |
 | `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?); the registry of the symbols: `symbol_entries.py` (the entries), `write_symbol_registry.py` (reads the seven registries of the project, writes the registry of the solution and the tables of the MASTER provenance) and `check_symbols.py` (the checks of the symbols) | written |
 | `docs_src/` | the hand-edited sources of the documents | written |
@@ -206,9 +211,9 @@ python3 python/sh_quantum.py                  # revision, stage 2: the Python co
 wolframscript -file wolfram/source/sh_quantum.wls data/sh_channels.csv data/sh_custodial_channels.csv \
     data/hck_sh_quantum_checks_wolfram.txt
 python3 code/scripts/write_sh_fragments.py    # the tables and numbers of stage 2 for the hypotheses document
-(cd rust && ./target/release/sh_superfluid)   # revision, stage 3: the superfluid (about two minutes, threads)
+(cd rust && ./target/release/sh_superfluid)   # revision, stage 3: the superfluid (about fifteen minutes on two threads)
 (cd python && python3 sh_superfluid.py)       # revision, stage 3: the Python computation (after sh_superfluid)
-wolframscript -file wolfram/source/sh_superfluid.wls data/sh_sf_normal_vacuum.csv \
+wolframscript -file wolfram/source/sh_superfluid.wls data/sh_sf_normal_vacuum.csv data/sh_sf_ground.csv \
     data/hck_sh_superfluid_checks_wolfram.txt
 python3 code/scripts/write_sh_superfluid_fragments.py # the tables and numbers of stage 3
 python3 code/scripts/write_notebook_fragments.py # the tables of the provenance of the notebook (from data/hck_notebook_log.txt)

@@ -11256,34 +11256,46 @@ new in the revision of the hypotheses \\
 \texttt{e\_up} \texttt{e\_down} & the isospin columns \((1,0)^T\) and
 \((0,1)^T\) of the up and the down component of \(\Psi_{\rm LL}\) & new
 in the revision of the hypotheses \\
-\(\Psi_{\rm SH}\) & \texttt{Psi\_SH} & the two fields of the revised
-hypotheses written as one field of twelve components: the eight
-components of \(\Psi_{\rm LL}\) (component \(2d+s\)) followed by the
-four components of \(\chi_{\rm SH}\) & new in the revision of the
-hypotheses \\
-\(\mathsf K^{\rm u}_{\rm SH}\), \(\mathsf K^{\rm d}_{\rm SH}\) &
-\texttt{k\_sh} & the antisymmetric \(12\times12\) pair matrices of the
-doublet-singlet channel: the block
+\(\Psi_{\rm SH}\) & \texttt{Psi\_SH} & the three fields of the revised
+hypotheses written as one field of sixteen components: the eight
+components of \(\Psi_{\rm LL}\) (component \(2d+s\)), then the four
+components of \(\chi_{\rm SH}\), then the four components of
+\(\chi'_{\rm SH}\) (in the first version of the revised hypotheses
+\(\chi'_{\rm SH}\) is a free field, decoupled from the others) & new in
+the revision of the hypotheses \\
+\(\mathsf K^{\rm u}_{\rm SH}\), \(\mathsf K^{\rm d}_{\rm SH}\);
+\(\mathsf K'^{\rm u}_{\rm SH}\), \(\mathsf K'^{\rm d}_{\rm SH}\) &
+\texttt{k\_sh} \texttt{k\_ds} & the antisymmetric \(16\times16\) pair
+matrices of the two doublet-singlet channels:
+\(\mathsf K^{\rm u}_{\rm SH}\) has the block
 \(\tfrac12C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm u}_{\rm SH}\)
-(or \(\mathbf e^{\rm d}_{\rm SH}\)) between the components of
-\(\Psi_{\rm LL}\) and those of \(\chi_{\rm SH}\) and minus its transpose
-in the opposite block, so that
-\(\Psi^T_{\rm SH}\mathsf K^{\rm u}_{\rm SH}\Psi_{\rm SH}=2\Pi^{\rm u}_{\rm SH}\)
+(and \(\mathsf K^{\rm d}_{\rm SH}\) the same with
+\(\mathbf e^{\rm d}_{\rm SH}\)) between the components of
+\(\Psi_{\rm LL}\) and those of \(\chi_{\rm SH}\), minus its transpose in
+the opposite block and zero elsewhere, so that
+\(\Psi^T_{\rm SH}\mathsf K^{\rm u}_{\rm SH}\Psi_{\rm SH}=2\Pi^{\rm u}_{\rm SH}\);
+\(\mathsf K'^{\rm u}_{\rm SH}\) and \(\mathsf K'^{\rm d}_{\rm SH}\) are
+the same with the components of \(\chi'_{\rm SH}\) in place of those of
+\(\chi_{\rm SH}\), so that
+\(\Psi^T_{\rm SH}\mathsf K'^{\rm u}_{\rm SH}\Psi_{\rm SH}=2\Pi'^{\rm u}_{\rm SH}\)
 & new in the revision of the hypotheses \\
 \(\mathsf h_{\rm SH}(\vec q_{\rm LL})\) & \texttt{h\_SH} & the free
-Dirac Hamiltonian of the twelve components on a plane wave of momentum
+Dirac Hamiltonian of the sixteen components on a plane wave of momentum
 \(\vec q_{\rm LL}\), block-diagonal:
-\(\mathsf h_{\rm LL}(\vec q_{\rm LL})\) on \(\Psi_{\rm LL}\) and
-\(\alpha^j_{\rm LL}q_j+\beta_{\rm LL}m^\chi_{\rm SH}\) on
-\(\chi_{\rm SH}\) & new in the revision of the hypotheses \\
+\(\mathsf h_{\rm LL}(\vec q_{\rm LL})\) on \(\Psi_{\rm LL}\),
+\(\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m^\chi_{\rm SH}\) on
+\(\chi_{\rm SH}\) and
+\(\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m^{\chi'}_{\rm SH}\) on
+\(\chi'_{\rm SH}\) (summed over \(j\)) & new in the revision of the
+hypotheses \\
 \(\mathsf H_{\rm SH}(\vec q_{\rm LL})\) & \texttt{bdg\_SH} & the
-Bogoliubov-de Gennes matrix (\(24\times24\)) of a uniform state of the
-twelve components with the self-energies \(\mathsf N_{\rm SH}\),
+Bogoliubov-de Gennes matrix (\(32\times32\)) of a uniform state of the
+sixteen components with the self-energies \(\mathsf N_{\rm SH}\),
 \(\mathsf P_{\rm SH}\) & new in the revision of the hypotheses \\
 \(\mathsf N_{\rm SH}\), \(\mathsf P_{\rm SH}\) & \texttt{N\_SH}
 \texttt{P\_SH} & the constant normal (Hermitian) and pair
-(antisymmetric) self-energies of a uniform state of the twelve
-components (\(12\times12\)) & new in the revision of the hypotheses \\
+(antisymmetric) self-energies of a uniform state of the sixteen
+components (\(16\times16\)) & new in the revision of the hypotheses \\
 \(\mathsf C^{\rm n}_{\rm SH}(\vec q_{\rm LL})\),
 \(\mathsf C^{\rm p}_{\rm SH}(\vec q_{\rm LL})\) & \texttt{Cn\_SH}
 \texttt{Cp\_SH} & the normal and the pair correlation matrix of the
@@ -11301,41 +11313,55 @@ revision of the hypotheses \\
 and the vector contact terms of the author's ansatz on \(\Psi_{\rm LL}\)
 (\(G^{\rm S}_{\rm SF}=-8\), \(G^{\rm V}_{\rm SF}=0.8\)), without
 (\(V^{(0)}_{\rm SH}\)) and with (\(V^{(1)}_{\rm SH}\),
-\(G_{\rm SH}=100.8\)) the pairing term of the doublet-singlet channel &
-new in the revision of the hypotheses \\
+\(G_{\rm SH}=100.8\)) the pairing terms of the two doublet-singlet
+channels (in the first version of the revised hypotheses, of the channel
+of \(\chi_{\rm SH}\) only) & new in the revision of the hypotheses \\
 \(G^{\rm crit}_{\rm SH}\) & \texttt{G\_crit\_SH} & the critical coupling
-of the pairing term of the doublet-singlet channel: the normal vacuum is
+of a pairing term of the doublet-singlet channels: the normal vacuum is
 unstable towards the condensation of the pairs when
 \(G_{\rm SH}>G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})\)
-(equal masses of the two fields) & new in the revision of the
-hypotheses \\
+(equal masses of the fields) & new in the revision of the hypotheses \\
 \(\lambda^{\rm H}_{\rm SH}\), \(\lambda^{\rm S}_{\rm SH}\),
 \(\lambda^{\rm T}_{\rm SH}\) & \texttt{lam\_higgs} \texttt{lam\_scalar}
 \texttt{lam\_triplet} & eigenvalues of the static response of the normal
 vacuum of the revised hypotheses: in the doublet-singlet pairs (the
-Higgs channel), in the scalar densities of the two fields (the largest
-eigenvalue of a \(2\times2\) matrix), and in the scalar triplet pairs of
-\(\Psi_{\rm LL}\); an eigenvalue above 1 is an instability & new in the
-revision of the hypotheses \\
-\(D^{\rm u}_{\rm SH}\), \(D^{\rm d}_{\rm SH}\) & \texttt{D\_up}
+Higgs channels), in the scalar densities of the three fields (the
+largest eigenvalue of the \(3\times3\) matrix \(\mathsf S^X_{\rm SH}\)),
+and in the scalar triplet pairs of \(\Psi_{\rm LL}\); an eigenvalue
+above 1 is an instability & new in the revision of the hypotheses \\
+\(D^{\rm u}_{\rm SH}\), \(D^{\rm d}_{\rm SH}\); \(D'^{\rm u}_{\rm SH}\),
+\(D'^{\rm d}_{\rm SH}\); \(\mathcal D_{\rm SH}\) & \texttt{D\_up}
 \texttt{D\_down} & the coefficients of
-\((\mathsf K^{\rm u}_{\rm SH})^\dagger\) and
-\((\mathsf K^{\rm d}_{\rm SH})^\dagger\) in the pair self-energy
-\(\mathsf P_{\rm SH}\) of a state: the pair self-energy of the
-doublet-singlet channel, which transforms as the pair field & new in the
-revision of the hypotheses \\
-\(M^{\rm u}_{\rm SH}\), \(M^{\rm d}_{\rm SH}\), \(M^\chi_{\rm SH}\) &
-\texttt{M\_up} \texttt{M\_down} \texttt{M\_chi} & the Dirac masses of
-the up and the down components of \(\Psi_{\rm LL}\) and of
-\(\chi_{\rm SH}\) in a state: the bare mass plus the coefficient of
-\(\beta_{\rm LL}\) in the normal self-energy of that species & new in
+\((\mathsf K^{\rm u}_{\rm SH})^\dagger\),
+\((\mathsf K^{\rm d}_{\rm SH})^\dagger\),
+\((\mathsf K'^{\rm u}_{\rm SH})^\dagger\) and
+\((\mathsf K'^{\rm d}_{\rm SH})^\dagger\) in the pair self-energy
+\(\mathsf P_{\rm SH}\) of a state, the pair self-energies of the
+doublet-singlet channels; and their \(2\times2\) matrix, with the first
+row \((D^{\rm u}_{\rm SH},D'^{\rm u}_{\rm SH})\) and the second row
+\((D^{\rm d}_{\rm SH},D'^{\rm d}_{\rm SH})\), which transforms as
+\(\mathcal M_{\rm SH}\) & new in the revision of the hypotheses \\
+\(\varsigma^{(1)}_{\rm SH}\), \(\varsigma^{(2)}_{\rm SH}\) &
+\texttt{sing1} \texttt{sing2} & the two singular values of
+\(\mathcal D_{\rm SH}\), the larger first; they do not change under
+\(SU(2)_L\times SU(2)_{\rm R}\) and the particle number: two equal
+values mean a condensate of both pair fields with equal lengths,
+\(\varsigma^{(2)}_{\rm SH}=0\) a condensate of one pair field & new in
+the revision of the hypotheses \\
+\(M^{\rm u}_{\rm SH}\), \(M^{\rm d}_{\rm SH}\), \(M^\chi_{\rm SH}\),
+\(M^{\chi'}_{\rm SH}\) & \texttt{M\_up} \texttt{M\_down} \texttt{M\_chi}
+\texttt{M\_chi2} & the Dirac masses of the up and the down components of
+\(\Psi_{\rm LL}\), of \(\chi_{\rm SH}\) and of \(\chi'_{\rm SH}\) in a
+state: the bare mass plus a quarter of the trace of the normal
+self-energy with the matrix \(\beta_{\rm LL}\) of that species & new in
 the revision of the hypotheses \\
 \(n^{\rm S,u}_{\rm SH}\), \(n^{\rm S,d}_{\rm SH}\),
-\(n^{{\rm S},\chi}_{\rm SH}\) & \texttt{nS\_up} \texttt{nS\_down}
-\texttt{nS\_chi} & the scalar densities of the three species in a state,
-measured from the normal vacuum: the trace of \(\varrho_{\rm SH}\) with
-the matrix \(\beta_{\rm LL}\) of the species & new in the revision of
-the hypotheses \\
+\(n^{{\rm S},\chi}_{\rm SH}\), \(n^{{\rm S},\chi'}_{\rm SH}\) &
+\texttt{nS\_up} \texttt{nS\_down} \texttt{nS\_chi} \texttt{nS\_chi2} &
+the scalar densities of the four species in a state, measured from the
+normal vacuum: the trace of \(\varrho_{\rm SH}\) with the matrix
+\(\beta_{\rm LL}\) of the species & new in the revision of the
+hypotheses \\
 \(\mathcal E^X_{\rm SH}\), \(E^{X,{\rm gap}}_{\rm SH}\) &
 \texttt{energy\_SH} \texttt{gap\_SH} & the energy per volume of a
 uniform state of the revised hypotheses in the approximation of method
@@ -11344,21 +11370,22 @@ uniform state of the revised hypotheses in the approximation of method
 hypotheses \\
 \(\mathcal H_{\rm SH}\) & \texttt{H\_density\_SH} & the Hamiltonian
 density of the revised hypotheses: the free Dirac Hamiltonians of
-\(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\), the scalar and the vector
-contact terms of the author's ansatz on \(\Psi_{\rm LL}\), and the
-pairing term
-\(-G_{\rm SH}\sum_s{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}\) of the
-doublet-singlet channel & new in the revision of the hypotheses \\
+\(\Psi_{\rm LL}\), \(\chi_{\rm SH}\) and \(\chi'_{\rm SH}\), the scalar
+and the vector contact terms of the author's ansatz on
+\(\Psi_{\rm LL}\), and the pairing terms
+\(-G_{\rm SH}\sum_s[{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}+{:}(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}{:}]\)
+of the two doublet-singlet channels (in the first version without the
+terms of \(\Pi'^s_{\rm SH}\)) & new in the revision of the hypotheses \\
 \(\mathsf C^{\rm vac}_{\rm SH}(\vec q_{\rm LL})\) & \texttt{vac\_SH} &
-the normal correlation matrix of the normal vacuum of the twelve
+the normal correlation matrix of the normal vacuum of the sixteen
 components: the projector onto the negative eigenvalues of
 \(\mathsf h_{\rm SH}(\vec q_{\rm LL})\) & new in the revision of the
 hypotheses \\
 \(\nu_{\rm SH}\), \(\mathsf X_{\rm SH}\), \(\mathsf Y_{\rm SH}\) &
 \texttt{nu\_SH} \texttt{X\_SH} \texttt{Y\_SH} & the coefficient and the
-two \(12\times12\) matrices of a bilinear contact term of the
-Hamiltonian density of the twelve components: \(\nu_{\rm SH}\) times the
-normal-ordered product of
+two \(16\times16\) matrices of a bilinear contact term of the
+Hamiltonian density of the sixteen components: \(\nu_{\rm SH}\) times
+the normal-ordered product of
 \(\Psi^\dagger_{\rm SH}\mathsf X_{\rm SH}\Psi_{\rm SH}\) and
 \(\Psi^\dagger_{\rm SH}\mathsf Y_{\rm SH}\Psi_{\rm SH}\) & new in the
 revision of the hypotheses \\
@@ -11367,29 +11394,33 @@ revision of the hypotheses \\
 matrix with which the exchange contractions are evaluated
 (\(\varrho_{\rm SH}\) itself, or in the Kohn-Sham method its
 projection), and the orthogonal projection of the Kohn-Sham method onto
-the span of the ten Kohn-Sham densities of the twelve components: the
-number and the scalar densities of \(\Psi_{\rm LL}\) as \(2\times2\)
+the span of the sixteen Kohn-Sham densities of the sixteen components:
+the number and the scalar densities of \(\Psi_{\rm LL}\) as \(2\times2\)
 matrices in the isospin space (\(\mathsf 1_4\otimes\mathsf 1_2\),
 \(\mathsf 1_4\otimes\tau^a\), \(\beta_{\rm LL}\otimes\mathsf 1_2\),
-\(\beta_{\rm LL}\otimes\tau^a\)) and those of \(\chi_{\rm SH}\)
-(\(\mathsf 1_4\), \(\beta_{\rm LL}\)) & new in the revision of the
+\(\beta_{\rm LL}\otimes\tau^a\)) and those of the pair of singlets
+\((\chi_{\rm SH},\chi'_{\rm SH})\) as \(2\times2\) matrices in the space
+of the two singlets (\(\mathsf 1_2\otimes\mathsf 1_4\),
+\(\tau^a\otimes\mathsf 1_4\), \(\mathsf 1_2\otimes\beta_{\rm LL}\),
+\(\tau^a\otimes\beta_{\rm LL}\)) & new in the revision of the
 hypotheses \\
 \(\mathcal E^{X,{\rm int}}_{\rm SH}\) & \texttt{e\_int\_SH} & the
 interaction part of the energy per volume of a uniform state of the
-twelve components in the approximation of method \(X\): the sum over the
-contact terms of their contractions, each with the weight of the method
-& new in the revision of the hypotheses \\
+sixteen components in the approximation of method \(X\): the sum over
+the contact terms of their contractions, each with the weight of the
+method & new in the revision of the hypotheses \\
 \(\beta^{\rm u}_{\rm SH}\), \(\beta^{\rm d}_{\rm SH}\),
-\(\beta^\chi_{\rm SH}\); \(\beta_{\rm SH}\) & \texttt{beta\_up}
-\texttt{beta\_down} \texttt{beta\_chi} \texttt{bb\_SH} & the matrix
-\(\beta_{\rm LL}\) on the four components of one species of the twelve
-components (the up components of \(\Psi_{\rm LL}\), its down components,
-\(\chi_{\rm SH}\)) and zero on the others; their sum & new in the
+\(\beta^\chi_{\rm SH}\), \(\beta^{\chi'}_{\rm SH}\); \(\beta_{\rm SH}\)
+& \texttt{beta\_up} \texttt{beta\_down} \texttt{beta\_chi}
+\texttt{beta\_chi2} \texttt{bb\_SH} & the matrix \(\beta_{\rm LL}\) on
+the four components of one species of the sixteen components (the up
+components of \(\Psi_{\rm LL}\), its down components, \(\chi_{\rm SH}\),
+\(\chi'_{\rm SH}\)) and zero on the others; their sum & new in the
 revision of the hypotheses \\
 \(\mathsf L_{\rm SH}\), \(\mathsf F^X_{\rm SH}\),
 \(\mathsf Q^X_{\rm SH}\), \(\mathsf B_{\rm SH}\) & \texttt{L\_resp\_SH}
 \texttt{F\_kern\_SH} \texttt{Q\_resp\_SH} \texttt{B\_resp\_SH} & the
-static response of a stationary uniform state of the twelve components
+static response of a stationary uniform state of the sixteen components
 in an orthonormal basis of real directions of the self-energies: the
 response of the local matrices \((\varrho_{\rm SH},-\kappa_{\rm SH})\)
 to the self-energies (negative semidefinite), the kernel of the contact
@@ -11400,11 +11431,12 @@ those of \(-\mathsf B_{\rm SH}\mathsf F^X_{\rm SH}\mathsf B_{\rm SH}\),
 and the state is stable in the directions considered when all are below
 1 & new in the revision of the hypotheses \\
 \(\mathsf S^X_{\rm SH}\) & \texttt{S\_PsiPsi} \texttt{S\_Psichi}
-\texttt{S\_chiPsi} \texttt{S\_chichi} & the \(2\times2\) static response
-of the Dirac masses of \(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\) in the
-normal vacuum in method \(X\): the change of the mass of each field,
-through one step of the self-consistency, per unit change of the mass of
-either field & new in the revision of the hypotheses \\
+\texttt{S\_Psichi2} \texttt{S\_chiPsi} \texttt{S\_chi2Psi} & the
+\(3\times3\) static response of the Dirac masses of \(\Psi_{\rm LL}\),
+\(\chi_{\rm SH}\) and \(\chi'_{\rm SH}\) in the normal vacuum in method
+\(X\): the change of the mass of each field, through one step of the
+self-consistency, per unit change of the mass of any of the three fields
+& new in the revision of the hypotheses \\
 \(\chi^{\rm J}_{\rm SH}\) & \texttt{chi\_J} & the response of the
 current of the normal vacuum of \(\Psi_{\rm LL}\) to a uniform vector
 potential with the sharp momentum cutoff,
@@ -11414,7 +11446,7 @@ gauge symmetry would make zero & new in the revision of the
 hypotheses \\
 \(M^{\rm eff}_{\rm SH}\) & \texttt{M\_eff} & the energy at zero momentum
 of the paired quasi-particles of a Higgs ground state in which only the
-pairing term acts (equal masses \(m_{\rm LL}\) of the two fields):
+pairing terms act (equal masses \(m_{\rm LL}\) of the fields):
 \((m_{\rm LL}^2+\lvert D^{\rm d}_{\rm SH}\rvert^2/4)^{1/2}\) & new in
 the revision of the hypotheses \\
 \(R_{\rm SH}\) & \texttt{R\_SH} & the relative number: the number of

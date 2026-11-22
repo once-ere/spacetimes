@@ -392,8 +392,9 @@ component, and keeps exactly $Q^{\rm SM}$ when it lies in the neutral part of it
 $U(1)$ of $Q^{\rm SM}$ can therefore carry, besides $\Phi^{\rm d}_{\rm SH}$ and $\Phi'^{\rm u}_{\rm SH}$, only the neutral bilinears of
 item 4. Among them the neutral member of the triplet of $\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\Psi_{\rm LL}$ and the difference of
 $\chi^\dagger_{\rm SH}\mathsf V_{\rm SH}\chi_{\rm SH}$ and ${\chi'_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$ break $SU(2)_{\rm V}$ but not
-$Q^{\rm SM}$; whether they are different from zero, and how large the other mean fields and the two lengths are, is
-computed in stage 3, with the dynamics.
+$Q^{\rm SM}$. Whether they are different from zero, and how large the other mean fields and the two lengths are, is a
+question of the dynamics. Stage 3 answers it in the mean-field approximations HS, KS and CJT: in each the ground state
+has two equal lengths, and these two mean fields vanish.
 
 The mass matrix of $(W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)$ that the kinetic term with one coefficient for each pair field,
 $(D^{\rm SM}_\mu\Phi_{\rm SH})^\dagger D^{{\rm SM},\mu}\Phi_{\rm SH}+(D^{\rm SM}_\mu\Phi'_{\rm SH})^\dagger D^{{\rm SM},\mu}\Phi'_{\rm SH}$ at the

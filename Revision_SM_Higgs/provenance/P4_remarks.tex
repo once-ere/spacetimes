@@ -189,13 +189,16 @@ November 2026).} This document was inherited unchanged from the earlier
 hypotheses, under which the spinor field was the DiracLike spinor with
 the electric charge 0 and \(SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\)
 was a new gauge group. The hypotheses of this folder are different:
-\(SU(2)_{\rm v}\) is \(SU(2)_L\), the fermion number is the hypercharge
-(\(Y^{\rm SM}=F_{\rm LL}/4\)), a singlet field \(\chi_{\rm SH}\) is
-added, and the superfluid is the condensate of the pairs of a particle
-of \(\Psi_{\rm LL}\) and a particle of \(\chi_{\rm SH}\), which has the
-quantum numbers of the Higgs doublet. Every statement below that depends
-on the earlier hypotheses is replaced as this document is rewritten for
-the revised ones.
+\(SU(2)_{\rm v}\) is \(SU(2)_L\), and two singlet fields are added:
+\(\chi_{\rm SH}\) with the hypercharge \(\tfrac14\), and, in the second
+version of the revised hypotheses (the author's instruction of 21
+November 2026, 19:38 PST), \(\chi'_{\rm SH}\) with the hypercharge
+\(-\tfrac34\). The hypercharge of \(\Psi_{\rm LL}\) is \(\tfrac14\). The
+superfluid is the condensate of the pairs of a particle of
+\(\Psi_{\rm LL}\) and a particle of a singlet; its two pair fields have
+the quantum numbers of two Higgs doublets. Every statement below that
+depends on the earlier hypotheses is replaced as this document is
+rewritten for the revised ones.
 
 \hypertarget{what-this-document-is}{%
 \section{1. What this document is}\label{what-this-document-is}}
@@ -3558,27 +3561,32 @@ version}\label{corrections-of-the-first-version}}
 of the
 revision)}\label{remarks-on-the-superfluid-of-the-revised-hypotheses-stage-3-of-the-revision}}
 
-\textbf{The setting of the three remarks.} Under the revised hypotheses
-there are two Dirac fields, both singlets of colour:
+\textbf{The setting of the three remarks.} Under the revised hypotheses,
+in their second version, there are three Dirac fields, all singlets of
+colour:
 
 \begin{itemize}
 \tightlist
 \item
-  the isodoublet \(\Psi_{\rm LL}\), with an up and a down component;
+  the isodoublet \(\Psi_{\rm LL}\), with an up and a down component, of
+  the hypercharge \(Y^{\rm SM}=\tfrac14\);
 \item
-  the singlet \(\chi_{\rm SH}\).
+  the singlet \(\chi_{\rm SH}\), of the hypercharge \(\tfrac14\);
+\item
+  the singlet \(\chi'_{\rm SH}\), of the hypercharge \(-\tfrac34\),
+  added at the author's instruction of 21 November 2026, 19:38 PST.
 \end{itemize}
 
-Both have the hypercharge \(Y^{\rm SM}=\tfrac14\), a quarter of the
-fermion number. With \(Q^{\rm SM}=T^{3,{\rm SM}}+Y^{\rm SM}\) the
-electric charges are \(\tfrac34\) (up), \(-\tfrac14\) (down) and
-\(\tfrac14\) (\(\chi_{\rm SH}\)); antiparticles have the opposite
-charges. The Hamiltonian density contains:
+With \(Q^{\rm SM}=T^{3,{\rm SM}}+Y^{\rm SM}\) the electric charges are
+\(\tfrac34\) (up), \(-\tfrac14\) (down), \(\tfrac14\)
+(\(\chi_{\rm SH}\)) and \(-\tfrac34\) (\(\chi'_{\rm SH}\));
+antiparticles have the opposite charges. The Hamiltonian density
+contains:
 
 \begin{itemize}
 \tightlist
 \item
-  the free Dirac terms of both fields, with equal masses
+  the free Dirac terms of the three fields, with equal masses
   \(m_{\rm LL}=0.2\,\Lambda_{\rm LL}\) (the cutoff \(\Lambda_{\rm LL}\)
   is the unit);
 \item
@@ -3586,79 +3594,142 @@ charges. The Hamiltonian density contains:
   \(\Psi_{\rm LL}\), with the couplings \(G^{\rm S}_{\rm SF}=-8\) and
   \(G^{\rm V}_{\rm SF}=0.8\);
 \item
-  the pairing term
-  \(-G_{\rm SH}\sum_{s={\rm u},{\rm d}}{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}\),
+  the pairing terms
+  \(-G_{\rm SH}\sum_{s={\rm u},{\rm d}}\big[{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}+{:}(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}{:}\big]\),
   with \(G_{\rm SH}=100.8\). The pair operator \(\Pi^s_{\rm SH}\)
   annihilates a particle of the component \(s\) of \(\Psi_{\rm LL}\)
   together with a particle of \(\chi_{\rm SH}\) in the state of spin
-  zero and positive parity.
+  zero and positive parity, and \(\Pi'^s_{\rm SH}\) does the same with a
+  particle of \(\chi'_{\rm SH}\).
 \end{itemize}
 
-The superfluid is the condensate of these pairs. Its pair field
-\(\Phi_{\rm SH}=(\Phi^{\rm u}_{\rm SH},\Phi^{\rm d}_{\rm SH})\), the
-expectation values of \((\Pi^{\rm u}_{\rm SH},\Pi^{\rm d}_{\rm SH})\),
-has the quantum numbers of the Higgs doublet. The ground state is
-computed by three mean-field methods, HS (with three parameter sets), KS
-and CJT. In each it is the condensate along \(\Phi^{\rm d}_{\rm SH}\) or
-a rotation of it by \(SU(2)_L\). It breaks \(SU(2)_L\times U(1)_Y\) to
-the \(U(1)\) of \(Q^{\rm SM}\).
+The superfluid is the condensate of these pairs. Its two pair fields are
+\(\Phi_{\rm SH}\), the expectation values of
+\((\Pi^{\rm u}_{\rm SH},\Pi^{\rm d}_{\rm SH})\), and \(\Phi'_{\rm SH}\),
+those of \((\Pi'^{\rm u}_{\rm SH},\Pi'^{\rm d}_{\rm SH})\). They are
+doublets of \(SU(2)_L\) with the hypercharges \(\tfrac12\) and
+\(-\tfrac12\); \(\Phi_{\rm SH}\), and \(i\tau^2\) times the complex
+conjugate of \(\Phi'_{\rm SH}\), have the quantum numbers of the Higgs
+doublet. The ground state is computed by three mean-field methods, HS
+(with three parameter sets), KS and CJT. In each it is the custodial
+condensate, or a rotation of it by the symmetries: the down component of
+\(\Psi_{\rm LL}\) is paired with \(\chi_{\rm SH}\) and the up component
+with \(\chi'_{\rm SH}\), and the two pair fields have equal lengths. It
+breaks \(SU(2)_L\times U(1)_Y\) to the \(U(1)\) of \(Q^{\rm SM}\). It
+keeps the custodial symmetry \(SU(2)_{\rm V}\), the diagonal subgroup of
+\(SU(2)_L\times SU(2)_{\rm R}\), where \(SU(2)_{\rm R}\) rotates the
+pair \((\chi_{\rm SH},\chi'_{\rm SH})\) as a doublet.
 
-\hypertarget{remark-r8-the-electroweak-gauge-bosons-cannot-bind-the-pairs-the-attraction-is-the-pairing-term-of-the-hypotheses}{%
+In the first version of the revised hypotheses there was no
+\(\chi'_{\rm SH}\) and no second pairing term. Its ground state, in
+every method, was the condensate of \(\Phi_{\rm SH}\) alone, along
+\(\Phi^{\rm d}_{\rm SH}\) or a rotation of it by \(SU(2)_L\). The three
+remarks were first made about the first version. Each section below
+states the remark as it was made, says whether it was correct, and says
+what holds in the second version.
+
+\hypertarget{remark-r8-the-electroweak-gauge-bosons-cannot-bind-the-pairs-the-attraction-is-the-pairing-term-of-the-hypotheses-corrected-they-cannot-form-the-condensate}{%
 \subsection{6.1 Remark R8: ``The electroweak gauge bosons cannot bind
-the pairs; the attraction is the pairing term of the
-hypotheses''}\label{remark-r8-the-electroweak-gauge-bosons-cannot-bind-the-pairs-the-attraction-is-the-pairing-term-of-the-hypotheses}}
+the pairs; the attraction is the pairing term of the hypotheses''
+(corrected: they cannot form the
+condensate)}\label{remark-r8-the-electroweak-gauge-bosons-cannot-bind-the-pairs-the-attraction-is-the-pairing-term-of-the-hypotheses-corrected-they-cannot-form-the-condensate}}
 
 \textbf{Where the remark was made.} In my answer to the author's message
 of 21 November 2026, 18:45 PST, which judged the binding of a brochon
 pair by photons extremely unlikely and not worth studying, and in
-Section 2.3 of the manuscript of stage 3.
+Section 2.3 of the manuscript of stage 3 in its first version.
 
-\textbf{What it says.} The exchange of one electroweak gauge boson
+\textbf{What was said.} The exchange of one electroweak gauge boson
 between a particle of \(\Psi_{\rm LL}\) and a particle of
-\(\chi_{\rm SH}\) does not attract them, except, after the breaking, by
-a weak photon exchange in one of the two channels:
+\(\chi_{\rm SH}\) does not attract them, except after the breaking, by a
+weak photon exchange in one of the two channels. In the symmetric
+vacuum, where the pairs must form, the only such exchange is that of
+\(B_\mu\), and it repels. After the breaking, the photon attracts a down
+particle to a particle of \(\chi_{\rm SH}\) with one sixteenth of the
+strength between two opposite unit charges, and repels an up particle
+from it. The remark concluded that the gauge bosons cannot bind the
+pairs.
+
+\textbf{The correction.} The remark was not correct as stated, in two
+respects:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{``Cannot bind'' is false.} An attractive potential inversely
+  proportional to the distance binds two particles however weak it is,
+  as it binds the electron and the proton in the hydrogen atom. The
+  photon exchange between a down particle and a particle of
+  \(\chi_{\rm SH}\) is such an attraction, so it binds that pair into
+  two-body states.
+\item
+  \emph{The second version adds attractive channels.} The singlet
+  \(\chi'_{\rm SH}\) has the hypercharge \(-\tfrac34\). So the exchange
+  of \(B_\mu\) attracts a particle of \(\Psi_{\rm LL}\) to a particle of
+  \(\chi'_{\rm SH}\) already in the symmetric vacuum. After the
+  breaking, the photon attracts an up particle to a particle of
+  \(\chi'_{\rm SH}\) nine times as strongly as a down particle to a
+  particle of \(\chi_{\rm SH}\).
+\end{enumerate}
+
+What holds, and what the manuscript of stage 3 now states, is narrower:
+\textbf{the electroweak gauge bosons cannot form the condensate.} The
+correction was found on 21 November 2026, in the work on stage 3 of the
+second version.
+
+\textbf{Why it holds.} At tree level, the exchange of one massless
+vector boson of a \(U(1)\) with the coupling \(g_{\rm X}\) between two
+particles of the charges \(c_1\) and \(c_2\) gives the static potential
+\(+g_{\rm X}^2c_1c_2/(4\pi r)\) at the distance \(r\): like charges
+repel, opposite charges attract. A massive boson gives the same
+potential multiplied by \(e^{-Mr}\), with \(M\) its mass. For a particle
+of \(\Psi_{\rm LL}\) and a particle of a singlet:
 
 \begin{itemize}
 \tightlist
 \item
-  \emph{in the symmetric vacuum,} where the pairs must form, the only
-  such exchange is that of \(B_\mu\), and it repels;
+  \(B_\mu\) couples with \(g'\) to the hypercharges. The products of the
+  charges are \(\tfrac14\cdot\tfrac14=+\tfrac1{16}\) with
+  \(\chi_{\rm SH}\), a repulsion, and
+  \(\tfrac14\cdot(-\tfrac34)=-\tfrac3{16}\) with \(\chi'_{\rm SH}\), an
+  attraction;
 \item
-  \emph{after the breaking,} the photon attracts a down particle to a
-  particle of \(\chi_{\rm SH}\) with one sixteenth of the strength
-  between two opposite unit charges, and repels an up particle from it;
+  \(W^a_\mu\) couples to \(T^{a,{\rm SM}}\), which is zero on the
+  singlets, so there is no exchange of \(W^a_\mu\);
+\item
+  the photon couples with \(e\) to \(Q^{\rm SM}\). The products are
+  \(-\tfrac1{16}\) (down with \(\chi_{\rm SH}\)) and \(-\tfrac9{16}\)
+  (up with \(\chi'_{\rm SH}\)), attractions, and \(+\tfrac3{16}\) (up
+  with \(\chi_{\rm SH}\), and down with \(\chi'_{\rm SH}\)), repulsions;
+\item
   the \(Z\) boson acts only at distances below \(1/M_Z\).
 \end{itemize}
 
-The attraction that forms the doublet-singlet pairs is therefore the
-pairing term itself, an interaction assumed by the hypotheses with an
-assumed strength, not a consequence of the gauge group.
-
-\textbf{Why it holds.} At tree level the exchange of one massless vector
-boson of a \(U(1)\) with the coupling \(g_{\rm X}\) between two
-particles of the charges \(c_1\) and \(c_2\) gives the static potential
-\(+g_{\rm X}^2c_1c_2/(4\pi r)\) at the distance \(r\): like charges
-repel, opposite charges attract. The cases:
+A two-body bound state is not a condensate. In the vacuum, which has no
+Fermi surface, a condensate of pairs forms only when the attraction in
+the pair channel exceeds a critical strength:
 
 \begin{itemize}
 \tightlist
 \item
-  for \(B_\mu\) the coupling is \(g'\) and the charges are the
-  hypercharges, \(\tfrac14\) and \(\tfrac14\), so the potential is
-  \(+g'^2/(64\pi r)\), a repulsion;
+  for the pairing term the condition is
+  \(G_{\rm SH}>G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})\),
+  with
+  \(I^{(1)}_{\rm SF}(M)=\int_0^{\Lambda_{\rm LL}}q^2(q^2+M^2)^{-1/2}dq\);
 \item
-  \(W^a_\mu\) couples to \(T^{a,{\rm SM}}\), which is zero on
-  \(\chi_{\rm SH}\), so there is no exchange of \(W^a_\mu\) between the
-  two particles;
-\item
-  the photon couples with \(e\) to \(Q^{\rm SM}\): the product of the
-  charges is \((-\tfrac14)(\tfrac14)=-\tfrac1{16}\) for a down particle
-  and a particle of \(\chi_{\rm SH}\), and
-  \((\tfrac34)(\tfrac14)=+\tfrac3{16}\) for an up particle;
-\item
-  a massive boson gives the same potential multiplied by \(e^{-Mr}\),
-  with \(M\) its mass.
+  for the exchange of a massless vector boson the critical strength is
+  known from the ladder approximation of the Schwinger-Dyson equation of
+  the fermion propagator: a fermion of unit charge acquires a dynamical
+  mass only when \(e^2/4\pi>\pi/3\) (Maskawa and Nakajima 1974).
 \end{itemize}
+
+The strongest attraction of the list, \(\tfrac9{16}e^2\), corresponds to
+\(\tfrac9{16}e^2/4\pi\approx0.004\), with \(e^2/4\pi\approx1/137\)
+(\(1/128\) at the scale \(M_Z\)). This is more than two hundred times
+below \(\pi/3\). The attraction of \(B_\mu\) in the symmetric vacuum,
+\(\tfrac3{16}g'^2\), is weaker still: with \(g'^2/4\pi\approx0.010\) at
+the scale \(M_Z\), it corresponds to about \(0.002\).
 
 \textbf{Why it matters.}
 
@@ -3667,19 +3738,18 @@ repel, opposite charges attract. The cases:
 \tightlist
 \item
   \textbf{The superfluid rests on an assumed interaction.} The existence
-  of the superfluid depends on the pairing term and on its strength.
-  Stage 3 chose \(G_{\rm SH}=100.8\), above the critical value
-  \(G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})\) with
-  \(I^{(1)}_{\rm SF}(M)=\int_0^{\Lambda_{\rm LL}}q^2(q^2+M^2)^{-1/2}dq\).
+  of the superfluid depends on the pairing terms and on their strength.
+  Stage 3 chose \(G_{\rm SH}=100.8\), above \(G^{\rm crit}_{\rm SH}\).
   The hypotheses do not explain where the attraction comes from. They
   share this with the models in which the Higgs doublet is a bound state
   of the top quark and its antiparticle, held by a four-fermion
   interaction of the type of Nambu and Jona-Lasinio (Bardeen, Hill and
   Lindner 1990).
 \item
-  \textbf{The known forces cannot replace it.} A model in which the
-  gauge forces bind the pairs would need a gauge boson whose charges on
-  the two constituents are opposite.
+  \textbf{The known forces cannot replace it.} A model in which a gauge
+  force forms the condensate would need a gauge boson whose coupling to
+  the two constituents is of the order of the critical strength,
+  hundreds of times stronger than the electroweak couplings.
 \item
   \textbf{The contrast with the earlier hypotheses.} Under the earlier
   hypotheses the spinor field (the DiracLike spinor; the name brochon
@@ -3694,64 +3764,108 @@ repel, opposite charges attract. The cases:
   next task.
 \end{enumerate}
 
-\textbf{Provenance.} No number of this remark is computed: the charges
-are those of the hypotheses, and the potential of the exchange of one
-boson is that of the Born approximation of quantum electrodynamics.
-Reference: W. A. Bardeen, C. T. Hill and M. Lindner, Minimal dynamical
-symmetry breaking of the standard model, Physical Review D 41, 1647
-(1990).
+\textbf{Provenance.} No number of this remark is computed by the
+programs. The charges are those of the hypotheses. The potential of the
+exchange of one boson is that of the Born approximation of quantum
+electrodynamics. The critical strength of the ladder approximation is
+the result of Maskawa and Nakajima. The values of \(e^2/4\pi\) and
+\(g'^2/4\pi\) are rounded values of the Review of Particle Physics of
+the Particle Data Group. References: T. Maskawa and H. Nakajima,
+Spontaneous breaking of chiral symmetry in a vector-gluon model,
+Progress of Theoretical Physics 52, 1326 (1974); W. A. Bardeen, C. T.
+Hill and M. Lindner, Minimal dynamical symmetry breaking of the standard
+model, Physical Review D 41, 1647 (1990).
 
-\hypertarget{remark-r9-the-lightest-quasi-particle-of-the-superfluid-has-the-electric-charge-34}{%
+\hypertarget{remark-r9-the-lightest-quasi-particle-of-the-superfluid-has-the-electric-charge-34-true-in-the-first-version-in-the-second-version-the-lightest-quasi-particles-are-paired}{%
 \subsection{6.2 Remark R9: ``The lightest quasi-particle of the
-superfluid has the electric charge
-3/4''}\label{remark-r9-the-lightest-quasi-particle-of-the-superfluid-has-the-electric-charge-34}}
+superfluid has the electric charge 3/4'' (true in the first version; in
+the second version the lightest quasi-particles are
+paired)}\label{remark-r9-the-lightest-quasi-particle-of-the-superfluid-has-the-electric-charge-34-true-in-the-first-version-in-the-second-version-the-lightest-quasi-particles-are-paired}}
 
 \textbf{Where the remark was made.} Section 7 of the manuscript of stage
-3.
+3 in its first version.
 
-\textbf{What it says.} In every method the lowest excitation of the
-Higgs ground state is a fermion of electric charge \(\tfrac34\): the
-unpaired up component of \(\Psi_{\rm LL}\). Its energy at zero momentum
-is its Dirac mass in the state, \(M^{\rm u}_{\rm SH}\) (in units of
-\(\Lambda_{\rm LL}\): \(0.111459\) in KS and CJT, \(0.170392\) in HS (1,
-1), 0.2 in HS (0, 1) and HS (0, 0)), and this is the gap. The paired
+\textbf{What it says, and where it holds.} In the first version, in
+every method, the lowest excitation of the Higgs ground state is a
+fermion of electric charge \(\tfrac34\): the unpaired up component of
+\(\Psi_{\rm LL}\). Its energy at zero momentum is its Dirac mass in the
+state, \(M^{\rm u}_{\rm SH}\), and this is the gap. In units of
+\(\Lambda_{\rm LL}\) the gap is \(0.111459\) in KS and CJT, \(0.170392\)
+in HS (1, 1), and 0.2 in HS (0, 1) and HS (0, 0). The paired
 quasi-particles have the charge \(-\tfrac14\) (their antiparticles
-\(+\tfrac14\)) and lie higher. The superfluid therefore has fermionic
-excitations with fractional electric charges, and the lightest of them
-has the charge \(\tfrac34\).
+\(+\tfrac14\)) and lie higher. The remark is correct for the first
+version.
+
+It does not hold in the second version. There the condensate pairs every
+constituent: the down component with \(\chi_{\rm SH}\) and the up
+component with \(\chi'_{\rm SH}\). No component is unpaired, and the gap
+is larger in every method: in KS and CJT it is \(0.384201\), against
+\(0.111459\) in the first version. The quasi-particles of the second
+version are:
+
+\begin{itemize}
+\tightlist
+\item
+  those of the first pair, which mix a down particle (charge
+  \(-\tfrac14\)) with a hole of \(\chi_{\rm SH}\) (the absence of a
+  particle of charge \(\tfrac14\), so again \(-\tfrac14\)): they carry
+  the charge \(-\tfrac14\), their antiparticles \(+\tfrac14\);
+\item
+  those of the second pair, which mix an up particle (charge
+  \(\tfrac34\)) with a hole of \(\chi'_{\rm SH}\) (the absence of a
+  particle of charge \(-\tfrac34\), so again \(\tfrac34\)): they carry
+  the charge \(\tfrac34\), their antiparticles \(-\tfrac34\).
+\end{itemize}
+
+The custodial symmetry \(SU(2)_{\rm V}\), which the ground state keeps,
+maps the first pair onto the second. The two kinds of quasi-particles
+therefore form a doublet of \(SU(2)_{\rm V}\) and have equal energies.
+So the lightest quasi-particles of the second version are a doublet of
+the charges \(\tfrac34\) and \(-\tfrac14\), of one mass, with their
+antiparticles of the charges \(-\tfrac34\) and \(\tfrac14\).
 
 \textbf{Why it holds.}
 
 \begin{itemize}
 \tightlist
 \item
-  The condensate along \(\Phi^{\rm d}_{\rm SH}\) pairs the down
-  component of \(\Psi_{\rm LL}\) with \(\chi_{\rm SH}\) and leaves the
-  up component unpaired.
+  \(Q^{\rm SM}\) is unbroken in both versions, so every quasi-particle
+  has a definite charge.
 \item
-  \(Q^{\rm SM}\) is unbroken, so every quasi-particle has a definite
-  charge.
-\item
-  The block of the up component in the Bogoliubov-de Gennes matrix of
-  the state is that of a free Dirac field with the mass
-  \(M^{\rm u}_{\rm SH}\), whose lowest energy is
+  \emph{First version.} The condensate along \(\Phi^{\rm d}_{\rm SH}\)
+  pairs the down component of \(\Psi_{\rm LL}\) with \(\chi_{\rm SH}\)
+  and leaves the up component unpaired. The block of the up component in
+  the Bogoliubov-de Gennes matrix of the state is that of a free Dirac
+  field with the mass \(M^{\rm u}_{\rm SH}\), whose lowest energy is
   \(\lvert M^{\rm u}_{\rm SH}\rvert\) at zero momentum.
 \item
-  A paired quasi-particle mixes a down particle (charge \(-\tfrac14\))
-  with a hole of \(\chi_{\rm SH}\), the absence of a particle of charge
-  \(\tfrac14\), hence again \(-\tfrac14\).
+  \emph{Second version.} The custodial ground state has a pair amplitude
+  between the down component and \(\chi_{\rm SH}\) and one between the
+  up component and \(\chi'_{\rm SH}\), of equal size. No block of its
+  Bogoliubov-de Gennes matrix is that of a free field. The generators
+  \(T^{a,{\rm SM}}+T^{a,{\rm R}}_{\rm SH}\) of \(SU(2)_{\rm V}\) leave
+  its self-energies unchanged, so its spectrum is made of multiplets of
+  \(SU(2)_{\rm V}\). A down particle and a hole of \(\chi_{\rm SH}\)
+  both have \(T^{3,{\rm SM}}+T^{3,{\rm R}}_{\rm SH}=-\tfrac12\), an up
+  particle and a hole of \(\chi'_{\rm SH}\) both \(+\tfrac12\); the
+  relative number \(R_{\rm SH}\) is \(+1\) for all four. With
+  \(Q^{\rm SM}=T^{3,{\rm SM}}+T^{3,{\rm R}}_{\rm SH}+\tfrac14R_{\rm SH}\)
+  this gives the charges \(-\tfrac14\) and \(\tfrac34\) of one doublet.
 \end{itemize}
 
-The checks: SF-11a of the program \texttt{sh\_superfluid} (the lowest
-quasi-particle energy over the momenta equals
-\(\lvert M^{\rm u}_{\rm SH}\rvert\) in all five methods), SF-11b (its
-minimum lies at zero momentum) and YSF-11 of
-\texttt{python/sh\_superfluid.py} (the same from a scan of 201 momenta).
-YSF-12 adds, for HS (0, 1) and HS (0, 0), the closed form of the paired
-energies
+The checks: SF-11a of the program \texttt{sh\_superfluid} (in the first
+version the gap equals \(\lvert M^{\rm u}_{\rm SH}\rvert\) in all five
+methods), SF-11b (its minimum lies at zero momentum), SF-11c (in the
+second version the gap of every method is larger than in the first and
+larger than the smallest Dirac mass of the four species), and YSF-11 of
+\texttt{python/sh\_superfluid.py} (the gaps of both versions from a scan
+of 201 momenta). YSF-12 adds, for HS (0, 1) and HS (0, 0), the closed
+form of the paired energies
 \((q^2+m_{\rm LL}^2+\lvert D^{\rm d}_{\rm SH}\rvert^2/4)^{1/2}\), with
-the coefficient \(D^{\rm d}_{\rm SH}\) of the pair self-energy; their
-minimum, \(0.452967\), lies above 0.2.
+the coefficient \(D^{\rm d}_{\rm SH}\) of the pair self-energy. Their
+minimum, \(0.452967\), is the gap of these two methods in the second
+version; in the first version their gap is the bare mass 0.2 of the
+unpaired up component.
 
 \textbf{Why it matters.}
 
@@ -3764,36 +3878,41 @@ minimum, \(0.452967\), lies above 0.2.
   accelerators, have found none; the quarks, whose charges are
   fractional, are confined.
 \item
-  \textbf{It would be stable.} Every state into which it could decay
-  must contain a particle of the model with a fractional charge, because
-  the charges of the particles of the Standard Model are multiples of
-  \(\tfrac13\) and \(\tfrac34\) is not. It is the lightest of them,
-  because its energy is the gap.
+  \textbf{The lightest of them would be stable.} Every state into which
+  it could decay must contain a particle of the model with a fractional
+  charge, because the charges of the particles of the Standard Model are
+  multiples of \(\tfrac13\), and \(\tfrac34\) and \(-\tfrac14\) are not.
+  In the second version the two members of the doublet have one mass in
+  the mean-field approximation; the gauge interactions, left out here,
+  would split them.
 \item
-  \textbf{Whether this excludes the model depends on its mass in GeV},
-  \(M^{\rm u}_{\rm SH}\Lambda_{\rm LL}\), which is known only when the
-  cutoff is fixed in GeV by the scale of the breaking,
-  \(v_{\rm SH}=246.22\) GeV (stage 5 of the revision).
+  \textbf{Whether this excludes the model depends on their mass in GeV},
+  the gap times \(\Lambda_{\rm LL}\). It is known when the cutoff is
+  fixed in GeV by the scale of the breaking, \(v_{\rm SH}=246.22\) GeV,
+  in stage 4 of the revision.
 \item
   \textbf{What would change it.} The constituents have fractional
-  charges because their hypercharge is a quarter of the fermion number,
-  the construction the author chose. A doublet-singlet pair has the
-  hypercharge of the Higgs doublet, \(\tfrac12\), for any hypercharges
-  \(y\) of \(\Psi_{\rm LL}\) and \(\tfrac12-y\) of \(\chi_{\rm SH}\).
-  The charges of the constituents are then \(\tfrac12+y\),
-  \(-\tfrac12+y\) and \(\tfrac12-y\). They are integers only for
-  \(y=\pm\tfrac12\): for example, for \(y=\tfrac12\) they are 1, 0 and
-  0, with a neutral singlet. For these hypercharges the fermion number
-  is no longer the hypercharge. It is then a further symmetry, broken by
-  the condensate, with its own Goldstone mode or, if it is gauged, its
-  own massive gauge boson.
+  charges because of the hypercharges the author chose: \(\tfrac14\) for
+  \(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\), and \(-\tfrac34\) for
+  \(\chi'_{\rm SH}\). Give \(\Psi_{\rm LL}\) the hypercharge \(y\),
+  \(\chi_{\rm SH}\) the hypercharge \(\tfrac12-y\) and
+  \(\chi'_{\rm SH}\) the hypercharge \(-\tfrac12-y\). Then the two pair
+  fields keep the hypercharges \(\tfrac12\) and \(-\tfrac12\) for every
+  \(y\). The charges of the constituents are \(\tfrac12+y\) (up),
+  \(-\tfrac12+y\) (down), \(\tfrac12-y\) (\(\chi_{\rm SH}\)) and
+  \(-\tfrac12-y\) (\(\chi'_{\rm SH}\)). They are integers only for
+  \(y=\pm\tfrac12\): for \(y=\tfrac12\) they are 1, 0, 0 and \(-1\),
+  with a neutral \(\chi_{\rm SH}\). In the second version the particle
+  number \(F^{\rm tot}_{\rm SH}\) is not the hypercharge for any \(y\).
+  It is a further global symmetry, broken by the condensate, with its
+  own Goldstone mode or, if it is gauged, its own massive gauge boson.
 \end{enumerate}
 
-\textbf{Provenance.} The checks SF-11a, SF-11b (report
+\textbf{Provenance.} The checks SF-11a, SF-11b, SF-11c (report
 \texttt{data/hck\_sh\_superfluid\_checks.txt}), YSF-11 and YSF-12
 (report \texttt{data/hck\_sh\_superfluid\_checks\_python.txt}). The
-masses are from \texttt{data/sh\_sf\_ground.csv} (SHA-256
-\texttt{508e6ef5ec7891564c39aed2c17417ffa2a81055f40b6cd250ffc690e6ff2510}),
+masses and the gaps are from \texttt{data/sh\_sf\_ground.csv} (SHA-256
+\texttt{519c22b6a098639acf5e7af7356fe78d7cba1b84c8e5acdf28ab81838c23ca58}),
 written into this section by
 \texttt{code/scripts/write\_sh\_superfluid\_fragments.py}.
 
@@ -3803,7 +3922,8 @@ is an artifact of the sharp
 cutoff''}\label{remark-r10-the-current-response-of-the-normal-vacuum-is-an-artifact-of-the-sharp-cutoff}}
 
 \textbf{Where the remark was made.} Section 4.4 of the manuscript of
-stage 3.
+stage 3, in both versions. It concerns \(\Psi_{\rm LL}\) alone, and the
+second version does not change it.
 
 \textbf{What it says.} With the sharp momentum cutoff, the normal vacuum
 of \(\Psi_{\rm LL}\) responds to a uniform vector potential with a
@@ -3851,7 +3971,7 @@ relabelling of the momenta and would change nothing.
   below 1, so it does not change the conclusions on the stability of the
   normal vacuum.
 \item
-  \textbf{In stage 5 it must be removed.} There the masses of
+  \textbf{In stage 4 it must be removed.} There the masses of
   \(W^\pm_\mu\) and \(Z_\mu\) are computed from the response of the
   superfluid to uniform gauge fields. The response of the normal vacuum
   is not zero with this cutoff, and it would give the gauge bosons
@@ -3865,7 +3985,7 @@ the current by central differences and compares it with the closed form.
 It compares the closed form of the eigenvalue with the largest
 eigenvalue of the normal self-energies of HS (0, 1) in the data file of
 the Rust program \texttt{data/sh\_sf\_normal\_vacuum.csv} (SHA-256
-\texttt{18615b2888c7d5e02e70eb03c0803df26e83a9a2be914cf4b1128d740c5c7ef0}),
-for both potentials of stage 3.
+\texttt{96a0e4c8ee0051b4bb0701dacb78de3c019eee7cbc5c39112c2dc80523bd6822}),
+for the three potentials of stage 3.
 
 \end{document}

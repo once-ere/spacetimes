@@ -185,7 +185,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={The superfluid of the revised hypotheses in three mean-field approximations: the Higgs doublet of the doublet-singlet pairs by the methods HS, KS and CJT},
+  pdftitle={The superfluid of the revised hypotheses in three mean-field approximations: the two Higgs doublets of the doublet-singlet pairs by the methods HS, KS and CJT},
   pdfauthor={Prepared for Patrick Lee Nash, Ph.D.},
   colorlinks=true,
   linkcolor={blue},
@@ -195,16 +195,16 @@
   pdfcreator={LaTeX via pandoc}}
 
 \title{The superfluid of the revised hypotheses in three mean-field
-approximations: the Higgs doublet of the doublet-singlet pairs by the
-methods HS, KS and CJT}
+approximations: the two Higgs doublets of the doublet-singlet pairs by
+the methods HS, KS and CJT}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Stage 3 of the revision of the hypotheses, folder
-Revision\_SM\_Higgs of PROJECT spacetimes}
+\subtitle{Stage 3 of the revision of the hypotheses, second version,
+folder Revision\_SM\_Higgs of PROJECT spacetimes}
 \author{Prepared for Patrick Lee Nash, Ph.D.}
 \date{November 21, 2026}
 
@@ -218,20 +218,26 @@ finds}\label{what-this-document-is-and-what-it-finds}}
 On 21 November 2026 the author asked that the hypotheses of PROJECT
 spacetimes be modified so that the superfluid can be the Higgs field of
 the Standard Model, with the same quantum numbers as the Higgs doublet.
-Under the revised hypotheses, stated in Section 1, the superfluid is a
+In the first version of the revised hypotheses the superfluid was a
 condensate of spin-zero pairs made of one particle of the isodoublet
-\(\Psi_{\rm LL}\) and one particle of the singlet \(\chi_{\rm SH}\).
-Group theory alone gives its pair field the quantum numbers of the Higgs
-doublet. Group theory does not decide whether such a condensate forms,
-which other mean fields come with it, whether it is stable, or what its
-excitations are: that is dynamics. This document computes the dynamics
-in three mean-field approximations, the methods of Hubbard and
-Stratonovich (HS), of Kohn and Sham (KS) and of Cornwall, Jackiw and
-Tomboulis (CJT). It is stage 3 of the six stages of the revision. All
-quantities are in units of the momentum cutoff, \(\Lambda_{\rm LL}=1\).
-The conversion to GeV, the mass of the amplitude mode and the masses of
-the weak bosons are computed in the later stages, and Section 8 says
-what they need from this one.
+\(\Psi_{\rm LL}\) and one particle of a singlet \(\chi_{\rm SH}\). At
+19:38 PST the author instructed to add a second singlet
+\(\chi'_{\rm SH}\) with the hypercharge \(-\tfrac34\). In this second
+version, stated in Section 1, the superfluid is a condensate of the
+pairs of \(\Psi_{\rm LL}\) with either singlet. Group theory alone gives
+its two pair fields the quantum numbers of two Higgs doublets, which
+together form a bidoublet of \(SU(2)_L\times SU(2)_{\rm R}\). Group
+theory does not decide whether such a condensate forms, which other mean
+fields come with it, whether it is stable, or what its excitations are:
+that is dynamics. This document computes the dynamics in three
+mean-field approximations, the methods of Hubbard and Stratonovich (HS),
+of Kohn and Sham (KS) and of Cornwall, Jackiw and Tomboulis (CJT), for
+the second version, and repeats the first version (the pairing term of
+\(\chi'_{\rm SH}\) switched off) as the comparison. It is stage 3 of the
+six stages of the revision. All quantities are in units of the momentum
+cutoff, \(\Lambda_{\rm LL}=1\). The conversion to GeV, the mass of the
+amplitude mode and the masses of the weak bosons are computed in the
+later stages, and Section 8 says what they need from this one.
 
 The findings:
 
@@ -239,55 +245,72 @@ The findings:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  \textbf{Only the Higgs channel is unstable.} The normal vacuum (no
-  condensate) is unstable only towards the condensation of the
-  doublet-singlet pairs. With the pairing term of the potential
-  \(V^{(1)}_{\rm SH}\), the largest eigenvalue of its static response is
+  \textbf{Only the doublet-singlet channels are unstable.} The normal
+  vacuum (no condensate) is unstable only towards the condensation of
+  the pairs of \(\Psi_{\rm LL}\) with a singlet. With the pairing terms
+  of the potential \(V^{(1)}_{\rm SH}\) the largest eigenvalue of its
+  static response is
   \(\lambda^{\rm H}_{\rm SH}=G_{\rm SH}/G^{\rm crit}_{\rm SH}=1.183842814\)
-  in every method, fourfold, with the critical coupling
+  in every method, eightfold (fourfold in the first version), with the
+  critical coupling
   \(G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})=85.14643902\)
   derived in closed form in Section 4.2. Every other channel has
-  eigenvalues below 1: the scalar densities, the pairs of two particles
-  of the same field, and the mixing of the two fields. Without the
-  pairing term (potential \(V^{(0)}_{\rm SH}\)), every one of eleven
-  starts ends in the normal vacuum, in all five methods.
+  eigenvalues below 1. Without the pairing terms (potential
+  \(V^{(0)}_{\rm SH}\)) every one of 19 starts ends in the normal
+  vacuum, in all five methods.
 \item
-  \textbf{The ground state is the Higgs superfluid.} With
-  \(V^{(1)}_{\rm SH}\) the ground state of every method is a condensate
-  of the doublet-singlet pairs alone. It has no pair of two particles of
-  the same field and no mixing of the two fields (Tables 5.1 and 5.2).
+  \textbf{The ground state is the custodial Higgs superfluid.} With
+  \(V^{(1)}_{\rm SH}\) the ground state of every method condenses both
+  pair fields with equal lengths: the down particles of
+  \(\Psi_{\rm LL}\) pair with \(\chi_{\rm SH}\) and the up particles
+  with \(\chi'_{\rm SH}\). Its matrix of pair coefficients is
+  proportional to \(i\tau^2\) up to the symmetries. It has no pair of
+  two particles of one field and no mixing of the fields (Tables 5.1 and
+  5.2). In HS (0, 1) and HS (0, 0), where only the pairing terms act,
+  its energy is exactly twice that of the first version; in CJT it is
+  \(10^4\mathcal E^{\rm CJT}_{\rm SH}=-16.4192\), against \(-6.2857\) in
+  the first version.
 \item
-  \textbf{The electric charge survives, and the state is stable.} The
-  generators of \(SU(2)_L\times U(1)_Y\) and of the relative number
-  \(R_{\rm SH}\) that leave the ground state unchanged span a space of
-  dimension 2. It is spanned by \(R_{\rm SH}\) and by one electroweak
-  generator whose eigenvalues are those of the electric charge
-  \(Q^{\rm SM}\). The static response of the ground state has exactly
-  three eigenvalues equal to 1, the Goldstone modes of the three broken
-  generators. All its other eigenvalues are below 1, also in the
-  directions that would build a charged condensate. So the Higgs
-  superfluid is a stable minimum, and it keeps the group of the electric
-  charge (Section 6).
+  \textbf{The ground state of the first version is unstable in the
+  second.} The condensate of one doublet, the ground state of the first
+  version, is still a stationary state of the second version. But it
+  lies higher, and its static response has an eigenvalue above 1, from
+  \(1.184\) to \(1.209\), in the direction of the second doublet
+  (Section 6). Every other stationary state is unstable towards the
+  superfluid as well: the normal vacuum and, in KS and CJT of the second
+  version, a scalar condensate without pairs (Section 5).
 \item
-  \textbf{The lightest excitation has charge 3/4.} The lightest
-  quasi-particle is the unpaired up component of \(\Psi_{\rm LL}\), with
-  electric charge \(\tfrac34\). Its energy at zero momentum is its Dirac
-  mass \(M^{\rm u}_{\rm SH}\), and this is the gap:
-  \(M^{\rm u}_{\rm SH}=0.111459\) in CJT (Section 7).
+  \textbf{The electric charge and the custodial symmetry survive, and
+  the state is stable.} Of the eight generators of the global group of
+  the hypotheses (\(T^{a,{\rm SM}}\), \(T^{a,{\rm R}}_{\rm SH}\), the
+  relative number and the particle number) the ground state keeps four:
+  the diagonal custodial group \(SU(2)_{\rm V}\) and the relative
+  number. The electric charge \(Q^{\rm SM}\) is among them; of
+  \(SU(2)_L\times U(1)_Y\) it is the only one. The static response has
+  exactly four eigenvalues equal to 1: the Goldstone modes of the three
+  broken generators of \(SU(2)_L\times U(1)_Y\) and of the particle
+  number. All its other eigenvalues are below 1, also in the directions
+  that would build a charged condensate (Section 6).
 \item
-  \textbf{The custodial symmetry is broken.} The condensate does not
-  treat the up and the down components of \(\Psi_{\rm LL}\) alike. Their
-  scalar densities differ in every method, and in KS and CJT their
-  masses differ too. This is a source of a departure of \(\rho\) from 1,
-  which stage 5 computes (Section 7).
+  \textbf{Every constituent is paired.} The lightest quasi-particle is a
+  paired one. In CJT the gap is \(0.384201\), against the unpaired up
+  component of the first version, \(0.111459\). The quasi-particles
+  still carry fractional electric charges, \(-\tfrac14\) and
+  \(\tfrac34\) (Section 7).
+\item
+  \textbf{The custodial symmetry is kept.} The up and the down
+  components of \(\Psi_{\rm LL}\) have equal masses and equal scalar
+  densities in every method, and so have the two singlets. In the first
+  version the condensate treated them differently (Section 7).
 \item
   \textbf{KS and CJT coincide on these states.} KS and CJT give the same
-  normal vacuum and the same Higgs superfluid. This is a theorem
-  (Section 3.4), not a coincidence of the numbers.
+  normal vacuum and the same ground states. This is a theorem (Section
+  3.4), not a coincidence of the numbers.
 \end{enumerate}
 
-The electroweak gauge bosons cannot bind the pairs. The attraction that
-binds them is the pairing term of the hypotheses (Section 2.3).
+The electroweak gauge bosons are far too weak to form the condensate.
+The attraction that forms it is the pairing term of the hypotheses
+(Section 2.3).
 
 ``I'' in this document is the assistant that does the work.
 
@@ -299,8 +322,8 @@ document}\label{the-hypotheses-of-this-document}}
 \subsection{1.1 The fields and their
 charges}\label{the-fields-and-their-charges}}
 
-There are two spinor fields, both four-component Dirac fields of
-\(SL(2,\mathbb C)\) and both singlets of colour:
+There are three spinor fields, all four-component Dirac fields of
+\(SL(2,\mathbb C)\) and all singlets of colour:
 
 \begin{itemize}
 \tightlist
@@ -309,17 +332,20 @@ There are two spinor fields, both four-component Dirac fields of
   \(2d+s\), where \(d=0,\dots,3\) is the Dirac index of the chiral basis
   and \(s=0\) (up) or \(s=1\) (down) is the isospin index;
 \item
-  the singlet \(\chi_{\rm SH}\) has four components, numbered by the
-  Dirac index.
+  the singlets \(\chi_{\rm SH}\) and \(\chi'_{\rm SH}\) have four
+  components each, numbered by the Dirac index.
 \end{itemize}
 
-The masses are \(m_{\rm LL}\) and \(m^\chi_{\rm SH}\). This document
-takes them equal, \(m_{\rm LL}=m^\chi_{\rm SH}=0.2\,\Lambda_{\rm LL}\).
-That is a choice of the computation: the symmetries hold for any two
-masses. The two fields together form one field of twelve components,
-\(\Psi_{\rm SH}=(\Psi_{\rm LL},\chi_{\rm SH})\): components 0 to 7 are
-those of \(\Psi_{\rm LL}\) and components 8 to 11 those of
-\(\chi_{\rm SH}\).
+The masses are \(m_{\rm LL}\), \(m^\chi_{\rm SH}\) and
+\(m^{\chi'}_{\rm SH}\). This document takes them equal,
+\(m_{\rm LL}=m^\chi_{\rm SH}=m^{\chi'}_{\rm SH}=0.2\,\Lambda_{\rm LL}\).
+The gauge symmetries hold for any masses; the custodial symmetry needs
+\(m^{\chi'}_{\rm SH}=m^\chi_{\rm SH}\). The three fields together form
+one field of sixteen components,
+\(\Psi_{\rm SH}=(\Psi_{\rm LL},\chi_{\rm SH},\chi'_{\rm SH})\):
+components 0 to 7 are those of \(\Psi_{\rm LL}\), components 8 to 11
+those of \(\chi_{\rm SH}\) and components 12 to 15 those of
+\(\chi'_{\rm SH}\).
 
 The gauge group is \(SL(2,\mathbb C)\times SU(2)_L\times U(1)_Y\). On
 \(\Psi_{\rm SH}\) its generators act as follows:
@@ -329,41 +355,62 @@ The gauge group is \(SL(2,\mathbb C)\times SU(2)_L\times U(1)_Y\). On
 \item
   the generators \(T^{a,{\rm SM}}\) (\(a=1,2,3\)) act as
   \(\mathsf 1_4\otimes\tfrac12\tau^a\) on \(\Psi_{\rm LL}\) and as 0 on
-  \(\chi_{\rm SH}\), where \(\tau^a\) are the Pauli matrices acting on
-  the isospin index;
+  the singlets, where \(\tau^a\) are the Pauli matrices acting on the
+  isospin index;
 \item
-  the hypercharge is \(Y^{\rm SM}=\tfrac14F_{\rm LL}\), one quarter of
-  the fermion number \(F_{\rm LL}\). Every particle of either field has
-  \(F_{\rm LL}=1\), so \(Y^{\rm SM}=\tfrac14\) on every component;
+  the hypercharge \(Y^{\rm SM}\) is \(\tfrac14\) on \(\Psi_{\rm LL}\)
+  and \(\chi_{\rm SH}\) and \(-\tfrac34\) on \(\chi'_{\rm SH}\);
 \item
   the electric charge is \(Q^{\rm SM}=T^{3,{\rm SM}}+Y^{\rm SM}\).
 \end{itemize}
 
-The relative number \(R_{\rm SH}\) is the number of particles of
-\(\Psi_{\rm LL}\) minus the number of particles of \(\chi_{\rm SH}\):
-\(+1\) on the components of \(\Psi_{\rm LL}\), \(-1\) on those of
-\(\chi_{\rm SH}\). It is conserved by the whole Hamiltonian density of
-Section 2. It is a global symmetry and is not gauged.
+Two further numbers are conserved by the whole Hamiltonian density of
+Section 2; they are global symmetries and are not gauged:
+
+\begin{itemize}
+\tightlist
+\item
+  the particle number \(F^{\rm tot}_{\rm SH}\): 1 on every component;
+\item
+  the relative number \(R_{\rm SH}\): the number of particles of
+  \(\Psi_{\rm LL}\) minus the number of particles of the singlets,
+  \(+1\) on the components of \(\Psi_{\rm LL}\) and \(-1\) on those of
+  the singlets.
+\end{itemize}
+
+With equal masses the Hamiltonian density has one more symmetry, the
+custodial group \(SU(2)_{\rm R}\), whose generators
+\(T^{a,{\rm R}}_{\rm SH}\) act as \(\tfrac12\tau^a\) on the pair of
+singlets \((\chi_{\rm SH},\chi'_{\rm SH})\), taken as a doublet with
+\(\chi_{\rm SH}\) above, and as 0 on \(\Psi_{\rm LL}\). The hypercharge
+is the combination
+\(Y^{\rm SM}=T^{3,{\rm R}}_{\rm SH}+\tfrac14R_{\rm SH}\), and the
+coupling of the gauge field \(B_\mu\) to it breaks \(SU(2)_{\rm R}\);
+this stage leaves the gauge fields out (Section 2.1), so the whole group
+\(SU(2)_L\times SU(2)_{\rm R}\) is a symmetry here.
 
 \sptkeptpenalty=10000
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1667}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 12\tabcolsep) * \real{0.1429}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 field component
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(T^{3,{\rm SM}}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(T^{3,{\rm R}}_{\rm SH}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(Y^{\rm SM}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(Q^{\rm SM}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(F_{\rm LL}\)
+\(F^{\rm tot}_{\rm SH}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(R_{\rm SH}\)
 \end{minipage} \\
@@ -371,15 +418,18 @@ field component
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\(\Psi_{\rm LL}\), up (\(s=0\)) & \(+\tfrac12\) & \(\tfrac14\) &
+\(\Psi_{\rm LL}\), up (\(s=0\)) & \(+\tfrac12\) & 0 & \(\tfrac14\) &
 \(\tfrac34\) & 1 & \(+1\) \\*
-\(\Psi_{\rm LL}\), down (\(s=1\)) & \(-\tfrac12\) & \(\tfrac14\) &
+\(\Psi_{\rm LL}\), down (\(s=1\)) & \(-\tfrac12\) & 0 & \(\tfrac14\) &
 \(-\tfrac14\) & 1 & \(+1\) \\*
-\(\chi_{\rm SH}\) & 0 & \(\tfrac14\) & \(\tfrac14\) & 1 & \(-1\) \\
+\(\chi_{\rm SH}\) & 0 & \(+\tfrac12\) & \(\tfrac14\) & \(\tfrac14\) & 1
+& \(-1\) \\*
+\(\chi'_{\rm SH}\) & 0 & \(-\tfrac12\) & \(-\tfrac34\) & \(-\tfrac34\) &
+1 & \(-1\) \\
 \end{longtable}
 
-Table 1.1. The charges of the particles of the two fields. Antiparticles
-have the opposite charges.
+Table 1.1. The charges of the particles of the three fields.
+Antiparticles have the opposite charges.
 
 \hypertarget{the-dirac-matrices}{%
 \subsection{1.2 The Dirac matrices}\label{the-dirac-matrices}}
@@ -412,55 +462,70 @@ The free Dirac Hamiltonian on a plane wave of momentum
 response of Section 4 rests:
 \[(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})\big(-\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m_{\rm LL}\big)(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^{-1}=\big(\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m_{\rm LL}\big)^T.\tag{1.2}\]
 
-\hypertarget{the-pair-field}{%
-\subsection{1.3 The pair field}\label{the-pair-field}}
+\hypertarget{the-pair-fields}{%
+\subsection{1.3 The pair fields}\label{the-pair-fields}}
 
-The pair operators of the doublet-singlet channel are
-\[\Pi^{\rm u}_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm u}_{\rm SH}\big)\chi_{\rm SH},\qquad
-\Pi^{\rm d}_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm d}_{\rm SH}\big)\chi_{\rm SH},\tag{1.3}\]
+The pair operators of the doublet-singlet channels are
+\[\Pi^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\big)\chi_{\rm SH},\qquad
+\Pi'^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\big)\chi'_{\rm SH},\qquad s={\rm u},{\rm d},\tag{1.3}\]
 with the isospin columns \(\mathbf e^{\rm u}_{\rm SH}=(1,0)^T\) and
-\(\mathbf e^{\rm d}_{\rm SH}=(0,1)^T\). \(\Pi^{\rm u}_{\rm SH}\)
-annihilates an up particle of \(\Psi_{\rm LL}\) together with a particle
-of \(\chi_{\rm SH}\) in a state of spin zero, and
-\(\Pi^{\rm d}_{\rm SH}\) does the same with a down particle.
+\(\mathbf e^{\rm d}_{\rm SH}=(0,1)^T\). \(\Pi^s_{\rm SH}\) annihilates a
+particle of the isospin component \(s\) of \(\Psi_{\rm LL}\) together
+with a particle of \(\chi_{\rm SH}\) in a state of spin zero, and
+\(\Pi'^s_{\rm SH}\) does the same with a particle of \(\chi'_{\rm SH}\).
 
 On the whole field they read
-\(\Psi^T_{\rm SH}\mathsf K^s_{\rm SH}\Psi_{\rm SH}=2\Pi^s_{\rm SH}\)
-(\(s={\rm u},{\rm d}\)). Here \(\mathsf K^s_{\rm SH}\) is the
-antisymmetric \(12\times12\) matrix with the block
+\(\Psi^T_{\rm SH}\mathsf K^s_{\rm SH}\Psi_{\rm SH}=2\Pi^s_{\rm SH}\) and
+\(\Psi^T_{\rm SH}\mathsf K'^s_{\rm SH}\Psi_{\rm SH}=2\Pi'^s_{\rm SH}\).
+Here \(\mathsf K^s_{\rm SH}\) is the antisymmetric \(16\times16\) matrix
+with the block
 \(\tfrac12C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\)
 in the rows of \(\Psi_{\rm LL}\) and the columns of \(\chi_{\rm SH}\),
-minus its transpose in the opposite block, and zero elsewhere. Its
-squared norm is
+minus its transpose in the opposite block, and zero elsewhere;
+\(\mathsf K'^s_{\rm SH}\) is the same with the columns of
+\(\chi'_{\rm SH}\). Each has the squared norm
 \(\mathrm{tr}(\mathsf K^s_{\rm SH}(\mathsf K^s_{\rm SH})^\dagger)=2\),
-and \((\mathsf K^s_{\rm SH})^*=-(\mathsf K^s_{\rm SH})^\dagger\).
+the four are mutually orthogonal, and
+\((\mathsf K^s_{\rm SH})^*=-(\mathsf K^s_{\rm SH})^\dagger\).
 
-The pair field
-\(\Phi_{\rm SH}=(\Phi^{\rm u}_{\rm SH},\Phi^{\rm d}_{\rm SH})\) is the
-column of the expectation values of
-\((\Pi^{\rm u}_{\rm SH},\Pi^{\rm d}_{\rm SH})\), and it has the quantum
-numbers of the Higgs doublet:
+The pair fields are the expectation values \(\Phi^s_{\rm SH}\) of
+\(\Pi^s_{\rm SH}\) and \(\Phi'^s_{\rm SH}\) of \(\Pi'^s_{\rm SH}\), the
+columns \(\Phi_{\rm SH}=(\Phi^{\rm u}_{\rm SH},\Phi^{\rm d}_{\rm SH})\)
+and \(\Phi'_{\rm SH}=(\Phi'^{\rm u}_{\rm SH},\Phi'^{\rm d}_{\rm SH})\),
+and together the \(2\times2\) matrix
+\(\mathcal M_{\rm SH}=(\Phi_{\rm SH},\Phi'_{\rm SH})\), whose rows are
+numbered by the isospin component of \(\Psi_{\rm LL}\) and whose columns
+by the singlet. Their quantum numbers:
 
 \begin{itemize}
 \tightlist
 \item
   spin zero, from the Lorentz-invariant matrix
-  \(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\);
+  \(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\), and positive parity when the
+  intrinsic parities of the three fields are taken to be \(+1\);
 \item
-  positive parity, when the intrinsic parities of both fields are taken
-  to be \(+1\);
+  \(\Phi_{\rm SH}\) is a doublet of \(SU(2)_L\) with the hypercharge
+  \(\tfrac14+\tfrac14=\tfrac12\) and the electric charges \(1\)
+  (\(\Phi^{\rm u}_{\rm SH}\)) and 0 (\(\Phi^{\rm d}_{\rm SH}\)): the
+  quantum numbers of the Higgs doublet;
 \item
-  a doublet of \(SU(2)_L\), because \(\Psi_{\rm LL}\) is a doublet and
-  \(\chi_{\rm SH}\) a singlet;
+  \(\Phi'_{\rm SH}\) is a doublet with the hypercharge
+  \(\tfrac14-\tfrac34=-\tfrac12\) and the charges 0
+  (\(\Phi'^{\rm u}_{\rm SH}\)) and \(-1\) (\(\Phi'^{\rm d}_{\rm SH}\));
+  its conjugate, \(i\tau^2\) times its complex conjugate, has the
+  quantum numbers of the Higgs doublet;
 \item
-  the hypercharge \(\tfrac14+\tfrac14=\tfrac12\);
+  under \(SU(2)_L\times SU(2)_{\rm R}\) the matrix transforms as
+  \(\mathcal M_{\rm SH}\to\mathsf U\mathcal M_{\rm SH}\mathsf U'^T\),
+  with \(\mathsf U\in SU(2)_L\) and \(\mathsf U'\in SU(2)_{\rm R}\): a
+  bidoublet;
 \item
-  the electric charges \(\tfrac34+\tfrac14=1\) for
-  \(\Phi^{\rm u}_{\rm SH}\) and \(-\tfrac14+\tfrac14=0\) for
-  \(\Phi^{\rm d}_{\rm SH}\);
-\item
-  the relative number 0.
+  the particle number 2 and the relative number 0.
 \end{itemize}
+
+The neutral components are \(\Phi^{\rm d}_{\rm SH}\) (a down particle
+with \(\chi_{\rm SH}\)) and \(\Phi'^{\rm u}_{\rm SH}\) (an up particle
+with \(\chi'_{\rm SH}\)).
 
 \hypertarget{the-hamiltonian-density-and-the-potentials}{%
 \section{2. The Hamiltonian density and the
@@ -472,9 +537,9 @@ potentials}\label{the-hamiltonian-density-and-the-potentials}}
 The Hamiltonian density is
 \[\begin{aligned}\mathcal H_{\rm SH}={}&\Psi^\dagger_{\rm SH}\mathsf h_{\rm SH}(-i\nabla)\Psi_{\rm SH}+\tfrac12G^{\rm S}_{\rm SF}{:}(\bar\Psi_{\rm LL}\Psi_{\rm LL})^2{:}
 +\tfrac12G^{\rm V}_{\rm SF}{:}\Big[(\Psi^\dagger_{\rm LL}\Psi_{\rm LL})^2-\sum_j\big(\Psi^\dagger_{\rm LL}(\alpha^j_{\rm LL}\otimes\mathsf 1_2)\Psi_{\rm LL}\big)^2\Big]{:}\\
-&-G_{\rm SH}\sum_{s={\rm u},{\rm d}}{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}\end{aligned}\tag{2.1}\]
+&-G_{\rm SH}\sum_{s={\rm u},{\rm d}}\big[{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}+{:}(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}{:}\big]\end{aligned}\tag{2.1}\]
 Its free part is block-diagonal:
-\[\mathsf h_{\rm SH}(\vec q_{\rm LL})=\mathrm{diag}\big(\mathsf h_{\rm LL}(\vec q_{\rm LL}),\,\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m^\chi_{\rm SH}\big),\qquad
+\[\mathsf h_{\rm SH}(\vec q_{\rm LL})=\mathrm{diag}\big(\mathsf h_{\rm LL}(\vec q_{\rm LL}),\,\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m^\chi_{\rm SH},\,\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m^{\chi'}_{\rm SH}\big),\qquad
 \mathsf h_{\rm LL}(\vec q_{\rm LL})=(\alpha^j_{\rm LL}q^j_{\rm LL}+\beta_{\rm LL}m_{\rm LL})\otimes\mathsf 1_2.\]
 
 The other symbols in (2.1):
@@ -498,27 +563,36 @@ contact terms of the author's ansatz, kept for \(\Psi_{\rm LL}\). The
 bracket of the vector term is
 \((\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL})(\bar\Psi_{\rm LL}\gamma_{{\rm LL},p}\Psi_{\rm LL})\)
 with the Minkowski metric of signature \((+,-,-,-)\). The last term is
-the attraction of the revised hypotheses in the doublet-singlet channel.
-It is invariant under \(SU(2)_L\times U(1)_Y\), because it is the
-squared length of a doublet, and under \(SL(2,\mathbb C)\). The singlet
-\(\chi_{\rm SH}\) interacts only through this term.
+the attraction of the revised hypotheses in the two doublet-singlet
+channels, with one coupling for both. It is \(-G_{\rm SH}\) times the
+sum of the squared lengths of the two doublets, so it is invariant under
+\(SU(2)_L\times U(1)_Y\) and, with the equal masses, under the whole
+group \(SU(2)_L\times SU(2)_{\rm R}\) and the rotations of
+\(F^{\rm tot}_{\rm SH}\) and \(R_{\rm SH}\); and it is invariant under
+\(SL(2,\mathbb C)\). The singlets interact only through this term. In
+the \textbf{first version} of the hypotheses the terms of
+\(\Pi'^s_{\rm SH}\) are absent: \(\chi'_{\rm SH}\) is then a free field,
+decoupled from the rest, and the states of the first version are those
+of the twelve components of \(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\)
+alone, with an empty block of \(\chi'_{\rm SH}\) (check SF-12).
 
 The gauge fields are not part of this stage. In the uniform states of
 this document the densities of all charges are zero, so the uniform
 gauge fields vanish. The exchange of gauge bosons between the particles
-is left out, and Section 2.3 shows that it could not bind the pairs.
+is left out, and Section 2.3 shows that it could not form the
+condensate.
 
 In the form used by the programs, (2.1) is a sum of contact terms of two
-kinds. Each matrix below acts on the components of \(\Psi_{\rm LL}\) and
-is zero on those of \(\chi_{\rm SH}\):
+kinds:
 
 \begin{itemize}
 \tightlist
 \item
   the bilinear terms
   \(\nu_{\rm SH}{:}(\Psi^\dagger_{\rm SH}\mathsf X_{\rm SH}\Psi_{\rm SH})(\Psi^\dagger_{\rm SH}\mathsf Y_{\rm SH}\Psi_{\rm SH}){:}\)
-  with \(\mathsf X_{\rm SH}=\mathsf Y_{\rm SH}\). These are
-  \(\nu_{\rm SH}=\tfrac12G^{\rm S}_{\rm SF}\) with
+  with \(\mathsf X_{\rm SH}=\mathsf Y_{\rm SH}\), each matrix acting on
+  the components of \(\Psi_{\rm LL}\) and zero on those of the singlets.
+  These are \(\nu_{\rm SH}=\tfrac12G^{\rm S}_{\rm SF}\) with
   \(\mathsf X_{\rm SH}=\beta_{\rm LL}\otimes\mathsf 1_2\);
   \(\nu_{\rm SH}=\tfrac12G^{\rm V}_{\rm SF}\) with
   \(\mathsf X_{\rm SH}=\mathsf 1_8\); and
@@ -526,23 +600,27 @@ is zero on those of \(\chi_{\rm SH}\):
   \(\mathsf X_{\rm SH}=\alpha^j_{\rm LL}\otimes\mathsf 1_2\) for
   \(j=1,2,3\);
 \item
-  the two pairing terms
-  \(-\tfrac14G_{\rm SH}{:}(\Psi^T_{\rm SH}\mathsf K^s_{\rm SH}\Psi_{\rm SH})^\dagger(\Psi^T_{\rm SH}\mathsf K^s_{\rm SH}\Psi_{\rm SH}){:}\),
+  the four pairing terms
+  \(-\tfrac14G_{\rm SH}{:}(\Psi^T_{\rm SH}\mathsf K\Psi_{\rm SH})^\dagger(\Psi^T_{\rm SH}\mathsf K\Psi_{\rm SH}){:}\)
+  with \(\mathsf K=\mathsf K^s_{\rm SH}\) and \(\mathsf K'^s_{\rm SH}\),
   which equal
-  \(-G_{\rm SH}{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}\).
+  \(-G_{\rm SH}{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}\) and
+  \(-G_{\rm SH}{:}(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}{:}\) (two of
+  them in the first version).
 \end{itemize}
 
-\hypertarget{the-two-potentials}{%
-\subsection{2.2 The two potentials}\label{the-two-potentials}}
+\hypertarget{the-potentials}{%
+\subsection{2.2 The potentials}\label{the-potentials}}
 
 The potentials are
 
 \sptkeptpenalty=10000
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 potential
@@ -552,16 +630,21 @@ potential
 \(G^{\rm V}_{\rm SF}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(G_{\rm SH}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+pairing terms
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\(V^{(0)}_{\rm SH}\) & \(-8\) & \(0.8\) & 0 \\*
-\(V^{(1)}_{\rm SH}\) & \(-8\) & \(0.8\) & \(100.8\) \\
+\(V^{(0)}_{\rm SH}\) & \(-8\) & \(0.8\) & 0 & none \\*
+\(V^{(1)}_{\rm SH}\) & \(-8\) & \(0.8\) & \(100.8\) & with
+\(\chi_{\rm SH}\) and with \(\chi'_{\rm SH}\) (second version) \\*
+\(V^{(1)}_{\rm SH}\), first version & \(-8\) & \(0.8\) & \(100.8\) &
+with \(\chi_{\rm SH}\) only \\
 \end{longtable}
 
-Table 2.1. The couplings of the two potentials, in units of
+Table 2.1. The couplings of the potentials, in units of
 \(\Lambda_{\rm LL}^{-2}\).
 
 \textbf{Where the values come from.} \(G^{\rm S}_{\rm SF}=-8\) and
@@ -588,7 +671,7 @@ hypotheses as follows:
 The triplet matrices have the squared norm 8 and the doublet-singlet
 matrices the squared norm 2, so
 \(G^{\rm crit}_{\rm SH}=4G^{\rm crit}_{\rm LL}\) (Section 4.2).
-\(G_{\rm SH}=4\times25.2=100.8\) therefore makes the pairing term
+\(G_{\rm SH}=4\times25.2=100.8\) therefore makes each pairing term
 exactly as strong, relative to its critical value, as the triplet
 pairing term of that potential was:
 \(\lambda^{\rm H}_{\rm SH}=G_{\rm SH}/G^{\rm crit}_{\rm SH}\) equals
@@ -596,37 +679,54 @@ pairing term of that potential was:
 term, \(G^{\rm S}_{\rm SF}=2.8\). There the exchange contraction of the
 pairing term added an attraction to the scalar channel of
 \(\Psi_{\rm LL}\), and the scalar term compensated it. Here the exchange
-contraction of the pairing term couples the two fields instead (Section
+contraction of the pairing terms couples the fields instead (Section
 4.3), and the author's \(G^{\rm S}_{\rm SF}=-8\) is kept.) This value is
 a choice of the computation, not a result. How the results depend on it
 is computed with the effective potential in stage 4.
 
-\hypertarget{what-binds-the-pairs}{%
-\subsection{2.3 What binds the pairs}\label{what-binds-the-pairs}}
+\hypertarget{what-forms-the-condensate}{%
+\subsection{2.3 What forms the
+condensate}\label{what-forms-the-condensate}}
 
-The electroweak gauge bosons cannot bind a particle of \(\Psi_{\rm LL}\)
-to a particle of \(\chi_{\rm SH}\):
+The electroweak gauge bosons cannot form the condensate. In the vacuum,
+which has no Fermi surface, a condensate of pairs forms only when the
+attraction in the pair channel exceeds a critical strength (Section
+4.2); a weak attraction gives at most a two-body bound state, not a
+condensate. The exchange of one gauge boson between a particle of
+\(\Psi_{\rm LL}\) and a particle of a singlet gives, at tree level, a
+static potential equal to the square of the coupling times the product
+of the two charges, divided by \(4\pi\) times the distance:
 
 \begin{itemize}
 \tightlist
 \item
-  \textbf{Above the breaking.} The exchange of one \(B_\mu\) between two
-  particles gives, at tree level, a static potential equal to \(+g'^2\)
-  times the product of their hypercharges, divided by \(4\pi\) times the
-  distance. Both particles have \(Y^{\rm SM}=\tfrac14\), so the product
-  is \(+\tfrac1{16}\) and the potential is repulsive. \(W^a_\mu\) does
-  not couple to \(\chi_{\rm SH}\) at all.
+  \textbf{Above the breaking.} \(B_\mu\) couples with \(g'\) to the
+  hypercharges. For \(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\) the product
+  is \(+\tfrac1{16}\), a repulsion; for \(\Psi_{\rm LL}\) and
+  \(\chi'_{\rm SH}\) it is \(-\tfrac3{16}\), an attraction three
+  sixteenths as strong as that between two opposite unit hypercharges.
+  \(W^a_\mu\) does not couple to the singlets at all.
 \item
-  \textbf{Below the breaking.} The photon gives the potential \(e^2\)
-  times the product of the electric charges, divided by \(4\pi\) times
-  the distance. For a down particle and a particle of \(\chi_{\rm SH}\)
-  the product is \(-\tfrac1{16}\): an attraction one sixteenth as strong
-  as that between two opposite unit charges. For an up particle and a
-  particle of \(\chi_{\rm SH}\) the product is \(+\tfrac3{16}\), a
-  repulsion.
+  \textbf{Below the breaking.} The photon couples with \(e\) to the
+  electric charges. The products are \(-\tfrac1{16}\) (down with
+  \(\chi_{\rm SH}\)) and \(-\tfrac9{16}\) (up with \(\chi'_{\rm SH}\)),
+  attractions, and \(+\tfrac3{16}\) (up with \(\chi_{\rm SH}\)) and
+  \(+\tfrac3{16}\) (down with \(\chi'_{\rm SH}\)), repulsions.
 \end{itemize}
 
-So the attraction that forms the pairs is the pairing term of (2.1)
+The strongest of these attractions is \(\tfrac9{16}e^2\), with the
+fine-structure constant \(e^2/4\pi\approx1/137\) (\(1/128\) at the scale
+\(M_Z\)). For the exchange of a massless vector boson the critical
+strength is known: in the ladder approximation of the Schwinger-Dyson
+equation of the fermion propagator, a fermion of unit charge acquires a
+dynamical mass only when \(e^2/4\pi>\pi/3\) (T. Maskawa and H. Nakajima,
+Progress of Theoretical Physics 52, 1326 (1974)). The strongest
+attraction here corresponds to \(\tfrac9{16}e^2/4\pi\approx0.004\), more
+than two hundred times below \(\pi/3\). Each such attraction can bind
+two particles into a two-body state, as the Coulomb attraction binds the
+hydrogen atom, but none can form the condensate. The pairing term of
+\(V^{(1)}_{\rm SH}\) is above its critical value (Section 4.2). So the
+attraction that forms the condensate is the pairing term of (2.1)
 itself. It is an interaction of the hypotheses, not a consequence of the
 gauge group.
 
@@ -642,7 +742,7 @@ All three methods approximate the state of the field by a uniform
 quasi-free state. Such a state is the ground state of a quadratic
 Hamiltonian with constant self-energies: a Hermitian matrix
 \(\mathsf N_{\rm SH}\) (normal) and an antisymmetric matrix
-\(\mathsf P_{\rm SH}\) (pair), both \(12\times12\). At the momentum
+\(\mathsf P_{\rm SH}\) (pair), both \(16\times16\). At the momentum
 \(\vec q_{\rm LL}\) its Bogoliubov-de Gennes (BdG) matrix is
 \[\mathsf H_{\rm SH}(\vec q_{\rm LL})=\begin{pmatrix}\mathsf h_{\rm SH}(\vec q_{\rm LL})+\mathsf N_{\rm SH}&\mathsf P_{\rm SH}\\\mathsf P_{\rm SH}^\dagger&-\big(\mathsf h_{\rm SH}(-\vec q_{\rm LL})+\mathsf N_{\rm SH}\big)^T\end{pmatrix}.\tag{3.1}\]
 The state fills every negative eigenvalue of (3.1). Its normal
@@ -657,7 +757,7 @@ the negative eigenvalues of \(\mathsf h_{\rm SH}(\vec q_{\rm LL})\). For
 the equal masses of this document this projector is
 \(\tfrac12\big(\mathsf 1-\mathsf h_{\rm SH}(\vec q_{\rm LL})/\varepsilon_{\rm LL}\big)\),
 with \(\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}\) and
-\(\mathsf 1\) the unit matrix of the twelve components.
+\(\mathsf 1\) the unit matrix of the sixteen components.
 
 The local matrices of the state are integrals over the momenta, the
 normal one measured from the normal vacuum:
@@ -669,31 +769,39 @@ normal vacuum, is
 the kinetic part plus the interaction part of Section 3.2.
 
 The species of the field are the up components of \(\Psi_{\rm LL}\), its
-down components, and \(\chi_{\rm SH}\). For each species the matrix
-\(\beta^{\rm u}_{\rm SH}\), \(\beta^{\rm d}_{\rm SH}\) or
-\(\beta^\chi_{\rm SH}\) is \(\beta_{\rm LL}\) on its four components and
-zero elsewhere. For example, \(\beta^{\rm u}_{\rm SH}\) is
+down components, \(\chi_{\rm SH}\) and \(\chi'_{\rm SH}\). For each
+species the matrix \(\beta^{\rm u}_{\rm SH}\),
+\(\beta^{\rm d}_{\rm SH}\), \(\beta^\chi_{\rm SH}\) or
+\(\beta^{\chi'}_{\rm SH}\) is \(\beta_{\rm LL}\) on its four components
+and zero elsewhere. For example, \(\beta^{\rm u}_{\rm SH}\) is
 \(\beta_{\rm LL}\otimes\mathrm{diag}(1,0)\) on \(\Psi_{\rm LL}\) and
-zero on \(\chi_{\rm SH}\). With these matrices:
+zero on the singlets. With these matrices:
 
 \begin{itemize}
 \tightlist
 \item
   the scalar densities, measured from the normal vacuum, are
   \(n^{\rm S,u}_{\rm SH}=\mathrm{tr}(\beta^{\rm u}_{\rm SH}\varrho_{\rm SH})\),
-  and likewise \(n^{\rm S,d}_{\rm SH}\) and
-  \(n^{{\rm S},\chi}_{\rm SH}\);
+  and likewise \(n^{\rm S,d}_{\rm SH}\), \(n^{{\rm S},\chi}_{\rm SH}\)
+  and \(n^{{\rm S},\chi'}_{\rm SH}\);
 \item
   the Dirac masses are the bare mass plus a quarter of the trace of the
   normal self-energy with that matrix, for example
   \(M^{\rm u}_{\rm SH}=m_{\rm LL}+\tfrac14\mathrm{tr}(\beta^{\rm u}_{\rm SH}\mathsf N_{\rm SH})\),
-  and likewise \(M^{\rm d}_{\rm SH}\) and
-  \(M^\chi_{\rm SH}=m^\chi_{\rm SH}+\tfrac14\mathrm{tr}(\beta^\chi_{\rm SH}\mathsf N_{\rm SH})\);
+  and likewise \(M^{\rm d}_{\rm SH}\),
+  \(M^\chi_{\rm SH}=m^\chi_{\rm SH}+\tfrac14\mathrm{tr}(\beta^\chi_{\rm SH}\mathsf N_{\rm SH})\)
+  and \(M^{\chi'}_{\rm SH}\);
 \item
   the coefficients of the doublet-singlet pairs in the pair self-energy
-  are \(D^{\rm u}_{\rm SH}\) and \(D^{\rm d}_{\rm SH}\), in
-  \(\mathsf P_{\rm SH}=D^{\rm u}_{\rm SH}(\mathsf K^{\rm u}_{\rm SH})^\dagger+D^{\rm d}_{\rm SH}(\mathsf K^{\rm d}_{\rm SH})^\dagger+(\text{the rest})\).
-  They transform like the pair field \(\Phi_{\rm SH}\).
+  are \(D^s_{\rm SH}\) and \(D'^s_{\rm SH}\), in
+  \(\mathsf P_{\rm SH}=\sum_s\big[D^s_{\rm SH}(\mathsf K^s_{\rm SH})^\dagger+D'^s_{\rm SH}(\mathsf K'^s_{\rm SH})^\dagger\big]+(\text{the rest})\).
+  Their \(2\times2\) matrix
+  \(\mathcal D_{\rm SH}=\begin{pmatrix}D^{\rm u}_{\rm SH}&D'^{\rm u}_{\rm SH}\\D^{\rm d}_{\rm SH}&D'^{\rm d}_{\rm SH}\end{pmatrix}\)
+  transforms like \(\mathcal M_{\rm SH}\). Its singular values
+  \(\varsigma^{(1)}_{\rm SH}\ge\varsigma^{(2)}_{\rm SH}\) do not change
+  under the symmetries: two equal ones mean a matrix proportional to a
+  unitary one (both doublets with equal lengths);
+  \(\varsigma^{(2)}_{\rm SH}=0\) means a condensate of one doublet.
 \end{itemize}
 
 \hypertarget{the-contractions-and-their-weights}{%
@@ -714,8 +822,8 @@ and those of a pairing term with the matrix \(\mathsf K\) are
 \mathsf N&=-G_{\rm SH}w^{\rm F}_{\rm SF}\,\mathcal P(\mathsf K^\dagger\tilde\varrho^T\mathsf K),\qquad\mathsf P=w^{\rm P}_{\rm SF}\big(-\tfrac12G_{\rm SH}\mathrm{tr}(\mathsf K\kappa^T)\big)\mathsf K^\dagger.\end{aligned}\tag{3.5}\]
 Here \(\mathsf X\), \(\mathsf Y\), \(\varrho\), \(\kappa\) stand for
 \(\mathsf X_{\rm SH}\), \(\mathsf Y_{\rm SH}\), \(\varrho_{\rm SH}\),
-\(\kappa_{\rm SH}\); \(\mathsf K\) is \(\mathsf K^{\rm u}_{\rm SH}\) or
-\(\mathsf K^{\rm d}_{\rm SH}\); and \(\mathcal E\), \(\mathsf N\),
+\(\kappa_{\rm SH}\); \(\mathsf K\) is one of \(\mathsf K^s_{\rm SH}\),
+\(\mathsf K'^s_{\rm SH}\); and \(\mathcal E\), \(\mathsf N\),
 \(\mathsf P\) are the contributions of the term to the interaction
 energy \(\mathcal E^{X,{\rm int}}_{\rm SH}\) and to the self-energies
 \(\mathsf N_{\rm SH}\), \(\mathsf P_{\rm SH}\). The matrix
@@ -763,8 +871,8 @@ terms decoupled in pair channels.
 The HS parameters \(s^{\rm HS,S}_{\rm SF}\) and
 \(s^{\rm HS,V}_{\rm SF}\), each between 0 and 1, are the shares of the
 scalar and of the vector term that are decoupled in density channels;
-the rest of each term is decoupled in pair channels. The pairing term is
-decoupled in its own pair channel. The weights
+the rest of each term is decoupled in pair channels. The pairing terms
+are decoupled in their own pair channels. The weights
 \((w^{\rm H}_{\rm SF},w^{\rm F}_{\rm SF},w^{\rm P}_{\rm SF})\) of HS are
 therefore:
 
@@ -796,31 +904,40 @@ built as follows:
 \item
   the exchange is kept with the weight 1 in the local-density
   approximation, that is, evaluated with the projection of
-  \(\varrho_{\rm SH}\) onto the span of ten Kohn-Sham densities;
+  \(\varrho_{\rm SH}\) onto the span of sixteen Kohn-Sham densities;
 \item
-  the ten densities are the number and the scalar densities of
+  the sixteen densities are the number and the scalar densities of
   \(\Psi_{\rm LL}\) as \(2\times2\) matrices in the isospin space,
   \(\mathsf 1_4\otimes\mathsf 1_2\), \(\mathsf 1_4\otimes\tau^a\),
   \(\beta_{\rm LL}\otimes\mathsf 1_2\), \(\beta_{\rm LL}\otimes\tau^a\)
-  (\(a=1,2,3\), on the components of \(\Psi_{\rm LL}\)), and the number
-  and the scalar density of \(\chi_{\rm SH}\), \(\mathsf 1_4\) and
-  \(\beta_{\rm LL}\) (on its components).
+  (\(a=1,2,3\), on the components of \(\Psi_{\rm LL}\)), and those of
+  the pair of singlets as \(2\times2\) matrices in the space of the two
+  singlets, \(\mathsf 1_2\otimes\mathsf 1_4\),
+  \(\tau^a\otimes\mathsf 1_4\), \(\mathsf 1_2\otimes\beta_{\rm LL}\),
+  \(\tau^a\otimes\beta_{\rm LL}\) (on the eight components of
+  \((\chi_{\rm SH},\chi'_{\rm SH})\), the first factor acting on the
+  singlet).
 \end{itemize}
 
-The ten matrices are mutually orthogonal in the inner product
+The sixteen matrices are mutually orthogonal in the inner product
 \(\mathrm{tr}(\mathsf A^\dagger\mathsf A')\). The projection
 \(\mathcal P^{\rm KS}_{\rm SH}\) maps a matrix \(\mathsf A\) to
 \(\sum_k\mathsf b_k\,\mathrm{tr}(\mathsf b_k^\dagger\mathsf A)/\mathrm{tr}(\mathsf b_k^\dagger\mathsf b_k)\),
-summed over the ten matrices \(\mathsf b_k\).
+summed over the sixteen matrices \(\mathsf b_k\).
 
-Why the densities of \(\Psi_{\rm LL}\) are taken as matrices in the
-isospin space: their span is mapped onto itself by every rotation of
-\(SU(2)_L\) (\(\tau^a\to\mathsf U\tau^a\mathsf U^\dagger\)). Hence the
-projection commutes with the symmetry, and the method keeps
-\(SU(2)_L\times U(1)_Y\). The condensate treats the up and the down
-components differently, so the two densities summed over the isospin
-would not suffice. A projection onto the densities of each species
-separately would not commute with the rotations that mix up and down.
+Why the densities are taken as matrices: the span of those of
+\(\Psi_{\rm LL}\) is mapped onto itself by every rotation of \(SU(2)_L\)
+(\(\tau^a\to\mathsf U\tau^a\mathsf U^\dagger\)), and the span of those
+of the singlets by every rotation of \(SU(2)_{\rm R}\). Hence the
+projection commutes with both symmetries, and the method keeps them. The
+condensate of the first version treats the up and the down components
+differently, so the two densities summed over the isospin would not
+suffice. A projection onto the densities of each species separately
+would not commute with the rotations that mix up and down, or
+\(\chi_{\rm SH}\) and \(\chi'_{\rm SH}\). In the first version the
+densities of \(\chi'_{\rm SH}\) and of the mixing of the two singlets
+vanish in every state, and the projection is that of the first version
+(check SF-12).
 
 \textbf{Cornwall-Jackiw-Tomboulis (CJT).} The effective action of the
 propagator is the one-loop term of a free field with that propagator
@@ -835,10 +952,10 @@ energy is (3.4) and (3.5) with all weights 1 and no projection.
 document}\label{ks-and-cjt-on-the-states-of-this-document}}
 
 \textbf{Theorem.} \emph{Let a uniform state have its local normal matrix
-\(\varrho_{\rm SH}\) in the span of the ten Kohn-Sham densities. Then KS
-and CJT give it the same energy and the same self-energies. A stationary
-state of the one method of this kind is therefore a stationary state of
-the other.}
+\(\varrho_{\rm SH}\) in the span of the sixteen Kohn-Sham densities.
+Then KS and CJT give it the same energy and the same self-energies. A
+stationary state of the one method of this kind is therefore a
+stationary state of the other.}
 
 \emph{Proof.} On such a state
 \(\mathcal P^{\rm KS}_{\rm SH}(\varrho_{\rm SH})=\varrho_{\rm SH}\), so
@@ -857,34 +974,42 @@ projection acts on them as the identity:
   \(\beta_{\rm LL}^2=(\alpha^j_{\rm LL})^2=\mathsf 1_4\) and
   \(\alpha^j_{\rm LL}\) anticommutes with \(\beta_{\rm LL}\).
 \item
-  \emph{the pairing terms, from the densities of \(\chi_{\rm SH}\) to
-  \(\Psi_{\rm LL}\).}
-  \((\mathsf K^s_{\rm SH})^\dagger\varrho^T\mathsf K^s_{\rm SH}\) maps a
-  density \(\mathsf A\) of \(\chi_{\rm SH}\) to
+  \emph{the pairing terms, from the densities of the singlets to
+  \(\Psi_{\rm LL}\).} \(\mathsf K^\dagger\varrho^T\mathsf K\) with
+  \(\mathsf K=\mathsf K^s_{\rm SH}\) maps a density \(\mathsf A\) of
+  \(\chi_{\rm SH}\) to
   \(\tfrac14\mathsf A\otimes\mathbf e^s_{\rm SH}(\mathbf e^s_{\rm SH})^T\)
-  on \(\Psi_{\rm LL}\). This uses
+  on \(\Psi_{\rm LL}\), and likewise \(\mathsf K'^s_{\rm SH}\) a density
+  of \(\chi'_{\rm SH}\). This uses
   \((C_{\rm LL}\gamma^{\rm ch}_{\rm LL})\mathsf A^T(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^T=\mathsf A\)
   for \(\mathsf A=\mathsf 1_4\) and \(\beta_{\rm LL}\) (Section 1.2),
   and
   \(\mathbf e^s_{\rm SH}(\mathbf e^s_{\rm SH})^T=\tfrac12(\mathsf 1_2\pm\tau^3)\).
+  The mixed densities of the two singlets (\(\tau^1\) and \(\tau^2\) in
+  their space) are mapped to zero, because each pairing term connects
+  \(\Psi_{\rm LL}\) with one singlet.
 \item
   \emph{the pairing terms, from the densities of \(\Psi_{\rm LL}\) to
-  \(\chi_{\rm SH}\).} A density \(\mathsf A\otimes\mathsf t\) of
+  the singlets.} A density \(\mathsf A\otimes\mathsf t\) of
   \(\Psi_{\rm LL}\) is mapped to
   \(\tfrac14\big((\mathbf e^s_{\rm SH})^T\mathsf t^T\mathbf e^s_{\rm SH}\big)\mathsf A\)
-  on \(\chi_{\rm SH}\).
+  on \(\chi_{\rm SH}\) (by \(\mathsf K^s_{\rm SH}\)) or on
+  \(\chi'_{\rm SH}\) (by \(\mathsf K'^s_{\rm SH}\)): a number or scalar
+  density of one singlet, which lies in the span.
 \item
-  \emph{no mixing.} None of these maps produces a block between the two
-  fields. \(\square\)
+  \emph{no mixing of \(\Psi_{\rm LL}\) with a singlet.} None of these
+  maps produces a block between \(\Psi_{\rm LL}\) and a singlet.
+  \(\square\)
 \end{itemize}
 
 \textbf{Which states this covers.} The normal vacuum
-(\(\varrho_{\rm SH}=0\)) and every Higgs ground state of Section 5
-satisfy the hypothesis of the theorem. The ground state reached from the
-start along \(\Phi^{\rm d}_{\rm SH}\) is invariant under the rotations,
-the parity, the relative number and the electric charge, because the
-start is and every step of the iteration keeps these symmetries. These
-invariances confine its \(\varrho_{\rm SH}\) to the span:
+(\(\varrho_{\rm SH}=0\)) and every ground state of Section 5 satisfy the
+hypothesis of the theorem. The ground state of the second version
+reached from the start along \(i\tau^2\) is invariant under the
+rotations, the parity, the relative number, the electric charge and
+\(SU(2)_{\rm V}\), because the start is and every step of the iteration
+keeps these symmetries. These invariances confine its
+\(\varrho_{\rm SH}\) to the span:
 
 \begin{itemize}
 \tightlist
@@ -896,17 +1021,24 @@ invariances confine its \(\varrho_{\rm SH}\) to the span:
 \item
   \emph{the parity} removes the last two;
 \item
-  \emph{the relative number} removes the blocks between the two fields;
+  \emph{the relative number} removes the blocks between
+  \(\Psi_{\rm LL}\) and the singlets;
 \item
   \emph{the electric charge} removes the blocks between the up and the
-  down components, whose charges differ by 1.
+  down components, whose charges differ by 1, and those between
+  \(\chi_{\rm SH}\) and \(\chi'_{\rm SH}\), whose charges differ by 1.
 \end{itemize}
 
-The other Higgs ground states are rotations of this one by \(SU(2)_L\),
-and the span is mapped onto itself by these rotations. The tables of
-Section 5 show KS and CJT equal to every digit, as the theorem requires.
-The two methods do differ in the response to changes that leave the
-span: the mixing of the two fields, Section 4.4.
+The ground state of the first version, reached from the start along
+\(\Phi^{\rm d}_{\rm SH}\), is covered by the same argument without
+\(SU(2)_{\rm V}\). So is the scalar condensate of Section 5, reached
+from the start 14 (\(\mathsf N_{\rm SH}=-\beta_{\rm SH}\),
+\(\mathsf P_{\rm SH}=0\)), which has the same invariances. The other
+ground states are rotations of these by the symmetries, which map the
+span onto itself. The tables of Section 5 show KS and CJT equal to every
+digit, as the theorem requires. The two methods do differ in the
+response to changes that leave the span: the mixings of the fields,
+Section 4.4.
 
 \hypertarget{the-numerical-solution}{%
 \subsection{3.5 The numerical solution}\label{the-numerical-solution}}
@@ -931,16 +1063,26 @@ directions does.
 computed, then the self-energies that its local matrices produce, and
 the new self-energies are \(0.6\) times these plus \(0.4\) times the old
 ones. After each step \(\mathsf N_{\rm SH}\) is made exactly Hermitian
-and \(\mathsf P_{\rm SH}\) exactly antisymmetric. The iteration stops
-when the largest change of an element is below \(10^{-12}\), or after
-40000 steps.
+and \(\mathsf P_{\rm SH}\) exactly antisymmetric, and every element
+smaller than \(10^{-30}\) in size is set to zero. The iteration stops
+when the self-energies that the local matrices produce differ from those
+of the step by less than \(10^{-12}\) in every element, or after 40000
+steps. The setting to zero is a safeguard of the arithmetic: a channel
+that no term feeds decays by the factor 0.4 per step, and after some
+hundred steps its elements would reach the range where their squares
+underflow, which the eigensolver of the library does not tolerate (it
+returned an undefined number for one start of the first version before
+the safeguard was added). It cannot change a result, because it acts far
+below the tolerance of \(10^{-12}\).
 
-\textbf{The starts.} Eleven starts are used for each potential and each
-method (Table 3.1). The matrix of the starts 7 to 9,
-\(\beta_{\rm SH}=\beta^{\rm u}_{\rm SH}+\beta^{\rm d}_{\rm SH}+\beta^\chi_{\rm SH}\),
-shifts the Dirac masses of all three species.
+\textbf{The starts.} 19 starts are used for each potential and each
+method (Table 3.1). The matrix
+\(\beta_{\rm SH}=\beta^{\rm u}_{\rm SH}+\beta^{\rm d}_{\rm SH}+\beta^\chi_{\rm SH}+\beta^{\chi'}_{\rm SH}\)
+shifts the Dirac masses of all four species. A start is written by its
+matrix \(\mathcal D_{\rm SH}\) of pair coefficients, which gives the
+pair self-energy
+\(\mathsf P_{\rm SH}=\sum_s[D^s_{\rm SH}(\mathsf K^s_{\rm SH})^\dagger+D'^s_{\rm SH}(\mathsf K'^s_{\rm SH})^\dagger]\).
 
-\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2500}}
@@ -960,26 +1102,50 @@ name
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-1 & normal & 0 & 0 \\*
-2 & Higgs down & 0 & \(0.3(\mathsf K^{\rm d}_{\rm SH})^\dagger\) \\*
-3 & Higgs up & 0 & \(0.3(\mathsf K^{\rm u}_{\rm SH})^\dagger\) \\*
+1 & normal & 0 & 0 \\
+2 & Higgs down & 0 &
+\(\mathcal D_{\rm SH}=0.3\begin{pmatrix}0&0\\1&0\end{pmatrix}\)
+(\(\Phi^{\rm d}_{\rm SH}\)) \\
+3 & Higgs up & 0 &
+\(\mathcal D_{\rm SH}=0.3\begin{pmatrix}1&0\\0&0\end{pmatrix}\)
+(\(\Phi^{\rm u}_{\rm SH}\)) \\
 4 & Higgs generic & 0 &
-\(0.3\big[0.6(\mathsf K^{\rm u}_{\rm SH})^\dagger+0.8i(\mathsf K^{\rm d}_{\rm SH})^\dagger\big]\) \\*
-5 & pair of \(\Psi_{\rm LL}\) & 0 &
+\(\mathcal D_{\rm SH}=0.3\begin{pmatrix}0.6&0\\0.8i&0\end{pmatrix}\) \\
+5 & second doublet down & 0 &
+\(\mathcal D_{\rm SH}=0.3\begin{pmatrix}0&0\\0&1\end{pmatrix}\)
+(\(\Phi'^{\rm d}_{\rm SH}\)) \\
+6 & custodial & 0 &
+\(\mathcal D_{\rm SH}=0.3\,i\tau^2=0.3\begin{pmatrix}0&1\\-1&0\end{pmatrix}\) \\
+7 & custodial rotated & 0 &
+\(\mathcal D_{\rm SH}=0.3\begin{pmatrix}0.6&0.8i\\0.8i&0.6\end{pmatrix}\)
+(unitary) \\
+8 & bidoublet generic & 0 &
+\(\mathcal D_{\rm SH}=\begin{pmatrix}0.15&0.09i\\-0.06&0.21\end{pmatrix}\) \\
+9 & pair of \(\Psi_{\rm LL}\) & 0 &
 \(0.3(\mathsf K^3_{\rm LL})^\dagger\) on \(\Psi_{\rm LL}\) (the scalar
-isotriplet pair of two particles of \(\Psi_{\rm LL}\)) \\*
-6 & pair of \(\chi_{\rm SH}\) & 0 &
-\(0.3(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\) on \(\chi_{\rm SH}\)
-(the scalar pair of two particles of \(\chi_{\rm SH}\)) \\*
-7 & mass up & \(0.5\beta_{\rm SH}\) & 0 \\*
-8 & mass down & \(-\beta_{\rm SH}\) & 0 \\*
-9 & mass down and Higgs & \(-\beta_{\rm SH}\) &
-\(0.3(\mathsf K^{\rm d}_{\rm SH})^\dagger\) \\*
-10 & mixing & \(0.3\) times the Hermitian matrix with the block
-\(\beta_{\rm LL}\) between the up components of \(\Psi_{\rm LL}\) and
-\(\chi_{\rm SH}\) & 0 \\*
-11 & isospin polarized & \(\beta_{\rm LL}\otimes\tau^3\) on
+isotriplet pair of two particles of \(\Psi_{\rm LL}\)) \\
+10 & pair of \(\chi_{\rm SH}\) & 0 &
+\(0.3(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\) on
+\(\chi_{\rm SH}\) \\
+11 & pair of \(\chi'_{\rm SH}\) & 0 &
+\(0.3(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\) on
+\(\chi'_{\rm SH}\) \\
+12 & pair of \(\chi_{\rm SH}\) and \(\chi'_{\rm SH}\) & 0 &
+\(0.3(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\) between
+\(\chi_{\rm SH}\) and \(\chi'_{\rm SH}\), antisymmetrized \\
+13 & mass up & \(0.5\beta_{\rm SH}\) & 0 \\
+14 & mass down & \(-\beta_{\rm SH}\) & 0 \\
+15 & mass down and custodial & \(-\beta_{\rm SH}\) & as start 6 \\
+16 & mixing of \(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\) & \(0.3\) times
+the Hermitian matrix with the block \(\beta_{\rm LL}\) between the up
+components of \(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\) & 0 \\
+17 & mixing of the singlets & \(0.3\) times the Hermitian matrix with
+the block \(\beta_{\rm LL}\) between \(\chi_{\rm SH}\) and
+\(\chi'_{\rm SH}\) & 0 \\
+18 & isospin polarized & \(\beta_{\rm LL}\otimes\tau^3\) on
 \(\Psi_{\rm LL}\) & 0 \\
+19 & singlets polarized & \(\tau^3\otimes\beta_{\rm LL}\) on the pair of
+singlets & 0 \\
 \end{longtable}
 
 Table 3.1. The starts of the survey of the stationary states.
@@ -990,22 +1156,47 @@ self-energies:
 \begin{itemize}
 \tightlist
 \item
-  a \emph{Higgs superfluid} if
-  \((\lvert D^{\rm u}_{\rm SH}\rvert^2+\lvert D^{\rm d}_{\rm SH}\rvert^2)^{1/2}>10^{-6}\)
-  while the rest of \(\mathsf P_{\rm SH}\) and the blocks of relative
-  number \(\pm2\) are below \(10^{-8}\) (Frobenius norm). These blocks
-  are the pairs of two particles of \(\Psi_{\rm LL}\), the pairs of two
-  particles of \(\chi_{\rm SH}\), and the normal block between the two
-  fields;
+  a \emph{Higgs superfluid} if \(\varsigma^{(1)}_{\rm SH}>10^{-6}\)
+  while the rest of \(\mathsf P_{\rm SH}\) and the charged blocks are
+  below \(10^{-8}\) (Frobenius norm). The charged blocks are the pairs
+  of two particles of \(\Psi_{\rm LL}\), the pairs of two particles of
+  the singlets, the normal blocks between \(\Psi_{\rm LL}\) and the
+  singlets, and the normal block between \(\chi_{\rm SH}\) and
+  \(\chi'_{\rm SH}\). It is \emph{custodial} if the two singular values
+  agree to \(10^{-6}\) of \(\varsigma^{(1)}_{\rm SH}\), and \emph{of one
+  doublet} if \(\varsigma^{(2)}_{\rm SH}<10^{-8}\);
+\item
+  a \emph{scalar condensate} if it has no pair amplitude and no mixing,
+  but one of the four masses differs from its bare value by more than
+  \(10^{-6}\);
 \item
   a \emph{normal vacuum} if it has no pair amplitude, no mixing, and the
-  three masses unchanged to \(10^{-6}\).
+  four masses unchanged to \(10^{-6}\).
 \end{itemize}
 
-(The program also names other kinds, but no other kind occurred.) Two
-stationary states are the same when they are of the same kind and their
-energies agree to \(10^{-11}\). The ground state of a method is the
-stationary state of lowest energy.
+(The program also names other kinds: Higgs superfluids with unequal
+lengths or with a charged admixture, superfluids of pairs of one field,
+mixings of the fields. None occurred.) Two stationary states are the
+same when they are of the same kind and their energies agree to
+\(10^{-11}\) of their size or to \(10^{-14}\), whichever is larger. The
+absolute floor is needed because the energies of the normal vacua
+reached from different starts are zero only to rounding, about
+\(10^{-17}\); it lies far below the differences between distinct states.
+The ground state of a method is the stationary state of lowest energy.
+
+\textbf{The condensate of one doublet in the second version.} It is a
+stationary state, but an unstable one (Section 6). Started along one
+doublet, the iteration leaves it in every method except HS (0, 0): the
+rounding errors of the diagonalizations seed the unstable direction of
+the second doublet, and the iteration amplifies them, as it does with
+any unstable direction. The program therefore computes it also by the
+iteration restricted to the self-energies that keep the number of
+particles of \(\chi'_{\rm SH}\): after each step it sets to zero every
+pair that contains \(\chi'_{\rm SH}\) and every normal block between
+\(\chi'_{\rm SH}\) and the other fields. That subspace is kept by the
+exact iteration, so the restriction removes only the rounding errors,
+and the restricted iteration converges to the condensate of
+\(\Phi_{\rm SH}\) alone.
 
 \hypertarget{the-static-response}{%
 \section{4. The static response}\label{the-static-response}}
@@ -1080,7 +1271,7 @@ are symmetric and that \(-\mathsf L_{\rm SH}\) is positive semidefinite.
 \subsection{4.2 The normal vacuum: the doublet-singlet
 pairs}\label{the-normal-vacuum-the-doublet-singlet-pairs}}
 
-In the normal vacuum every component of the twelve has the energies
+In the normal vacuum every component of the sixteen has the energies
 \(\pm\varepsilon_{\rm LL}\) (equal masses). Take a small pair
 self-energy \(\delta\mathsf P\) and no normal one. The projector onto
 the negative eigenvalues of (3.1) then changes at first order by
@@ -1088,11 +1279,11 @@ the negative eigenvalues of (3.1) then changes at first order by
 that connects the occupied to the empty states. This gives
 \[\delta\mathsf C^{\rm p}_{\rm SH}(\vec q_{\rm LL})=\frac1{4\varepsilon_{\rm LL}}\Big[\delta\mathsf P+\frac{\mathsf h_{\rm SH}(\vec q_{\rm LL})\,\delta\mathsf P\,\mathsf h_{\rm SH}(-\vec q_{\rm LL})^T}{\varepsilon_{\rm LL}^2}\Big].\tag{4.1}\]
 
-For \(\delta\mathsf P=D\,(\mathsf K^s_{\rm SH})^\dagger\) the identity
-(1.2) gives
-\(\mathsf h_{\rm SH}(\vec q_{\rm LL})(\mathsf K^s_{\rm SH})^\dagger\mathsf h_{\rm SH}(-\vec q_{\rm LL})^T=\varepsilon_{\rm LL}^2(\mathsf K^s_{\rm SH})^\dagger\).
+For \(\delta\mathsf P=D\,\mathsf K^\dagger\) with \(\mathsf K\) one of
+the four doublet-singlet matrices, the identity (1.2) gives
+\(\mathsf h_{\rm SH}(\vec q_{\rm LL})\mathsf K^\dagger\mathsf h_{\rm SH}(-\vec q_{\rm LL})^T=\varepsilon_{\rm LL}^2\mathsf K^\dagger\).
 The two terms of (4.1) are then equal, and
-\(\delta\mathsf C^{\rm p}_{\rm SH}=D(\mathsf K^s_{\rm SH})^\dagger/(2\varepsilon_{\rm LL})\)
+\(\delta\mathsf C^{\rm p}_{\rm SH}=D\mathsf K^\dagger/(2\varepsilon_{\rm LL})\)
 for every momentum. Integrating, with
 \(\int d^3q/(2\pi)^3\,(2\varepsilon_{\rm LL})^{-1}=I^{(1)}_{\rm SF}(m_{\rm LL})/(4\pi^2)\)
 and
@@ -1100,38 +1291,38 @@ and
 we get
 \[\kappa_{\rm SH}=\frac{I^{(1)}_{\rm SF}(m_{\rm LL})}{4\pi^2}\,\delta\mathsf P.\tag{4.2}\]
 
-Only the pairing term \(s\) produces a pair self-energy in this
-direction; the bilinear terms act only within \(\Psi_{\rm LL}\). By
-(3.5), with
-\(\mathrm{tr}(\mathsf K^s_{\rm SH}(\mathsf K^s_{\rm SH})^*)=-2\) and
-\(\mathrm{tr}(\mathsf K^{s'}_{\rm SH}(\mathsf K^s_{\rm SH})^*)=0\) for
-\(s'\neq s\), the new self-energy is
-\(G_{\rm SH}I^{(1)}_{\rm SF}D(\mathsf K^s_{\rm SH})^\dagger/(4\pi^2)\).
-The pair weight of the pairing term is 1 in every method, so the
-eigenvalue is the same in all five:
+Only the pairing term of \(\mathsf K\) produces a pair self-energy in
+this direction; the bilinear terms act only within \(\Psi_{\rm LL}\). By
+(3.5), with \(\mathrm{tr}(\mathsf K\mathsf K^*)=-2\) and
+\(\mathrm{tr}(\mathsf K''\mathsf K^*)=0\) for the other three matrices
+\(\mathsf K''\), the new self-energy is
+\(G_{\rm SH}I^{(1)}_{\rm SF}D\mathsf K^\dagger/(4\pi^2)\). The pair
+weight of the pairing terms is 1 in every method, so the eigenvalue is
+the same in all five:
 \[\lambda^{\rm H}_{\rm SH}=\frac{G_{\rm SH}I^{(1)}_{\rm SF}(m_{\rm LL})}{4\pi^2}=\frac{G_{\rm SH}}{G^{\rm crit}_{\rm SH}},\qquad
 G^{\rm crit}_{\rm SH}=\frac{4\pi^2}{I^{(1)}_{\rm SF}(m_{\rm LL})}=85.14643902.\tag{4.3}\]
 
-The eigenvalue is fourfold: the real and the imaginary multiples of
-\((\mathsf K^{\rm u}_{\rm SH})^\dagger\) and
-\((\mathsf K^{\rm d}_{\rm SH})^\dagger\), the four real components of
-the doublet. For the isotriplet matrices \(\mathsf K^\iota_{\rm LL}\)
-the same computation gives
-\(\pi^2/I^{(1)}_{\rm SF}=G^{\rm crit}_{\rm LL}\), because their squared
-norm is 8 instead of 2. With \(G_{\rm SH}=100.8\),
+In the second version the eigenvalue is eightfold: the real and the
+imaginary multiples of the four matrices \(\mathsf K^\dagger\), the
+eight real components of \(\mathcal M_{\rm SH}\). In the first version
+it is fourfold, the four real components of \(\Phi_{\rm SH}\); the pairs
+of \(\Psi_{\rm LL}\) with \(\chi'_{\rm SH}\) then have no interaction.
+For the isotriplet matrices \(\mathsf K^\iota_{\rm LL}\) the same
+computation gives \(\pi^2/I^{(1)}_{\rm SF}=G^{\rm crit}_{\rm LL}\),
+because their squared norm is 8 instead of 2. With \(G_{\rm SH}=100.8\),
 \(\lambda^{\rm H}_{\rm SH}=1.183842814>1\): the normal vacuum of
 \(V^{(1)}_{\rm SH}\) is unstable towards the condensation of the
-doublet-singlet pairs, in every method. The pseudoscalar doublet-singlet
-pairs, built with \(C_{\rm LL}\) in place of
-\(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\), have the response 0, because no
-term of (2.1) acts in that channel.
+doublet-singlet pairs, in every method and in both versions. The
+pseudoscalar doublet-singlet pairs, built with \(C_{\rm LL}\) in place
+of \(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\), have the response 0, because
+no term of (2.1) acts in that channel.
 
 \hypertarget{the-normal-vacuum-the-scalar-densities}{%
 \subsection{4.3 The normal vacuum: the scalar
 densities}\label{the-normal-vacuum-the-scalar-densities}}
 
-The Dirac masses of the two fields form the second channel in which the
-normal vacuum could become unstable.
+The Dirac masses of the three fields form the second channel in which
+the normal vacuum could become unstable.
 
 \textbf{The response of the densities.} For a free Dirac field of mass
 \(M\) the projector onto the negative eigenvalues of
@@ -1142,10 +1333,9 @@ with \(\varepsilon=(q_{\rm LL}^2+M^2)^{1/2}\). Hence a change
 \(\delta M\) of the mass of \(\Psi_{\rm LL}\) changes its scalar density
 \(n^{\rm S}_{\rm SF}\) by \(-\chi^{\rm S}_{\rm SF}\delta M\), with
 \[\chi^{\rm S}_{\rm SF}=\frac2{\pi^2}\int_0^{\Lambda_{\rm LL}}\frac{q^4\,dq}{(q^2+m_{\rm LL}^2)^{3/2}}=0.0831601473,\]
-and a change \(\delta M\) of the mass of \(\chi_{\rm SH}\) changes its
-scalar density \(n^{{\rm S},\chi}_{\rm SH}\) by
-\(-\tfrac12\chi^{\rm S}_{\rm SF}\delta M\), because it has half the
-components (\(\tfrac12\chi^{\rm S}_{\rm SF}=0.04158007365\)).
+and a change \(\delta M\) of the mass of a singlet changes its scalar
+density by \(-\tfrac12\chi^{\rm S}_{\rm SF}\delta M\), because it has
+half the components (\(\tfrac12\chi^{\rm S}_{\rm SF}=0.04158007365\)).
 
 \textbf{The response of the masses to the densities.} A uniform scalar
 density \(n^{\rm S}_{\rm SF}\) of \(\Psi_{\rm LL}\) shifts the mass of
@@ -1167,38 +1357,45 @@ where:
   \(\alpha^j_{\rm LL}\beta_{\rm LL}\alpha^j_{\rm LL}=-\beta_{\rm LL}\).
 \end{itemize}
 
-The two fields are coupled only by the exchange contraction of the
-pairing terms, which is absent in HS:
+\(\Psi_{\rm LL}\) and a paired singlet are coupled only by the exchange
+contraction of the pairing terms, which is absent in HS:
 
 \begin{itemize}
 \tightlist
 \item
   a scalar density \(n^{{\rm S},\chi}_{\rm SH}\) of \(\chi_{\rm SH}\)
   gives \(\Psi_{\rm LL}\) the self-energy
-  \(-w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}n^{{\rm S},\chi}_{\rm SH}\,\beta_{\rm LL}\otimes\mathsf 1_2\);
+  \(-w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}n^{{\rm S},\chi}_{\rm SH}\,\beta_{\rm LL}\otimes\mathsf 1_2\),
+  and likewise a scalar density of \(\chi'_{\rm SH}\) in the second
+  version;
 \item
   a scalar density \(n^{\rm S}_{\rm SF}\) of \(\Psi_{\rm LL}\) gives
-  \(\chi_{\rm SH}\) the self-energy
+  each paired singlet the self-energy
   \(-w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}n^{\rm S}_{\rm SF}\,\beta_{\rm LL}\).
 \end{itemize}
 
 Both follow from the maps of the proof in Section 3.4. In the KS method
 the projection does not change them, because the scalar densities are
-Kohn-Sham densities.
+Kohn-Sham densities. The two singlets are not coupled to each other.
 
-\textbf{The \(2\times2\) response.} The response of the masses
-\((M_\Psi,M_\chi)\) is therefore
-\[\mathsf S^X_{\rm SH}=\begin{pmatrix}-g^{X,{\rm S}}_{\rm SF}\chi^{\rm S}_{\rm SF}&w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}\cdot\tfrac12\chi^{\rm S}_{\rm SF}\\w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}\chi^{\rm S}_{\rm SF}&0\end{pmatrix},\tag{4.4}\]
-whose largest eigenvalue is \(\lambda^{\rm S}_{\rm SH}\). For
-\(V^{(1)}_{\rm SH}\) in KS and CJT its entries are
-\((\mathsf S^X_{\rm SH})_{\Psi\Psi}=0.61538509\),
-\((\mathsf S^X_{\rm SH})_{\Psi\chi}=0.261954464\) and
-\((\mathsf S^X_{\rm SH})_{\chi\Psi}=0.523908928\), and
-\(\lambda^{\rm S}_{\rm SH}=0.7892680684\). For \(V^{(0)}_{\rm SH}\) it
-is \(0.61538509\), and in HS (1, 1) it is \(0.6652811784\) for both
-potentials. In HS (0, 1) and HS (0, 0) it is 0. The scalar channel of
-the normal vacuum is stable for both potentials in every method: there
-is no condensate of the scalar density without pairs.
+\textbf{The \(3\times3\) response.} The response of the masses
+\((M_\Psi,M_\chi,M_{\chi'})\) is therefore
+\[\mathsf S^X_{\rm SH}=\begin{pmatrix}-g^{X,{\rm S}}_{\rm SF}\chi^{\rm S}_{\rm SF}&w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}\cdot\tfrac12\chi^{\rm S}_{\rm SF}&w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}\cdot\tfrac12\chi^{\rm S}_{\rm SF}\\w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}\chi^{\rm S}_{\rm SF}&0&0\\w^{\rm F}_{\rm SF}\tfrac1{16}G_{\rm SH}\chi^{\rm S}_{\rm SF}&0&0\end{pmatrix}\tag{4.4}\]
+in the second version; in the first version the entries of
+\(\chi'_{\rm SH}\) are zero. Its largest eigenvalue is
+\(\lambda^{\rm S}_{\rm SH}\). For \(V^{(1)}_{\rm SH}\) in KS and CJT its
+entries are \((\mathsf S^X_{\rm SH})_{\Psi\Psi}=0.61538509\),
+\((\mathsf S^X_{\rm SH})_{\Psi\chi}=(\mathsf S^X_{\rm SH})_{\Psi\chi'}=0.261954464\)
+and
+\((\mathsf S^X_{\rm SH})_{\chi\Psi}=(\mathsf S^X_{\rm SH})_{\chi'\Psi}=0.523908928\),
+and \(\lambda^{\rm S}_{\rm SH}=0.9152740351\) (first version:
+\(0.7892680684\)). For \(V^{(0)}_{\rm SH}\) it is \(0.61538509\), and in
+HS (1, 1) it is \(0.6652811784\) for all potentials. In HS (0, 1) and HS
+(0, 0) it is 0. The scalar channel of the normal vacuum is stable for
+all potentials in every method: no scalar condensate grows from the
+normal vacuum. This is a statement about small changes. Far from the
+normal vacuum, KS and CJT of the second version have a separate
+stationary state with a scalar condensate (Section 5).
 
 \hypertarget{the-normal-vacuum-the-other-channels}{%
 \subsection{4.4 The normal vacuum: the other
@@ -1206,7 +1403,7 @@ channels}\label{the-normal-vacuum-the-other-channels}}
 
 \textbf{The pairs of two particles of \(\Psi_{\rm LL}\).} The largest
 eigenvalue is that of the scalar isotriplet channel
-\(\mathsf K^3_{\rm LL}\), of which the start 5 is made. The computation
+\(\mathsf K^3_{\rm LL}\), of which the start 9 is made. The computation
 (4.1), (4.2) holds for
 \(\delta\mathsf P=D(\mathsf K^3_{\rm LL})^\dagger\) as well. The pair
 contractions of the bilinear terms,
@@ -1236,8 +1433,8 @@ channel. So \(g^{X,{\rm P}}_{\rm SF}\) takes the following values:
   0 in HS (1, 1).
 \end{itemize}
 
-\textbf{The pairs of two particles of \(\chi_{\rm SH}\).} No term acts
-in them, and the response is 0.
+\textbf{The pairs of two particles of the singlets.} No term acts in
+them, and the response is 0.
 
 \textbf{The current.} In the normal self-energies of the fields, the
 vector term in its direct contraction acts also on the currents
@@ -1261,44 +1458,49 @@ potential is a gauge transformation, and the vacuum responds to it with
 zero current in a regularization that respects the gauge symmetry. The
 artifact is small and harmless here. It must be removed when the masses
 of the gauge fields are computed from the susceptibilities of the
-superfluid (stage 5).
+superfluid (stage 4).
 
-\textbf{The mixing of the two fields.} The normal block between
-\(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\) is reached only by the exchange
-contraction of the pairing terms. It is therefore absent in HS (no
-exchange contraction) and in KS (the Kohn-Sham densities have no such
-block). In CJT its largest eigenvalue for \(V^{(1)}_{\rm SH}\) is
-\(0.261954\).
+\textbf{The mixings.} The normal blocks between \(\Psi_{\rm LL}\) and a
+singlet, and between the two singlets, are reached only by the exchange
+contraction of the pairing terms. They are therefore absent in HS (no
+exchange contraction). In KS the blocks between \(\Psi_{\rm LL}\) and a
+singlet are absent (the Kohn-Sham densities have no such block), and the
+block between the two singlets is mapped to zero (Section 3.4). In CJT
+the largest eigenvalue of the blocks between \(\Psi_{\rm LL}\) and the
+singlets is \(0.261954\) for \(V^{(1)}_{\rm SH}\), and that of the block
+between the singlets is \(0\).
 
 Table 4.1. The largest eigenvalue of the static response of the normal
 vacuum in each channel and each block: the doublet-singlet pairs
-(\(\lambda^{\rm H}_{\rm SH}\)), the scalar \(2\times2\) response
-(\(\lambda^{\rm S}_{\rm SH}\)), the scalar isotriplet pairs of
-\(\Psi_{\rm LL}\) (\(\lambda^{\rm T}_{\rm SH}\)), and the largest
-eigenvalue over all directions of four blocks. The blocks are the pairs
-of two particles of \(\Psi_{\rm LL}\), the pairs of two particles of
-\(\chi_{\rm SH}\), the normal self-energies of each field (including the
-scalar densities and the currents), and the normal block between the two
-fields (mixing).
+(\(\lambda^{\rm H}_{\rm SH}\), with its multiplicity), the scalar
+\(3\times3\) response (\(\lambda^{\rm S}_{\rm SH}\)), the scalar
+isotriplet pairs of \(\Psi_{\rm LL}\) (\(\lambda^{\rm T}_{\rm SH}\)),
+and the largest eigenvalue over all directions of five blocks. The
+blocks are the pairs of two particles of \(\Psi_{\rm LL}\), the pairs of
+two particles of the singlets, the normal self-energies of each field
+(including the scalar densities and the currents), the normal block
+between the two singlets, and the normal blocks between
+\(\Psi_{\rm LL}\) and the singlets. ``First'' marks the first version.
 
 \sptkeptpenalty=10000
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.0920}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1034}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1149}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1149}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1149}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1149}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1149}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1149}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 16\tabcolsep) * \real{0.1149}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1075}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.1183}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.0968}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 potential
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 method
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(\lambda^{\rm H}_{\rm SH}\)
+\(\lambda^{\rm H}_{\rm SH}\) (multiplicity)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(\lambda^{\rm S}_{\rm SH}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
@@ -1306,61 +1508,76 @@ method
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 pairs of \(\Psi_{\rm LL}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-pairs of \(\chi_{\rm SH}\)
+pairs of singlets
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 normal
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-mixing
+mixing of the singlets
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+mixing with \(\Psi_{\rm LL}\)
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\(V^{(0)}_{\rm SH}\) & HS (1, 1) & \(0\) & \(0.66528\) & \(0\) & \(0\) &
-\(0\) & \(0.66528\) & \(0\) \\*
-\(V^{(0)}_{\rm SH}\) & HS (0, 1) & \(0\) & \(0\) & \(0.093956\) &
-\(0.093956\) & \(0\) & \(0.052989\) & \(0\) \\*
-\(V^{(0)}_{\rm SH}\) & HS (0, 0) & \(0\) & \(0\) & \(0.056373\) &
-\(0.056373\) & \(0\) & \(0\) & \(0\) \\*
-\(V^{(0)}_{\rm SH}\) & KS & \(0\) & \(0.61539\) & \(0.056373\) &
-\(0.056373\) & \(0\) & \(0.61539\) & \(0\) \\*
-\(V^{(0)}_{\rm SH}\) & CJT & \(0\) & \(0.61539\) & \(0.056373\) &
-\(0.056373\) & \(0\) & \(0.61539\) & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (1, 1) & \(1.1838\) & \(0.66528\) & \(0\) &
-\(0\) & \(0\) & \(0.66528\) & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (0, 1) & \(1.1838\) & \(0\) & \(0.093956\) &
-\(0.093956\) & \(0\) & \(0.052989\) & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (0, 0) & \(1.1838\) & \(0\) & \(0.056373\) &
-\(0.056373\) & \(0\) & \(0\) & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & KS & \(1.1838\) & \(0.78927\) & \(0.056373\) &
-\(0.056373\) & \(0\) & \(0.78927\) & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & CJT & \(1.1838\) & \(0.78927\) & \(0.056373\) &
-\(0.056373\) & \(0\) & \(0.78927\) & \(0.26195\) \\
+\(V^{(0)}_{\rm SH}\) & HS (1, 1) & \(0\) & \(0.6653\) & \(0\) & \(0\) &
+\(0\) & \(0.6653\) & \(0\) & \(0\) \\*
+\(V^{(0)}_{\rm SH}\) & HS (0, 1) & \(0\) & \(0\) & \(0.09396\) &
+\(0.09396\) & \(0\) & \(0.05299\) & \(0\) & \(0\) \\*
+\(V^{(0)}_{\rm SH}\) & HS (0, 0) & \(0\) & \(0\) & \(0.05637\) &
+\(0.05637\) & \(0\) & \(0\) & \(0\) & \(0\) \\*
+\(V^{(0)}_{\rm SH}\) & KS & \(0\) & \(0.6154\) & \(0.05637\) &
+\(0.05637\) & \(0\) & \(0.6154\) & \(0\) & \(0\) \\*
+\(V^{(0)}_{\rm SH}\) & CJT & \(0\) & \(0.6154\) & \(0.05637\) &
+\(0.05637\) & \(0\) & \(0.6154\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\), first & HS (1, 1) & \(1.184\) (4) & \(0.6653\) &
+\(0\) & \(0\) & \(0\) & \(0.6653\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\), first & HS (0, 1) & \(1.184\) (4) & \(0\) &
+\(0.09396\) & \(0.09396\) & \(0\) & \(0.05299\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\), first & HS (0, 0) & \(1.184\) (4) & \(0\) &
+\(0.05637\) & \(0.05637\) & \(0\) & \(0\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\), first & KS & \(1.184\) (4) & \(0.7893\) &
+\(0.05637\) & \(0.05637\) & \(0\) & \(0.7893\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\), first & CJT & \(1.184\) (4) & \(0.7893\) &
+\(0.05637\) & \(0.05637\) & \(0\) & \(0.7893\) & \(0\) & \(0.262\) \\*
+\(V^{(1)}_{\rm SH}\) & HS (1, 1) & \(1.184\) (8) & \(0.6653\) & \(0\) &
+\(0\) & \(0\) & \(0.6653\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\) & HS (0, 1) & \(1.184\) (8) & \(0\) & \(0.09396\) &
+\(0.09396\) & \(0\) & \(0.05299\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\) & HS (0, 0) & \(1.184\) (8) & \(0\) & \(0.05637\) &
+\(0.05637\) & \(0\) & \(0\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\) & KS & \(1.184\) (8) & \(0.9153\) & \(0.05637\) &
+\(0.05637\) & \(0\) & \(0.9153\) & \(0\) & \(0\) \\*
+\(V^{(1)}_{\rm SH}\) & CJT & \(1.184\) (8) & \(0.9153\) & \(0.05637\) &
+\(0.05637\) & \(0\) & \(0.9153\) & \(0\) & \(0.262\) \\
 \end{longtable}
 
 \textbf{Conclusion.} In the normal vacuum only the doublet-singlet pairs
 can condense, and with \(V^{(1)}_{\rm SH}\) they must: no other channel
-reaches 1. Without the pairing term (\(V^{(0)}_{\rm SH}\)) every
+reaches 1. Without the pairing terms (\(V^{(0)}_{\rm SH}\)) every
 eigenvalue is below 1, and the normal vacuum is stable.
 
 \hypertarget{the-stationary-states-and-the-ground-states}{%
 \section{5. The stationary states and the ground
 states}\label{the-stationary-states-and-the-ground-states}}
 
-Table 5.1 lists the stationary states reached from the eleven starts of
+Table 5.1 lists the stationary states reached from the 19 starts of
 Table 3.1. For each state it gives the starts that reached it (their
-numbers) and its energy.
+numbers), its energy and, for the states of \(V^{(1)}_{\rm SH}\) other
+than the ground state, the largest eigenvalue of its static response in
+the doublet-singlet pairs (Section 4.1; that of the ground states is in
+Table 6.1).
 
 Table 5.1. The stationary states found for each potential and each
 method.
 
-\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1429}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1558}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2727}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2987}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.1299}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1264}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1379}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2414}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.2644}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1149}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1149}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
 potential
@@ -1372,104 +1589,146 @@ stationary state
 starts (numbers of Table 3.1)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(10^4\,\mathcal E^X_{\rm SH}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+largest eigenvalue, doublet-singlet pairs
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
 \(V^{(0)}_{\rm SH}\) & HS (1, 1) & normal vacuum & 1, 2, 3, 4, 5, 6, 7,
-8, 9, 10, 11 & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (1, 1) & Higgs superfluid & 2, 3, 4, 9 &
-\(-5.49853\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (1, 1) & normal vacuum & 1, 5, 6, 7, 8, 10, 11
-& \(0\) \\*
+8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 & \(0\) & - \\
+\(V^{(1)}_{\rm SH}\), first & HS (1, 1) & Higgs superfluid of one
+doublet & 2, 3, 4, 6, 7, 8, 15 & \(-5.49853\) & ground state \\
+\(V^{(1)}_{\rm SH}\), first & HS (1, 1) & normal vacuum & 1, 5, 9, 10,
+11, 12, 13, 14, 16, 17, 18, 19 & \(0\) & \(1.1838\) \\
+\(V^{(1)}_{\rm SH}\) & HS (1, 1) & custodial Higgs superfluid & 2, 3, 4,
+5, 6, 7, 8, 15 & \(-11.2952\) & ground state \\
+\(V^{(1)}_{\rm SH}\) & HS (1, 1) & normal vacuum & 1, 9, 10, 11, 12, 13,
+14, 16, 17, 18, 19 & \(0\) & \(1.1838\) \\
 \(V^{(0)}_{\rm SH}\) & HS (0, 1) & normal vacuum & 1, 2, 3, 4, 5, 6, 7,
-8, 9, 10, 11 & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (0, 1) & Higgs superfluid & 2, 3, 4, 9 &
-\(-5.28389\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (0, 1) & normal vacuum & 1, 5, 6, 7, 8, 10, 11
-& \(0\) \\*
+8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 & \(0\) & - \\
+\(V^{(1)}_{\rm SH}\), first & HS (0, 1) & Higgs superfluid of one
+doublet & 2, 3, 4, 6, 7, 8, 15 & \(-5.28389\) & ground state \\
+\(V^{(1)}_{\rm SH}\), first & HS (0, 1) & normal vacuum & 1, 5, 9, 10,
+11, 12, 13, 14, 16, 17, 18, 19 & \(0\) & \(1.1838\) \\
+\(V^{(1)}_{\rm SH}\) & HS (0, 1) & custodial Higgs superfluid & 2, 3, 4,
+5, 6, 7, 8, 15 & \(-10.5678\) & ground state \\
+\(V^{(1)}_{\rm SH}\) & HS (0, 1) & normal vacuum & 1, 9, 10, 11, 12, 13,
+14, 16, 17, 18, 19 & \(0\) & \(1.1838\) \\
 \(V^{(0)}_{\rm SH}\) & HS (0, 0) & normal vacuum & 1, 2, 3, 4, 5, 6, 7,
-8, 9, 10, 11 & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (0, 0) & Higgs superfluid & 2, 3, 4, 9 &
-\(-5.28389\) \\*
-\(V^{(1)}_{\rm SH}\) & HS (0, 0) & normal vacuum & 1, 5, 6, 7, 8, 10, 11
-& \(0\) \\*
+8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 & \(0\) & - \\
+\(V^{(1)}_{\rm SH}\), first & HS (0, 0) & Higgs superfluid of one
+doublet & 2, 3, 4, 6, 7, 8, 15 & \(-5.28389\) & ground state \\
+\(V^{(1)}_{\rm SH}\), first & HS (0, 0) & normal vacuum & 1, 5, 9, 10,
+11, 12, 13, 14, 16, 17, 18, 19 & \(0\) & \(1.1838\) \\
+\(V^{(1)}_{\rm SH}\) & HS (0, 0) & custodial Higgs superfluid & 4, 5, 6,
+7, 8, 15 & \(-10.5678\) & ground state \\
+\(V^{(1)}_{\rm SH}\) & HS (0, 0) & Higgs superfluid of one doublet & 2,
+3 & \(-5.28389\) & \(1.1838\) \\
+\(V^{(1)}_{\rm SH}\) & HS (0, 0) & normal vacuum & 1, 9, 10, 11, 12, 13,
+14, 16, 17, 18, 19 & \(0\) & \(1.1838\) \\
 \(V^{(0)}_{\rm SH}\) & KS & normal vacuum & 1, 2, 3, 4, 5, 6, 7, 8, 9,
-10, 11 & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & KS & Higgs superfluid & 2, 3, 4, 5, 6, 9 &
-\(-6.2857\) \\*
-\(V^{(1)}_{\rm SH}\) & KS & normal vacuum & 1, 7, 8, 10, 11 & \(0\) \\*
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19 & \(0\) & - \\
+\(V^{(1)}_{\rm SH}\), first & KS & Higgs superfluid of one doublet & 2,
+3, 4, 5, 6, 7, 8, 9, 10, 12, 15 & \(-6.2857\) & ground state \\
+\(V^{(1)}_{\rm SH}\), first & KS & normal vacuum & 1, 11, 13, 14, 16,
+17, 18, 19 & \(0\) & \(1.1838\) \\
+\(V^{(1)}_{\rm SH}\) & KS & custodial Higgs superfluid & 2, 3, 4, 5, 6,
+7, 8, 9, 10, 11, 12, 15 & \(-16.4192\) & ground state \\
+\(V^{(1)}_{\rm SH}\) & KS & scalar condensate & 14 & \(-4.05023\) &
+\(1.126\) \\
+\(V^{(1)}_{\rm SH}\) & KS & normal vacuum & 1, 13, 16, 17, 18, 19 &
+\(0\) & \(1.1838\) \\
 \(V^{(0)}_{\rm SH}\) & CJT & normal vacuum & 1, 2, 3, 4, 5, 6, 7, 8, 9,
-10, 11 & \(0\) \\*
-\(V^{(1)}_{\rm SH}\) & CJT & Higgs superfluid & 2, 3, 4, 5, 6, 9 &
-\(-6.2857\) \\*
-\(V^{(1)}_{\rm SH}\) & CJT & normal vacuum & 1, 7, 8, 10, 11 & \(0\) \\
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19 & \(0\) & - \\
+\(V^{(1)}_{\rm SH}\), first & CJT & Higgs superfluid of one doublet & 2,
+3, 4, 5, 6, 7, 8, 9, 10, 12, 15 & \(-6.2857\) & ground state \\
+\(V^{(1)}_{\rm SH}\), first & CJT & normal vacuum & 1, 11, 13, 14, 16,
+17, 18, 19 & \(0\) & \(1.1838\) \\
+\(V^{(1)}_{\rm SH}\) & CJT & custodial Higgs superfluid & 2, 3, 4, 5, 6,
+7, 8, 9, 10, 11, 12, 15 & \(-16.4192\) & ground state \\
+\(V^{(1)}_{\rm SH}\) & CJT & scalar condensate & 14 & \(-4.05023\) &
+\(1.126\) \\
+\(V^{(1)}_{\rm SH}\) & CJT & normal vacuum & 1, 13, 16, 17, 18, 19 &
+\(0\) & \(1.1838\) \\
 \end{longtable}
 
 \textbf{\(V^{(0)}_{\rm SH}\).} Every start of every method ends in the
 normal vacuum.
 
-\textbf{\(V^{(1)}_{\rm SH}\).} The starts along the doublet (2, 3, 4)
-and the start 9 reach the Higgs superfluid in every method, and the
-starts 5 and 6 reach it in KS and CJT. The other starts end in the
-normal vacuum. That state is stationary also for \(V^{(1)}_{\rm SH}\),
-but unstable (Section 4.2), and the Higgs superfluid lies below it in
-every method. These starts cannot reach the Higgs superfluid in exact
-arithmetic:
+\textbf{\(V^{(1)}_{\rm SH}\), second version.} Every start with a pair
+amplitude of a doublet-singlet channel (the starts 2 to 8 and 15)
+reaches the custodial Higgs superfluid in every method, with one
+exception: in HS (0, 0) the starts 2 and 3, along one component of
+\(\Phi_{\rm SH}\), stay on the condensate of one doublet. In that method
+the iteration keeps the pair amplitude of the second doublet exactly
+zero; in the others the rounding errors of the diagonalizations seed it,
+and the instability of the condensate of one doublet (Section 6) makes
+it grow. In KS and CJT the starts with pairs of one field (9 to 12)
+reach the custodial superfluid as well, by the same seeding; in HS they
+end in the normal vacuum. The other starts end in the normal vacuum,
+which is stationary but unstable (Section 4.2): the iteration keeps a
+zero pair amplitude exactly, because the particle number is conserved.
+The exception is the start 14 in KS and CJT.
 
-\begin{itemize}
-\tightlist
-\item
-  the starts 1, 7, 8, 10 and 11 have no pair amplitude, and every step
-  of the iteration keeps it zero, because the fermion number is
-  conserved;
-\item
-  the start 5 has only pairs of two particles of \(\Psi_{\rm LL}\).
-  These are unchanged by the rotation generated by
-  \(R_{\rm SH}-F_{\rm LL}\), a symmetry of (2.1), while the
-  doublet-singlet pairs are not. So every step keeps the Higgs amplitude
-  zero;
-\item
-  the start 6 likewise, with \(R_{\rm SH}+F_{\rm LL}\).
-\end{itemize}
+\textbf{The scalar condensate of KS and CJT.} In KS and CJT of the
+second version the start 14, which shifts every mass by \(-1\), ends in
+a stationary state without pairs and without mixing in which all four
+masses are negative: \(M^{\rm u}_{\rm SH}=M^{\rm d}_{\rm SH}=-0.329757\)
+and \(M^\chi_{\rm SH}=M^{\chi'}_{\rm SH}=-0.0981686\). Its energy,
+\(10^4\mathcal E=-4.05023\), lies below that of the normal vacuum and
+above that of the custodial superfluid. The largest eigenvalue of its
+static response is \(0.80962\) in the normal self-energies of the fields
+and \(1.126\) in the doublet-singlet pairs (check SF-13). So it is
+unstable towards the pairs, and in the normal self-energies of the
+fields it is a local minimum of the energy (the normal blocks between
+\(\Psi_{\rm LL}\) and the singlets, and the sector of relative number
+\(\pm2\), were not computed for it). It occurs only where the exchange
+contractions couple the scalar density of \(\Psi_{\rm LL}\) with those
+of both singlets: in HS, which keeps no exchange contraction, and in KS
+and CJT of the first version, where only one singlet is coupled, the
+same start returns to the normal vacuum.
 
-In KS and CJT the starts 5 and 6 nevertheless reached the Higgs
-superfluid. The rounding errors of the diagonalizations seeded the
-unstable Higgs channel, and the iteration amplified them.
+\textbf{Every stationary state other than the ground state is unstable.}
+The normal vacuum, the condensate of one doublet of HS (0, 0) and the
+scalar condensate have an eigenvalue above 1 in the doublet-singlet
+pairs (last column of Table 5.1; check SF-13): a small pair amplitude
+grows on each of them.
 
-Table 5.2. The Higgs ground states of \(V^{(1)}_{\rm SH}\), each reached
-from the start along \(\Phi^{\rm d}_{\rm SH}\) (start 2). The table
-gives the energy per volume; the coefficient \(D^{\rm d}_{\rm SH}\) of
-the pair self-energy (\(D^{\rm u}_{\rm SH}=0\)); the Dirac masses of the
-three species; the difference of the scalar densities of the up and the
-down components; and the gap.
+\textbf{\(V^{(1)}_{\rm SH}\), first version.} The ground state is the
+condensate of \(\Phi_{\rm SH}\) alone, the ground state of stage 3 of
+the first version, which this program reproduces on the sixteen
+components (check SF-12). The starts 2, 3, 4, 6, 7, 8 and 15 reach it in
+every method, and in KS and CJT also the starts 5, 9, 10 and 12, by the
+seeding of the rounding errors. The pair amplitude of
+\(\chi'_{\rm SH}\), which no term feeds, decays in every start.
+
+Table 5.2. The ground states of \(V^{(1)}_{\rm SH}\) in both versions:
+in the second version reached from the start along \(i\tau^2\) (start
+6), in the first from the start along \(\Phi^{\rm d}_{\rm SH}\) (start
+2). The table gives the energy per volume, the two singular values of
+\(\mathcal D_{\rm SH}\) and the gap.
 
 \sptkeptpenalty=10000
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1538}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1282}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1154}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1154}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1154}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1154}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1410}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1154}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
+version
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 method
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(10^4\,\mathcal E^X_{\rm SH}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(\lvert D^{\rm d}_{\rm SH}\rvert\)
+\(\varsigma^{(1)}_{\rm SH}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(M^{\rm u}_{\rm SH}\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(M^{\rm d}_{\rm SH}\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(M^\chi_{\rm SH}\)
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-\(10^4(n^{\rm S,u}_{\rm SH}-n^{\rm S,d}_{\rm SH})\)
+\(\varsigma^{(2)}_{\rm SH}\)
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 \(E^{X,{\rm gap}}_{\rm SH}\)
 \end{minipage} \\
@@ -1477,40 +1736,101 @@ method
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-HS (1, 1) & \(-5.49853\) & \(0.82581\) & \(0.170392\) & \(0.170392\) &
-\(0.2\) & \(-11.849\) & \(0.170392\) \\*
-HS (0, 1) & \(-5.28389\) & \(0.812846\) & \(0.2\) & \(0.2\) & \(0.2\) &
-\(-14.591\) & \(0.2\) \\*
-HS (0, 0) & \(-5.28389\) & \(0.812846\) & \(0.2\) & \(0.2\) & \(0.2\) &
-\(-14.591\) & \(0.2\) \\*
-KS & \(-6.2857\) & \(0.867286\) & \(0.111459\) & \(0.112423\) &
-\(0.145585\) & \(-8.0369\) & \(0.111459\) \\*
-CJT & \(-6.2857\) & \(0.867286\) & \(0.111459\) & \(0.112423\) &
-\(0.145585\) & \(-8.0369\) & \(0.111459\) \\
+second & HS (1, 1) & \(-11.2952\) & \(0.832878\) & \(0.832878\) &
+\(0.426792\) \\*
+second & HS (0, 1) & \(-10.5678\) & \(0.812846\) & \(0.812846\) &
+\(0.452967\) \\*
+second & HS (0, 0) & \(-10.5678\) & \(0.812846\) & \(0.812846\) &
+\(0.452967\) \\*
+second & KS & \(-16.4192\) & \(0.890787\) & \(0.890787\) &
+\(0.384201\) \\*
+second & CJT & \(-16.4192\) & \(0.890787\) & \(0.890787\) &
+\(0.384201\) \\*
+first & HS (1, 1) & \(-5.49853\) & \(0.82581\) & \(0\) & \(0.170392\) \\*
+first & HS (0, 1) & \(-5.28389\) & \(0.812846\) & \(0\) & \(0.2\) \\*
+first & HS (0, 0) & \(-5.28389\) & \(0.812846\) & \(0\) & \(0.2\) \\*
+first & KS & \(-6.2857\) & \(0.867286\) & \(0\) & \(0.111459\) \\*
+first & CJT & \(-6.2857\) & \(0.867286\) & \(0\) & \(0.111459\) \\
 \end{longtable}
 
-\textbf{What the table shows.}
+Table 5.3. The Dirac masses of the four species in the ground states of
+Table 5.2.
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1176}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1765}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+version
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M^{\rm u}_{\rm SH}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M^{\rm d}_{\rm SH}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M^\chi_{\rm SH}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M^{\chi'}_{\rm SH}\)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+second & HS (1, 1) & \(0.150111\) & \(0.150111\) & \(0.2\) & \(0.2\) \\*
+second & HS (0, 1) & \(0.2\) & \(0.2\) & \(0.2\) & \(0.2\) \\*
+second & HS (0, 0) & \(0.2\) & \(0.2\) & \(0.2\) & \(0.2\) \\*
+second & KS & \(-0.0622797\) & \(-0.0622797\) & \(0.0601084\) &
+\(0.0601084\) \\*
+second & CJT & \(-0.0622797\) & \(-0.0622797\) & \(0.0601084\) &
+\(0.0601084\) \\*
+first & HS (1, 1) & \(0.170392\) & \(0.170392\) & \(0.2\) & \(0.2\) \\*
+first & HS (0, 1) & \(0.2\) & \(0.2\) & \(0.2\) & \(0.2\) \\*
+first & HS (0, 0) & \(0.2\) & \(0.2\) & \(0.2\) & \(0.2\) \\*
+first & KS & \(0.111459\) & \(0.112423\) & \(0.145585\) & \(0.2\) \\*
+first & CJT & \(0.111459\) & \(0.112423\) & \(0.145585\) & \(0.2\) \\
+\end{longtable}
+
+\textbf{What the tables show.}
 
 \begin{itemize}
 \item
+  \textbf{The two singular values are equal in the second version} and
+  the second is zero in the first: the second version condenses both
+  doublets with equal lengths, the first one doublet. The state of the
+  start along \(i\tau^2\) has
+  \(D^{\rm d}_{\rm SH}=-D'^{\rm u}_{\rm SH}\) and
+  \(D^{\rm u}_{\rm SH}=D'^{\rm d}_{\rm SH}=0\): the down particles are
+  paired with \(\chi_{\rm SH}\) and the up particles with
+  \(\chi'_{\rm SH}\).
+\item
   \textbf{HS (0, 1) and HS (0, 0)} have the same ground state, and in it
-  only the pairing term acts. The scalar term is decoupled entirely in
+  only the pairing terms act. The scalar term is decoupled entirely in
   the pair channels of \(\Psi_{\rm LL}\), which this state does not
   have. The vector term is decoupled in the density channels (HS (0, 1))
   or in the pair channels (HS (0, 0)), and the densities that it would
   use, the number density and the currents, vanish. The normal
   self-energy is therefore zero, the masses keep their bare value, and
-  \(\mathsf P_{\rm SH}=D^{\rm d}_{\rm SH}(\mathsf K^{\rm d}_{\rm SH})^\dagger\).
-  The ground state then has a closed form:
+  \(\mathsf P_{\rm SH}=D^{\rm d}_{\rm SH}(\mathsf K^{\rm d}_{\rm SH})^\dagger+D'^{\rm u}_{\rm SH}(\mathsf K'^{\rm u}_{\rm SH})^\dagger\).
+  The two pairs then do not interact: each is the condensate of the
+  first version, and the energy is twice that of the first version
+  (\(10^4\mathcal E=-10.5678\) against \(-5.28389\)). The ground state
+  has a closed form:
 
   \begin{itemize}
   \tightlist
   \item
-    the square of (3.1) is \(\varepsilon_{\rm LL}^2\) on the up
-    components and
+    the square of (3.1) is
     \(\varepsilon_{\rm LL}^2+\lvert D^{\rm d}_{\rm SH}\rvert^2/4\) on
-    the down components and \(\chi_{\rm SH}\) (by the identity of
-    Section 4.2);
+    all sixteen components (on the up components and on
+    \(\chi_{\rm SH}\) in the first version it is
+    \(\varepsilon_{\rm LL}^2\), on the free \(\chi'_{\rm SH}\) as well),
+    by the identity of Section 4.2;
   \item
     the pair correlation is
     \(\mathsf C^{\rm p}_{\rm SH}=\mathsf P_{\rm SH}/(2(\varepsilon_{\rm LL}^2+\lvert D^{\rm d}_{\rm SH}\rvert^2/4)^{1/2})\);
@@ -1520,80 +1840,112 @@ CJT & \(-6.2857\) & \(0.867286\) & \(0.111459\) & \(0.112423\) &
   \end{itemize}
 
   The computed \(\lvert D^{\rm d}_{\rm SH}\rvert=0.812846\) satisfies
-  it, with \(M^{\rm eff}_{\rm SH}=0.452967\), and the quasi-particle
-  energies are the two branches of the first item (check YSF-12).
+  it, with \(M^{\rm eff}_{\rm SH}=0.452967\) (checks YSF-12 and WSF-5).
 \item
   \textbf{HS (1, 1)} adds the direct contraction of the scalar term. It
   sees only the scalar density of \(\Psi_{\rm LL}\) summed over the
   isospin, and it lowers the masses of the up and the down components
-  equally, to \(0.170392\). The mass of \(\chi_{\rm SH}\) is unchanged.
+  equally, to \(0.150111\). The masses of the singlets are unchanged.
 \item
-  \textbf{KS and CJT} add the exchange contractions. These treat the two
-  isospin components separately, and through the exchange of the pairing
-  terms they couple the masses of the two fields. All three masses are
-  lowered, and they differ: \(M^{\rm u}_{\rm SH}=0.111459\),
-  \(M^{\rm d}_{\rm SH}=0.112423\), \(M^\chi_{\rm SH}=0.145585\). The
+  \textbf{KS and CJT} add the exchange contractions, which couple the
+  masses of \(\Psi_{\rm LL}\) and the paired singlets. All four masses
+  are lowered, those of \(\Psi_{\rm LL}\) through zero:
+  \(M^{\rm u}_{\rm SH}=-0.0622797\), \(M^{\rm d}_{\rm SH}=-0.0622797\),
+  \(M^\chi_{\rm SH}=0.0601084\), \(M^{\chi'}_{\rm SH}=0.0601084\). The
+  reason: in the custodial state the pairing makes the scalar density of
+  every species, measured from the normal vacuum, positive, and the
+  positive densities lower the masses. The mass of \(\Psi_{\rm LL}\) is
+  lowered by its own scalar term, with the coupling
+  \(g^{X,{\rm S}}_{\rm SF}=\tfrac78G^{\rm S}_{\rm SF}-\tfrac12G^{\rm V}_{\rm SF}<0\),
+  and through the exchange couplings of Section 4.3 by
+  \(\tfrac1{16}G_{\rm SH}\) times the density of each paired singlet;
+  the mass of each singlet by \(\tfrac1{16}G_{\rm SH}\) times the
+  density of \(\Psi_{\rm LL}\). In the second version both singlets
+  lower the mass of \(\Psi_{\rm LL}\); in the first version one did. The
   energy is the lowest of the five methods:
-  \(10^4\mathcal E^{\rm CJT}_{\rm SH}=-6.2857\), against \(-5.49853\) in
-  HS (1, 1).
+  \(10^4\mathcal E^{\rm CJT}_{\rm SH}=-16.4192\), against \(-11.2952\)
+  in HS (1, 1).
 \end{itemize}
 
 The ground states do not depend on the radial grid: on 24 and 48 nodes
-the energies and \(\lvert D^{\rm d}_{\rm SH}\rvert\) of HS (1, 1) and of
-CJT agree within the deviation of check SF-10 (Section 9). The three
-starts along the doublet reach states of equal energy and equal length
-of the doublet, as the symmetry \(SU(2)_L\times U(1)_Y\) requires
-(checks SF-7 and YSF-7).
+the energies and \(\varsigma^{(1)}_{\rm SH}\) of HS (1, 1) and of CJT
+agree within the deviation of check SF-10 (Section 9). The starts along
+\(i\tau^2\), along a rotated unitary matrix and along a generic matrix
+reach states of equal energy and equal singular values, as the symmetry
+of the hypotheses requires (checks SF-7a and YSF-7).
 
 \hypertarget{the-symmetry-and-the-stability-of-the-ground-state}{%
 \section{6. The symmetry and the stability of the ground
 state}\label{the-symmetry-and-the-stability-of-the-ground-state}}
 
 \textbf{The unbroken generators.} A real combination \(\mathsf G\) of
-the generators \(T^{1,{\rm SM}}\), \(T^{2,{\rm SM}}\),
-\(T^{3,{\rm SM}}\), \(Y^{\rm SM}\) and \(R_{\rm SH}\) leaves a state
-unchanged when its self-energies are unchanged by the rotation
-\(e^{i\theta\mathsf G}\), that is, when
+generators leaves a state unchanged when its self-energies are unchanged
+by the rotation \(e^{i\theta\mathsf G}\), that is, when
 \([\mathsf G,\mathsf N_{\rm SH}]=0\) and
 \(\mathsf G\mathsf P_{\rm SH}+\mathsf P_{\rm SH}\mathsf G^T=0\). For the
-Higgs ground states of all five methods, from each of the three starts
-along the doublet, these combinations form a space of dimension 2 (check
-SF-8). It contains \(R_{\rm SH}\) and one combination without
-\(R_{\rm SH}\) whose eigenvalues, normalized to the trace of
-\(Q^{\rm SM}\), are those of \(Q^{\rm SM}\): \(\tfrac34\), \(-\tfrac14\)
-and \(\tfrac14\), each fourfold. For the state along
-\(\Phi^{\rm d}_{\rm SH}\) this combination is \(Q^{\rm SM}\) itself. The
-superfluid breaks \(SU(2)_L\times U(1)_Y\) to the \(U(1)\) of the
-electric charge, as the Higgs field of the Standard Model does.
+ground states of the second version, in all five methods:
 
-\textbf{The stability.} The static response of each Higgs ground state
-is computed in two sectors, whose directions do not mix because
+\begin{itemize}
+\tightlist
+\item
+  among the eight generators \(T^{a,{\rm SM}}\),
+  \(T^{a,{\rm R}}_{\rm SH}\), \(R_{\rm SH}\) and
+  \(F^{\rm tot}_{\rm SH}\) of the global group, these combinations form
+  a space of dimension 4, which contains
+  \(Q^{\rm SM}=T^{3,{\rm SM}}+T^{3,{\rm R}}_{\rm SH}+\tfrac14R_{\rm SH}\)
+  (check SF-8). For the state along \(i\tau^2\) it is spanned by
+  \(T^{a,{\rm SM}}+T^{a,{\rm R}}_{\rm SH}\) (\(a=1,2,3\)), the custodial
+  \(SU(2)_{\rm V}\), and \(R_{\rm SH}\), as the group theory of the
+  hypotheses predicts for the vacuum
+  \(\mathcal M_{\rm SH}\propto i\tau^2\);
+\item
+  among the four generators of \(SU(2)_L\times U(1)_Y\) they form a
+  space of dimension 1, that of \(Q^{\rm SM}\).
+\end{itemize}
+
+The superfluid breaks \(SU(2)_L\times U(1)_Y\) to the \(U(1)\) of the
+electric charge, as the Higgs field of the Standard Model does, and it
+keeps the custodial symmetry. It breaks four generators: three of
+\(SU(2)_L\times U(1)_Y\) and the particle number. The ground state of
+the first version keeps a space of dimension 3 of the eight generators,
+which contains \(Q^{\rm SM}\) but not \(SU(2)_{\rm V}\).
+
+\textbf{The stability.} The static response of each ground state is
+computed in two sectors, whose directions do not mix because
 \(R_{\rm SH}\) is conserved:
 
 \begin{itemize}
 \tightlist
 \item
-  the sector of relative number 0: the doublet-singlet pairs and the
-  normal self-energies of each field;
+  the sector of relative number 0: the doublet-singlet pairs, the normal
+  self-energies of each field and the normal block between the two
+  singlets;
 \item
   the sector of relative number \(\pm2\): the pairs of two particles of
-  the same field and the mixing of the two fields.
+  \(\Psi_{\rm LL}\) and of the singlets, and the normal blocks between
+  \(\Psi_{\rm LL}\) and the singlets.
 \end{itemize}
 
-Table 6.1. The static response of the Higgs ground states of
+Table 6.1. The static response of the ground states of
 \(V^{(1)}_{\rm SH}\): the number of eigenvalues equal to 1 and the
 largest deviation from 1 among them, the largest other eigenvalue in the
-sector of relative number 0, and the largest eigenvalue in the sector of
-relative number \(\pm2\).
+sector of relative number 0, the largest eigenvalue in the sector of
+relative number \(\pm2\), and, in the second version, the largest
+eigenvalue of the condensate of one doublet in the doublet-singlet
+pairs.
 
 \sptkeptpenalty=10000
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2667}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2444}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2444}}
-  >{\raggedright\arraybackslash}p{(\columnwidth - 6\tabcolsep) * \real{0.2444}}@{}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1875}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1719}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1719}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1719}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 10\tabcolsep) * \real{0.1719}}@{}}
 \toprule\noalign{}
 \begin{minipage}[b]{\linewidth}\raggedright
+version
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 method
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 eigenvalues equal to 1
@@ -1601,26 +1953,46 @@ eigenvalues equal to 1
 largest other eigenvalue, relative number 0
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 largest eigenvalue, relative number \(\pm2\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+largest eigenvalue of the condensate of one doublet
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-HS (1, 1) & 3 (to \(2.7\times10^{-11}\)) & \(0.74209\) & \(0\) \\*
-HS (0, 1) & 3 (to \(2.4\times10^{-11}\)) & \(0.7377\) & \(0.093956\) \\*
-HS (0, 0) & 3 (to \(2.4\times10^{-11}\)) & \(0.7377\) & \(0.056373\) \\*
-KS & 3 (to \(2.7\times10^{-11}\)) & \(0.81823\) & \(0.058986\) \\*
-CJT & 3 (to \(2.6\times10^{-11}\)) & \(0.81823\) & \(0.24379\) \\
+second & HS (1, 1) & 4 (to \(2.7\times10^{-11}\)) & \(0.73609\) & \(0\)
+& \(1.1929\) \\*
+second & HS (0, 1) & 4 (to \(2.5\times10^{-11}\)) & \(0.7377\) &
+\(0.068957\) & \(1.1838\) \\*
+second & HS (0, 0) & 4 (to \(2.4\times10^{-11}\)) & \(0.7377\) &
+\(0.041374\) & \(1.1838\) \\*
+second & KS & 4 (to \(3\times10^{-11}\)) & \(0.85591\) & \(0.040262\) &
+\(1.209\) \\*
+second & CJT & 4 (to \(3.1\times10^{-11}\)) & \(0.85591\) & \(0.25157\)
+& \(1.209\) \\*
+first & HS (1, 1) & 3 (to \(2.5\times10^{-11}\)) & \(0.74209\) & \(0\) &
+- \\*
+first & HS (0, 1) & 3 (to \(2.4\times10^{-11}\)) & \(0.7377\) &
+\(0.093956\) & - \\*
+first & HS (0, 0) & 3 (to \(2.3\times10^{-11}\)) & \(0.7377\) &
+\(0.056373\) & - \\*
+first & KS & 3 (to \(2.6\times10^{-11}\)) & \(0.81823\) & \(0.058986\) &
+- \\*
+first & CJT & 3 (to \(2.4\times10^{-11}\)) & \(0.81823\) & \(0.24379\) &
+- \\
 \end{longtable}
 
-In every method exactly three eigenvalues equal 1. They are the
-Goldstone modes of the three broken generators of
-\(SU(2)_L\times U(1)_Y\). When the gauge fields are coupled, these modes
-become the longitudinal parts of \(W^\pm_\mu\) and \(Z_\mu\) (stage 5).
-All other eigenvalues of the sector of relative number 0 lie between
-\(0.738\) to \(0.818\), and those of the sector of relative number
-\(\pm2\) are at most \(0.244\). Every direction of the latter sector is
-charged:
+In the second version exactly four eigenvalues equal 1 in every method.
+They are the Goldstone modes of the four broken generators. When the
+gauge fields are coupled, three of these modes become the longitudinal
+parts of \(W^\pm_\mu\) and \(Z_\mu\) (stage 4); the fourth, that of the
+particle number, remains a massless neutral particle of spin 0, the
+extra Goldstone boson of the hypotheses, unless the author chooses to
+gauge the particle number or to break it explicitly. In the first
+version three eigenvalues equal 1. All other eigenvalues of the sector
+of relative number 0 lie between \(0.736\) to \(0.856\) in the second
+version, and those of the sector of relative number \(\pm2\) are at most
+\(0.252\). Every direction of the latter sector is charged:
 
 \begin{itemize}
 \tightlist
@@ -1628,69 +2000,97 @@ charged:
   the pairs of two particles of \(\Psi_{\rm LL}\) have the charges
   \(\tfrac32\), \(\tfrac12\), \(-\tfrac12\);
 \item
-  the pairs of two particles of \(\chi_{\rm SH}\) have the charge
-  \(\tfrac12\);
+  the pairs of two particles of the singlets have the charges
+  \(\tfrac12\) (\(\chi_{\rm SH}\chi_{\rm SH}\)), \(-\tfrac12\)
+  (\(\chi_{\rm SH}\chi'_{\rm SH}\)) and \(-\tfrac32\)
+  (\(\chi'_{\rm SH}\chi'_{\rm SH}\));
 \item
   the mixing blocks \(\Psi^\dagger_{\rm LL}\chi_{\rm SH}\) have the
-  charges \(\pm\tfrac12\).
+  charges \(\pm\tfrac12\) and \(\Psi^\dagger_{\rm LL}\chi'_{\rm SH}\)
+  the charges \(-\tfrac12\), \(-\tfrac32\) (and their Hermitian
+  conjugates the opposite ones).
 \end{itemize}
 
-So the Higgs superfluid is a stable minimum of the energy among the
-uniform states in these directions, and no charged condensate grows on
-it.
+So the custodial Higgs superfluid is a stable minimum of the energy
+among the uniform states in these directions, and no charged condensate
+grows on it.
+
+\textbf{The condensate of one doublet is unstable in the second
+version.} Its energy is higher than that of the custodial state in every
+method (check SF-7b), and its static response in the doublet-singlet
+pairs has an eigenvalue above 1, from \(1.184\) to \(1.209\) (check
+SF-9b): the direction of the second doublet. In HS its energy equals
+that of the ground state of the first version, to \(10^{-12}\) of its
+size, because \(\chi'_{\rm SH}\) then has no interaction: its pairing
+term has no amplitude, and HS keeps no exchange contraction. In KS and
+CJT the exchange contraction of the second pairing term couples the
+scalar density of \(\chi'_{\rm SH}\) to that of \(\Psi_{\rm LL}\), and
+the energy is lower than in the first version but still above the
+custodial state: \(10^4\mathcal E=-8.77309\) in CJT, against \(-6.2857\)
+(first version) and \(-16.4192\) (custodial). In the first version the
+condensate of one doublet was the stable ground state, because there was
+no second doublet to condense.
 
 \hypertarget{the-quasi-particles-and-the-custodial-symmetry}{%
 \section{7. The quasi-particles and the custodial
 symmetry}\label{the-quasi-particles-and-the-custodial-symmetry}}
 
-\textbf{The gap.} The condensate along \(\Phi^{\rm d}_{\rm SH}\) pairs
-the down components of \(\Psi_{\rm LL}\) with \(\chi_{\rm SH}\) and
-leaves the up components unpaired. The block of (3.1) of the up
-components is that of a free Dirac field of mass \(M^{\rm u}_{\rm SH}\),
-with the energies \((q_{\rm LL}^2+(M^{\rm u}_{\rm SH})^2)^{1/2}\). In
-every method the lowest quasi-particle energy over all momenta is
-\(\lvert M^{\rm u}_{\rm SH}\rvert\), reached at zero momentum (checks
-SF-11a, SF-11b and YSF-11). The gap \(E^{X,{\rm gap}}_{\rm SH}\) of
-Table 5.2 is this energy: \(0.111459\) in KS and CJT.
+\textbf{The gap.} In the first version the condensate along
+\(\Phi^{\rm d}_{\rm SH}\) paired the down components of
+\(\Psi_{\rm LL}\) with \(\chi_{\rm SH}\) and left the up components
+unpaired; the block of (3.1) of the up components is that of a free
+Dirac field of mass \(M^{\rm u}_{\rm SH}\), and in every method the
+lowest quasi-particle energy is \(\lvert M^{\rm u}_{\rm SH}\rvert\),
+reached at zero momentum (checks SF-11a, SF-11b and YSF-11):
+\(0.111459\) in KS and CJT. In the second version every constituent is
+paired, and the gap is larger in every method (check SF-11c):
+\(0.384201\) in KS and CJT. In HS (0, 1) and HS (0, 0) all
+quasi-particle energies are
+\((\varepsilon_{\rm LL}^2+\lvert D^{\rm d}_{\rm SH}\rvert^2/4)^{1/2}\geq M^{\rm eff}_{\rm SH}=0.452967\).
 
 \textbf{The charges of the quasi-particles.} \(Q^{\rm SM}\) is unbroken,
-so every quasi-particle has a definite electric charge:
+so every quasi-particle has a definite electric charge. In the second
+version:
 
 \begin{itemize}
 \tightlist
 \item
-  the lightest one is an up particle of \(\Psi_{\rm LL}\), with the
-  electric charge \(\tfrac34\);
+  the quasi-particles of the first pair mix a down particle of
+  \(\Psi_{\rm LL}\) (charge \(-\tfrac14\)) with a hole of
+  \(\chi_{\rm SH}\) (the absence of a particle of charge \(\tfrac14\),
+  so again \(-\tfrac14\)): they carry the charge \(-\tfrac14\), and
+  their antiparticles \(+\tfrac14\);
 \item
-  the paired quasi-particles mix a down particle of \(\Psi_{\rm LL}\)
-  (charge \(-\tfrac14\)) with a hole of \(\chi_{\rm SH}\) (the absence
-  of a particle of charge \(\tfrac14\), so again \(-\tfrac14\)). They
-  carry the charge \(-\tfrac14\), and their antiparticles \(+\tfrac14\).
-  In HS (0, 1) and HS (0, 0) their energies are
-  \((\varepsilon_{\rm LL}^2+\lvert D^{\rm d}_{\rm SH}\rvert^2/4)^{1/2}\geq M^{\rm eff}_{\rm SH}=0.452967\),
-  above the up branch.
+  those of the second pair mix an up particle (charge \(\tfrac34\)) with
+  a hole of \(\chi'_{\rm SH}\) (the absence of a particle of charge
+  \(-\tfrac34\), so again \(\tfrac34\)): they carry the charge
+  \(\tfrac34\), and their antiparticles \(-\tfrac34\).
 \end{itemize}
 
 The model therefore has fermionic excitations with fractional electric
-charges, and the lightest has the charge \(\tfrac34\). No particle with
-such a charge has been observed. Whether this rules the model out
-depends on its mass in GeV, \(M^{\rm u}_{\rm SH}\Lambda_{\rm LL}\),
-which is known once \(\Lambda_{\rm LL}\) is fixed in GeV by
-\(v_{\rm SH}=246.22\) GeV in stage 5.
+charges, all of them now paired and of equal mass by the custodial
+symmetry. No particle with such a charge has been observed. Whether this
+rules the model out depends on their mass in GeV, the gap times
+\(\Lambda_{\rm LL}\), which is known once \(\Lambda_{\rm LL}\) is fixed
+in GeV by \(v_{\rm SH}=246.22\) GeV in stage 4.
 
-\textbf{The custodial symmetry.} The condensate treats the up and the
-down components differently: the up components are unpaired, the down
-components paired. In every method the scalar densities differ
-(\(n^{\rm S,u}_{\rm SH}-n^{\rm S,d}_{\rm SH}\neq0\), Table 5.2). In KS
-and CJT the masses differ as well. In HS (1, 1) the masses are equal,
-because the direct contraction sees only the summed density, and in HS
-(0, 1) and HS (0, 0) the masses keep their bare value. This difference
-between the two components breaks the custodial symmetry, which would
-keep \(\rho=M_W^2/(M_Z^2\cos^2\theta_W)\) equal to 1. Its effect on
-\(\rho\) is computed in stage 5 from the susceptibilities of the
-superfluid to the four gauge fields. In the Standard Model the
-corresponding effect comes from the difference of the masses of the top
-and the bottom quark.
+\textbf{The custodial symmetry.} In the second version the condensate
+treats the up and the down components of \(\Psi_{\rm LL}\) alike, and
+the two singlets alike: \(M^{\rm u}_{\rm SH}=M^{\rm d}_{\rm SH}\) and
+\(M^\chi_{\rm SH}=M^{\chi'}_{\rm SH}\) in every method (Table 5.3), and
+the scalar densities are equal in pairs:
+\(n^{\rm S,u}_{\rm SH}-n^{\rm S,d}_{\rm SH}\) and
+\(n^{{\rm S},\chi}_{\rm SH}-n^{{\rm S},\chi'}_{\rm SH}\) are at most
+\(5.2\times10^{-18}\) in size, which is rounding, against at least
+\(0.000804\) for \(n^{\rm S,u}_{\rm SH}-n^{\rm S,d}_{\rm SH}\) in the
+first version. This is the custodial symmetry \(SU(2)_{\rm V}\) that the
+ground state keeps (Section 6), the symmetry that keeps
+\(\rho=M_W^2/(M_Z^2\cos^2\theta_W)\) equal to 1 when \(g'\) is
+neglected. In the first version the up components were unpaired and the
+down components paired, the scalar densities differed in every method,
+and in KS and CJT the masses differed as well; that broke the custodial
+symmetry. Stage 4 computes \(\rho\) of both versions from the
+susceptibilities of the superfluid to the four gauge fields.
 
 \hypertarget{what-this-stage-does-not-yet-decide}{%
 \section{8. What this stage does not yet
@@ -1701,28 +2101,28 @@ The following are left to the later stages:
 \begin{itemize}
 \tightlist
 \item
-  \textbf{the scale and the masses of the gauge bosons (stage 5).} All
-  numbers here are in units of \(\Lambda_{\rm LL}\). The scale
-  \(v_{\rm SH}\) of the breaking is defined by
-  \(M_W=\tfrac12g\,v_{\rm SH}\). It follows from the response of the
-  superfluid to the gauge fields, which stage 5 computes (with the
-  artifact (4.6) removed). Setting \(v_{\rm SH}=246.22\) GeV then gives
+  \textbf{the scale, the masses of the gauge bosons and the amplitude
+  mode (stage 4).} All numbers here are in units of
+  \(\Lambda_{\rm LL}\). The scale \(v_{\rm SH}\) of the breaking is
+  defined by \(M_W=\tfrac12g\,v_{\rm SH}\). It follows from the response
+  of the superfluid to the gauge fields (with the artifact (4.6)
+  removed). Setting \(v_{\rm SH}=246.22\) GeV then gives
   \(\Lambda_{\rm LL}\) in GeV, the masses of the quasi-particles in GeV,
-  \(M_W\), \(M_Z\) and \(\rho\);
+  \(M_W\), \(M_Z\) and \(\rho\). Stage 4 also computes the effective
+  potential of the pair fields and the mass of the amplitude mode, to be
+  compared with \(m_H\) through the ratio \(m_H/v\), and the dependence
+  on the choice of \(G_{\rm SH}\) (Section 2.2);
 \item
-  \textbf{the amplitude mode (stage 4).} The effective potential of the
-  pair field and the mass of its amplitude mode, to be compared with
-  \(m_H\) through the ratio \(m_H/v\);
-\item
-  \textbf{the dependence on the choice of \(G_{\rm SH}\) (Section 2.2)},
-  computed with the effective potential in stage 4;
+  \textbf{the extra Goldstone boson.} The massless mode of the particle
+  number stays until the author decides whether to accept it, to gauge
+  the particle number, or to break it by a further term;
 \item
   \textbf{the dynamics (stage 6).} The dynamics in time, the notebook
   and the article.
 \end{itemize}
 
 All three methods are mean-field approximations: the fluctuations of the
-pair field beyond the static response are not included.
+pair fields beyond the static response are not included.
 
 \hypertarget{the-programs-and-the-checks}{%
 \section{9. The programs and the
@@ -1737,14 +2137,16 @@ stage:
   \textbf{Rust.} The program \texttt{sh\_superfluid} (crate
   \texttt{rust/shsuperfluid}), with the engine of the uniform states of
   several Dirac fields, the module \texttt{uniform\_n} of the library
-  \texttt{sfcore}. It ran its 18 checks in 112 s on parallel threads;
-  the longest of its ten jobs took 90 s. Its verdict: ALL PASS (18 of
-  18). Check SF-1 compares the new engine with the engine of the earlier
-  hypotheses on the earlier potential, with the singlet field decoupled;
-  the earlier engine is unchanged.
+  \texttt{sfcore}. It ran its 25 checks in 1007 s on 2 parallel threads;
+  the longest of its fifteen jobs (five methods, three potentials) took
+  271 s. Its verdict: ALL PASS (25 of 25). Check SF-1 compares the
+  engine with the engine of the earlier hypotheses on the earlier
+  potential, with the singlet fields decoupled; check SF-12 compares the
+  first version on the sixteen components with the first version on the
+  twelve components of \(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\) alone.
 \item
   \textbf{Python.} The program \texttt{python/sh\_superfluid.py}, a
-  second computation with numpy and its own engine for the twelve
+  second computation with numpy and its own engine for the sixteen
   components, vectorized over the momenta. It compares its results with
   the data of the Rust program and adds the closed forms (5.1) and
   (4.6): ALL PASS (8 of 8).
@@ -1753,8 +2155,8 @@ stage:
   \texttt{wolfram/source/sh\_superfluid.wls}, run on the author's
   computer, computes in exact arithmetic the identities of the pair
   matrices, the closed form of \(I^{(1)}_{\rm SF}\), the critical
-  coupling, the exchange coupling of the two fields and the triplet
-  coupling: ALL PASS (4 of 4).
+  coupling, the exchange coupling of the fields, the triplet coupling
+  and the gap equation (5.1): ALL PASS (5 of 5).
 \end{itemize}
 
 The reports are \texttt{data/hck\_sh\_superfluid\_checks.txt},
@@ -1769,8 +2171,8 @@ The reports are \texttt{data/hck\_sh\_superfluid\_checks.txt},
 \item
   \texttt{data/sh\_sf\_states.csv}: the stationary states;
 \item
-  \texttt{data/sh\_sf\_ground.csv}: the Higgs ground states and their
-  response;
+  \texttt{data/sh\_sf\_ground.csv}: the ground states of both versions
+  and their response;
 \item
   \texttt{data/sh\_sf\_values.csv}: single values.
 \end{itemize}
@@ -1786,7 +2188,7 @@ from the folder \texttt{Revision\_SM\_Higgs}:
 \CommentTok{\# the Python program (after the Rust program)}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ python }\KeywordTok{\&\&} \ExtensionTok{python3}\NormalTok{ sh\_superfluid.py}\KeywordTok{)}
 \CommentTok{\# the Wolfram script (on a computer with Wolfram)}
-\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_superfluid.wls data/sh\_sf\_normal\_vacuum.csv }\DataTypeTok{\textbackslash{}}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_superfluid.wls data/sh\_sf\_normal\_vacuum.csv data/sh\_sf\_ground.csv }\DataTypeTok{\textbackslash{}}
 \NormalTok{    data/hck\_sh\_superfluid\_checks\_wolfram.txt}
 \CommentTok{\# the tables and numbers of this document}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_superfluid\_fragments.py}
@@ -1817,117 +2219,239 @@ statement
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-SF-1a & PASS & 1.908e-17 & 1.0e-13 & the energy of the earlier engine
-(module uniform) and of the new engine (module uniform\_n, the singlet
-field decoupled) on the earlier V\^{}(2) from the polar start, five
-methods \\
-SF-1b & PASS & 6.343e-18 & 1.0e-12 & the local matrices of the two
-engines agree, and the singlet block of the new engine stays empty \\
-SF-2a & PASS & 3.672e-11 & 1.0e-9 & normal vacuum, pairs of Psi\_LL and
-chi\_SH: the largest eigenvalue of the static response is G\_SH /
+SF-1a & PASS & 3.036e-17 & 1.0e-13 & the energy of the earlier engine
+(module uniform) and of the new engine (module uniform\_n, the two
+singlet fields decoupled) on the earlier V\^{}(2) from the polar start,
+five methods \\
+SF-1b & PASS & 5.569e-18 & 1.0e-12 & the local matrices of the two
+engines agree, and the blocks of the singlets stay empty \\
+SF-2a & PASS & 3.508e-11 & 1.0e-9 & normal vacuum, pairs of Psi\_LL with
+the singlets: the largest eigenvalue of the static response is G\_SH /
 G\^{}crit\_SH with G\^{}crit\_SH = 4 pi\^{}2 / I1(m) = 85.1464390222
-(V\^{}(1)\_SH: 1.1838428143; V\^{}(0)\_SH: 0), five methods \\
+(V\^{}(1)\_SH, both versions: 1.1838428143; V\^{}(0)\_SH: 0), five
+methods \\
 SF-2b & PASS & -- & -- & the eigenvalue G\_SH / G\^{}crit\_SH is
-fourfold (the two components of the doublet, each with its real and
-imaginary part) (V\^{}(1)\_SH, five methods) \\
+eightfold in the second version (two doublets, each component with its
+real and imaginary part) and fourfold in the first version (V1\_SH first
+version HS (1, 1): 4; V1\_SH HS (1, 1): 8; V1\_SH first version HS (0,
+1): 4; V1\_SH HS (0, 1): 8; V1\_SH first version HS (0, 0): 4; V1\_SH HS
+(0, 0): 8; V1\_SH first version KS: 4; V1\_SH KS: 8; V1\_SH first
+version CJT: 4; V1\_SH CJT: 8) \\
 SF-2c & PASS & 0.000e0 & 1.0e-10 & the pseudoscalar doublet-singlet
-pairs (matrix C (x) e\_s) have no interaction in the normal vacuum
-(response 0) \\
-SF-3a & PASS & 7.517e-12 & 1.0e-9 & normal vacuum, scalar channel: the 2
-x 2 response of the masses of Psi\_LL and chi\_SH agrees with the
-effective couplings (7/8 G\^{}S - 1/2 G\^{}V on Psi\_LL in KS and CJT,
-s\_S G\^{}S in HS; the cross coupling -G\_SH/16 in KS and CJT) and the
-susceptibilities chi\_S = 0.0831601473 (Psi\_LL), 0.0415800737
-(chi\_SH) \\
+pairs (matrix C (x) e\_s, with either singlet) have no interaction in
+the normal vacuum (response 0) \\
+SF-3a & PASS & 7.517e-12 & 1.0e-9 & normal vacuum, scalar channel: the 3
+x 3 response of the masses of Psi\_LL, chi\_SH and chi'\_SH agrees with
+the effective couplings (7/8 G\^{}S - 1/2 G\^{}V on Psi\_LL in KS and
+CJT, s\_S G\^{}S in HS; the cross couplings -G\_SH/16 of each paired
+singlet in KS and CJT) and the susceptibilities chi\_S = 0.0831601473
+(Psi\_LL), 0.0415800737 (a singlet) \\
 SF-3b & PASS & -- & -- & the scalar channel of the normal vacuum is
-stable (largest eigenvalue of the 2 x 2 response below 1) for both
-potentials and all methods (V0\_SH HS (1, 1): 0.6653; V1\_SH HS (1, 1):
-0.6653; V0\_SH HS (0, 1): 0.0000; V1\_SH HS (0, 1): 0.0000; V0\_SH HS
-(0, 0): 0.0000; V1\_SH HS (0, 0): 0.0000; V0\_SH KS: 0.6154; V1\_SH KS:
-0.7893; V0\_SH CJT: 0.6154; V1\_SH CJT: 0.7893) \\
-SF-4a & PASS & 1.349e-11 & 1.0e-9 & normal vacuum, scalar triplet pairs
+stable (largest eigenvalue of the 3 x 3 response below 1) for all
+potentials and methods (V0\_SH HS (1, 1): 0.6653; V1\_SH first version
+HS (1, 1): 0.6653; V1\_SH HS (1, 1): 0.6653; V0\_SH HS (0, 1): 0.0000;
+V1\_SH first version HS (0, 1): 0.0000; V1\_SH HS (0, 1): 0.0000; V0\_SH
+HS (0, 0): 0.0000; V1\_SH first version HS (0, 0): 0.0000; V1\_SH HS (0,
+0): 0.0000; V0\_SH KS: 0.6154; V1\_SH first version KS: 0.7893; V1\_SH
+KS: 0.9153; V0\_SH CJT: 0.6154; V1\_SH first version CJT: 0.7893; V1\_SH
+CJT: 0.9153) \\
+SF-4a & PASS & 1.350e-11 & 1.0e-9 & normal vacuum, scalar triplet pairs
 of Psi\_LL (K\^{}3): the response agrees with g\_P / G\^{}crit\_LL, g\_P
 = -(1/4) G\^{}S - G\^{}V (KS, CJT) or -(1/4)(1 - s\_S) G\^{}S - (1 -
 s\_V) G\^{}V (HS) \\
 SF-4b & PASS & -- & -- & normal vacuum: every eigenvalue of the static
-response in the pairs of Psi\_LL, the pairs of chi\_SH, the normal
-self-energies of each field and the mixing of the two fields is below 1,
-for both potentials and all methods: only the doublet-singlet pairs can
-condense (V0\_SH HS (1, 1) pairs Psi Psi: -0.0000; V0\_SH HS (1, 1)
-pairs chi chi: -0.0000; V0\_SH HS (1, 1) normal, Psi and chi: 0.6653;
-V0\_SH HS (1, 1) normal, mixing Psi chi: -0.0000; V1\_SH HS (1, 1) pairs
-Psi Psi: -0.0000; V1\_SH HS (1, 1) pairs chi chi: -0.0000; V1\_SH HS (1,
-1) normal, Psi and chi: 0.6653; V1\_SH HS (1, 1) normal, mixing Psi chi:
--0.0000; V0\_SH HS (0, 1) pairs Psi Psi: 0.0940; V0\_SH HS (0, 1) pairs
-chi chi: -0.0000; V0\_SH HS (0, 1) normal, Psi and chi: 0.0530; V0\_SH
-HS (0, 1) normal, mixing Psi chi: -0.0000; V1\_SH HS (0, 1) pairs Psi
-Psi: 0.0940; V1\_SH HS (0, 1) pairs chi chi: -0.0000; V1\_SH HS (0, 1)
-normal, Psi and chi: 0.0530; V1\_SH HS (0, 1) normal, mixing Psi chi:
--0.0000; V0\_SH HS (0, 0) pairs Psi Psi: 0.0564; V0\_SH HS (0, 0) pairs
-chi chi: -0.0000; V0\_SH HS (0, 0) normal, Psi and chi: -0.0000; V0\_SH
-HS (0, 0) normal, mixing Psi chi: -0.0000; V1\_SH HS (0, 0) pairs Psi
-Psi: 0.0564; V1\_SH HS (0, 0) pairs chi chi: -0.0000; V1\_SH HS (0, 0)
-normal, Psi and chi: -0.0000; V1\_SH HS (0, 0) normal, mixing Psi chi:
--0.0000; V0\_SH KS pairs Psi Psi: 0.0564; V0\_SH KS pairs chi chi:
--0.0000; V0\_SH KS normal, Psi and chi: 0.6154; V0\_SH KS normal, mixing
-Psi chi: -0.0000; V1\_SH KS pairs Psi Psi: 0.0564; V1\_SH KS pairs chi
-chi: -0.0000; V1\_SH KS normal, Psi and chi: 0.7893; V1\_SH KS normal,
-mixing Psi chi: -0.0000; V0\_SH CJT pairs Psi Psi: 0.0564; V0\_SH CJT
-pairs chi chi: -0.0000; V0\_SH CJT normal, Psi and chi: 0.6154; V0\_SH
-CJT normal, mixing Psi chi: -0.0000; V1\_SH CJT pairs Psi Psi: 0.0564;
-V1\_SH CJT pairs chi chi: -0.0000; V1\_SH CJT normal, Psi and chi:
-0.7893; V1\_SH CJT normal, mixing Psi chi: 0.2620) \\
+response in the pairs of Psi\_LL, the pairs of the singlets, the normal
+self-energies of each field and the mixings is below 1, for all
+potentials and methods: only the doublet-singlet pairs can condense
+(V0\_SH HS (1, 1) pairs Psi Psi: -0.0000; V0\_SH HS (1, 1) pairs of
+singlets: -0.0000; V0\_SH HS (1, 1) normal, each field: 0.6653; V0\_SH
+HS (1, 1) normal, mixing of the singlets: -0.0000; V0\_SH HS (1, 1)
+normal, mixing Psi with singlets: -0.0000; V1\_SH first version HS (1,
+1) pairs Psi Psi: -0.0000; V1\_SH first version HS (1, 1) pairs of
+singlets: -0.0000; V1\_SH first version HS (1, 1) normal, each field:
+0.6653; V1\_SH first version HS (1, 1) normal, mixing of the singlets:
+-0.0000; V1\_SH first version HS (1, 1) normal, mixing Psi with
+singlets: -0.0000; V1\_SH HS (1, 1) pairs Psi Psi: -0.0000; V1\_SH HS
+(1, 1) pairs of singlets: -0.0000; V1\_SH HS (1, 1) normal, each field:
+0.6653; V1\_SH HS (1, 1) normal, mixing of the singlets: -0.0000; V1\_SH
+HS (1, 1) normal, mixing Psi with singlets: -0.0000; V0\_SH HS (0, 1)
+pairs Psi Psi: 0.0940; V0\_SH HS (0, 1) pairs of singlets: -0.0000;
+V0\_SH HS (0, 1) normal, each field: 0.0530; V0\_SH HS (0, 1) normal,
+mixing of the singlets: -0.0000; V0\_SH HS (0, 1) normal, mixing Psi
+with singlets: -0.0000; V1\_SH first version HS (0, 1) pairs Psi Psi:
+0.0940; V1\_SH first version HS (0, 1) pairs of singlets: -0.0000;
+V1\_SH first version HS (0, 1) normal, each field: 0.0530; V1\_SH first
+version HS (0, 1) normal, mixing of the singlets: -0.0000; V1\_SH first
+version HS (0, 1) normal, mixing Psi with singlets: -0.0000; V1\_SH HS
+(0, 1) pairs Psi Psi: 0.0940; V1\_SH HS (0, 1) pairs of singlets:
+-0.0000; V1\_SH HS (0, 1) normal, each field: 0.0530; V1\_SH HS (0, 1)
+normal, mixing of the singlets: -0.0000; V1\_SH HS (0, 1) normal, mixing
+Psi with singlets: -0.0000; V0\_SH HS (0, 0) pairs Psi Psi: 0.0564;
+V0\_SH HS (0, 0) pairs of singlets: -0.0000; V0\_SH HS (0, 0) normal,
+each field: -0.0000; V0\_SH HS (0, 0) normal, mixing of the singlets:
+-0.0000; V0\_SH HS (0, 0) normal, mixing Psi with singlets: -0.0000;
+V1\_SH first version HS (0, 0) pairs Psi Psi: 0.0564; V1\_SH first
+version HS (0, 0) pairs of singlets: -0.0000; V1\_SH first version HS
+(0, 0) normal, each field: -0.0000; V1\_SH first version HS (0, 0)
+normal, mixing of the singlets: -0.0000; V1\_SH first version HS (0, 0)
+normal, mixing Psi with singlets: -0.0000; V1\_SH HS (0, 0) pairs Psi
+Psi: 0.0564; V1\_SH HS (0, 0) pairs of singlets: -0.0000; V1\_SH HS (0,
+0) normal, each field: -0.0000; V1\_SH HS (0, 0) normal, mixing of the
+singlets: -0.0000; V1\_SH HS (0, 0) normal, mixing Psi with singlets:
+-0.0000; V0\_SH KS pairs Psi Psi: 0.0564; V0\_SH KS pairs of singlets:
+-0.0000; V0\_SH KS normal, each field: 0.6154; V0\_SH KS normal, mixing
+of the singlets: -0.0000; V0\_SH KS normal, mixing Psi with singlets:
+-0.0000; V1\_SH first version KS pairs Psi Psi: 0.0564; V1\_SH first
+version KS pairs of singlets: -0.0000; V1\_SH first version KS normal,
+each field: 0.7893; V1\_SH first version KS normal, mixing of the
+singlets: -0.0000; V1\_SH first version KS normal, mixing Psi with
+singlets: -0.0000; V1\_SH KS pairs Psi Psi: 0.0564; V1\_SH KS pairs of
+singlets: -0.0000; V1\_SH KS normal, each field: 0.9153; V1\_SH KS
+normal, mixing of the singlets: -0.0000; V1\_SH KS normal, mixing Psi
+with singlets: -0.0000; V0\_SH CJT pairs Psi Psi: 0.0564; V0\_SH CJT
+pairs of singlets: -0.0000; V0\_SH CJT normal, each field: 0.6154;
+V0\_SH CJT normal, mixing of the singlets: -0.0000; V0\_SH CJT normal,
+mixing Psi with singlets: -0.0000; V1\_SH first version CJT pairs Psi
+Psi: 0.0564; V1\_SH first version CJT pairs of singlets: -0.0000; V1\_SH
+first version CJT normal, each field: 0.7893; V1\_SH first version CJT
+normal, mixing of the singlets: -0.0000; V1\_SH first version CJT
+normal, mixing Psi with singlets: 0.2620; V1\_SH CJT pairs Psi Psi:
+0.0564; V1\_SH CJT pairs of singlets: -0.0000; V1\_SH CJT normal, each
+field: 0.9153; V1\_SH CJT normal, mixing of the singlets: -0.0000;
+V1\_SH CJT normal, mixing Psi with singlets: 0.2620) \\
 SF-4c & PASS & -- & -- & the eigenvalues of the static response are
 those of a symmetric matrix: the response of the densities to the
 self-energies and the kernel of the contact terms are symmetric in an
 orthonormal basis (largest asymmetry below 1e-7), and the response of
 the densities is negative semidefinite (smallest eigenvalue of its
-negative above -1e-9) (largest asymmetry 8.8e-13; smallest eigenvalue
--1.8e-13) \\
+negative above -1e-9) (largest asymmetry 1.3e-12; smallest eigenvalue
+-3.0e-13) \\
 SF-5 & PASS & -- & -- & V\^{}(0)\_SH: every start of every method ends
-in the normal vacuum (HS (1, 1): 1 state(s); HS (0, 1): 1 state(s); HS
-(0, 0): 1 state(s); KS: 1 state(s); CJT: 1 state(s)) \\
-SF-6 & PASS & -- & -- & V\^{}(1)\_SH: the ground state of every method
-is the Higgs superfluid (no pair of two particles of one field, no
-mixing of the two fields), the stationary state of lowest energy among
-those reached from the eleven starts (HS (1, 1): Higgs superfluid (E =
--5.498534e-4); HS (0, 1): Higgs superfluid (E = -5.283886e-4); HS (0,
-0): Higgs superfluid (E = -5.283886e-4); KS: Higgs superfluid (E =
--6.285704e-4); CJT: Higgs superfluid (E = -6.285704e-4)) \\
-SF-7 & PASS & 2.432e-12 & 1.0e-9 & the starts along Phi\^{}d, Phi\^{}u
-and the generic direction (0.6, 0.8 i) reach states of equal energy and
-equal length of the doublet (relative deviation; the symmetry SU(2)\_L x
-U(1)\_Y) \\
-SF-8 & PASS & -- & -- & the generators of SU(2)\_L x U(1)\_Y and of the
-relative number that leave each Higgs ground state unchanged form a
-space of dimension 2: the relative number and one electroweak generator
-whose spectrum is that of Q\^{}SM (3/4, -1/4, 1/4, each fourfold); this
-for the three Higgs starts of every method (HS (1, 1): Some((2, 2)); HS
-(0, 1): Some((2, 2)); HS (0, 0): Some((2, 2)); KS: Some((2, 2)); CJT:
-Some((2, 2))) \\
-SF-9 & PASS & -- & -- & the static response of each Higgs ground state:
-in the sector of relative number 0 (doublet-singlet pairs and normal
-self-energies of each field) exactly three eigenvalues equal 1 (the
-Goldstone modes of the three broken generators) and all others are below
-1; in the sector of relative number +-2 (pairs of one field, mixing) all
-are below 1: the ground state is stable and no charged condensate grows
-(HS (1, 1): 3 eigenvalues 1 (to 2.7e-11), largest other 0.74209, largest
-of the charged sector -0.00000; HS (0, 1): 3 eigenvalues 1 (to 2.4e-11),
-largest other 0.73770, largest of the charged sector 0.09396; HS (0, 0):
-3 eigenvalues 1 (to 2.4e-11), largest other 0.73770, largest of the
-charged sector 0.05637; KS: 3 eigenvalues 1 (to 2.7e-11), largest other
-0.81823, largest of the charged sector 0.05899; CJT: 3 eigenvalues 1 (to
-2.6e-11), largest other 0.81823, largest of the charged sector
-0.24379) \\
-SF-10 & PASS & 2.121e-13 & 1.0e-6 & the Higgs ground states of HS (1, 1)
-and CJT on 24 and 48 radial nodes: relative change of the energy and of
-/D\_d/ \\
-SF-11a & PASS & 5.829e-16 & 1.0e-9 & the lowest quasi-particle of every
-Higgs ground state is the unpaired up component of Psi\_LL (electric
-charge 3/4): the gap equals its Dirac mass /M\_u/ \\
-SF-11b & PASS & 7.278e-9 & 1.0e-6 & the minimum of the quasi-particle
-energy lies at zero momentum (the momentum found by the search, whose
-resolution near a quadratic minimum is about 1e-8) \\
+in the normal vacuum (19 starts) (HS (1, 1): 1 state(s); HS (0, 1): 1
+state(s); HS (0, 0): 1 state(s); KS: 1 state(s); CJT: 1 state(s)) \\
+SF-6a & PASS & -- & -- & V\^{}(1)\_SH, second version: the ground state
+of every method is the custodial Higgs superfluid (both pair fields, two
+equal singular values of the bidoublet, no charged pair, no mixing), the
+stationary state of lowest energy among those reached from the starts
+(HS (1, 1): Higgs superfluid, custodial (E = -1.129524e-3); HS (0, 1):
+Higgs superfluid, custodial (E = -1.056777e-3); HS (0, 0): Higgs
+superfluid, custodial (E = -1.056777e-3); KS: Higgs superfluid,
+custodial (E = -1.641925e-3); CJT: Higgs superfluid, custodial (E =
+-1.641925e-3)) \\
+SF-6b & PASS & -- & -- & V\^{}(1)\_SH, first version: the ground state
+of every method is the superfluid of one doublet (Phi\_SH alone), as in
+stage 3 of the first version (HS (1, 1): Higgs superfluid, one doublet
+(E = -5.498534e-4); HS (0, 1): Higgs superfluid, one doublet (E =
+-5.283886e-4); HS (0, 0): Higgs superfluid, one doublet (E =
+-5.283886e-4); KS: Higgs superfluid, one doublet (E = -6.285704e-4);
+CJT: Higgs superfluid, one doublet (E = -6.285704e-4)) \\
+SF-7a & PASS & 3.383e-12 & 1.0e-9 & second version: the starts along i
+tau\^{}2, along a rotated unitary bidoublet and along a generic
+bidoublet reach states of equal energy and equal singular values
+(relative deviation; the symmetry of H4) \\
+SF-7b & PASS & -- & -- & second version: the condensate of one doublet
+(Phi\_SH alone), found by the iteration restricted to the self-energies
+that keep the number of chi'\_SH, is a stationary state of higher energy
+than the custodial one (without the restriction the starts along one
+doublet end as follows: HS (1, 1): Higgs down custodial, Higgs up
+custodial, Higgs generic custodial, second doublet down custodial; HS
+(0, 1): Higgs down custodial, Higgs up custodial, Higgs generic
+custodial, second doublet down custodial; HS (0, 0): Higgs down one
+doublet, Higgs up one doublet, Higgs generic custodial, second doublet
+down custodial; KS: Higgs down custodial, Higgs up custodial, Higgs
+generic custodial, second doublet down custodial; CJT: Higgs down
+custodial, Higgs up custodial, Higgs generic custodial, second doublet
+down custodial) (HS (1, 1): one doublet -5.498534e-4, custodial
+-1.129524e-3; HS (0, 1): one doublet -5.283886e-4, custodial
+-1.056777e-3; HS (0, 0): one doublet -5.283886e-4, custodial
+-1.056777e-3; KS: one doublet -8.773090e-4, custodial -1.641925e-3; CJT:
+one doublet -8.773090e-4, custodial -1.641925e-3) \\
+SF-8 & PASS & -- & -- & the generators of the global group of H4
+(T\^{}a, T\^{}a\_R, R, F\_tot) that leave the custodial ground state of
+each method unchanged form a space of dimension 4 that contains Q\^{}SM
+= T\^{}3 + T\^{}3\_R + R/4; those of SU(2)\_L x U(1)\_Y a space of
+dimension 1 (the photon stays massless); the ground state of the first
+version keeps a space of dimension 3 that contains Q\^{}SM (V1\_SH first
+version HS (1, 1): Some((3, 1)); V1\_SH HS (1, 1): Some((4, 1)); V1\_SH
+first version HS (0, 1): Some((3, 1)); V1\_SH HS (0, 1): Some((4, 1));
+V1\_SH first version HS (0, 0): Some((3, 1)); V1\_SH HS (0, 0): Some((4,
+1)); V1\_SH first version KS: Some((3, 1)); V1\_SH KS: Some((4, 1));
+V1\_SH first version CJT: Some((3, 1)); V1\_SH CJT: Some((4, 1))) \\
+SF-9a & PASS & -- & -- & the static response of each ground state: in
+the sector of relative number 0 exactly four eigenvalues equal 1 in the
+second version (the Goldstone modes of the three broken generators of
+SU(2)\_L x U(1)\_Y and of F\_tot) and three in the first; all others
+below 1; in the sector of relative number +-2 all below 1: the ground
+states are stable and no charged condensate grows (V1\_SH first version
+HS (1, 1): 3 eigenvalues 1 (to 2.5e-11), largest other 0.74209, largest
+of the sector R = +-2 -0.00000; V1\_SH HS (1, 1): 4 eigenvalues 1 (to
+2.7e-11), largest other 0.73609, largest of the sector R = +-2 -0.00000;
+V1\_SH first version HS (0, 1): 3 eigenvalues 1 (to 2.4e-11), largest
+other 0.73770, largest of the sector R = +-2 0.09396; V1\_SH HS (0, 1):
+4 eigenvalues 1 (to 2.5e-11), largest other 0.73770, largest of the
+sector R = +-2 0.06896; V1\_SH first version HS (0, 0): 3 eigenvalues 1
+(to 2.3e-11), largest other 0.73770, largest of the sector R = +-2
+0.05637; V1\_SH HS (0, 0): 4 eigenvalues 1 (to 2.4e-11), largest other
+0.73770, largest of the sector R = +-2 0.04137; V1\_SH first version KS:
+3 eigenvalues 1 (to 2.6e-11), largest other 0.81823, largest of the
+sector R = +-2 0.05899; V1\_SH KS: 4 eigenvalues 1 (to 3.0e-11), largest
+other 0.85591, largest of the sector R = +-2 0.04026; V1\_SH first
+version CJT: 3 eigenvalues 1 (to 2.4e-11), largest other 0.81823,
+largest of the sector R = +-2 0.24379; V1\_SH CJT: 4 eigenvalues 1 (to
+3.1e-11), largest other 0.85591, largest of the sector R = +-2
+0.25157) \\
+SF-9b & PASS & -- & -- & second version: the condensate of one doublet
+is unstable (the largest eigenvalue of its static response in the pairs
+of Psi\_LL with the singlets is above 1, the direction of the second
+doublet) (HS (1, 1): Some(1.192884); HS (0, 1): Some(1.183843); HS (0,
+0): Some(1.183843); KS: Some(1.208961); CJT: Some(1.208961)) \\
+SF-10 & PASS & 5.836e-14 & 1.0e-6 & the custodial ground states of HS
+(1, 1) and CJT on 24 and 48 radial nodes: relative change of the energy
+and of the singular value of the bidoublet \\
+SF-11a & PASS & 8.327e-16 & 1.0e-9 & first version: the lowest
+quasi-particle of every Higgs ground state is the unpaired up component
+of Psi\_LL (electric charge 3/4): the gap equals its Dirac mass
+/M\_u/ \\
+SF-11b & PASS & 3.652e-9 & 1.0e-6 & first version: the minimum of the
+quasi-particle energy lies at zero momentum \\
+SF-11c & PASS & -- & -- & second version: every constituent is paired;
+the gap of every custodial ground state is larger than that of the first
+version and larger than the smallest Dirac mass of the four species (HS
+(1, 1): gap 0.426792 at /q/ = 0.000 (first version 0.170392; smallest
+/M/ 0.150111); HS (0, 1): gap 0.452967 at /q/ = 0.000 (first version
+0.200000; smallest /M/ 0.200000); HS (0, 0): gap 0.452967 at /q/ = 0.000
+(first version 0.200000; smallest /M/ 0.200000); KS: gap 0.384201 at /q/
+= 0.000 (first version 0.111459; smallest /M/ 0.060108); CJT: gap
+0.384201 at /q/ = 0.000 (first version 0.111459; smallest /M/
+0.060108)) \\
+SF-12a & PASS & 4.968e-14 & 1.0e-10 & the first version computed here
+(sixteen components, the pairing of chi'\_SH switched off) equals the
+first version computed on the twelve components of Psi\_LL and chi\_SH
+alone: relative difference of the energies and largest difference of the
+local matrices, five methods \\
+SF-12b & PASS & 8.560e-18 & 1.0e-12 & in the first version the rows and
+columns of chi'\_SH of the local matrices and self-energies stay
+empty \\
+SF-13 & PASS & -- & -- & V\^{}(1)\_SH, both versions: every stationary
+state other than the ground state is unstable towards the Higgs
+superfluid: the largest eigenvalue of its static response in the pairs
+of Psi\_LL with the singlets is above 1 (in parentheses the largest
+eigenvalue in the normal self-energies of the fields) (V1\_SH first
+version HS (1, 1) normal vacuum: 1.183843 (normal self-energies
+0.665281); V1\_SH HS (1, 1) normal vacuum: 1.183843 (normal
+self-energies 0.665281); V1\_SH first version HS (0, 1) normal vacuum:
+1.183843 (normal self-energies 0.052989); V1\_SH HS (0, 1) normal
+vacuum: 1.183843 (normal self-energies 0.052989); V1\_SH first version
+HS (0, 0) normal vacuum: 1.183843 (normal self-energies -0.000000);
+V1\_SH HS (0, 0) Higgs superfluid, one doublet: 1.183843 (normal
+self-energies -0.000000); V1\_SH HS (0, 0) normal vacuum: 1.183843
+(normal self-energies -0.000000); V1\_SH first version KS normal vacuum:
+1.183843 (normal self-energies 0.789268); V1\_SH KS massive (scalar
+condensate): 1.126024 (normal self-energies 0.809619); V1\_SH KS normal
+vacuum: 1.183843 (normal self-energies 0.915274); V1\_SH first version
+CJT normal vacuum: 1.183843 (normal self-energies 0.789268); V1\_SH CJT
+massive (scalar condensate): 1.126024 (normal self-energies 0.809619);
+V1\_SH CJT normal vacuum: 1.183843 (normal self-energies 0.915274)) \\
 \end{longtable}
 
 The Python program \texttt{python/sh\_superfluid.py}:
@@ -1955,39 +2479,47 @@ statement
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-YSF-2 & PASS & 4.284e-11 & 1.0e-09 & normal vacuum of V\^{}(1)\_SH: the
-response in the doublet-singlet pair channel equals G\_SH /
-G\^{}crit\_SH (G\^{}crit\_SH = 4 pi\^{}2 / I1(m) = 85.1464390222) and
-the value of the Rust program, five methods \\*
-YSF-3 & PASS & 8.011e-12 & 1.0e-09 & normal vacuum of V\^{}(1)\_SH: the
-2 x 2 response of the masses of Psi\_LL and chi\_SH equals the formula
-of the effective couplings and the value of the Rust program \\*
-YSF-5 & PASS & -- & -- & V\^{}(0)\_SH: the normal start and the start
-along Phi\^{}d end in the normal vacuum, five methods (pair amplitudes
+YSF-2 & PASS & 4.270e-11 & 1.0e-09 & normal vacuum of V\^{}(1)\_SH,
+second version: the response in each of the four doublet-singlet pairs
+equals G\_SH / G\^{}crit\_SH (G\^{}crit\_SH = 4 pi\^{}2 / I1(m) =
+85.1464390222) and the value of the Rust program, five methods \\*
+YSF-3 & PASS & 8.011e-12 & 1.0e-09 & normal vacuum of V\^{}(1)\_SH,
+second version: the 3 x 3 response of the masses of Psi\_LL, chi\_SH and
+chi'\_SH equals the formula of the effective couplings and the value of
+the Rust program \\*
+YSF-5 & PASS & -- & -- & V\^{}(0)\_SH: the normal start and the
+custodial start end in the normal vacuum, five methods (pair amplitudes
 below 1e-6, masses unchanged) \\*
-YSF-6 & PASS & 3.042e-10 & 1.0e-09 & V\^{}(1)\_SH, Higgs ground states
-from the start along Phi\^{}d: the energy and /D\_d/ (relative), the
-masses of the three species and the isospin difference of the scalar
-densities agree with the Rust program, five methods \\*
-YSF-7 & PASS & 1.104e-14 & 1.0e-09 & the start along Phi\^{}u reaches
-the same energy and length of the doublet (relative; KS and CJT) \\*
-YSF-11 & PASS & 3.053e-16 & 1.0e-09 & the gap of every Higgs ground
-state is /M\_u/ at zero momentum (scan of 201 momenta) \\*
-YSF-12 & PASS & 1.562e-12 & 1.0e-09 & HS (0, 1) and HS (0, 0), Higgs
-ground state (no normal self-energy, only the pairing term acts): N = 0
-and P = D\_d K\_d\^{}dag; the gap equation G\_SH I1(M\_eff) / (4
-pi\^{}2) = 1 with M\_eff = (m\^{}2 + /D\_d/\^{}2 / 4)\^{}(1/2) holds for
-/D\_d/ of this computation and of the Rust program; the positive
-eigenvalues of the BdG matrices at 11 momenta are eps(q) fourfold (the
-unpaired up components) and (eps(q)\^{}2 + /D\_d/\^{}2 / 4)\^{}(1/2)
-eightfold \\*
-YSF-13 & PASS & 7.111e-12 & 1.0e-09 & the current channel of the normal
+YSF-6 & PASS & 4.955e-10 & 1.0e-09 & V\^{}(1)\_SH, ground states of both
+versions (second: from the start along i tau\^{}2; first: from the start
+along Phi\^{}d): the energy and the singular values of the bidoublet
+(relative), the masses of the four species and the differences of the
+scalar densities agree with the Rust program, five methods \\*
+YSF-7 & PASS & 8.452e-15 & 1.0e-09 & second version: the start along a
+rotated unitary bidoublet reaches the same energy and singular values
+(relative; KS and CJT) \\*
+YSF-11 & PASS & 1.221e-15 & 1.0e-09 & the gaps (scan of 201 momenta): in
+the first version /M\_u/ at zero momentum; in the second version the
+value of the Rust program where its minimum lies at zero momentum \\*
+YSF-12 & PASS & 1.562e-12 & 1.0e-09 & HS (0, 1) and HS (0, 0), ground
+states (no normal self-energy, only the pairing terms act): N = 0; P =
+D\_d K\_d\^{}dag in the first version and D\_d K\_d\^{}dag + D'\_u
+K'\_u\^{}dag with /D'\_u/ = /D\_d/ in the second; the gap equation G\_SH
+I1(M\_eff) / (4 pi\^{}2) = 1 with M\_eff = (m\^{}2 + /D\_d/\^{}2 /
+4)\^{}(1/2) holds for /D\_d/ of this computation and of the Rust
+program; the energy of the second version is twice that of the first;
+the positive eigenvalues of the BdG matrices at 11 momenta are
+(eps(q)\^{}2 + /D\_d/\^{}2 / 4)\^{}(1/2) sixteenfold in the second
+version, and eps(q) eightfold (the unpaired up components and the free
+chi'\_SH) and (eps(q)\^{}2 + /D\_d/\^{}2 / 4)\^{}(1/2) eightfold in the
+first \\*
+YSF-13 & PASS & 7.115e-12 & 1.0e-09 & the current channel of the normal
 vacuum: a uniform self-energy a alpha\^{}3 (x) 1\_2 of Psi\_LL changes
 the current tr((alpha\^{}3 (x) 1\_2) rho) by -chi\_J a, chi\_J = 2
 Lambda\^{}3 / (3 pi\^{}2 (Lambda\^{}2 + m\^{}2)\^{}(1/2)) = 0.0662357298
 (a surface term of the sharp cutoff); the largest eigenvalue of the
 static response of the normal self-energies of HS (0, 1) (Rust program,
-both potentials) is G\^{}V chi\_J = 0.0529885838 \\
+the three potentials) is G\^{}V chi\_J = 0.0529885838 \\
 \end{longtable}
 
 The Wolfram script \texttt{wolfram/source/sh\_superfluid.wls}, in exact
@@ -2019,29 +2551,36 @@ statement
 WSF-2a & PASS & -- & -- & the triplet matrix K\^{}3 couples the up and
 down components of Psi\_LL by -C gamma\^{}ch in both blocks (Psi\^{}T
 K\^{}3 Psi = -2 Psi\_u\^{}T C gamma\^{}ch Psi\_d); K\_d couples the down
-components and chi\_SH by C gamma\^{}ch / 2 in both blocks (Psi\^{}T
-K\_d Psi = Psi\_d\^{}T C gamma\^{}ch chi\_SH): the same channel with
-half the coefficient, so the pairing term -(G/4) /Psi\^{}T K Psi/\^{}2
-has the critical coupling G\^{}crit\_SH = 4 G\^{}crit\_LL (identities of
-exact matrices) \\*
+components and chi\_SH, K'\_u the up components and chi'\_SH, by C
+gamma\^{}ch / 2 in both blocks: the same channel with half the
+coefficient, so the pairing term -(G/4) /Psi\^{}T K Psi/\^{}2 has the
+critical coupling G\^{}crit\_SH = 4 G\^{}crit\_LL (identities of exact
+matrices) \\*
 WSF-2b & PASS & -- & -- & I1(m) = int\_0\^{}1 q\^{}2 / sqrt(q\^{}2 +
 m\^{}2) dq = (sqrt(1 + m\^{}2) - m\^{}2 arsinh(1/m)) / 2 (the exact
 integral equals it at ten masses, to 40 digits); G\^{}crit\_SH = 4
 pi\^{}2 / I1(1/5) = 85.146439022198692144 and G\_SH / G\^{}crit\_SH =
-1.183842814303957 (G\_SH = 504/5), against the Rust value (deviation
-3.7e-11) \\*
-WSF-3 & PASS & -- & -- & the exchange contraction of the pairing term: a
-scalar density n of Psi\_LL gives chi\_SH the self-energy -(G\_SH/16) n
-beta and a scalar density of chi\_SH gives Psi\_LL -(G\_SH/16) n beta
-(x) 1\_2 (exact); the susceptibility chi\_S = (2/pi\^{}2) int\_0\^{}1
-q\^{}4/(q\^{}2 + m\^{}2)\^{}(3/2) dq = 0.08316014730342272 (Psi\_LL;
-half for chi\_SH); the largest eigenvalue of the 2 x 2 scalar response
-of KS and CJT for V\^{}(1)\_SH = 0.789268068370, against the Rust value
-(deviation 9.1e-12) \\*
+1.183842814303957 (G\_SH = 504/5), against the Rust values of both
+versions (deviation 3.5e-11) \\*
+WSF-3 & PASS & -- & -- & the exchange contraction of the pairing terms:
+a scalar density n of Psi\_LL gives each paired singlet the self-energy
+-(G\_SH/16) n beta and a scalar density of a paired singlet gives
+Psi\_LL -(G\_SH/16) n beta (x) 1\_2 (exact); the susceptibility chi\_S =
+(2/pi\^{}2) int\_0\^{}1 q\^{}4/(q\^{}2 + m\^{}2)\^{}(3/2) dq =
+0.08316014730342272 (Psi\_LL; half for a singlet); the largest
+eigenvalue of the 3 x 3 scalar response of CJT for V\^{}(1)\_SH =
+0.915274035123 (second version) and 0.789268068370 (first), against the
+Rust values (deviation 1.1e-11) \\*
 WSF-4 & PASS & -- & -- & the scalar triplet pair coupling of KS and CJT,
 -(1/4) G\^{}S - G\^{}V = 6/5, and its eigenvalue in the normal vacuum,
 (6/5) I1(1/5) / pi\^{}2 = 0.05637346734780750, against the Rust value
-(deviation 8.1e-12) \\
+(deviation 8.1e-12) \\*
+WSF-5 & PASS & -- & -- & HS (0, 1) and HS (0, 0), where only the pairing
+terms act: the gap equation G\_SH I1(M\_eff) / (4 pi\^{}2) = 1 gives
+M\_eff = 0.4529674056079986 and /D/ = 2 (M\_eff\^{}2 - m\^{}2)\^{}(1/2)
+= 0.8128455463204339 (30 digits); the singular values of the bidoublet
+of the Rust program are /D/ and /D/ in the second version and /D/ and 0
+in the first (deviation 4.8e-12) \\
 \end{longtable}
 
 \hypertarget{the-symbols-of-this-document}{%
@@ -2061,22 +2600,29 @@ meaning
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\(\Psi_{\rm LL}\); \(\chi_{\rm SH}\) & the isodoublet of Dirac fields
-(eight components, component \(2d+s\)) and the singlet Dirac field (four
-components) \\
-\(\Psi_{\rm SH}\) & the two fields as one field of twelve components,
-\((\Psi_{\rm LL},\chi_{\rm SH})\) \\
-\(m_{\rm LL}\), \(m^\chi_{\rm SH}\) & the masses of \(\Psi_{\rm LL}\)
-and \(\chi_{\rm SH}\) (here both \(0.2\,\Lambda_{\rm LL}\)) \\
+\(\Psi_{\rm LL}\); \(\chi_{\rm SH}\), \(\chi'_{\rm SH}\) & the
+isodoublet of Dirac fields (eight components, component \(2d+s\)) and
+the two singlet Dirac fields (four components each) \\
+\(\Psi_{\rm SH}\) & the three fields as one field of sixteen components,
+\((\Psi_{\rm LL},\chi_{\rm SH},\chi'_{\rm SH})\) \\
+\((\chi_{\rm SH},\chi'_{\rm SH})\) & the two singlets taken together as
+one field of eight components, a doublet of \(SU(2)_{\rm R}\) \\
+\(m_{\rm LL}\), \(m^\chi_{\rm SH}\), \(m^{\chi'}_{\rm SH}\) & the masses
+of the three fields (here all \(0.2\,\Lambda_{\rm LL}\)) \\
 \(\Lambda_{\rm LL}\) & the momentum cutoff, the unit of this document \\
 \(SL(2,\mathbb C)\), \(SU(2)_L\), \(U(1)_Y\) & the Lorentz group of the
 spinors and the electroweak gauge group \\
 \(T^{a,{\rm SM}}\), \(\tau^a\); \(Y^{\rm SM}\), \(Q^{\rm SM}\) & the
-generators of \(SU(2)_L\) and the Pauli matrices of the isospin; the
-hypercharge and the electric charge \\
-\(F_{\rm LL}\), \(R_{\rm SH}\) & the fermion number and the relative
-number (particles of \(\Psi_{\rm LL}\) minus particles of
-\(\chi_{\rm SH}\)) \\
+generators of \(SU(2)_L\) and the Pauli matrices (of the isospin, or of
+the space of the two singlets); the hypercharge and the electric
+charge \\
+\(F^{\rm tot}_{\rm SH}\), \(R_{\rm SH}\) & the particle number and the
+relative number (particles of \(\Psi_{\rm LL}\) minus particles of the
+singlets) \\
+\(SU(2)_{\rm R}\), \(T^{a,{\rm R}}_{\rm SH}\); \(SU(2)_{\rm V}\) & the
+custodial group, which acts on \((\chi_{\rm SH},\chi'_{\rm SH})\) as on
+a doublet, and its generators; the diagonal subgroup of
+\(SU(2)_L\times SU(2)_{\rm R}\) \\
 \(\gamma^p_{\rm LL}\), \(\beta_{\rm LL}\), \(\alpha^j_{\rm LL}\),
 \(\gamma^{\rm ch}_{\rm LL}\), \(C_{\rm LL}\) & the Dirac matrices of the
 chiral basis (1.1), the chirality matrix and the charge-conjugation
@@ -2086,15 +2632,20 @@ acting on a Weyl spinor, and \(i\sigma^{\rm LL}_2\) \\
 \(\vec q_{\rm LL}\), \(q_{\rm LL}\), \(q^j_{\rm LL}\);
 \(\varepsilon_{\rm LL}\) & a momentum, its length and its components;
 the free energy \((q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}\) \\
-\(\mathbf e^{\rm u}_{\rm SH}\), \(\mathbf e^{\rm d}_{\rm SH}\) & the
-isospin columns \((1,0)^T\) and \((0,1)^T\) \\
-\(\Pi^{\rm u}_{\rm SH}\), \(\Pi^{\rm d}_{\rm SH}\);
-\(\mathsf K^{\rm u}_{\rm SH}\), \(\mathsf K^{\rm d}_{\rm SH}\)
-(\(\mathsf K^s_{\rm SH}\)) & the pair operators (1.3) of the
-doublet-singlet channel and their antisymmetric \(12\times12\)
+\(\mathbf e^{\rm u}_{\rm SH}\), \(\mathbf e^{\rm d}_{\rm SH}\)
+(\(\mathbf e^s_{\rm SH}\)) & the isospin columns \((1,0)^T\) and
+\((0,1)^T\) \\
+\(\Pi^s_{\rm SH}\), \(\Pi'^s_{\rm SH}\); \(\mathsf K^s_{\rm SH}\),
+\(\mathsf K'^s_{\rm SH}\) & the pair operators (1.3) of
+\(\Psi_{\rm LL}\) with \(\chi_{\rm SH}\) and with \(\chi'_{\rm SH}\)
+(\(s={\rm u},{\rm d}\)), and their antisymmetric \(16\times16\)
 matrices \\
-\(\Phi_{\rm SH}\); \(\Phi^{\rm u}_{\rm SH}\), \(\Phi^{\rm d}_{\rm SH}\)
-& the pair field and its components \\
+\(\Phi_{\rm SH}\), \(\Phi'_{\rm SH}\); \(\Phi^s_{\rm SH}\),
+\(\Phi'^s_{\rm SH}\); \(\mathcal M_{\rm SH}\) & the two pair fields,
+their components, and their \(2\times2\) matrix (a bidoublet) \\
+\(\mathsf U\), \(\mathsf U'\) & elements of \(SU(2)_L\) and of
+\(SU(2)_{\rm R}\) (Section 1.3); an element of \(SU(2)_L\) (Section
+3.3) \\
 \(\mathsf K^\iota_{\rm LL}\) (\(\mathsf K^3_{\rm LL}\)) & the pair
 matrices of the scalar isotriplet channels of two particles of
 \(\Psi_{\rm LL}\) \\
@@ -2103,12 +2654,12 @@ pairing term of the earlier hypotheses and its critical value
 \(\pi^2/I^{(1)}_{\rm SF}\) \\
 \(\mathsf h_{\rm LL}(\vec q_{\rm LL})\),
 \(\mathsf h_{\rm SH}(\vec q_{\rm LL})\) & the free Hamiltonians of
-\(\Psi_{\rm LL}\) and of the twelve components on a plane wave \\
+\(\Psi_{\rm LL}\) and of the sixteen components on a plane wave \\
 \(\bar\Psi_{\rm LL}\) & the Dirac adjoint
 \(\Psi^\dagger_{\rm LL}(\gamma^0_{\rm LL}\otimes\mathsf 1_2)\) \\
 \(G^{\rm S}_{\rm SF}\), \(G^{\rm V}_{\rm SF}\); \(G_{\rm SH}\) & the
 couplings of the scalar and the vector contact terms; the coupling of
-the pairing term \\
+the pairing terms \\
 \(V^{(0)}_{\rm SH}\), \(V^{(1)}_{\rm SH}\) & the potentials of Table
 2.1 \\
 \(g'\), \(e\); \(B_\mu\), \(W^a_\mu\) & the coupling of \(U(1)_Y\) and
@@ -2126,7 +2677,7 @@ vacuum \\
 the local matrices (3.2); the local normal matrix of the exchange
 contractions \\
 \(\mathcal P^{\rm KS}_{\rm SH}\), \(\mathsf b_k\) & the projection onto
-the span of the ten Kohn-Sham densities, and those densities \\
+the span of the sixteen Kohn-Sham densities, and those densities \\
 \(\mathcal E^X_{\rm SH}\), \(\mathcal E^{X,{\rm int}}_{\rm SH}\) & the
 energy per volume of a uniform state in method \(X\), measured from the
 normal vacuum, and its interaction part \\
@@ -2137,17 +2688,21 @@ contact term in a method \\
 \(s^{\rm HS,S}_{\rm SF}\), \(s^{\rm HS,V}_{\rm SF}\) & the HS
 parameters \\
 \(\beta^{\rm u}_{\rm SH}\), \(\beta^{\rm d}_{\rm SH}\),
-\(\beta^\chi_{\rm SH}\); \(\beta_{\rm SH}\) & the matrix
-\(\beta_{\rm LL}\) on the components of one species and zero elsewhere;
-their sum \\
+\(\beta^\chi_{\rm SH}\), \(\beta^{\chi'}_{\rm SH}\); \(\beta_{\rm SH}\)
+& the matrix \(\beta_{\rm LL}\) on the components of one species and
+zero elsewhere; their sum \\
 \(n^{\rm S,u}_{\rm SH}\), \(n^{\rm S,d}_{\rm SH}\),
-\(n^{{\rm S},\chi}_{\rm SH}\) & the scalar densities of the three
-species, measured from the normal vacuum \\
-\(M^{\rm u}_{\rm SH}\), \(M^{\rm d}_{\rm SH}\), \(M^\chi_{\rm SH}\) &
-the Dirac masses of the three species in a state \\
-\(D^{\rm u}_{\rm SH}\), \(D^{\rm d}_{\rm SH}\) & the coefficients of
-\((\mathsf K^{\rm u}_{\rm SH})^\dagger\) and
-\((\mathsf K^{\rm d}_{\rm SH})^\dagger\) in \(\mathsf P_{\rm SH}\) \\
+\(n^{{\rm S},\chi}_{\rm SH}\), \(n^{{\rm S},\chi'}_{\rm SH}\) & the
+scalar densities of the four species, measured from the normal vacuum \\
+\(M^{\rm u}_{\rm SH}\), \(M^{\rm d}_{\rm SH}\), \(M^\chi_{\rm SH}\),
+\(M^{\chi'}_{\rm SH}\) & the Dirac masses of the four species in a
+state \\
+\(D^s_{\rm SH}\), \(D'^s_{\rm SH}\); \(\mathcal D_{\rm SH}\) & the
+coefficients of \((\mathsf K^s_{\rm SH})^\dagger\) and
+\((\mathsf K'^s_{\rm SH})^\dagger\) in \(\mathsf P_{\rm SH}\); their
+\(2\times2\) matrix \\
+\(\varsigma^{(1)}_{\rm SH}\), \(\varsigma^{(2)}_{\rm SH}\) & the
+singular values of \(\mathcal D_{\rm SH}\), the larger first \\
 \(E^{X,{\rm gap}}_{\rm SH}\) & the gap of a ground state: the lowest
 quasi-particle energy \\
 \(\mathsf L_{\rm SH}\), \(\mathsf F^X_{\rm SH}\),
@@ -2157,8 +2712,8 @@ the static response \(\mathsf F^X_{\rm SH}\mathsf L_{\rm SH}\), and
 \((-\mathsf L_{\rm SH})^{1/2}\) \\
 \(\lambda^{\rm H}_{\rm SH}\), \(\lambda^{\rm S}_{\rm SH}\),
 \(\lambda^{\rm T}_{\rm SH}\) & the eigenvalues of the static response of
-the normal vacuum in the Higgs channel, the scalar channel and the
-triplet pairs \\
+the normal vacuum in the doublet-singlet channels, the scalar channel
+and the triplet pairs \\
 \(G^{\rm crit}_{\rm SH}\) & the critical coupling (4.3) \\
 \(I^{(1)}_{\rm SF}(M)\) & the integral
 \(\int_0^{\Lambda_{\rm LL}}q^2(q^2+M^2)^{-1/2}dq\) \\
@@ -2167,8 +2722,8 @@ vacuum of \(\Psi_{\rm LL}\) \\
 \(g^{X,{\rm S}}_{\rm SF}\), \(g^{X,{\rm P}}_{\rm SF}\) & the effective
 couplings of method \(X\) on \(\Psi_{\rm LL}\) in the scalar-density
 channel and in the pair channel \(\mathsf K^3_{\rm LL}\) \\
-\(\mathsf S^X_{\rm SH}\) & the \(2\times2\) response (4.4) of the masses
-of the two fields \\
+\(\mathsf S^X_{\rm SH}\) & the \(3\times3\) response (4.4) of the masses
+of the three fields \\
 \(\chi^{\rm J}_{\rm SH}\) & the response (4.6) of the current of the
 normal vacuum to a uniform vector potential, with the sharp cutoff \\
 \(M^{\rm eff}_{\rm SH}\) & the energy at zero momentum of the paired
@@ -2179,11 +2734,11 @@ Higgs boson, the weak mixing angle, the ratio
 \(M_W^2/(M_Z^2\cos^2\theta_W)\), the coupling of \(SU(2)_L\) \\
 \(W^\pm_\mu\), \(Z_\mu\) & the massive weak gauge fields \\
 \(\mathcal E\), \(\mathsf N\), \(\mathsf P\), \(\mathsf K\),
-\(\mathsf X\), \(\mathsf Y\), \(\varrho\), \(\kappa\) & in (3.4) and
-(3.5): the contributions of one contact term to
-\(\mathcal E^{X,{\rm int}}_{\rm SH}\), \(\mathsf N_{\rm SH}\) and
-\(\mathsf P_{\rm SH}\), its pair matrix and its matrices, and the local
-matrices \\
+\(\mathsf K''\), \(\mathsf X\), \(\mathsf Y\), \(\varrho\), \(\kappa\) &
+in (3.4), (3.5) and Section 4.2: the contributions of one contact term
+to \(\mathcal E^{X,{\rm int}}_{\rm SH}\), \(\mathsf N_{\rm SH}\) and
+\(\mathsf P_{\rm SH}\), its pair matrix (and another one), its matrices,
+and the local matrices \\
 \(D\), \(\mathcal A\), \(M\), \(\sigma\) & a coefficient of a pair
 self-energy, the amplitude of a uniform vector potential, a Dirac mass
 and an auxiliary field (in the derivations) \\
@@ -2192,16 +2747,15 @@ and an auxiliary field (in the derivations) \\
 measured from the normal vacuum \\
 \(d\), \(s\), \(j\), \(p\), \(a\), \(\iota\), \(k\) & the Dirac index,
 the isospin index, the index of the space coordinates, the index of the
-spacetime coordinates, the index of \(SU(2)_L\), the isospin index of
-the triplets, the number of a Kohn-Sham density \\
+spacetime coordinates, the index of \(SU(2)_L\) or \(SU(2)_{\rm R}\),
+the isospin index of the triplets, the number of a Kohn-Sham density \\
 \(w_{\rm r}\), \(\theta\) & the weight of a radial node; an angle of a
 rotation \\
 \(\delta\) & a small change (first order) \\
-\(\mathsf A\), \(\mathsf A'\), \(\mathsf t\), \(\mathsf U\),
-\(\mathsf G\) & matrices in the statements: arbitrary matrices (in the
-proof of Section 3.4, \(\mathsf A\) is \(\mathsf 1_4\) or
-\(\beta_{\rm LL}\)), an isospin matrix, an element of \(SU(2)_L\), a
-combination of generators \\
+\(\mathsf A\), \(\mathsf A'\), \(\mathsf t\), \(\mathsf G\) & matrices
+in the statements: arbitrary matrices (in the proof of Section 3.4,
+\(\mathsf A\) is \(\mathsf 1_4\) or \(\beta_{\rm LL}\)), an isospin
+matrix, a combination of generators \\
 \(\mathsf 1\), \(\mathsf 1_2\), \(\mathsf 1_4\), \(\mathsf 1_8\);
 \({:}\ {:}\) & unit matrices; the normal ordering with respect to the
 normal vacuum \\
