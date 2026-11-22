@@ -21,7 +21,9 @@
 //! * `exchange` -- the static exchange of gauge bosons in uniform states (momentum-dependent self-energies);
 //! * `linalg` -- linear systems, eigenvalues and eigenvectors of general complex matrices;
 //! * `methods` -- the potentials of the recursion and the methods HS, KS and CJT as weights of the Wick contractions;
-//! * `rpa` -- the linear response of uniform states (the static stability and the collective modes).
+//! * `rpa` -- the linear response of uniform states (the static stability and the collective modes);
+//! * `uniform_n` -- the uniform quasi-free states of a field of several Dirac fields (the isodoublet and the singlet of
+//!   the revised hypotheses), the generalization of `uniform`, with the static response by central differences.
 pub mod algebra;
 pub mod c64;
 pub mod cmat;
@@ -37,3 +39,4 @@ pub mod rng;
 pub mod rpa;
 pub mod sturm;
 pub mod uniform;
+pub mod uniform_n;

@@ -1,0 +1,13 @@
+sh_superfluid.wls: the exact formulas of stage 3 (Revision_SM_Higgs, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier (that of the Rust program with the prefix W), the statement and, in brackets, the
+facts that decide it.  Exact arithmetic, and numbers with 30 digits where a value of the Rust program is compared.
+
+PASS WSF-2a   the triplet matrix K^3 couples the up and down components of Psi_LL by -C gamma^ch in both blocks (Psi^T K^3 Psi = -2 Psi_u^T C gamma^ch Psi_d); K_d couples the down components and chi_SH by C gamma^ch / 2 in both blocks (Psi^T K_d Psi = Psi_d^T C gamma^ch chi_SH): the same channel with half the coefficient, so the pairing term -(G/4) |Psi^T K Psi|^2 has the critical coupling G^crit_SH = 4 G^crit_LL [identities of exact matrices]
+PASS WSF-2b   I1(m) = int_0^1 q^2 / sqrt(q^2 + m^2) dq = (sqrt(1 + m^2) - m^2 arsinh(1/m)) / 2 (the exact integral equals it at ten masses, to 40 digits); G^crit_SH = 4 pi^2 / I1(1/5) = 85.146439022198692144 and G_SH / G^crit_SH = 1.183842814303957 (G_SH = 504/5), against the Rust value [deviation 3.7e-11]
+PASS WSF-3    the exchange contraction of the pairing term: a scalar density n of Psi_LL gives chi_SH the self-energy -(G_SH/16) n beta and a scalar density of chi_SH gives Psi_LL -(G_SH/16) n beta (x) 1_2 (exact); the susceptibility chi_S = (2/pi^2) int_0^1 q^4/(q^2 + m^2)^(3/2) dq = 0.08316014730342272 (Psi_LL; half for chi_SH); the largest eigenvalue of the 2 x 2 scalar response of KS and CJT for V^(1)_SH = 0.789268068370, against the Rust value [deviation 9.1e-12]
+PASS WSF-4    the scalar triplet pair coupling of KS and CJT, -(1/4) G^S - G^V = 6/5, and its eigenvalue in the normal vacuum, (6/5) I1(1/5) / pi^2 = 0.05637346734780750, against the Rust value [deviation 8.1e-12]
+
+Notes:
+  Wolfram Language 15.0.1; run time 2.5 s
+
+VERDICT: ALL PASS (4 of 4)

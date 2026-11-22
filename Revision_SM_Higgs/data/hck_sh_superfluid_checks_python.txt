@@ -1,0 +1,14 @@
+sh_superfluid.py: the Python computation of the checks of sh_superfluid (stage 3, Revision_SM_Higgs, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YSF-2   deviation 4.284e-11 (tolerance 1.0e-09): normal vacuum of V^(1)_SH: the response in the doublet-singlet pair channel equals G_SH / G^crit_SH (G^crit_SH = 4 pi^2 / I1(m) = 85.1464390222) and the value of the Rust program, five methods
+PASS YSF-3   deviation 8.011e-12 (tolerance 1.0e-09): normal vacuum of V^(1)_SH: the 2 x 2 response of the masses of Psi_LL and chi_SH equals the formula of the effective couplings and the value of the Rust program
+PASS YSF-5   V^(0)_SH: the normal start and the start along Phi^d end in the normal vacuum, five methods [pair amplitudes below 1e-6, masses unchanged]
+PASS YSF-6   deviation 3.042e-10 (tolerance 1.0e-09): V^(1)_SH, Higgs ground states from the start along Phi^d: the energy and |D_d| (relative), the masses of the three species and the isospin difference of the scalar densities agree with the Rust program, five methods
+PASS YSF-7   deviation 1.104e-14 (tolerance 1.0e-09): the start along Phi^u reaches the same energy and length of the doublet (relative; KS and CJT)
+PASS YSF-11  deviation 3.053e-16 (tolerance 1.0e-09): the gap of every Higgs ground state is |M_u| at zero momentum (scan of 201 momenta)
+PASS YSF-12  deviation 1.562e-12 (tolerance 1.0e-09): HS (0, 1) and HS (0, 0), Higgs ground state (no normal self-energy, only the pairing term acts): N = 0 and P = D_d K_d^dag; the gap equation G_SH I1(M_eff) / (4 pi^2) = 1 with M_eff = (m^2 + /D_d/^2 / 4)^(1/2) holds for /D_d/ of this computation and of the Rust program; the positive eigenvalues of the BdG matrices at 11 momenta are eps(q) fourfold (the unpaired up components) and (eps(q)^2 + /D_d/^2 / 4)^(1/2) eightfold
+PASS YSF-13  deviation 7.111e-12 (tolerance 1.0e-09): the current channel of the normal vacuum: a uniform self-energy a alpha^3 (x) 1_2 of Psi_LL changes the current tr((alpha^3 (x) 1_2) rho) by -chi_J a, chi_J = 2 Lambda^3 / (3 pi^2 (Lambda^2 + m^2)^(1/2)) = 0.0662357298 (a surface term of the sharp cutoff); the largest eigenvalue of the static response of the normal self-energies of HS (0, 1) (Rust program, both potentials) is G^V chi_J = 0.0529885838
+
+VERDICT: ALL PASS (8 of 8)

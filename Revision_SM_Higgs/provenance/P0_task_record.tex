@@ -187,7 +187,7 @@ superfluid can be the Higgs field of the Standard Model; ``the
 superfluid must have the same quantum numbers as the Higgs'' (entry
 C21). Sections 1 to 8 below describe the task as it stood under the
 earlier hypotheses, in the folder where that work was done; the
-decisions D19 to D24 of Section 6, the objects O10 to O15 of Section 7
+decisions D19 to D29 of Section 6, the objects O10 to O15 of Section 7
 and the entries from C20 on in Section 9 belong to the revision. Under
 the revised hypotheses \(SU(2)_{\rm v}\) is \(SU(2)_L\), the fermion
 number is the hypercharge (\(Y^{\rm SM}=F_{\rm LL}/4\)), the singlet
@@ -1125,6 +1125,89 @@ to change it is to compose the parity with the rotation
 the Lagrangian. With this choice the pairs built with
 \(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\), the channel of the pairing term,
 are even, as the Higgs doublet is.
+
+\textbf{D27. The couplings of stage 3 (my decision of interpretation, 21
+November 2026).} Stage 3 computes two potentials:
+
+\begin{itemize}
+\tightlist
+\item
+  \(V^{(0)}_{\rm SH}\), with the scalar and the vector contact terms of
+  the author's ansatz on \(\Psi_{\rm LL}\) (\(G^{\rm S}_{\rm SF}=-8\),
+  \(G^{\rm V}_{\rm SF}=0.8\)) and no pairing term, as the control;
+\item
+  \(V^{(1)}_{\rm SH}\), the same with the pairing term of the
+  doublet-singlet channel, \(G_{\rm SH}=100.8\).
+\end{itemize}
+
+\emph{Reason.} The revised hypotheses fix the form of the pairing term,
+not its strength. \(100.8=4\times25.2\) makes the pairing term exactly
+as strong, relative to its critical value, as the triplet pairing term
+of the potential \(V^{(2)}_{\rm SF}\) of the earlier hypotheses was:
+\(G_{\rm SH}/G^{\rm crit}_{\rm SH}=25.2/G^{\rm crit}_{\rm LL}=1.1838\).
+That potential is the one whose ground state was a superfluid in all
+methods. The factor 4 is the ratio of the squared norms of the pair
+matrices (8 for \(\mathsf K^\iota_{\rm LL}\), 2 for
+\(\mathsf K^{\rm u}_{\rm SH}\) and \(\mathsf K^{\rm d}_{\rm SH}\)), so
+\(G^{\rm crit}_{\rm SH}=4G^{\rm crit}_{\rm LL}\).
+
+The scalar coupling of the author's ansatz is kept. \(V^{(2)}_{\rm SF}\)
+had \(G^{\rm S}_{\rm SF}=2.8\), to compensate the scalar attraction that
+the exchange contraction of the triplet pairing term adds in KS and CJT.
+The exchange contraction of the doublet-singlet pairing term adds no
+such attraction; it couples the scalar densities of the two fields
+instead. How the results depend on \(G_{\rm SH}\) is computed in stage
+4.
+
+\textbf{D28. The Kohn-Sham densities of the revised hypotheses (my
+decision of interpretation, 21 November 2026).} The Kohn-Sham method of
+stage 3 evaluates the exchange contraction with the projection of the
+local normal matrix onto ten densities:
+
+\begin{itemize}
+\tightlist
+\item
+  the number and the scalar densities of \(\Psi_{\rm LL}\) as
+  \(2\times2\) matrices in the isospin space,
+  \(\mathsf 1_4\otimes\mathsf 1_2\), \(\mathsf 1_4\otimes\tau^a\),
+  \(\beta_{\rm LL}\otimes\mathsf 1_2\), \(\beta_{\rm LL}\otimes\tau^a\);
+\item
+  the number and the scalar density of \(\chi_{\rm SH}\).
+\end{itemize}
+
+\emph{Reason.} The condensate treats the up and the down components
+differently, so the two densities of the earlier work, summed over the
+isospin, would not suffice. A projection onto the densities of each
+species separately does not commute with the rotations of \(SU(2)_L\)
+that mix up and down, and the method would then break the symmetry by
+itself. The span of the isospin matrices is mapped onto itself by every
+rotation, so the projection commutes with \(SU(2)_L\times U(1)_Y\).
+
+\textbf{D29. The path of the task C23 (the author's choice, 21 November
+2026, 18:45 PST).} The author named the path to investigate in the task
+C23: the pair of two brochons bound by the exchange of the zeugon. The
+binding by photons is, in his words, ``extremely unlikely'' and ``not
+worth studying''. He used the name brochon, which I had proposed for the
+spinor field of the earlier hypotheses (the DiracLike spinor, of
+electric charge 0).
+
+\emph{Consequences.}
+
+\begin{itemize}
+\tightlist
+\item
+  The task C23 is done in a new folder built on the earlier hypotheses,
+  under which the zeugon exists. The zeugon is the massless gauge boson
+  of the generator \(T^3_{\rm LL}\) that the polar condensate leaves
+  unbroken. It attracts the two charges of the condensed pair, which
+  carry the opposite charges \(T^3=\pm\tfrac12\).
+\item
+  The folders \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham} and
+  \texttt{Revision\_SM\_Higgs} stay as they are.
+\item
+  The order of the work is unchanged: the stages of the revision come
+  first.
+\end{itemize}
 
 \textbf{D11. Documents.} The manuscript \texttt{superfluid.md} (with
 \texttt{.tex} and \texttt{.pdf}); this record; the MASTER provenance of
@@ -2281,6 +2364,90 @@ tables of the documents cannot show; they were reworded; (5) an
 identifier of seven characters ran into the first word of its statement
 in the Wolfram report; the identifiers are now padded to nine
 characters \\
+C24 & 21 Nov 2026, 18:45 & the author's answer to my proposal in C23:
+``brochon pair with binding by zeugon is the path you should
+investigate''; binding by photons is ``extremely unlikely'' and ``not
+worth studying'' (D29). He also said that he likes the work in progress.
+I answered that the task C23 will take that path, in a new folder on the
+earlier hypotheses, after the stages of the revision; and that under the
+revised hypotheses the electroweak gauge bosons cannot bind the
+doublet-singlet pairs either: both fields have \(Y^{\rm SM}=\tfrac14\),
+so the exchange of \(B_\mu\) repels them, and \(W^a_\mu\) does not
+couple to the singlet. The manuscript of stage 3 states this with its
+reason (its Section 2.3) \\
+E38 & 21 Nov 2026, 18:15 to 19:22 & object O12, stage 3 of the revision.
+The programs: the engine \texttt{sfcore::uniform\_n}, which generalizes
+the engine of the earlier work (unchanged) to a field made of several
+Dirac fields and computes the static response from two symmetric
+matrices; the crate \texttt{rust/shsuperfluid} with the program
+\texttt{sh\_superfluid} (ALL PASS (18 of 18); 112 s on parallel
+threads); the Python program \texttt{python/sh\_superfluid.py} with an
+engine of its own (ALL PASS (8 of 8), among them the closed form of the
+ground state of HS (0, 1) and HS (0, 0), check YSF-12, and the current
+channel of the normal vacuum, check YSF-13); the Wolfram script
+\texttt{wolfram/source/sh\_superfluid.wls}, in exact arithmetic, run on
+the author's computer through the watcher, request 294 (ALL PASS (4 of
+4)). The data files \texttt{data/sh\_sf\_normal\_vacuum.csv},
+\texttt{data/sh\_sf\_states.csv}, \texttt{data/sh\_sf\_ground.csv},
+\texttt{data/sh\_sf\_values.csv}, and the three reports. The writer of
+the fragments \texttt{code/scripts/write\_sh\_superfluid\_fragments.py}.
+The manuscript of stage 3, \texttt{higgs\_superfluid.md} (\texttt{.tex},
+\texttt{.pdf}). The decisions D27 and D28. The remarks R8 to R10 of
+\texttt{provenance/P4\_remarks.md} (what binds the pairs, the charge
+\(\tfrac34\) of the lightest quasi-particle, the current response of the
+normal vacuum). The registry gains 25 entries, the symbols of the
+stage-3 manuscript (now 233 entries) \\
+E39 & 21 Nov 2026, 18:15 to 19:22 & the results of stage 3 (E38). In the
+normal vacuum only the doublet-singlet pairs are unstable: their
+eigenvalue is \(G_{\rm SH}/G^{\rm crit}_{\rm SH}\) with
+\(G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})\), derived
+in closed form. With \(V^{(1)}_{\rm SH}\) the ground state of all five
+methods is the Higgs superfluid, with no pair of two particles of one
+field and no mixing; with \(V^{(0)}_{\rm SH}\) it is the normal vacuum.
+The Higgs superfluid keeps exactly \(R_{\rm SH}\) and the electric
+charge, has three Goldstone modes, and is stable also against charged
+condensates. Its lightest quasi-particle is the unpaired up component of
+\(\Psi_{\rm LL}\), with the electric charge \(\tfrac34\). The up and the
+down components have different scalar densities (and, in KS and CJT,
+different masses): the custodial symmetry is broken. KS and CJT coincide
+on these states, by a theorem. \\
+E40 & 21 Nov 2026, 18:15 to 19:22 & the corrections of stage 3, first
+part, each found before the commit: (1) the general eigenvalue routine
+(QR) did not converge on the response matrices; the eigenvalues are now
+those of the symmetric matrix
+\(-\mathsf B_{\rm SH}\mathsf F^X_{\rm SH}\mathsf B_{\rm SH}\); (2) the
+first Kohn-Sham projection, onto the densities of each species, did not
+commute with \(SU(2)_L\) (D28); (3) the threshold below which a
+combination of generators counted as unbroken was below the rounding of
+the eigensolver; it is now \(10^{-9}\) times the scale of the matrix;
+(4) the table of the ground states first took the stationary state of
+lowest energy, which was the state from the generic start, a rotated
+state whose up and down densities are mixed; it now takes the state from
+the start along \(\Phi^{\rm d}_{\rm SH}\), with a check that its energy
+is the lowest; (5) check SF-11 first required the momentum of the
+minimum of the quasi-particle energy below \(10^{-9}\), finer than the
+resolution of the search near a quadratic minimum (about \(10^{-8}\));
+it is now SF-11a (the energy, \(10^{-9}\)) and SF-11b (the momentum,
+\(10^{-6}\)) \\
+E41 & 21 Nov 2026, 18:15 to 19:22 & the corrections of stage 3, second
+part: (6) the data files first contained run times and changed with
+every run; the times are now only in the report; (7) in the Wolfram
+script, the simplification of the integral identity did not finish, and
+the numerical value of an exact zero exceeded the extra precision; the
+two sides are now compared numerically at ten masses to 40 digits; (8)
+the table of the stationary states listed the starts in the order of
+their energies, which agree to rounding and can change between runs; it
+now gives the numbers of the starts in a fixed order; (9) an inherited
+error: Section 1 of \texttt{provenance/P4\_remarks.md} named the remarks
+of its addendum A2 as R3 to R5, but the addendum contains R3 to R7 (R6
+and R7 were added later and the sentence was not updated); corrected in
+this folder, while the frozen folder
+\texttt{Revision\_HS\_CJT\_and\_Kohn-Sham} keeps the old sentence; (10)
+an omission of stage 2: the manuscript \texttt{superfluid.md} prints the
+table of the registry of the symbols, and it was not assembled again
+after the registry gained the entries of stage 2, so its committed
+version lacked them; it is now assembled and built again with the
+entries of stages 2 and 3 \\
 \end{longtable}
 
 \end{document}

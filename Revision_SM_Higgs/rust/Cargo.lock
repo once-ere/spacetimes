@@ -72,5 +72,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "shsuperfluid"
+version = "0.1.0"
+dependencies = [
+ "sfcore",
+]
+
+[[package]]
 name = "sundials_core"
 version = "7.8.0"
