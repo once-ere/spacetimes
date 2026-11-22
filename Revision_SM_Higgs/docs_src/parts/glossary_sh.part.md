@@ -52,8 +52,9 @@ algebra from which the fields come, with an example of every object.
 * *The parameter $\rho$.* The ratio $M_W^2/(M_Z^2\cos^2\theta_W)$, with the weak mixing angle $\theta_W$
   ($\tan\theta_W=g'/g$); it is 1 at tree level in the Standard Model because of the custodial symmetry.
 * *Earlier and revised hypotheses; first and second version.* The *earlier hypotheses* are the superfluid of the spinor
-  charges of Appendix A.6, with a scalar and a vector contact term of $\Psi_{\rm LL}$; there $T^3_{\rm LL}$ was the electric charge and
-  pairs of two members of $\Psi_{\rm LL}$ condensed. The *revised hypotheses* give $\Psi_{\rm LL}$ the electroweak charges and let it
+  charges of Appendix A.6, with a scalar and a vector contact term of $\Psi_{\rm LL}$ and gauge fields of its isospin and its
+  fermion number; there $\Psi_{\rm LL}$ had no electric charge, its isospin was the symmetry of a new interaction, and pairs of
+  two members of $\Psi_{\rm LL}$ condensed. The *revised hypotheses* give $\Psi_{\rm LL}$ the electroweak charges and let it
   pair with singlets. Their *first version* has one singlet, their *second version* two; the second is the model of the
   revision, the first the comparison.
 

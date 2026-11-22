@@ -246,6 +246,12 @@ before that version was kept; none of them changes a result.
     boost, the italic $R$ for an element of $SU(2)_{\rm R}$ and for the rotation matrix of an isospin rotation, and $m$ for
     the mass of the fields and, in "$\bar uu=2m$", for the mass of the particle of an example. The rapidity is now
     $\vartheta$, the rotation matrix $\mathsf R(U)$, and the normalization reads "twice the mass".
+30. **Electric charges that are not electric** (found after the second commit, a false statement recorded as E80 of the
+    task record). Secs. II D and II F of the rewritten article called the isospin charge $T^3_{\rm LL}$ of the superfluid of
+    the spinor charges its electric charge, as the author's manuscript of 16 November 2026 does. The author stated on 21
+    November 2026 that the field of that model is electrically neutral and that its isospin belongs to a new gauge group;
+    the article now says so, and adds that in the model of the revision the electric charge is $T^3_{\rm LL}$ plus the
+    hypercharge.
 
 # 7. Provenance
 
@@ -257,7 +263,7 @@ checksums of the templates, of the build program and of the files to upload, at 
 * `paper_prd/scripts/build_paper.py`:\
   `c0fe1cadc1c8851a1c6573c4ce2fa6e0d4f11d47a7bff69e6eea21de1333839c`
 * `paper_prd/src/higgs_composite_qg.template.tex`:\
-  `02de52159350366ff4ea76732d40a600c3fa2c443baee322dcc401b3f57e36ef`
+  `f71cd668711768fa2283c1afa0fff509adc526ead98804ed748c0a157b2b0a21`
 * `paper_prd/src/higgs_composite_qg_SM.template.tex`:\
   `7829918e8244512bd59f655d01f36d6f809160d3b9c163154cbdfbeb3921e7fb`
 * `paper_prd/src/cover_letter.template.tex`:\
@@ -267,9 +273,9 @@ checksums of the templates, of the build program and of the files to upload, at 
 * `paper_prd/src/references.bib`:\
   `6ee51161bbbcebca68a142d9a3a1114afc593ab66ab1d1c5e2573e34716c3b31`
 * `paper_prd/submission/higgs_composite_qg.pdf`:\
-  `9bc5050bb86f309059e20be975b6310206ec0df6a038191a8fb45a212477f51f`
+  `f188ee58de186cf8d83e2ed2a244cdda49975b780fbba2d72fbf04ea6cf49ad1`
 * `paper_prd/submission/higgs_composite_qg.tex`:\
-  `06a4df0d487d13c854ffd98de45855caa05d0755a5280ac49501730b03c82a45`
+  `9b3930098ff36687568767b045f3b7e8e1feab74f7013f93a15b3cc2915621a4`
 * `paper_prd/submission/higgs_composite_qg.bbl`:\
   `01b06154a457703cbde273d0b7af16df5c3ddceb39888f653a5f03fac9df8457`
 * `paper_prd/submission/higgs_composite_qg_SM.pdf`:\

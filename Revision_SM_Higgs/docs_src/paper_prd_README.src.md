@@ -242,6 +242,12 @@ before that version was kept; none of them changes a result.
     boost, the italic $R$ for an element of $SU(2)_{\rm R}$ and for the rotation matrix of an isospin rotation, and $m$ for
     the mass of the fields and, in "$\bar uu=2m$", for the mass of the particle of an example. The rapidity is now
     $\vartheta$, the rotation matrix $\mathsf R(U)$, and the normalization reads "twice the mass".
+30. **Electric charges that are not electric** (found after the second commit, a false statement recorded as E80 of the
+    task record). Secs. II D and II F of the rewritten article called the isospin charge $T^3_{\rm LL}$ of the superfluid of
+    the spinor charges its electric charge, as the author's manuscript of 16 November 2026 does. The author stated on 21
+    November 2026 that the field of that model is electrically neutral and that its isospin belongs to a new gauge group;
+    the article now says so, and adds that in the model of the revision the electric charge is $T^3_{\rm LL}$ plus the
+    hypercharge.
 
 # 7. Provenance
 

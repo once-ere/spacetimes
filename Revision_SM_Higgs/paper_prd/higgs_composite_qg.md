@@ -462,9 +462,13 @@ and which supplies the left-handed spinors), is therefore a Dirac spinor
 with two isospin components, an *isodoublet of Dirac spinors*
 $\Psi_{\rm LL}$ with eight complex components. The third isospin
 generator $T^3_{\rm LL}$ has the eigenvalues $+\frac12$ (up) and
-$-\frac12$ (down) on the components; in the superfluid of
-Sec. <a href="#sec:sf" data-reference-type="ref"
-data-reference="sec:sf">2.6</a> they are the electric charges.
+$-\frac12$ (down) on the components. They are not electric charges: in
+the superfluid of Sec. <a href="#sec:sf" data-reference-type="ref"
+data-reference="sec:sf">2.6</a> the field $\Psi_{\rm LL}$ is
+electrically neutral, and in the model of this paper the electric charge
+is $T^3_{\rm LL}$ plus the hypercharge
+(Sec. <a href="#sec:model" data-reference-type="ref"
+data-reference="sec:model">3</a>).
 
 <div class="ruledtabular">
 
@@ -577,13 +581,17 @@ removes a pair of opposite momenta. Momenta are cut off at
 $|\vec q|<\Lambda_{\rm LL}$, the unit of energy. The matrices $\mathsf
 K^\iota=C\gamma^5\otimes\mathsf E\tau_\iota$ (with the
 charge-conjugation matrix $C=i\gamma^2\gamma^0$ and the isospin Pauli
-matrices $\tau_\iota$) make the pair a Lorentz scalar. In this model the
-third isospin component $T^3_{\rm LL}$ is the electric charge. We call
-it, completed by a scalar and a vector contact term of $\Psi_{\rm LL}$
+matrices $\tau_\iota$) make the pair a Lorentz scalar. In this model
+$\Psi_{\rm LL}$ carries no electric charge: its isospin is an internal
+symmetry, and $T^3_{\rm LL}$ is the charge of the rotations about the
+third isospin axis. We call this model, completed by a scalar and a
+vector contact term of $\Psi_{\rm LL}$
 (Sec. <a href="#sec:model" data-reference-type="ref"
-data-reference="sec:model">3</a>), the *earlier hypotheses*; the model
-of this paper, the *revised hypotheses*, keeps those two terms and
-replaces the pairing.
+data-reference="sec:model">3</a>) and by gauge fields of its isospin and
+of its fermion number, the *earlier hypotheses*; the model of this
+paper, the *revised hypotheses*, keeps the two contact terms, makes the
+isospin the weak isospin of the Standard Model, and replaces the
+pairing.
 
 *Why the pairs are isospin triplets.* A Lorentz-invariant pair of two
 Dirac spinors of spin zero must be built with $C$ or $C\gamma^5$, and
@@ -599,8 +607,8 @@ $$\mathsf E\tau_1=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\quad\mathsf E\tau_2=\be
 $\mathsf E$ of Eq. (<a href="#eq:psiprime" data-reference-type="ref"
 data-reference="eq:psiprime">[eq:psiprime]</a>), the isospin singlet, is
 antisymmetric and drops out. Every spin-zero pair of two members of the
-isodoublet therefore has isospin 1, and the electric charges $+1$, $0$,
-$-1$. The combinations
+isodoublet therefore has isospin 1, with $T^3_{\rm LL}=+1$, $0$ or $-1$.
+The combinations
 $$\mathsf E\tau_1-i\mathsf E\tau_2=\begin{pmatrix}2&0\\0&0\end{pmatrix},\qquad\mathsf E\tau_1+i\mathsf
 E\tau_2=\begin{pmatrix}0&0\\0&-2\end{pmatrix}
 \label{eq:Etaupm}$$ pair two up and two down members, and
@@ -678,8 +686,9 @@ slower than the isospin index, as in
 Sec. <a href="#sec:spinors" data-reference-type="ref"
 data-reference="sec:spinors">2.5</a>). The state
 $\vec d_{\rm LL}\propto(1,i,0)$, built from pairs of two up members, has
-$\zeta_{\rm LL}=1$. The polar superfluid keeps the electric charge
-$T^3_{\rm LL}$ unbroken (each pair has $T^3_{\rm LL}=0$): it is neutral.
+$\zeta_{\rm LL}=1$. The polar superfluid keeps the rotations about the
+third isospin axis, and with them the charge $T^3_{\rm LL}$, unbroken:
+each of its pairs has $T^3_{\rm LL}=0$.
 
 *The critical coupling, and an example.* In the vacuum,
 $\mu_{\rm LL}=0$, both energies are $(q^2+m_{\rm LL}^2+\Delta^2)^{1/2}$,

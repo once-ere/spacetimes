@@ -229,10 +229,12 @@ where $\mathsf h_{\rm LL}(\vec q)=\gamma^0_{\rm LL}(\vec\gamma_{\rm LL}\cdot\vec
 the isospin index), and $\Pi^\iota_{\rm LL}=\sum_{\vec q}\Psi_{\rm LL}(\vec q)^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q)$ removes a pair of
 opposite momenta. Momenta are cut off at $|\vec q|<\Lambda_{\rm LL}$, the unit of energy. The matrices
 $\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ (with the charge-conjugation matrix
-$C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$) make the pair a Lorentz scalar. In this model the third isospin component $T^3_{\rm LL}$
-is the electric charge. This model, completed by a scalar and a vector contact term of $\Psi_{\rm LL}$, is what the documents
-of the revision call the *earlier hypotheses*; the *revised hypotheses* keep those two terms and replace the pairing
-(A.13) by the pairing of $\Psi_{\rm LL}$ with singlets. In the earlier hypotheses the coupling was $G_{\rm LL}=25.2$; the examples
+$C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$) make the pair a Lorentz scalar. In this model $\Psi_{\rm LL}$ carries no electric
+charge: its isospin is an internal symmetry, and $T^3_{\rm LL}$ is the charge of the rotations about the third isospin axis.
+This model, completed by a scalar and a vector contact term of $\Psi_{\rm LL}$ and by gauge fields of its isospin and of its
+fermion number, is what the documents of the revision call the *earlier hypotheses*; the *revised hypotheses* keep the
+two contact terms, make the isospin the weak isospin of the Standard Model, and replace the pairing (A.13) by the
+pairing of $\Psi_{\rm LL}$ with singlets. In the earlier hypotheses the coupling was $G_{\rm LL}=25.2$; the examples
 below use other values to show how the superfluid behaves.
 
 **Why the pairs are isospin triplets.** A Lorentz-invariant pair of two Dirac spinors of spin zero must be built with
@@ -242,8 +244,8 @@ of the antisymmetric Dirac factor with an isospin factor $\mathsf X_{\rm LL}$ is
 and symmetric if $\mathsf X_{\rm LL}$ is antisymmetric, so only a *symmetric* $2\times2$ isospin factor survives. The symmetric matrices are spanned by
 $$\mathsf E_{\rm LL}\tau^{\rm LL}_1={{GENM:ex7_e_tau1}},\qquad\mathsf E_{\rm LL}\tau^{\rm LL}_2={{GENM:ex7_e_tau2}},\qquad\mathsf E_{\rm LL}\tau^{\rm LL}_3={{GENM:ex7_e_tau3}},\tag{A.14}$$
 which transform as an isovector; the remaining matrix, $\mathsf E_{\rm LL}$ of (A.11), the isospin singlet, is antisymmetric
-and drops out. Every spin-zero pair of two members of the isodoublet therefore has isospin 1, and the electric charges
-$+1$, $0$, $-1$. The combinations
+and drops out. Every spin-zero pair of two members of the isodoublet therefore has isospin 1, with $T^3_{\rm LL}=+1$, $0$
+or $-1$. The combinations
 $$\mathsf E_{\rm LL}\tau^{\rm LL}_1-i\mathsf E_{\rm LL}\tau^{\rm LL}_2={{GENM:ex7_e_tau1_minus_i_e_tau2}},\qquad\mathsf E_{\rm LL}\tau^{\rm LL}_1+i\mathsf E_{\rm LL}\tau^{\rm LL}_2={{GENM:ex7_e_tau1_plus_i_e_tau2}}$$
 pair two up and two down members, and $\mathsf E_{\rm LL}\tau^{\rm LL}_3$ pairs an up with a down member.
 
@@ -281,7 +283,8 @@ multiple of a real vector, so up to an isospin rotation and a phase it is the *p
 which every pair joins an up with a down member. Its pair matrix $\mathsf K^3_{\rm LL}$ has the non-zero entries
 {{GEN:ex10_k3_entries}} (the rows and columns numbered from 0 to 7, the Dirac index running slower than the isospin
 index). The state $\vec d_{\rm LL}\propto(1,i,0)$, built from pairs of two up members, has $\zeta_{\rm LL}=1$. The polar superfluid
-keeps the electric charge $T^3_{\rm LL}$ unbroken (each pair has $T^3_{\rm LL}=0$): it is neutral.
+keeps the rotations about the third isospin axis, and with them the charge $T^3_{\rm LL}$, unbroken: each of its pairs has
+$T^3_{\rm LL}=0$.
 
 **The critical coupling.** In the vacuum, $\mu_{\rm LL}=0$, both energies are $(q^2+m_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}$, and the right
 side of (A.18) is largest at $\Delta_{\rm LL}=0$. A gap therefore forms only above the coupling at which the right side at
