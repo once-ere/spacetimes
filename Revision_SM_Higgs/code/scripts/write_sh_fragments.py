@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """
 write_sh_fragments.py (Revision_SM_Higgs) -- the machine-written fragments of the checks of the quantum numbers under
-the revised hypotheses (stage 2), for the document of the hypotheses provenance/H0_hypotheses.md.
+the revised hypotheses, second version (stage 2: the isodoublet and the two singlets), for the document of the
+hypotheses provenance/H0_hypotheses.md.
 
 Reads the reports and the data written by the three programs of stage 2
     data/hck_sh_quantum_checks.txt (Rust, sh_quantum), data/hck_sh_quantum_checks_python.txt (python/sh_quantum.py),
     data/hck_sh_quantum_checks_wolfram.txt (wolfram/source/sh_quantum.wls, exact arithmetic),
-    data/sh_channels.csv, data/sh_couplings.csv, data/sh_quantum_values.csv
+    data/sh_channels.csv, data/sh_custodial_channels.csv, data/sh_couplings.csv, data/sh_quantum_values.csv
 and writes provenance/generated/sh_quantum.md with the fragments
     sh_checks_rust, sh_checks_python, sh_checks_wolfram       the tables of the checks;
     sh_verdict_rust, sh_verdict_python, sh_verdict_wolfram    the verdicts ("ALL PASS (n of n)");
-    sh_table_channels                                         the table of the twelve channels of spin-zero bilinears;
+    sh_table_channels                                         the table of the 24 channels of spin-zero bilinears;
+    sh_table_custodial                                        the table of the 8 channels of the custodial symmetry;
+    sh_broken, sh_broken_gauge                                the numbers of broken generators (all, gauged);
     sh_v, sh_g, sh_gp, sh_e, sh_s2w, sh_gF, sh_alpha_inv, sh_rho_s2hat, sh_mh_over_v, sh_mw, sh_mz
                                                               the couplings and derived numbers;
     sh_ntraces, sh_gap_zero, sh_gap_nonzero                   numbers taken from the report and the values.
@@ -27,15 +30,28 @@ from write_part2_fragments import checks, fmt  # noqa: E402
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 D = os.path.join(ROOT, "data")
 
-# the bilinears of the six sectors, as formulas of the document
-SECTOR_TEX = {
-    "Psi Psi": r"$\Psi_{\rm LL}^T\mathsf V_{\rm SH}\Psi_{\rm LL}$",
-    "Psi chi": r"$\Psi_{\rm LL}^T\mathsf V_{\rm SH}\chi_{\rm SH}$",
-    "chi chi": r"$\chi_{\rm SH}^T\mathsf V_{\rm SH}\chi_{\rm SH}$",
-    "Psi^dag Psi": r"$\Psi_{\rm LL}^\dagger\mathsf V_{\rm SH}\Psi_{\rm LL}$",
-    "Psi^dag chi": r"$\Psi_{\rm LL}^\dagger\mathsf V_{\rm SH}\chi_{\rm SH}$",
-    "chi^dag chi": r"$\chi_{\rm SH}^\dagger\mathsf V_{\rm SH}\chi_{\rm SH}$",
-}
+# the bilinears of the twelve sectors, as formulas of the document
+FIELD_TEX = {"Psi": r"\Psi_{\rm LL}", "chi": r"\chi_{\rm SH}", "chi'": r"\chi'_{\rm SH}",
+             "(chi, chi')": r"(\chi_{\rm SH},\chi'_{\rm SH})"}
+
+
+def bilinear_tex(sector):
+    """the formula of a bilinear of a sector named as in the data files, "Psi chi'" or "Psi^dag chi" """
+    if sector.startswith("(chi, chi')"):
+        a, rest = "(chi, chi')", sector[len("(chi, chi')"):]
+        if rest.startswith("^dag"):
+            a, rest = a + "^dag", rest[len("^dag"):]
+        b = rest.strip()
+    else:
+        a, b = sector.split(" ", 1)
+    if a.endswith("^dag"):
+        return "${%s}^\\dagger\\mathsf V_{\\rm SH}%s$" % (FIELD_TEX[a[:-4]], FIELD_TEX[b])
+    return "${%s}^T\\mathsf V_{\\rm SH}%s$" % (FIELD_TEX[a], FIELD_TEX[b])
+
+
+SECTORS = ["Psi Psi", "Psi chi", "Psi chi'", "chi chi", "chi chi'", "chi' chi'", "Psi^dag Psi", "Psi^dag chi",
+           "Psi^dag chi'", "chi^dag chi", "chi^dag chi'", "chi'^dag chi'"]
+CSECTORS = ["Psi (chi, chi')", "(chi, chi') (chi, chi')", "Psi^dag (chi, chi')", "(chi, chi')^dag (chi, chi')"]
 
 
 def tex_frac(s):
@@ -62,30 +78,51 @@ def multiplets(field):
     return "$" + "\\oplus".join("\\mathbf " + d.strip() for d in field.split("+")) + "$"
 
 
+def two_parities(rows, sector, keys):
+    """the row of a sector after the check that its two parities have the same numbers (the writer stops otherwise)"""
+    rr = [r for r in rows if r["sector"] == sector]
+    if sorted(r["parity"] for r in rr) != ["+1", "-1"]:
+        sys.exit("the sector %s does not have the two parities" % sector)
+    if any(rr[0][k] != rr[1][k] for k in keys):
+        sys.exit("the two parities of the sector %s differ" % sector)
+    want_f = "2" if "^dag" not in sector else "0"
+    if set(v.strip() for v in rr[0]["F"].split(";")) != {want_f}:
+        sys.exit("unexpected particle number in the sector %s" % sector)
+    return rr[0]
+
+
 def table_channels():
-    """one row for each of the six kinds of bilinears; the two parities of a kind must have the same numbers (the
-    writer stops otherwise), and the fermion number (2 for the pairs, 0 for the particle-antiparticle bilinears) is
-    checked here and stated in the caption of the table"""
+    """one row for each of the twelve kinds of bilinears; the particle number (2 for the pairs, 0 for the
+    particle-antiparticle bilinears) is checked here and stated in the caption of the table"""
     with open(os.path.join(D, "sh_channels.csv"), newline="") as f:
         rows = list(csv.DictReader(f))
-    if len(rows) != 12:
-        sys.exit("expected 12 channels in data/sh_channels.csv, found %d" % len(rows))
-    keys = ["dimension", "SU2_multiplets", "Y", "Q", "neutral_components", "F", "R"]
-    out = ["| bilinear | components | $SU(2)_L$ | $Y^{\\rm SM}$ | $Q^{\\rm SM}$ | neutral | relative number |",
-           "|:--------------------|:----------|:-------|:-----|:--------------|:-------|:---------|"]
-    for sector in SECTOR_TEX:
-        rr = [r for r in rows if r["sector"] == sector]
-        if sorted(r["parity"] for r in rr) != ["+1", "-1"]:
-            sys.exit("the sector %s does not have the two parities" % sector)
-        if any(rr[0][k] != rr[1][k] for k in keys):
-            sys.exit("the two parities of the sector %s differ" % sector)
-        want_f = "2" if "^dag" not in sector else "0"
-        if set(v.strip() for v in rr[0]["F"].split(";")) != {want_f}:
-            sys.exit("unexpected fermion number in the sector %s" % sector)
-        r = rr[0]
-        out.append("| %s | %s | %s | %s | %s | %s | %s |" % (
-            SECTOR_TEX[sector], r["dimension"], multiplets(r["SU2_multiplets"]), charges(r["Y"]), charges(r["Q"]),
-            r["neutral_components"], charges(r["R"])))
+    if len(rows) != 24:
+        sys.exit("expected 24 channels in data/sh_channels.csv, found %d" % len(rows))
+    keys = ["dimension", "SU2_multiplets", "Y", "Q", "neutral_components", "F", "R", "T3R"]
+    out = ["| bilinear | comp. | $SU(2)_L$ | $Y^{\\rm SM}$ | $Q^{\\rm SM}$ | neutral | $R_{\\rm SH}$ | $T^{3,{\\rm R}}_{\\rm SH}$ |",
+           "|:--------------------|:-----|:-------|:-----|:--------------|:-----|:-----|:-----|"]
+    for sector in SECTORS:
+        r = two_parities(rows, sector, keys)
+        out.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
+            bilinear_tex(sector), r["dimension"], multiplets(r["SU2_multiplets"]), charges(r["Y"]), charges(r["Q"]),
+            r["neutral_components"], charges(r["R"]), charges(r["T3R"])))
+    return "\n".join(out)
+
+
+def table_custodial():
+    """one row for each of the four kinds of bilinears of the pair of singlets taken as one field"""
+    with open(os.path.join(D, "sh_custodial_channels.csv"), newline="") as f:
+        rows = list(csv.DictReader(f))
+    if len(rows) != 8:
+        sys.exit("expected 8 channels in data/sh_custodial_channels.csv, found %d" % len(rows))
+    out = ["| bilinear | components | $SU(2)_L\\times SU(2)_{\\rm R}$ | $F^{\\rm tot}_{\\rm SH}$ | $R_{\\rm SH}$ |",
+           "|:--------------------|:----------|:--------------------|:-------|:-------|"]
+    for sector in CSECTORS:
+        r = two_parities(rows, sector, ["dimension", "SU2L_x_SU2R_multiplets", "F", "R"])
+        mult = "$" + "\\oplus".join("(\\mathbf %s,\\mathbf %s)" % tuple(m.strip("() ").split(","))
+                                      for m in r["SU2L_x_SU2R_multiplets"].split("+")) + "$"
+        out.append("| %s | %s | %s | %s | %s |" % (bilinear_tex(sector), r["dimension"], mult, charges(r["F"]),
+                                                  charges(r["R"])))
     return "\n".join(out)
 
 
@@ -108,6 +145,7 @@ def main():
         frags["sh_checks_" + who] = t.replace(sep, "|:--------|:-----|:---------|:--------|:" + "-" * 60 + "|")
         frags["sh_verdict_" + who] = v.replace("VERDICT: ", "")
     frags["sh_table_channels"] = table_channels()
+    frags["sh_table_custodial"] = table_custodial()
     with open(os.path.join(D, "sh_couplings.csv"), newline="") as f:
         c = {r["name"]: float(r["value"]) for r in csv.DictReader(f)}
     with open(os.path.join(D, "sh_quantum_values.csv"), newline="") as f:
@@ -125,6 +163,8 @@ def main():
     frags["sh_mz"] = num(c["M_Z_tree"], 6)
     frags["sh_gap_zero"] = num(vals["gap_zero_max"], 2)
     frags["sh_gap_nonzero"] = num(vals["gap_nonzero_min"], 3)
+    frags["sh_broken"] = "$%d$" % round(vals["broken_generators"])
+    frags["sh_broken_gauge"] = "$%d$" % round(vals["broken_gauge_generators"])
     # the number of anomaly traces, from the statement of the check QN-5a
     txt = open(os.path.join(D, "hck_sh_quantum_checks.txt"), encoding="utf-8").read()
     m = re.search(r"QN-5a .*?\((\d+) traces\)", txt)

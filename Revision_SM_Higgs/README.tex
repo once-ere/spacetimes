@@ -263,8 +263,8 @@ mass of the amplitude mode against \(m_H\); (5) the masses of
 \(\rho\); (6) the dynamics in time, the notebook and the article. Every
 inherited document begins with a note that says so. Stages 1 to 3 are
 complete: the quantum numbers and the breaking are checked in Section 6
-of the hypotheses document (Rust: ALL PASS (43 of 43); Python: ALL PASS
-(14 of 14); Wolfram, in exact arithmetic: ALL PASS (11 of 11)), with the
+of the hypotheses document (Rust: ALL PASS (55 of 55); Python: ALL PASS
+(14 of 14); Wolfram, in exact arithmetic: ALL PASS (13 of 13)), with the
 measured inputs of the 2026 edition of the Review of Particle Physics;
 and the mean-field superfluid of the two fields is computed in the
 manuscript \texttt{higgs\_superfluid.md} (\texttt{.tex}, \texttt{.pdf}):
@@ -411,22 +411,27 @@ built from the data files and the reports of the checks by
 the title is outlined, not computed. The submission itself is the
 author's.
 
-\textbf{Stage 2 of the revision of the hypotheses} (21 November 2026,
-17:30 to 18:15 PST). The program \texttt{sh\_quantum} of the crate
-\texttt{rust/shquantum} (ALL PASS (43 of 43)), its second computation
-\texttt{python/sh\_quantum.py} (ALL PASS (14 of 14)) and the exact
-computation \texttt{wolfram/source/sh\_quantum.wls} (ALL PASS (11 of
-11), run in Wolfram 15.0.1) check the quantum numbers of the two fields
-and of all their spin-zero bilinears, and the pattern of the breaking:
-the doublet-singlet pairs of positive parity carry exactly the
-generators of the Higgs doublet; no pair of two particles of the same
-field is neutral; a vacuum that keeps the group of the electric charge
-can carry, besides the pair field, only the neutral
-particle-antiparticle bilinears; and a kinetic term of the pair field
-with one coefficient gives the masses of the \(W\) and the \(Z\) of the
-Standard Model and the massless photon. The measured inputs are those of
-the 2026 edition of the Review of Particle Physics
-(\texttt{data/sh\_inputs.csv}).
+\textbf{Stage 2 of the revision of the hypotheses} (first version 21
+November 2026, 17:30 to 18:15 PST; second version, with the two
+singlets, 19:50 to 20:35 PST). The program \texttt{sh\_quantum} of the
+crate \texttt{rust/shquantum} (ALL PASS (55 of 55)), its second
+computation \texttt{python/sh\_quantum.py} (ALL PASS (14 of 14)) and the
+exact computation \texttt{wolfram/source/sh\_quantum.wls} (ALL PASS (13
+of 13), run in Wolfram 15.0.1) check the quantum numbers of the three
+fields and of all their spin-zero bilinears, the custodial symmetry and
+the pattern of the breaking. The pairs of the doublet with the first
+singlet carry exactly the generators of the Higgs doublet; those with
+the second singlet carry those of a doublet whose conjugate is a second
+Higgs doublet; together they form a bidoublet of
+\(SU(2)_L\times SU(2)_{\rm R}\). The only neutral pairs are those of the
+vacuum of the hypotheses. That vacuum keeps the electric charge, and
+with equal lengths of its two condensates also the custodial
+\(SU(2)_{\rm V}\); it breaks three generators of
+\(SU(2)_L\times U(1)_Y\) and the particle number. A kinetic term of the
+pair fields with one coefficient each gives the masses of the \(W\) and
+the \(Z\) of the Standard Model, the massless photon and \(\rho=1\). The
+measured inputs are those of the 2026 edition of the Review of Particle
+Physics (\texttt{data/sh\_inputs.csv}).
 
 \textbf{Stage 3 of the revision of the hypotheses} (21 November 2026,
 18:15 to 19:22 PST). The manuscript \texttt{higgs\_superfluid.md}
@@ -620,9 +625,9 @@ inputs \texttt{sh\_inputs.csv}, the reports
 \texttt{hck\_sh\_quantum\_checks\_python.txt},
 \texttt{hck\_sh\_quantum\_checks\_wolfram.txt} and the data
 \texttt{sh\_quantum\_numbers.csv}, \texttt{sh\_channels.csv},
-\texttt{sh\_couplings.csv}, \texttt{sh\_mass\_matrix.csv},
-\texttt{sh\_quantum\_values.csv}; of stage 3 the reports
-\texttt{hck\_sh\_superfluid\_checks.txt},
+\texttt{sh\_custodial\_channels.csv}, \texttt{sh\_couplings.csv},
+\texttt{sh\_mass\_matrix.csv}, \texttt{sh\_quantum\_values.csv}; of
+stage 3 the reports \texttt{hck\_sh\_superfluid\_checks.txt},
 \texttt{hck\_sh\_superfluid\_checks\_python.txt},
 \texttt{hck\_sh\_superfluid\_checks\_wolfram.txt} and the data
 \texttt{sh\_sf\_normal\_vacuum.csv}, \texttt{sh\_sf\_states.csv},
@@ -694,7 +699,8 @@ folder \texttt{Revision\_SM\_Higgs}:
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_bound\_fragments.py }\CommentTok{\# the bounds of agreement of the documents (after the programs of parts I to IV)}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_quantum}\KeywordTok{)}      \CommentTok{\# revision, stage 2: the quantum numbers and the breaking (under a second)}
 \ExtensionTok{python3}\NormalTok{ python/sh\_quantum.py                  }\CommentTok{\# revision, stage 2: the Python computation (after sh\_quantum)}
-\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_quantum.wls data/sh\_channels.csv data/hck\_sh\_quantum\_checks\_wolfram.txt}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_quantum.wls data/sh\_channels.csv data/sh\_custodial\_channels.csv }\DataTypeTok{\textbackslash{}}
+\NormalTok{    data/hck\_sh\_quantum\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_fragments.py    }\CommentTok{\# the tables and numbers of stage 2 for the hypotheses document}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_superfluid}\KeywordTok{)}   \CommentTok{\# revision, stage 3: the superfluid (about two minutes, threads)}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ python }\KeywordTok{\&\&} \ExtensionTok{python3}\NormalTok{ sh\_superfluid.py}\KeywordTok{)}       \CommentTok{\# revision, stage 3: the Python computation (after sh\_superfluid)}

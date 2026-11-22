@@ -1,21 +1,21 @@
-sh_quantum.py: the Python computation of the checks of sh_quantum (Revision_SM_Higgs, PROJECT spacetimes)
+sh_quantum.py: the Python computation of the checks of sh_quantum, second version (Revision_SM_Higgs, PROJECT spacetimes)
 Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
 the measured deviation and its tolerance (or the facts that decide it), and the statement.
 
-PASS YQN-1   deviation 0.000e+00 (tolerance 1.0e-12): the algebra of SU(2)_L x U(1)_Y x U(1)_F x U(1)_R on the twelve components, Hermitian generators
-PASS YQN-2   the six Lorentz generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting with the internal generators [deviation 0.0e+00, real rank 6]
-PASS YQN-3   deviation 0.000e+00 (tolerance 1.0e-12): the free Hamiltonians commute with the internal generators (random momenta, unequal masses)
-PASS YQN-4   Y = F/4 = 1/4; Q = 3/4, -1/4, 1/4 on the up and down components of Psi_LL and on chi_SH; the table agrees with data/sh_quantum_numbers.csv of the Rust program [deviation 0.0e+00; rows that differ: none]
+PASS YQN-1   the algebra of SU(2)_L x SU(2)_R x U(1)_R x U(1)_F_tot on the sixteen components, Hermitian generators, Y = T^3_R + R/4 (4.3), Q = T^3 + T^3_R + R/4, and [Y, T^1_R] != 0 [deviations 0.0e+00, 0.0e+00; largest entry of [Y, T^1_R] 1/2]
+PASS YQN-2   the six Lorentz generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting with the ten internal generators [deviation 0.0e+00, real rank 6]
+PASS YQN-3   the free Hamiltonians commute with T^a, Y, Q, F_tot, R, T^3_R for any masses (random momenta); with T^a_R when m^chi_SH = m^chi'_SH; for unequal masses the largest entry of [h, T^1_R] is |m^chi_SH - m^chi'_SH|/2 [deviations 0.0e+00, 0.0e+00, 0.0e+00]
+PASS YQN-4   Y = 1/4, 1/4, -3/4 and Q = 3/4, -1/4 (Psi_LL), 1/4 (chi_SH), -3/4 (chi'_SH); the Casimir operators of SU(2)_L and SU(2)_R; the table agrees with data/sh_quantum_numbers.csv of the Rust program [deviation 0.0e+00, Casimirs 0.0e+00; rows that differ: none]
 PASS YQN-5   no anomaly (47 traces), vector-like fields, an even number of Weyl doublets [largest trace 0.0e+00; [gamma^0, X] 0.0e+00; 2 Weyl doublets]
-PASS YQN-6   the dimensions 6, 4, 2 (pairs Psi Psi, Psi chi, chi chi), 8, 4, 2 (particle-antiparticle), 2 (symmetric Psi Psi); C gamma^ch (x) e_s and C (x) e_s are orthogonal and span the Psi chi pairs [Psi Psi 6; Psi chi 4; chi chi 2; Psi^dag Psi 8; Psi^dag chi 4; chi^dag chi 2; Psi Psi symmetric 2; span 1.3e-15, orthogonality 0.0e+00]
-PASS YQN-7   deviation 0.000e+00 (tolerance 1.0e-12): parity: +1 for C gamma^ch (x) e_s, -1 for C (x) e_s
-PASS YQN-8   deviation 0.000e+00 (tolerance 1.0e-12): on Phi_SH: G_{T^a} = tau^a/2, G_Y = 1/2, G_Q = diag(1, 0), G_F = 2, G_R = 0, Casimir 3/4, closure
-PASS YQN-9a  deviation 9.550e-16 (tolerance 1.0e-11): random SU(2)_L x U(1)_Y: Phi_SH -> exp(i alpha.tau/2 + i beta/2) Phi_SH
-PASS YQN-9b  deviation 1.110e-15 (tolerance 1.0e-11): the matrix of the transformation of Phi_SH is unitary (the pairing term (4.2) is invariant)
-PASS YQN-9c  deviation 8.867e-15 (tolerance 1.0e-10): random SL(2,C): every Lorentz-invariant bilinear of the six sectors is unchanged
-PASS YQN-10  the twelve channels: parity split, closure, SU(2) multiplets, Y and Q agree with data/sh_channels.csv of the Rust program [largest deviation 3.5e-15; channels that differ: none]
-PASS YQN-11  every doublet is rotated to (0, phi); the stabilizer of (0, phi) is spanned by Q = T^3 + Y; a generic second condensate with a charged component breaks Q, a neutral one keeps it [dimension of the stabilizer 1; generic condensates as expected; neutral condensates keep Q; rotation 4.6e-16]
-PASS YQN-12  deviation 4.375e-16 (tolerance 1.0e-12): the mass matrix: eigenvalues 0, M_W^2, M_W^2, M_Z^2, the photon (0, 0, sin, cos) and the Z (0, 0, cos, -sin); the couplings and the matrix agree with data/sh_couplings.csv and sh_mass_matrix.csv (relative deviation)
+PASS YQN-6   the dimensions 6, 4, 4, 2, 2, 2 (pairs), 8, 4, 4, 2, 2, 2 (particle-antiparticle), 2, 0, 0 (symmetric Psi Psi, chi chi, chi' chi'), 8, 6, 8, 8 (with the pair of singlets as one field); C gamma^ch (x) e_s and C (x) e_s are orthogonal and span the pairs Psi chi and Psi chi' [Psi Psi 6; Psi chi 4; Psi chi' 4; chi chi 2; chi chi' 2; chi' chi' 2; Psi^dag Psi 8; Psi^dag chi 4; Psi^dag chi' 4; chi^dag chi 2; chi^dag chi' 2; chi'^dag chi' 2; symmetric [2, 0, 0]; Psi (chi, chi') 8; (chi, chi') (chi, chi') 6; Psi^dag (chi, chi') 8; (chi, chi')^dag (chi, chi') 8; span 1.3e-15, orthogonality 0.0e+00]
+PASS YQN-7   deviation 0.000e+00 (tolerance 1.0e-12): parity: +1 for C gamma^ch (x) e_s, -1 for C (x) e_s, with either singlet
+PASS YQN-8   on Phi_SH: tau^a/2, Y = 1/2, Q = diag(1, 0); on Phi'_SH: tau^a/2, Y = -1/2, Q = diag(0, -1); F_tot = 2, R = 0, T^3_R = +-1/2, Casimir 3/4, closure; i tau^2 Phi'^* has the generators of the Higgs doublet; the bidoublet has (tau^a/2) (x) 1, 1 (x) (tau^a/2) and is the multiplet (2,2) [deviations 0.0e+00, 0.0e+00, 0.0e+00; multiplets (2,2)]
+PASS YQN-9a  deviation 3.629e-15 (tolerance 1.0e-11): random SU(2)_L x U(1)_Y: Phi_SH -> exp(i alpha.tau/2 + i beta/2) Phi_SH and Phi'_SH -> exp(i alpha.tau/2 - i beta/2) Phi'_SH
+PASS YQN-9b  deviation 1.494e-15 (tolerance 1.0e-11): random SU(2)_L x SU(2)_R x U(1)_R x U(1)_F_tot: M_SH -> e^(2 i theta_F) L M_SH R^T; the matrices are unitary (the pairing term (4.2) is invariant); det M_SH -> e^(4 i theta_F) det M_SH
+PASS YQN-9c  deviation 8.908e-15 (tolerance 1.0e-10): random SL(2,C): every Lorentz-invariant bilinear of the twelve sectors and of the four custodial sectors is unchanged
+PASS YQN-10  the 24 channels (parity split, closure, SU(2) multiplets, Y, Q, F_tot, R, T^3_R) and the 8 custodial channels (SU(2)_L x SU(2)_R multiplets) agree with data/sh_channels.csv and data/sh_custodial_channels.csv of the Rust program [largest deviation 5.1e-15; channels that differ: none]
+PASS YQN-11  every doublet is rotated to (0, phi); the stabilizer of the neutral vacuum in SU(2)_L x U(1)_Y is spanned by Q; that of phi i tau^2 among the eight generators is T^a + T^a_R and R, with three broken gauged generators and F_tot broken; unequal lengths keep only T^3 + T^3_R and R; a generic second condensate with a charged component breaks Q, a neutral one keeps it [neutral vacuum Q; phi i tau^2: dimension 4, ranks 7 and 8; lengths as expected; second condensates as expected, keep Q; rotation 4.5e-16]
+PASS YQN-12  deviation 4.375e-16 (tolerance 1.0e-12): the mass matrix of the two pair fields: eigenvalues 0, M_W^2, M_W^2, M_Z^2 for equal lengths and for random ratios of the lengths (rho = 1), the photon (0, 0, sin, cos) and the Z (0, 0, cos, -sin); the couplings and the matrix agree with data/sh_couplings.csv and sh_mass_matrix.csv (relative deviation)
 
 Notes:
   v = 246.2197 GeV, g = 0.652771, g' = 0.350046, e = 0.308490, g^F_LL = 0.087511

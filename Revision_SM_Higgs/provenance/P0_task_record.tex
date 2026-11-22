@@ -2418,13 +2418,13 @@ hypotheses, leaving both existing folders unchanged, and to propose
 names for the spinor when the task starts \\
 E36 & 21 Nov 2026, 17:30 to 18:15 & object O11, stage 2 of the revision:
 the crate \texttt{rust/shquantum} with the program \texttt{sh\_quantum}
-(ALL PASS (43 of 43)); the Python program
+(ALL PASS (55 of 55)); the Python program
 \texttt{python/sh\_quantum.py}, a second computation by other numerical
 methods that also compares its results with the data of the Rust program
 (ALL PASS (14 of 14)); the Wolfram script
 \texttt{wolfram/source/sh\_quantum.wls}, the same checks in exact
 arithmetic, run on the author's computer in Wolfram 15.0.1 through the
-watcher (requests 283 to 290; ALL PASS (11 of 11)); the input file
+watcher (requests 283 to 290; ALL PASS (13 of 13)); the input file
 \texttt{data/sh\_inputs.csv}; the data files
 \texttt{data/sh\_quantum\_numbers.csv}, \texttt{data/sh\_channels.csv},
 \texttt{data/sh\_couplings.csv}, \texttt{data/sh\_mass\_matrix.csv} and
@@ -2576,6 +2576,44 @@ its mass, its pair operators, the second pair field, the bidoublet, the
 generators of \(SU(2)_{\rm R}\), the particle number and the custodial
 groups (now 241 entries). The meanings of \(\chi_{\rm SH}\),
 \(G_{\rm SH}\) and \(R_{\rm SH}\) now cover both versions \\
+E43 & 21 Nov 2026, 19:50 to 20:35 & object O17, stage 2 of the second
+version. The program \texttt{sh\_quantum} (crate
+\texttt{rust/shquantum}) rewritten for the sixteen components of the
+three fields: the generators of \(SU(2)_{\rm R}\), the twelve sectors of
+bilinears and the four sectors with the two singlets taken together, the
+bidoublet, the stabilizers of the vacuum among the eight generators of
+the global group of H4, and the mass matrix of two pair fields (ALL PASS
+(55 of 55)). The Python program \texttt{python/sh\_quantum.py} (ALL PASS
+(14 of 14)) and the Wolfram script
+\texttt{wolfram/source/sh\_quantum.wls} (ALL PASS (13 of 13), exact, on
+the author's computer) rewritten likewise. The new data file
+\texttt{data/sh\_custodial\_channels.csv}. Section 6 of the document of
+the hypotheses rewritten, with Tables 6.1 and 6.2. The registry gains
+\(\theta^{\rm F}_{\rm SH}\) (242 entries); the meanings of
+\(\mathsf V_{\rm SH}\), \(\Pi_{\rm SH}[\mathsf V_{\rm SH}]\) and
+\(\Xi_{\rm SH}[\mathsf V_{\rm SH}]\) now cover the three fields \\
+E44 & 21 Nov 2026, 19:50 to 20:35 & the results of stage 2 of the second
+version (E43). Every statement of Sections 4 and 5 that follows from the
+hypotheses alone holds. The vacuum \(\lvert\varphi\rvert\,i\tau^2\)
+keeps exactly \(T^{a,{\rm SM}}+T^{a,{\rm R}}_{\rm SH}\) and
+\(R_{\rm SH}\); it breaks three gauged generators and the particle
+number, so one Goldstone boson is physical (D32). Unequal lengths of the
+two condensates keep only \(T^{3,{\rm SM}}+T^{3,{\rm R}}_{\rm SH}\) and
+\(R_{\rm SH}\). \(\rho=1\) for the canonical kinetic term, for any ratio
+of the lengths. The determinant term of D32 (c) has the charge 4 of the
+particle number and 0 of every other generator \\
+E45 & 21 Nov 2026, 19:50 to 20:35 & the corrections of stage 2 of the
+second version, each before the commit: (1) my first request to the
+Wolfram watcher on the author's computer named the files by an
+abbreviation of my notes in the place of their full paths, and the
+watcher rejected it; it was sent again with the full paths; (2) the
+Wolfram script built the basis of the bidoublet at the wrong level of
+its lists; found by reading the script before its first run; (3) the
+check of the mass matrix in the Wolfram script was first written with
+lengths in the normalization of the program text and is now written with
+\(\varphi\), \(\varphi'\), the notation of the document; (4) the writer
+of the fragments would have written the transpose of \(\chi'_{\rm SH}\)
+with a double superscript, which TeX refuses; it now braces the field \\
 \end{longtable}
 
 \end{document}

@@ -2,85 +2,105 @@
 <!-- BEGIN sh_alpha_inv -->
 $132.05$
 <!-- END sh_alpha_inv -->
+<!-- BEGIN sh_broken -->
+$4$
+<!-- END sh_broken -->
+<!-- BEGIN sh_broken_gauge -->
+$3$
+<!-- END sh_broken_gauge -->
 <!-- BEGIN sh_checks_python -->
 | check | result | deviation | tolerance | statement |
 |:--------|:-----|:---------|:--------|:------------------------------------------------------------|
-| YQN-1 | PASS | 0.000e+00 | 1.0e-12 | the algebra of SU(2)\_L x U(1)\_Y x U(1)\_F x U(1)\_R on the twelve components, Hermitian generators |
-| YQN-2 | PASS | -- | -- | the six Lorentz generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting with the internal generators (deviation 0.0e+00, real rank 6) |
-| YQN-3 | PASS | 0.000e+00 | 1.0e-12 | the free Hamiltonians commute with the internal generators (random momenta, unequal masses) |
-| YQN-4 | PASS | -- | -- | Y = F/4 = 1/4; Q = 3/4, -1/4, 1/4 on the up and down components of Psi\_LL and on chi\_SH; the table agrees with data/sh\_quantum\_numbers.csv of the Rust program (deviation 0.0e+00; rows that differ: none) |
+| YQN-1 | PASS | -- | -- | the algebra of SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F\_tot on the sixteen components, Hermitian generators, Y = T\^3\_R + R/4 (4.3), Q = T\^3 + T\^3\_R + R/4, and [Y, T\^1\_R] != 0 [deviations 0.0e+00, 0.0e+00; largest entry of (Y, T\^1\_R] 1/2) |
+| YQN-2 | PASS | -- | -- | the six Lorentz generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting with the ten internal generators (deviation 0.0e+00, real rank 6) |
+| YQN-3 | PASS | -- | -- | the free Hamiltonians commute with T\^a, Y, Q, F\_tot, R, T\^3\_R for any masses (random momenta); with T\^a\_R when m\^chi\_SH = m\^chi'\_SH; for unequal masses the largest entry of [h, T\^1\_R] is /m\^chi\_SH - m\^chi'\_SH//2 (deviations 0.0e+00, 0.0e+00, 0.0e+00) |
+| YQN-4 | PASS | -- | -- | Y = 1/4, 1/4, -3/4 and Q = 3/4, -1/4 (Psi\_LL), 1/4 (chi\_SH), -3/4 (chi'\_SH); the Casimir operators of SU(2)\_L and SU(2)\_R; the table agrees with data/sh\_quantum\_numbers.csv of the Rust program (deviation 0.0e+00, Casimirs 0.0e+00; rows that differ: none) |
 | YQN-5 | PASS | -- | -- | no anomaly (47 traces), vector-like fields, an even number of Weyl doublets [largest trace 0.0e+00; (gamma\^0, X] 0.0e+00; 2 Weyl doublets) |
-| YQN-6 | PASS | -- | -- | the dimensions 6, 4, 2 (pairs Psi Psi, Psi chi, chi chi), 8, 4, 2 (particle-antiparticle), 2 (symmetric Psi Psi); C gamma\^ch (x) e\_s and C (x) e\_s are orthogonal and span the Psi chi pairs (Psi Psi 6; Psi chi 4; chi chi 2; Psi\^dag Psi 8; Psi\^dag chi 4; chi\^dag chi 2; Psi Psi symmetric 2; span 1.3e-15, orthogonality 0.0e+00) |
-| YQN-7 | PASS | 0.000e+00 | 1.0e-12 | parity: +1 for C gamma\^ch (x) e\_s, -1 for C (x) e\_s |
-| YQN-8 | PASS | 0.000e+00 | 1.0e-12 | on Phi\_SH: G\_{T\^a} = tau\^a/2, G\_Y = 1/2, G\_Q = diag(1, 0), G\_F = 2, G\_R = 0, Casimir 3/4, closure |
-| YQN-9a | PASS | 9.550e-16 | 1.0e-11 | random SU(2)\_L x U(1)\_Y: Phi\_SH -> exp(i alpha.tau/2 + i beta/2) Phi\_SH |
-| YQN-9b | PASS | 1.110e-15 | 1.0e-11 | the matrix of the transformation of Phi\_SH is unitary (the pairing term (4.2) is invariant) |
-| YQN-9c | PASS | 8.867e-15 | 1.0e-10 | random SL(2,C): every Lorentz-invariant bilinear of the six sectors is unchanged |
-| YQN-10 | PASS | -- | -- | the twelve channels: parity split, closure, SU(2) multiplets, Y and Q agree with data/sh\_channels.csv of the Rust program (largest deviation 3.5e-15; channels that differ: none) |
-| YQN-11 | PASS | -- | -- | every doublet is rotated to (0, phi); the stabilizer of (0, phi) is spanned by Q = T\^3 + Y; a generic second condensate with a charged component breaks Q, a neutral one keeps it (dimension of the stabilizer 1; generic condensates as expected; neutral condensates keep Q; rotation 4.6e-16) |
-| YQN-12 | PASS | 4.375e-16 | 1.0e-12 | the mass matrix: eigenvalues 0, M\_W\^2, M\_W\^2, M\_Z\^2, the photon (0, 0, sin, cos) and the Z (0, 0, cos, -sin); the couplings and the matrix agree with data/sh\_couplings.csv and sh\_mass\_matrix.csv (relative deviation) |
+| YQN-6 | PASS | -- | -- | the dimensions 6, 4, 4, 2, 2, 2 (pairs), 8, 4, 4, 2, 2, 2 (particle-antiparticle), 2, 0, 0 (symmetric Psi Psi, chi chi, chi' chi'), 8, 6, 8, 8 (with the pair of singlets as one field); C gamma\^ch (x) e\_s and C (x) e\_s are orthogonal and span the pairs Psi chi and Psi chi' [Psi Psi 6; Psi chi 4; Psi chi' 4; chi chi 2; chi chi' 2; chi' chi' 2; Psi\^dag Psi 8; Psi\^dag chi 4; Psi\^dag chi' 4; chi\^dag chi 2; chi\^dag chi' 2; chi'\^dag chi' 2; symmetric (2, 0, 0]; Psi (chi, chi') 8; (chi, chi') (chi, chi') 6; Psi\^dag (chi, chi') 8; (chi, chi')\^dag (chi, chi') 8; span 1.3e-15, orthogonality 0.0e+00) |
+| YQN-7 | PASS | 0.000e+00 | 1.0e-12 | parity: +1 for C gamma\^ch (x) e\_s, -1 for C (x) e\_s, with either singlet |
+| YQN-8 | PASS | -- | -- | on Phi\_SH: tau\^a/2, Y = 1/2, Q = diag(1, 0); on Phi'\_SH: tau\^a/2, Y = -1/2, Q = diag(0, -1); F\_tot = 2, R = 0, T\^3\_R = +-1/2, Casimir 3/4, closure; i tau\^2 Phi'\^\* has the generators of the Higgs doublet; the bidoublet has (tau\^a/2) (x) 1, 1 (x) (tau\^a/2) and is the multiplet (2,2) (deviations 0.0e+00, 0.0e+00, 0.0e+00; multiplets (2,2)) |
+| YQN-9a | PASS | 3.629e-15 | 1.0e-11 | random SU(2)\_L x U(1)\_Y: Phi\_SH -> exp(i alpha.tau/2 + i beta/2) Phi\_SH and Phi'\_SH -> exp(i alpha.tau/2 - i beta/2) Phi'\_SH |
+| YQN-9b | PASS | 1.494e-15 | 1.0e-11 | random SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F\_tot: M\_SH -> e\^(2 i theta\_F) L M\_SH R\^T; the matrices are unitary (the pairing term (4.2) is invariant); det M\_SH -> e\^(4 i theta\_F) det M\_SH |
+| YQN-9c | PASS | 8.908e-15 | 1.0e-10 | random SL(2,C): every Lorentz-invariant bilinear of the twelve sectors and of the four custodial sectors is unchanged |
+| YQN-10 | PASS | -- | -- | the 24 channels (parity split, closure, SU(2) multiplets, Y, Q, F\_tot, R, T\^3\_R) and the 8 custodial channels (SU(2)\_L x SU(2)\_R multiplets) agree with data/sh\_channels.csv and data/sh\_custodial\_channels.csv of the Rust program (largest deviation 5.1e-15; channels that differ: none) |
+| YQN-11 | PASS | -- | -- | every doublet is rotated to (0, phi); the stabilizer of the neutral vacuum in SU(2)\_L x U(1)\_Y is spanned by Q; that of phi i tau\^2 among the eight generators is T\^a + T\^a\_R and R, with three broken gauged generators and F\_tot broken; unequal lengths keep only T\^3 + T\^3\_R and R; a generic second condensate with a charged component breaks Q, a neutral one keeps it (neutral vacuum Q; phi i tau\^2: dimension 4, ranks 7 and 8; lengths as expected; second condensates as expected, keep Q; rotation 4.5e-16) |
+| YQN-12 | PASS | 4.375e-16 | 1.0e-12 | the mass matrix of the two pair fields: eigenvalues 0, M\_W\^2, M\_W\^2, M\_Z\^2 for equal lengths and for random ratios of the lengths (rho = 1), the photon (0, 0, sin, cos) and the Z (0, 0, cos, -sin); the couplings and the matrix agree with data/sh\_couplings.csv and sh\_mass\_matrix.csv (relative deviation) |
 <!-- END sh_checks_python -->
 <!-- BEGIN sh_checks_rust -->
 | check | result | deviation | tolerance | statement |
 |:--------|:-----|:---------|:--------|:------------------------------------------------------------|
-| QN-1a | PASS | 0.000e0 | 1.0e-12 | [T\^a, T\^b] = i eps\_abc T\^c on the twelve components (the algebra of SU(2)\_L) |
-| QN-1b | PASS | 0.000e0 | 1.0e-12 | Y, F and R commute with T\^1, T\^2, T\^3 and with each other |
-| QN-1c | PASS | 0.000e0 | 1.0e-12 | T\^1, T\^2, T\^3, Y, Q, F, R are Hermitian (a unitary representation) |
-| QN-2a | PASS | -- | -- | the six real generators S(u) = diag(-M(u)\^dag, M(u)) on each field satisfy S([u, u']) = [S(u), S(u')] and are independent over the real numbers (largest deviation 0.0e0; smallest eigenvalue of the real Gram matrix 3.0000) |
-| QN-2b | PASS | 0.000e0 | 1.0e-12 | the Lorentz generators commute with T\^a, Y, Q, F, R (space-time and internal symmetries) |
-| QN-3 | PASS | 0.000e0 | 1.0e-12 | the free Hamiltonian diag(h\_Psi(q), h\_chi(q)) commutes with T\^a, Y, Q, F, R (25 random momenta; m\_LL = 0.2, m\^chi\_SH = 0.35 and 0.2) |
-| QN-4a | PASS | 0.000e0 | 1.0e-12 | Y = F/4 (equation (4.1)) and Y = 1/4 on all twelve components |
-| QN-4b | PASS | 0.000e0 | 1.0e-12 | Q = T\^3 + Y is 3/4 on the up components of Psi\_LL, -1/4 on the down components and 1/4 on chi\_SH |
+| QN-1a | PASS | 0.000e0 | 1.0e-12 | [T\^a, T\^b] = i eps\_abc T\^c on the sixteen components (the algebra of SU(2)\_L) |
+| QN-1b | PASS | 0.000e0 | 1.0e-12 | [T\^a\_R, T\^b\_R] = i eps\_abc T\^c\_R (the algebra of the custodial SU(2)\_R) and [T\^a, T\^b\_R] = 0 |
+| QN-1c | PASS | 0.000e0 | 1.0e-12 | Y, F\_tot, R and T\^3\_R commute with T\^1, T\^2, T\^3 and with each other, and F\_tot and R commute with T\^a\_R (the global group SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F\_tot of H4) |
+| QN-1d | PASS | 0.000e0 | 1.0e-12 | T\^a, T\^a\_R, Y, Q, F\_tot, R are Hermitian (a unitary representation) |
+| QN-1e | PASS | -- | -- | Y = T\^3\_R + R/4 (equation (4.3)) and Q = T\^3 + T\^3\_R + R/4; Y does not commute with T\^1\_R (the coupling of B to Y breaks SU(2)\_R to the U(1) of T\^3\_R) [deviations 0.0e0 and 0.0e0; largest entry of (Y, T\^1\_R] 1/2) |
+| QN-2a | PASS | -- | -- | the six real generators S(u) = diag(-M(u)\^dag, M(u)) on each field satisfy S([u, u']) = [S(u), S(u')] and are independent over the real numbers (largest deviation 0.0e0; smallest eigenvalue of the real Gram matrix 4.0000) |
+| QN-2b | PASS | 0.000e0 | 1.0e-12 | the Lorentz generators commute with T\^a, T\^a\_R, Y, Q, F\_tot, R (space-time and internal symmetries) |
+| QN-3a | PASS | 0.000e0 | 1.0e-12 | the free Hamiltonian diag(h\_Psi(q), h\_chi(q), h\_chi'(q)) commutes with T\^a, Y, Q, F\_tot, R, T\^3\_R (25 random momenta; the masses m\_LL = 0.2, m\^chi\_SH = 0.35, m\^chi'\_SH = 0.5, or all three 0.2) |
+| QN-3b | PASS | 0.000e0 | 1.0e-12 | with equal masses of the two singlets (m\^chi\_SH = m\^chi'\_SH = 0.35, m\_LL = 0.2) it commutes also with T\^1\_R, T\^2\_R, T\^3\_R: SU(2)\_R is a symmetry of the free Lagrangian |
+| QN-3c | PASS | 0.000e0 | 1.0e-12 | with unequal masses of the singlets (0.35 and 0.5) the largest entry of [h, T\^1\_R] is /m\^chi\_SH - m\^chi'\_SH//2: the difference of the masses breaks SU(2)\_R (deviation from that value) |
+| QN-4a | PASS | 0.000e0 | 1.0e-12 | Y = 1/4 on Psi\_LL and chi\_SH and -3/4 on chi'\_SH; F\_LL = 4 Y equals F\_tot on Psi\_LL and chi\_SH (equation (4.1)) and -3 F\_tot on chi'\_SH |
+| QN-4b | PASS | 0.000e0 | 1.0e-12 | Q = T\^3 + Y is 3/4 on the up components of Psi\_LL, -1/4 on the down components, 1/4 on chi\_SH and -3/4 on chi'\_SH |
+| QN-4c | PASS | 0.000e0 | 1.0e-12 | the Casimir operators: sum\_a (T\^a)\^2 = 3/4 on Psi\_LL and 0 on the singlets, sum\_a (T\^a\_R)\^2 = 0 on Psi\_LL and 3/4 on chi\_SH and chi'\_SH (the pair of singlets is a doublet of SU(2)\_R) |
 | QN-5a | PASS | 0.000e0 | 1.0e-12 | the anomaly traces tr(gamma\^ch Y\^3), tr(gamma\^ch Y), tr(gamma\^ch {T\^a, T\^b} Y), tr(gamma\^ch Y\^2 T\^a), tr(gamma\^ch T\^a {T\^b, T\^c}) vanish (47 traces) |
 | QN-5b | PASS | 0.000e0 | 1.0e-12 | the fields are vector-like: gamma\^0, which exchanges the two chiralities, commutes with every internal generator |
 | QN-5c | PASS | -- | -- | the number of Weyl doublets of SU(2)\_L is even (no global anomaly; the right-handed doublet counts as the conjugate of a left-handed one) (8 components with Casimir 3/4, 2 Weyl doublets) |
-| QN-6a | PASS | -- | -- | Lorentz-invariant pairs, antisymmetric (Fermi statistics) of the sector Psi Psi: dimension 6 (dimension 6; largest eigenvalue counted as zero 6.6e-15, smallest not zero 3.000) |
-| QN-6b | PASS | -- | -- | Lorentz-invariant pairs of the sector Psi chi: dimension 4 (dimension 4; largest eigenvalue counted as zero 3.3e-16, smallest not zero 3.000) |
-| QN-6c | PASS | -- | -- | Lorentz-invariant pairs, antisymmetric (Fermi statistics) of the sector chi chi: dimension 2 (dimension 2; largest eigenvalue counted as zero 2.1e-15, smallest not zero 3.000) |
-| QN-6d | PASS | -- | -- | Lorentz-invariant particle-antiparticle bilinears of the sector Psi\^dag Psi: dimension 8 (dimension 8; largest eigenvalue counted as zero 7.8e-16, smallest not zero 3.000) |
-| QN-6e | PASS | -- | -- | Lorentz-invariant particle-antiparticle bilinears of the sector Psi\^dag chi: dimension 4 (dimension 4; largest eigenvalue counted as zero 2.2e-16, smallest not zero 3.000) |
-| QN-6f | PASS | -- | -- | Lorentz-invariant particle-antiparticle bilinears of the sector chi\^dag chi: dimension 2 (dimension 2; largest eigenvalue counted as zero 2.2e-16, smallest not zero 3.000) |
-| QN-6g | PASS | -- | -- | the symmetric Lorentz-invariant matrices of the sector Psi Psi, which give no operator (Fermi statistics): dimension 2 (dimension 2; gap 2.0e-15 / 3.000) |
-| QN-6h | PASS | 3.201e-16 | 1.0e-12 | the four matrices C gamma\^ch (x) e\_s and C (x) e\_s (s = up, down) are Lorentz invariant, orthogonal and lie in the space of QN-6b, which they therefore span |
-| QN-7 | PASS | 0.000e0 | 1.0e-12 | parity (phi -> gamma\^0 phi, intrinsic parities +1): gamma\^0 K gamma\^0 = +K for C gamma\^ch (x) e\_s (spin 0, positive parity) and -K for C (x) e\_s |
-| QN-8a | PASS | 0.000e0 | 1.0e-12 | on Phi\_SH = (Pi[C gamma\^ch (x) e\_up], Pi[C gamma\^ch (x) e\_down]) / norm(C gamma\^ch): G\_{T\^a} = tau\^a / 2 and G\_Y = 1/2, the generators of the Higgs doublet Phi\^SM |
-| QN-8b | PASS | 0.000e0 | 1.0e-12 | the two pair components span an invariant space (closure of L\_X for all seven generators) |
-| QN-8c | PASS | 0.000e0 | 1.0e-12 | G\_Q = diag(1, 0) (the charges +1 and 0 of Phi\^u\_SH and Phi\^d\_SH), G\_F = 2 and G\_R = 0 (the relative number is not changed) |
-| QN-8d | PASS | 0.000e0 | 1.0e-12 | the Casimir sum\_a G\_{T\^a}\^2 = 3/4 on both components (a doublet) |
-| QN-9a | PASS | 5.910e-15 | 1.0e-11 | for 25 random elements of SU(2)\_L x U(1)\_Y the pair field transforms as Phi\_SH -> U\_SM Phi\_SH with U\_SM = exp(i alpha.tau/2 + i beta/2), the transformation of Phi\^SM |
-| QN-9b | PASS | 1.255e-14 | 1.0e-11 | the matrix of the transformation of Phi\_SH is unitary: the pairing term (4.2), minus G\_SH times the sum of Pi\_s\^dag Pi\_s, is invariant |
-| QN-9c | PASS | 9.687e-16 | 1.0e-10 | for 25 random elements g of SL(2,C) every Lorentz-invariant bilinear of QN-6 (all six sectors) is unchanged by phi -> S(g) phi |
-| QN-10a | PASS | 3.159e-15 | 1.0e-12 | each of the six spaces of QN-6 is the sum of a part of parity +1 and one of parity -1, and each of the twelve parts is invariant under T\^a, Y, Q, F, R (a representation) |
-| QN-10b | PASS | -- | -- | the eigenvalues of every Casimir operator are those of whole SU(2) multiplets (12 channels) |
-| QN-10c | PASS | -- | -- | the channels: Psi Psi = triplet with Y = 1/2 and Q = 3/2, 1/2, -1/2 (equation (3.1): the isospin singlet is symmetric and absent); Psi chi = doublet, Y = 1/2, Q = 1, 0; chi chi = singlet, Y = Q = 1/2; Psi\^dag Psi = 1 + 3, Y = 0; Psi\^dag chi = doublet, Y = 0, Q = 1/2, -1/2; chi\^dag chi = singlet, Y = Q = 0 (each for both parities) (largest deviation of a charge 2.0e-15) |
-| QN-10d | PASS | -- | -- | the symmetric Lorentz-invariant Psi Psi matrices of QN-6g form isospin singlets (2 (x) 2 = 1 + 3: the singlet is the part that Fermi statistics removes) (multiplets 1 + 1) |
-| QN-10e | PASS | -- | -- | no pair of two Psi\_LL particles and no pair of two chi\_SH particles is neutral: a condensate of such pairs would carry electric charge (smallest absolute value of Q in these channels 1/2) |
+| QN-6a | PASS | -- | -- | the Lorentz-invariant pairs of the six sectors: dimensions 6 (Psi Psi, antisymmetric by Fermi statistics), 4 (Psi chi), 4 (Psi chi'), 2 (chi chi, antisymmetric), 2 (chi chi'), 2 (chi' chi', antisymmetric) (Psi Psi 6, Psi chi 4, Psi chi' 4, chi chi 2, chi chi' 2, chi' chi' 2; eigenvalues counted as zero at most 6.6e-15, the others at least 3.000) |
+| QN-6b | PASS | -- | -- | the Lorentz-invariant particle-antiparticle bilinears of the six sectors: dimensions 8 (Psi\^dag Psi), 4 (Psi\^dag chi), 4 (Psi\^dag chi'), 2 (chi\^dag chi), 2 (chi\^dag chi'), 2 (chi'\^dag chi') (Psi\^dag Psi 8, Psi\^dag chi 4, Psi\^dag chi' 4, chi\^dag chi 2, chi\^dag chi' 2, chi'\^dag chi' 2; eigenvalues counted as zero at most 7.8e-16, the others at least 3.000) |
+| QN-6c | PASS | -- | -- | the symmetric Lorentz-invariant matrices of two particles of one field, which give no operator (Fermi statistics): dimension 2 for Psi Psi, 0 for chi chi and chi' chi' (dimensions 2, 0, 0; gap 2.0e-15 / 3.000) |
+| QN-6d | PASS | 3.201e-16 | 1.0e-12 | the four matrices C gamma\^ch (x) e\_s and C (x) e\_s (s = up, down) are Lorentz invariant and orthogonal, and they span the pairs Psi chi and the pairs Psi chi' |
+| QN-6e | PASS | -- | -- | with the two singlets taken as one field (chi, chi'), the Lorentz-invariant bilinears have the dimensions 8 (pairs with Psi = 4 + 4), 6 (antisymmetric pairs of two singlets = 2 + 2 + 2), 8 (Psi\^dag (chi, chi') = 4 + 4) and 8 ((chi, chi')\^dag (chi, chi'), the four sectors chi\^dag chi, chi\^dag chi', chi'\^dag chi, chi'\^dag chi') (Psi (chi, chi') 8, (chi, chi') (chi, chi') 6, Psi\^dag (chi, chi') 8, (chi, chi')\^dag (chi, chi') 8) |
+| QN-7 | PASS | 0.000e0 | 1.0e-12 | parity (phi -> gamma\^0 phi, intrinsic parities +1): gamma\^0 K gamma\^0 = +K for C gamma\^ch (x) e\_s (spin 0, positive parity) and -K for C (x) e\_s, with either singlet |
+| QN-8a | PASS | 0.000e0 | 1.0e-12 | on Phi\_SH = (Pi[C gamma\^ch (x) e\_up], Pi[C gamma\^ch (x) e\_down]) / norm(C gamma\^ch), the pairs with chi\_SH: G\_{T\^a} = tau\^a/2 and G\_Y = 1/2, the generators of the Higgs doublet Phi\^SM |
+| QN-8b | PASS | 0.000e0 | 1.0e-12 | on Phi'\_SH, the same pairs with chi'\_SH: G\_{T\^a} = tau\^a/2 and G\_Y = -1/2, a doublet with the opposite hypercharge |
+| QN-8c | PASS | 0.000e0 | 1.0e-12 | the two pair fields span invariant spaces (closure of L\_X for T\^a, Y, Q, F\_tot, R, T\^3\_R) |
+| QN-8d | PASS | 0.000e0 | 1.0e-12 | G\_Q = diag(1, 0) on Phi\_SH and diag(0, -1) on Phi'\_SH (the neutral components are Phi\^d\_SH and Phi'\^u\_SH); G\_F = 2 and G\_R = 0 on both; G\_{T\^3\_R} = 1/2 on Phi\_SH and -1/2 on Phi'\_SH |
+| QN-8e | PASS | 0.000e0 | 1.0e-12 | the Casimir sum\_a G\_{T\^a}\^2 = 3/4 on the components of both pair fields (two doublets) |
+| QN-8f | PASS | 0.000e0 | 1.0e-12 | the conjugate i tau\^2 (Phi'\_SH)\^\* transforms with G~ = -(i tau\^2) G\^\* (i tau\^2)\^T: tau\^a/2 and Y = 1/2, the generators of the Higgs doublet (a second field with its quantum numbers) |
+| QN-8g | PASS | -- | -- | the bidoublet M\_SH = (Phi\_SH, Phi'\_SH): on its components (up chi, up chi', down chi, down chi') G\_{T\^a} = (tau\^a/2) (x) 1\_2 and G\_{T\^a\_R} = 1\_2 (x) (tau\^a/2), so that M\_SH -> L M\_SH R\^T; G\_Y = 1\_2 (x) tau\^3/2, G\_F = 2, G\_R = 0; the space is invariant under all ten generators, and it is the multiplet (2,2) of SU(2)\_L x SU(2)\_R (largest deviation 0.0e0; multiplets (2,2)) |
+| QN-9a | PASS | 1.056e-14 | 1.0e-11 | for 25 random elements of SU(2)\_L x U(1)\_Y: Phi\_SH -> exp(i alpha.tau/2 + i beta/2) Phi\_SH, the transformation of Phi\^SM, and Phi'\_SH -> exp(i alpha.tau/2 - i beta/2) Phi'\_SH |
+| QN-9b | PASS | 1.754e-14 | 1.0e-11 | for 25 random elements exp(i (alpha.T + gamma.T\_R + theta\_R R + theta\_F F\_tot)) of SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F\_tot: M\_SH -> e\^(2 i theta\_F) L M\_SH R\^T with L = exp(i alpha.tau/2) and R = exp(i gamma.tau/2) |
+| QN-9c | PASS | 5.251e-14 | 1.0e-11 | the matrices of these transformations are unitary: the pairing term (4.2), minus G\_SH times the sum of the squared lengths of the two pair fields (= tr(M\_SH\^dag M\_SH)), is invariant under both groups |
+| QN-9d | PASS | -- | -- | the determinant term eps\_st Pi\^s\_SH Pi'\^t\_SH = det M\_SH of consequence 3(c) is multiplied by e\^(4 i theta\_F): it is invariant under SU(2)\_L x SU(2)\_R x U(1)\_R, hence under SU(2)\_L x U(1)\_Y, and it breaks U(1)\_F\_tot (largest deviation from e\^(4 i theta\_F) det 1.3e-14; largest change of det itself 0.855) |
+| QN-9e | PASS | 1.174e-15 | 1.0e-10 | for 25 random elements g of SL(2,C) every Lorentz-invariant bilinear of QN-6 (the twelve sectors and the four custodial ones) is unchanged by phi -> S(g) phi |
+| QN-10a | PASS | 3.159e-15 | 1.0e-12 | each of the twelve spaces of QN-6 is the sum of a part of parity +1 and one of parity -1, and each of the 24 parts is invariant under T\^a, Y, Q, F\_tot, R, T\^3\_R (a representation) |
+| QN-10b | PASS | -- | -- | the eigenvalues of every Casimir operator are those of whole SU(2) multiplets (24 channels) |
+| QN-10c | PASS | -- | -- | the channels (each for both parities): Psi Psi = triplet, Y = 1/2, Q = 3/2, 1/2, -1/2 (equation (3.1): the isospin singlet is symmetric and absent); Psi chi = doublet, Y = 1/2, Q = 1, 0; Psi chi' = doublet, Y = -1/2, Q = 0, -1; chi chi, chi chi', chi' chi' = singlets with Y = Q = 1/2, -1/2, -3/2; Psi\^dag Psi = 1 + 3, Y = 0; Psi\^dag chi = doublet, Y = 0, Q = 1/2, -1/2; Psi\^dag chi' = doublet, Y = -1, Q = -1/2, -3/2; chi\^dag chi and chi'\^dag chi' = neutral singlets; chi\^dag chi' = singlet, Y = Q = -1; and the values of T\^3\_R (largest deviation of a charge 2.0e-15) |
+| QN-10d | PASS | -- | -- | the symmetric Lorentz-invariant Psi Psi matrices of QN-6c form isospin singlets (2 (x) 2 = 1 + 3: the singlet is the part that Fermi statistics removes) (multiplets 1 + 1) |
+| QN-10e | PASS | -- | -- | no pair of two particles of one field and no pair of chi\_SH with chi'\_SH is neutral: a condensate of such pairs would carry electric charge (smallest absolute value of Q in these channels 1/2) |
+| QN-10f | PASS | -- | -- | the neutral pairs: exactly one neutral component in each of the channels Psi chi and Psi chi' (the down particle with chi\_SH and the up particle with chi'\_SH, by QN-8d) and none in the other pair channels (Psi chi (+): 1; Psi chi (-): 1; Psi chi' (+): 1; Psi chi' (-): 1) |
+| QN-10g | PASS | -- | -- | the custodial multiplets (both parities, each part invariant under all ten generators): Psi (chi, chi') pairs (2,2); pairs of two singlets (1,3) (chi chi, chi chi', chi' chi' form a triplet of SU(2)\_R); Psi\^dag (chi, chi') (2,2); (chi, chi')\^dag (chi, chi') (1,1) + (1,3) (Psi (chi, chi') (+) (2,2); Psi (chi, chi') (-) (2,2); (chi, chi') (chi, chi') (+) (1,3); (chi, chi') (chi, chi') (-) (1,3); Psi\^dag (chi, chi') (+) (2,2); Psi\^dag (chi, chi') (-) (2,2); (chi, chi')\^dag (chi, chi') (+) (1,1) + (1,3); (chi, chi')\^dag (chi, chi') (-) (1,1) + (1,3)) |
 | QN-11a | PASS | 4.441e-16 | 1.0e-12 | every doublet is brought to the form (0, phi) with real phi > 0 by an element of SU(2)\_L (25 random doublets) |
-| QN-11b | PASS | -- | -- | the generators of SU(2)\_L x U(1)\_Y that leave Phi\_SH = (0, phi) unchanged form a space of dimension 1, spanned by T\^3 + Y = Q: the breaking SU(2)\_L x U(1)\_Y -> U(1)\_Q (dimension 1; deviation of the unit vector from (0, 0, 1, 1)/sqrt2 1.1e-16; gap 5.6e-17 / 0.250) |
-| QN-11c | PASS | -- | -- | a generic second condensate in any channel with a charged component, added to (0, phi), leaves no generator unbroken (the photon would become massive); in the neutral channels chi\^dag chi it leaves Q (Psi Psi (+): generic 0, neutral -; Psi Psi (-): generic 0, neutral -; Psi chi (+): generic 0, neutral 1 (Q); Psi chi (-): generic 0, neutral 1 (Q); chi chi (+): generic 0, neutral -; chi chi (-): generic 0, neutral -; Psi\^dag Psi (+): generic 0, neutral 1 (Q); Psi\^dag Psi (-): generic 0, neutral 1 (Q); Psi\^dag chi (+): generic 0, neutral -; Psi\^dag chi (-): generic 0, neutral -; chi\^dag chi (+): generic 1, neutral 1 (Q); chi\^dag chi (-): generic 1, neutral 1 (Q)) |
-| QN-11d | PASS | -- | -- | a second condensate in the neutral part of any channel (Q = 0) keeps exactly Q unbroken: the mean fields compatible with U(1)\_Q are the neutral ones (dimension of the stabilizer 1 and along Q in every channel with a neutral part) |
+| QN-11b | PASS | -- | -- | the generators of SU(2)\_L x U(1)\_Y that leave Phi\_SH = (0, phi) unchanged span the direction of T\^3 + Y = Q; so do those that leave the neutral vacuum Phi\_SH = (0, phi), Phi'\_SH = (phi', 0) of H5 unchanged (25 random phi, phi' of different lengths): SU(2)\_L x U(1)\_Y -> U(1)\_Q (deviation of the unit vector from (0, 0, 1, 1)/sqrt2: 1.1e-16 (Phi\_SH alone), 2.2e-16 (both); gap 5.6e-17 / 0.250) |
+| QN-11c | PASS | 1.112e-14 | 1.0e-12 | a neutral vacuum with equal lengths, M\_SH = [[0, a], [b, 0]] with /a/ = /b/ = phi, is brought to phi i tau\^2 by exp(i theta\_3 T\^3 + i theta\_F F\_tot) (25 random phases and lengths); the product a b, which SU(2)\_L x U(1)\_Y does not change (QN-9d), needs F\_tot |
+| QN-11d | PASS | -- | -- | the vacuum phi i tau\^2 keeps four of the eight generators of SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F\_tot: T\^a + T\^a\_R (the custodial SU(2)\_V) and R; Q = T\^3 + T\^3\_R + R/4 lies among them; four are broken, three of them in SU(2)\_L x U(1)\_Y (whose stabilizer is the direction of Q) and the fourth F\_tot, which is not a combination of the kept and the gauged generators: three Goldstone modes for W and Z and one physical (stabilizer of dimension 4 (deviation of its projector 4.4e-16; gap 5.6e-17 / 0.500); Q in it to 3.3e-16; broken 4 of 8, 3 of the 4 gauged; rank of kept + gauged 7, with F\_tot 8) |
+| QN-11e | PASS | -- | -- | a neutral vacuum with equal lengths and any phases keeps four generators (a conjugate of SU(2)\_V, and R); with unequal lengths it keeps only T\^3 + T\^3\_R and R: the custodial SU(2)\_V needs equal lengths (25 random vacua of each kind) (equal lengths: dimension 4 in all trials: true; unequal: deviation of the projector 3.0e-15) |
+| QN-11f | PASS | -- | -- | a generic second condensate in any channel with a charged component, added to the neutral vacuum of H5, leaves no generator of SU(2)\_L x U(1)\_Y unbroken (the photon would become massive); in the neutral channels chi\^dag chi and chi'\^dag chi' it leaves Q (Psi Psi (+): generic 0, neutral -; Psi Psi (-): generic 0, neutral -; Psi chi (+): generic 0, neutral 1 (Q); Psi chi (-): generic 0, neutral 1 (Q); Psi chi' (+): generic 0, neutral 1 (Q); Psi chi' (-): generic 0, neutral 1 (Q); chi chi (+): generic 0, neutral -; chi chi (-): generic 0, neutral -; chi chi' (+): generic 0, neutral -; chi chi' (-): generic 0, neutral -; chi' chi' (+): generic 0, neutral -; chi' chi' (-): generic 0, neutral -; Psi\^dag Psi (+): generic 0, neutral 1 (Q); Psi\^dag Psi (-): generic 0, neutral 1 (Q); Psi\^dag chi (+): generic 0, neutral -; Psi\^dag chi (-): generic 0, neutral -; Psi\^dag chi' (+): generic 0, neutral -; Psi\^dag chi' (-): generic 0, neutral -; chi\^dag chi (+): generic 1, neutral 1 (Q); chi\^dag chi (-): generic 1, neutral 1 (Q); chi\^dag chi' (+): generic 0, neutral -; chi\^dag chi' (-): generic 0, neutral -; chi'\^dag chi' (+): generic 1, neutral 1 (Q); chi'\^dag chi' (-): generic 1, neutral 1 (Q)) |
+| QN-11g | PASS | -- | -- | a second condensate in the neutral part of any channel (Q = 0) keeps exactly Q unbroken: the mean fields compatible with U(1)\_Q are the neutral ones (dimension of the stabilizer 1 and along Q in every channel with a neutral part) |
 | QN-12a | PASS | -- | -- | v = (sqrt2 G\_F)\^(-1/2) = 246.22 GeV to the five digits stated in H0 (v = 246.2197 GeV) |
-| QN-12b | PASS | 4.375e-16 | 1.0e-13 | the eigenvalues of the mass matrix are 0, M\_W\^2, M\_W\^2, M\_Z\^2 with M\_W = g v\_SH/2 and M\_Z = sqrt(g\^2 + g'\^2) v\_SH/2 (relative deviation) |
-| QN-12c | PASS | 1.768e-16 | 1.0e-13 | with v\_SH = v (H5) and these couplings the two masses are the measured M\_W and M\_Z (relative deviation) |
-| QN-12d | PASS | 0.000e0 | 1.0e-12 | the massless field is A = sin(theta\_W) W\^3 + cos(theta\_W) B and the field of mass M\_Z is Z = cos(theta\_W) W\^3 - sin(theta\_W) B, with tan(theta\_W) = g'/g (the conventions (10.3) of the Review) |
+| QN-12b | PASS | 1.094e-16 | 1.0e-13 | for the vacuum Phi\_SH = (0, phi), Phi'\_SH = (phi', 0) of equal lengths, phi = phi' = v\_SH/2, the eigenvalues of the mass matrix are 0, M\_W\^2, M\_W\^2, M\_Z\^2 with M\_W = g v\_SH/2 and M\_Z = sqrt(g\^2 + g'\^2) v\_SH/2, where v\_SH\^2 = 2 (phi\^2 + phi'\^2) (relative deviation) |
+| QN-12c | PASS | 1.558e-16 | 1.0e-13 | with v\_SH = v (H6) and these couplings the two masses are the measured M\_W and M\_Z (relative deviation) |
+| QN-12d | PASS | 5.551e-17 | 1.0e-12 | the massless field is A = sin(theta\_W) W\^3 + cos(theta\_W) B and the field of mass M\_Z is Z = cos(theta\_W) W\^3 - sin(theta\_W) B, with tan(theta\_W) = g'/g (the conventions (10.3) of the Review) |
 | QN-12e | PASS | 2.220e-16 | 1.0e-12 | under the unbroken U(1)\_Q the field (W\^1 - i W\^2)/sqrt2 = W\^+ has the charge +1 and the mass M\_W; W\^3 and B are neutral (the eigenvalues of the adjoint action of Q are -1, 0, 0, 1) |
-| QN-12f | PASS | 0.000e0 | 1.0e-13 | rho = M\_W\^2 / (M\_Z\^2 cos\^2 theta\_W) = 1 for a canonical kinetic term of the doublet (the value of the dynamics is computed in stage 5) |
-| QN-12g | PASS | 0.000e0 | 1.0e-14 | e = g g' / sqrt(g\^2 + g'\^2) = g sin(theta\_W), and g\^F\_LL = g'/4 reproduces g' Y = g\^F\_LL F on both fields |
+| QN-12f | PASS | 4.375e-16 | 1.0e-13 | rho = M\_W\^2 / (M\_Z\^2 cos\^2 theta\_W) = 1 for a canonical kinetic term of the two pair fields, for the vacuum of equal lengths and for 25 random ratios of the lengths, with the same eigenvalues (the value of the dynamics is computed in stage 4) |
+| QN-12g | PASS | 0.000e0 | 1.0e-14 | e = g g' / sqrt(g\^2 + g'\^2) = g sin(theta\_W), and g\^F\_LL = g'/4 reproduces g' Y = g\^F\_LL F\_LL with F\_LL = 4 Y on all three fields (Y = 1/4, 1/4, -3/4) |
 <!-- END sh_checks_rust -->
 <!-- BEGIN sh_checks_wolfram -->
 | check | result | deviation | tolerance | statement |
 |:--------|:-----|:---------|:--------|:------------------------------------------------------------|
-| WQN-1 | PASS | -- | -- | [T\^a, T\^b] = i eps\_abc T\^c, Y, F, R commute with T\^a, all generators Hermitian (identities of exact matrices) |
-| WQN-2 | PASS | -- | -- | the six real Lorentz generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting with the internal generators (identities of exact matrices; real rank 6) |
-| WQN-4 | PASS | -- | -- | Y = F/4 = 1/4; Q = 3/4 (up), -1/4 (down) on Psi\_LL and 1/4 on chi\_SH (Q on the components 0..11: {3/4, -1/4, 3/4, -1/4, 3/4, -1/4, 3/4, -1/4, 1/4, 1/4, 1/4, 1/4}) |
+| WQN-1 | PASS | -- | -- | the algebra of SU(2)\_L x SU(2)\_R x U(1)\_R x U(1)\_F\_tot, Hermitian generators, Y = T\^3\_R + R/4 (4.3), Q = T\^3 + T\^3\_R + R/4, and [Y, T\^1\_R] != 0 (identities of exact matrices) |
+| WQN-2 | PASS | -- | -- | the six real Lorentz generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting with the ten internal generators (identities of exact matrices; real rank 6) |
+| WQN-4 | PASS | -- | -- | Q = 3/4 (up), -1/4 (down) on Psi\_LL, 1/4 on chi\_SH, -3/4 on chi'\_SH; 4 Y = F\_tot on Psi\_LL and chi\_SH, -3 F\_tot on chi'\_SH; the Casimir operators 3/4 of SU(2)\_L on Psi\_LL and of SU(2)\_R on the singlets (Q on the components 0..15: {3/4, -1/4, 3/4, -1/4, 3/4, -1/4, 3/4, -1/4, 1/4, 1/4, 1/4, 1/4, -3/4, -3/4, -3/4, -3/4}) |
 | WQN-5 | PASS | -- | -- | no anomaly (47 traces exactly 0), vector-like fields, an even number of Weyl doublets (2 Weyl doublets) |
-| WQN-6 | PASS | -- | -- | the dimensions 6, 4, 2 (pairs Psi Psi, Psi chi, chi chi), 8, 4, 2 (particle-antiparticle) and 2 (symmetric Psi Psi); C gamma\^ch (x) e\_s, C (x) e\_s are invariant and span the Psi chi pairs (dimensions {6, 4, 2, 8, 4, 2}, symmetric 2) |
-| WQN-7 | PASS | -- | -- | parity: +1 for C gamma\^ch (x) e\_s, -1 for C (x) e\_s (identities of exact matrices) |
-| WQN-8 | PASS | -- | -- | on Phi\_SH: G\_{T\^a} = tau\^a/2, G\_Y = 1/2, G\_Q = diag(1, 0), G\_F = 2, G\_R = 0, Casimir 3/4, closure: the generators of the Higgs doublet (G\_Y = {{1/2, 0}, {0, 1/2}}) |
-| WQN-10 | PASS | -- | -- | the twelve channels: parity split, closure, SU(2) multiplets, Y and Q agree with the table of the Rust program (all 12 agree) |
-| WQN-10e | PASS | -- | -- | no pair of two Psi\_LL or of two chi\_SH particles is neutral (smallest absolute value of Q 1/2) |
-| WQN-11 | PASS | -- | -- | the stabilizer of (0, phi) is spanned by Q = T\^3 + Y; a generic second condensate with a charged component breaks Q, a neutral one keeps exactly Q (stabilizer {{0, 0, 1, 1}}) |
-| WQN-12 | PASS | -- | -- | the mass matrix of (W\^1, W\^2, W\^3, B) from Phi\_SH = (0, v/sqrt2): eigenvalues 0, g\^2 v\^2/4 (twice), (g\^2 + g'\^2) v\^2/4, the massless vector along (0, 0, g', g) (symbolic couplings) (eigenvalues {0, (g\^2\*v\^2)/4, (g\^2\*v\^2)/4, ((g\^2 + gp\^2)\*v\^2)/4}) |
+| WQN-6 | PASS | -- | -- | the dimensions 6, 4, 4, 2, 2, 2 (pairs Psi Psi, Psi chi, Psi chi', chi chi, chi chi', chi' chi'), 8, 4, 4, 2, 2, 2 (particle-antiparticle), 2, 0, 0 (symmetric Psi Psi, chi chi, chi' chi'), 8, 6, 8, 8 (the pair of singlets as one field); C gamma\^ch (x) e\_s, C (x) e\_s are invariant and span the pairs Psi chi and Psi chi' (dimensions {6, 4, 4, 2, 2, 2, 8, 4, 4, 2, 2, 2}, symmetric {2, 0, 0}, custodial {8, 6, 8, 8}) |
+| WQN-7 | PASS | -- | -- | parity: +1 for C gamma\^ch (x) e\_s, -1 for C (x) e\_s, with either singlet (identities of exact matrices) |
+| WQN-8 | PASS | -- | -- | on Phi\_SH: tau\^a/2, Y = 1/2, Q = diag(1, 0); on Phi'\_SH: tau\^a/2, Y = -1/2, Q = diag(0, -1); F\_tot = 2, R = 0, T\^3\_R = +-1/2, Casimir 3/4, closure; i tau\^2 Phi'\^\* has tau\^a/2 and Y = 1/2; the bidoublet has (tau\^a/2) (x) 1 and 1 (x) (tau\^a/2): M\_SH -> L M\_SH R\^T (G\_Y = {{1/2, 0}, {0, 1/2}} and {{-1/2, 0}, {0, -1/2}}) |
+| WQN-9 | PASS | -- | -- | the generators on Phi\_SH, Phi'\_SH and M\_SH are Hermitian, so the pairing term (4.2) is invariant; det M\_SH has the charges 0 under T\^a, T\^a\_R, R and Y and 4 under F\_tot (the determinant term breaks only U(1)\_F\_tot) (charges of det M\_SH {0, 0, 0, 0, 0, 0, 0, 0, 4}) |
+| WQN-10 | PASS | -- | -- | the 24 channels (parity split, closure, SU(2) multiplets, Y, Q, F\_tot, R, T\^3\_R) and the 8 custodial channels (SU(2)\_L x SU(2)\_R multiplets) agree with the tables of the Rust program (all 24 and all 8 agree; custodial: Psi (chi, chi') (2,2); (chi, chi') (chi, chi') (1,3); Psi\^dag (chi, chi') (2,2); (chi, chi')\^dag (chi, chi') (1,1) + (1,3)) |
+| WQN-10e | PASS | -- | -- | no pair of two particles of one field and no chi chi' pair is neutral; the pair channels have exactly one neutral component each in Psi chi and Psi chi' and none elsewhere (smallest absolute value of Q 1/2; neutral components of the 12 pair channels {0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0}) |
+| WQN-11 | PASS | -- | -- | the stabilizer of (0, phi) and of the neutral vacuum of H5 in SU(2)\_L x U(1)\_Y is spanned by Q; that of i tau\^2 among the eight generators is spanned by T\^a + T\^a\_R and R, three gauged generators and F\_tot are broken; other phases with equal lengths keep four generators, unequal lengths only T\^3 + T\^3\_R and R (stabilizer of i tau\^2 {{0, 0, 0, 0, 0, 0, 1, 0}, {0, 0, 1, 0, 0, 1, 0, 0}, {0, 1, 0, 0, 1, 0, 0, 0}, {1, 0, 0, 1, 0, 0, 0, 0}}) |
+| WQN-11f | PASS | -- | -- | a generic second condensate with a charged component, added to the neutral vacuum of H5, breaks Q; one in the neutral part of a channel keeps exactly Q (24 of 24 channels as expected) |
+| WQN-12 | PASS | -- | -- | the mass matrix of (W\^1, W\^2, W\^3, B) from Phi\_SH = (0, phi) and Phi'\_SH = (phi', 0): eigenvalues 0, g\^2 v\_SH\^2/4 (twice), (g\^2 + g'\^2) v\_SH\^2/4 with v\_SH\^2 = 2 (phi\^2 + phi'\^2) for any phi, phi', the massless vector along (0, 0, g', g), and rho = 1 (symbolic couplings and lengths) (eigenvalues {0, (g\^2\*(ph\^2 + php\^2))/2, (g\^2\*(ph\^2 + php\^2))/2, ((g\^2 + gp\^2)\*(ph\^2 + php\^2))/2}) |
 <!-- END sh_checks_wolfram -->
 <!-- BEGIN sh_e -->
 $0.30849$
@@ -119,15 +139,29 @@ $1.0103$
 $0.22334$
 <!-- END sh_s2w -->
 <!-- BEGIN sh_table_channels -->
-| bilinear | components | $SU(2)_L$ | $Y^{\rm SM}$ | $Q^{\rm SM}$ | neutral | relative number |
-|:--------------------|:----------|:-------|:-----|:--------------|:-------|:---------|
-| $\Psi_{\rm LL}^T\mathsf V_{\rm SH}\Psi_{\rm LL}$ | 3 | $\mathbf 3$ | $\tfrac{1}{2}$ | $\tfrac{3}{2},\ \tfrac{1}{2},\ -\tfrac{1}{2}$ | 0 | $2$ |
-| $\Psi_{\rm LL}^T\mathsf V_{\rm SH}\chi_{\rm SH}$ | 2 | $\mathbf 2$ | $\tfrac{1}{2}$ | $1,\ 0$ | 1 | $0$ |
-| $\chi_{\rm SH}^T\mathsf V_{\rm SH}\chi_{\rm SH}$ | 1 | $\mathbf 1$ | $\tfrac{1}{2}$ | $\tfrac{1}{2}$ | 0 | $-2$ |
-| $\Psi_{\rm LL}^\dagger\mathsf V_{\rm SH}\Psi_{\rm LL}$ | 4 | $\mathbf 1\oplus\mathbf 3$ | $0$ | $1,\ 0,\ 0,\ -1$ | 2 | $0$ |
-| $\Psi_{\rm LL}^\dagger\mathsf V_{\rm SH}\chi_{\rm SH}$ | 2 | $\mathbf 2$ | $0$ | $\tfrac{1}{2},\ -\tfrac{1}{2}$ | 0 | $-2$ |
-| $\chi_{\rm SH}^\dagger\mathsf V_{\rm SH}\chi_{\rm SH}$ | 1 | $\mathbf 1$ | $0$ | $0$ | 1 | $0$ |
+| bilinear | comp. | $SU(2)_L$ | $Y^{\rm SM}$ | $Q^{\rm SM}$ | neutral | $R_{\rm SH}$ | $T^{3,{\rm R}}_{\rm SH}$ |
+|:--------------------|:-----|:-------|:-----|:--------------|:-----|:-----|:-----|
+| ${\Psi_{\rm LL}}^T\mathsf V_{\rm SH}\Psi_{\rm LL}$ | 3 | $\mathbf 3$ | $\tfrac{1}{2}$ | $\tfrac{3}{2},\ \tfrac{1}{2},\ -\tfrac{1}{2}$ | 0 | $2$ | $0$ |
+| ${\Psi_{\rm LL}}^T\mathsf V_{\rm SH}\chi_{\rm SH}$ | 2 | $\mathbf 2$ | $\tfrac{1}{2}$ | $1,\ 0$ | 1 | $0$ | $\tfrac{1}{2}$ |
+| ${\Psi_{\rm LL}}^T\mathsf V_{\rm SH}\chi'_{\rm SH}$ | 2 | $\mathbf 2$ | $-\tfrac{1}{2}$ | $0,\ -1$ | 1 | $0$ | $-\tfrac{1}{2}$ |
+| ${\chi_{\rm SH}}^T\mathsf V_{\rm SH}\chi_{\rm SH}$ | 1 | $\mathbf 1$ | $\tfrac{1}{2}$ | $\tfrac{1}{2}$ | 0 | $-2$ | $1$ |
+| ${\chi_{\rm SH}}^T\mathsf V_{\rm SH}\chi'_{\rm SH}$ | 1 | $\mathbf 1$ | $-\tfrac{1}{2}$ | $-\tfrac{1}{2}$ | 0 | $-2$ | $0$ |
+| ${\chi'_{\rm SH}}^T\mathsf V_{\rm SH}\chi'_{\rm SH}$ | 1 | $\mathbf 1$ | $-\tfrac{3}{2}$ | $-\tfrac{3}{2}$ | 0 | $-2$ | $-1$ |
+| ${\Psi_{\rm LL}}^\dagger\mathsf V_{\rm SH}\Psi_{\rm LL}$ | 4 | $\mathbf 1\oplus\mathbf 3$ | $0$ | $1,\ 0,\ 0,\ -1$ | 2 | $0$ | $0$ |
+| ${\Psi_{\rm LL}}^\dagger\mathsf V_{\rm SH}\chi_{\rm SH}$ | 2 | $\mathbf 2$ | $0$ | $\tfrac{1}{2},\ -\tfrac{1}{2}$ | 0 | $-2$ | $\tfrac{1}{2}$ |
+| ${\Psi_{\rm LL}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$ | 2 | $\mathbf 2$ | $-1$ | $-\tfrac{1}{2},\ -\tfrac{3}{2}$ | 0 | $-2$ | $-\tfrac{1}{2}$ |
+| ${\chi_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi_{\rm SH}$ | 1 | $\mathbf 1$ | $0$ | $0$ | 1 | $0$ | $0$ |
+| ${\chi_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$ | 1 | $\mathbf 1$ | $-1$ | $-1$ | 0 | $0$ | $-1$ |
+| ${\chi'_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$ | 1 | $\mathbf 1$ | $0$ | $0$ | 1 | $0$ | $0$ |
 <!-- END sh_table_channels -->
+<!-- BEGIN sh_table_custodial -->
+| bilinear | components | $SU(2)_L\times SU(2)_{\rm R}$ | $F^{\rm tot}_{\rm SH}$ | $R_{\rm SH}$ |
+|:--------------------|:----------|:--------------------|:-------|:-------|
+| ${\Psi_{\rm LL}}^T\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$ | 4 | $(\mathbf 2,\mathbf 2)$ | $2$ | $0$ |
+| ${(\chi_{\rm SH},\chi'_{\rm SH})}^T\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$ | 3 | $(\mathbf 1,\mathbf 3)$ | $2$ | $-2$ |
+| ${\Psi_{\rm LL}}^\dagger\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$ | 4 | $(\mathbf 2,\mathbf 2)$ | $0$ | $-2$ |
+| ${(\chi_{\rm SH},\chi'_{\rm SH})}^\dagger\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$ | 4 | $(\mathbf 1,\mathbf 1)\oplus(\mathbf 1,\mathbf 3)$ | $0$ | $0$ |
+<!-- END sh_table_custodial -->
 <!-- BEGIN sh_v -->
 $246.2197$
 <!-- END sh_v -->
@@ -135,8 +169,8 @@ $246.2197$
 ALL PASS (14 of 14)
 <!-- END sh_verdict_python -->
 <!-- BEGIN sh_verdict_rust -->
-ALL PASS (43 of 43)
+ALL PASS (55 of 55)
 <!-- END sh_verdict_rust -->
 <!-- BEGIN sh_verdict_wolfram -->
-ALL PASS (11 of 11)
+ALL PASS (13 of 13)
 <!-- END sh_verdict_wolfram -->

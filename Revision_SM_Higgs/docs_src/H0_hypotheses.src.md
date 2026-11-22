@@ -29,8 +29,8 @@ the susceptibilities found $\rho\approx1.2$, against the measured value near 1. 
 with the hypercharge $-\tfrac34$, and the author instructed at 19:38 PST: "Add a second singlet $\chi'$ with hypercharge
 $-\tfrac34$". This is the second version, stated in Sections 4 and 5. The first version is kept in the history of the
 repository under the git tag `backup/SM-Higgs-one-singlet-2026-11-21` (commit `0624025`), and the programs of the later
-stages compute both versions side by side. Section 6 still reports the checks of the first version, made before the
-second version existed; stage 2 of the second version repeats them for the three fields.
+stages compute both versions side by side. Section 6 reports the checks of the second version, which contain those of
+the first.
 
 "I" in this document is the assistant that does the work.
 
@@ -228,10 +228,10 @@ predictions, and the amplitude mode must be compared with $m_H$.
 
 # 6. The checks of the quantum numbers and of the breaking
 
-**This section reports the checks of the first version** (one singlet field), made on 21 November 2026 from 17:30 to
-18:15 PST, before the second version existed. Everything in it holds for the fields $\Psi_{\rm LL}$ and $\chi_{\rm SH}$ and their
-pairs. Stage 2 of the second version repeats the checks for the three fields and adds those of $\chi'_{\rm SH}$, of the
-bidoublet and of the custodial symmetry.
+This section reports the checks of the second version, made on the evening of 21 November 2026. They contain those of
+the first version, made from 17:30 to 18:15 PST before the second version existed: every statement about $\Psi_{\rm LL}$,
+$\chi_{\rm SH}$ and their pairs is checked again, together with those about $\chi'_{\rm SH}$, the bidoublet and the
+custodial symmetry.
 
 ## 6.1 What was computed
 
@@ -240,23 +240,27 @@ three programs written for this purpose. The Rust program `sh_quantum` (crate `r
 `sfcore` of the folder) computes them in floating point: {{GEN:sh_verdict_rust}}. The Python program
 `python/sh_quantum.py` repeats the checks with numpy by other numerical methods (singular-value decompositions in the
 place of eigenvectors of Gram matrices, the exponential of a Hermitian matrix from its eigenvectors in the place of a
-Taylor series, other pseudo-random transformations) and compares its results with the data files of the Rust
-program: {{GEN:sh_verdict_python}}. The Wolfram script `wolfram/source/sh_quantum.wls` repeats them in exact arithmetic
-(rational numbers, square roots and symbols) on the author's computer, in Wolfram 15.0.1: {{GEN:sh_verdict_wolfram}}.
-The reports are `data/hck_sh_quantum_checks.txt`, `data/hck_sh_quantum_checks_python.txt` and
-`data/hck_sh_quantum_checks_wolfram.txt`; the data are `data/sh_quantum_numbers.csv` (the charges of the twelve
-components of the field), `data/sh_channels.csv` (Table 6.1), `data/sh_couplings.csv`, `data/sh_mass_matrix.csv` and
-`data/sh_quantum_values.csv`. Section 6.6 gives the three lists of checks.
+Taylor series, other pseudo-random transformations, another way of finding the multiplets of
+$SU(2)_L\times SU(2)_{\rm R}$) and compares its results with the data files of the Rust program:
+{{GEN:sh_verdict_python}}. The Wolfram script `wolfram/source/sh_quantum.wls` repeats them in exact arithmetic (rational
+numbers, square roots and symbols) on the author's computer, in Wolfram 15.0.1: {{GEN:sh_verdict_wolfram}}. The reports
+are `data/hck_sh_quantum_checks.txt`, `data/hck_sh_quantum_checks_python.txt` and
+`data/hck_sh_quantum_checks_wolfram.txt`; the data are `data/sh_quantum_numbers.csv` (the charges of the sixteen
+components of the field), `data/sh_channels.csv` (Table 6.1), `data/sh_custodial_channels.csv` (Table 6.2),
+`data/sh_couplings.csv`, `data/sh_mass_matrix.csv` and `data/sh_quantum_values.csv`. Section 6.6 gives the three lists
+of checks.
 
 ## 6.2 The field and its bilinears
 
-The two fields are written as one field of twelve components: the eight components of $\Psi_{\rm LL}$ (the component
-$2d+s$, with the Dirac index $d=0,\dots,3$ of the chiral basis and the isospin index $s=0$ for up and $s=1$ for down)
-and the four components of $\chi_{\rm SH}$. A bilinear of spin zero is either a pair of two particles or a
-particle-antiparticle bilinear,
+The three fields are written as one field of sixteen components: the eight components of $\Psi_{\rm LL}$ (the component
+$2d+s$, with the Dirac index $d=0,\dots,3$ of the chiral basis and the isospin index $s=0$ for up and $s=1$ for down),
+the four components of $\chi_{\rm SH}$ and the four of $\chi'_{\rm SH}$. For the custodial symmetry the two singlets are
+also taken together, as one field $(\chi_{\rm SH},\chi'_{\rm SH})$ of eight components, on which $SU(2)_{\rm R}$ acts as on a
+doublet. A bilinear of spin zero is either a pair of two particles or a particle-antiparticle bilinear,
 $$\Pi_{\rm SH}[\mathsf V_{\rm SH}]=\Psi^T_{\rm LL}\mathsf V_{\rm SH}\chi_{\rm SH},\qquad
 \Xi_{\rm SH}[\mathsf V_{\rm SH}]=\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\chi_{\rm SH},\tag{6.1}$$
-and likewise with $\Psi_{\rm LL}$ twice or $\chi_{\rm SH}$ twice; the rows of the coefficient matrix $\mathsf V_{\rm SH}$ are
+and likewise for every other choice of the two fields among $\Psi_{\rm LL}$, $\chi_{\rm SH}$, $\chi'_{\rm SH}$ and
+$(\chi_{\rm SH},\chi'_{\rm SH})$, the same field twice included; the rows of the coefficient matrix $\mathsf V_{\rm SH}$ are
 numbered by the components of the first field and its columns by those of the second. A superfluid is a condensate of
 pairs; the mean fields of the methods HS, KS and CJT are expectation values of particle-antiparticle bilinears. The
 bilinear is a Lorentz scalar when, for each of the six real generators $\mathbf u=J^j_{\rm LL},K^j_{\rm LL}$ ($j=1,2,3$) of
@@ -264,90 +268,146 @@ $SL(2,\mathbb C)$,
 $$\mathsf s_{\rm LL}(\mathbf u)^T\mathsf V_{\rm SH}+\mathsf V_{\rm SH}\,\mathsf s_{\rm LL}(\mathbf u)=0\ \ \text{(pairs)},\qquad
 \mathsf s_{\rm LL}(\mathbf u)^\dagger\mathsf V_{\rm SH}+\mathsf V_{\rm SH}\,\mathsf s_{\rm LL}(\mathbf u)=0\ \ \text{(particle-antiparticle)},\tag{6.2}$$
 where $\mathsf s_{\rm LL}(\mathbf u)=\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))$ acts on the Dirac index of
-each field (on $\Psi_{\rm LL}$ as $\mathsf s_{\rm LL}(\mathbf u)\otimes\mathsf 1_2$). For two particles of one field only the
-antisymmetric part of $\mathsf V_{\rm SH}$ gives an operator, because the components anticommute. When the fields are
-transformed by unitary matrices, $\Psi_{\rm LL}\to\mathsf U\Psi_{\rm LL}$ and $\chi_{\rm SH}\to\mathsf U'\chi_{\rm SH}$, the pair
-$\Pi_{\rm SH}[\mathsf V_{\rm SH}]$ becomes $\Pi_{\rm SH}[\mathsf U^T\mathsf V_{\rm SH}\mathsf U']$ and the particle-antiparticle
-bilinear $\Xi_{\rm SH}[\mathsf V_{\rm SH}]$ becomes $\Xi_{\rm SH}[\mathsf U^\dagger\mathsf V_{\rm SH}\mathsf U']$; parity, with the
-intrinsic parities $+1$, acts in the same way with $\mathsf U=\mathsf U'=\gamma^0_{\rm LL}$ (on $\Psi_{\rm LL}$,
-$\gamma^0_{\rm LL}\otimes\mathsf 1_2$). The Lorentz-invariant bilinears of one kind and one parity form a channel. A
-generator of $SU(2)_L\times U(1)_Y$ acts on the components of a channel, in a basis of coefficient matrices that is
-orthonormal in the inner product $\mathrm{tr}(\mathsf V^\dagger_{\rm SH}\mathsf V'_{\rm SH})$, as a Hermitian matrix; its
-eigenvalues are the charges of the channel. The pair operators of H3 are
+each field (on $\Psi_{\rm LL}$ as $\mathsf s_{\rm LL}(\mathbf u)\otimes\mathsf 1_2$, on the pair of singlets on each of them). For two
+particles of one field only the antisymmetric part of $\mathsf V_{\rm SH}$ gives an operator, because the components
+anticommute. When the two fields of a bilinear are transformed by unitary matrices, the first by $\mathsf U$ and the
+second by $\mathsf U'$, the pair $\Pi_{\rm SH}[\mathsf V_{\rm SH}]$ becomes $\Pi_{\rm SH}[\mathsf U^T\mathsf V_{\rm SH}\mathsf U']$ and
+the particle-antiparticle bilinear $\Xi_{\rm SH}[\mathsf V_{\rm SH}]$ becomes $\Xi_{\rm SH}[\mathsf U^\dagger\mathsf V_{\rm SH}\mathsf U']$;
+parity, with the intrinsic parities $+1$, acts in the same way with $\gamma^0_{\rm LL}$ on every field (on $\Psi_{\rm LL}$,
+$\gamma^0_{\rm LL}\otimes\mathsf 1_2$). The Lorentz-invariant bilinears of one kind and one parity form a channel. A generator of
+the internal group acts on the components of a channel, in a basis of coefficient matrices that is orthonormal in the
+inner product $\mathrm{tr}(\mathsf V^\dagger_{\rm SH}\mathsf V'_{\rm SH})$, as a Hermitian matrix; its eigenvalues are the
+charges of the channel. The pair operators of H3 are
 $$\Pi^{\rm u}_{\rm SH}=\tfrac12\Pi_{\rm SH}[C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm u}_{\rm SH}],\qquad
 \Pi^{\rm d}_{\rm SH}=\tfrac12\Pi_{\rm SH}[C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm d}_{\rm SH}],\tag{6.3}$$
-with the isospin columns $\mathbf e^{\rm u}_{\rm SH}=(1,0)^T$ and $\mathbf e^{\rm d}_{\rm SH}=(0,1)^T$; the factor $\tfrac12$
-normalizes the coefficient matrices.
+with the isospin columns $\mathbf e^{\rm u}_{\rm SH}=(1,0)^T$ and $\mathbf e^{\rm d}_{\rm SH}=(0,1)^T$, and $\Pi'^{\rm u}_{\rm SH}$,
+$\Pi'^{\rm d}_{\rm SH}$ are the same pairs with $\chi'_{\rm SH}$ in the place of $\chi_{\rm SH}$; the factor $\tfrac12$ normalizes
+the coefficient matrices.
 
 ## 6.3 The fields
 
-The generators of $SU(2)_L\times U(1)_Y$, of the fermion number and of the relative number on the twelve components obey
-their algebra and are Hermitian, and they commute with the six Lorentz generators (checks QN-1 and QN-2). The free
-Hamiltonians of the two fields commute with them also when the two masses differ (QN-3), so the symmetries do not need
-the choice $m^\chi_{\rm SH}=m_{\rm LL}$. On every component $Y^{\rm SM}=F_{\rm LL}/4=\tfrac14$, and $Q^{\rm SM}$ is $\tfrac34$ on
-the up components of $\Psi_{\rm LL}$, $-\tfrac14$ on the down components and $\tfrac14$ on $\chi_{\rm SH}$ (QN-4). The
-{{GEN:sh_ntraces}} traces of the gauge anomalies vanish, the two chiralities carry the same charges, and there are two Weyl
-doublets of $SU(2)_L$, an even number, so there is no global anomaly either (QN-5).
+The generators of $SU(2)_L$, of $SU(2)_{\rm R}$, of the hypercharge, of the particle number and of the relative number on the
+sixteen components obey their algebra and are Hermitian, and they commute with the six Lorentz generators (checks QN-1
+and QN-2). The hypercharges of the table of H1 equal $T^{3,{\rm R}}_{\rm SH}+\tfrac14R_{\rm SH}$ as a matrix, which is (4.3), and
+$Y^{\rm SM}$ does not commute with $T^{1,{\rm R}}_{\rm SH}$: the coupling of $B_\mu$ to $Y^{\rm SM}$ breaks $SU(2)_{\rm R}$ (QN-1).
+The free Hamiltonians of the three fields commute with the generators of $SU(2)_L\times U(1)_Y$, with the particle number
+and with the relative number for any masses, so these symmetries do not need equal masses; they commute with the
+generators of $SU(2)_{\rm R}$ only when $m^{\chi'}_{\rm SH}=m^\chi_{\rm SH}$, and for unequal masses the largest entry of the
+commutator with $T^{1,{\rm R}}_{\rm SH}$ is $\tfrac12\lvert m^\chi_{\rm SH}-m^{\chi'}_{\rm SH}\rvert$ (QN-3). $Y^{\rm SM}$ is $\tfrac14$
+on $\Psi_{\rm LL}$ and $\chi_{\rm SH}$ and $-\tfrac34$ on $\chi'_{\rm SH}$, so that $F_{\rm LL}=4Y^{\rm SM}$ equals the particle number
+on the first two fields and $-3$ times it on the third; $Q^{\rm SM}$ is $\tfrac34$ on the up components of $\Psi_{\rm LL}$,
+$-\tfrac14$ on the down components, $\tfrac14$ on $\chi_{\rm SH}$ and $-\tfrac34$ on $\chi'_{\rm SH}$ (QN-4). The
+{{GEN:sh_ntraces}} traces of the gauge anomalies vanish, the two chiralities carry the same charges, and there are two
+Weyl doublets of $SU(2)_L$, an even number, so there is no global anomaly either (QN-5).
 
 ## 6.4 The bilinears of spin zero and their charges
 
 The Lorentz-invariant coefficient matrices form spaces of the dimensions 6 (two particles of $\Psi_{\rm LL}$, antisymmetric),
-4 (a particle of $\Psi_{\rm LL}$ and one of $\chi_{\rm SH}$), 2 (two particles of $\chi_{\rm SH}$), 8, 4 and 2 (the
-particle-antiparticle bilinears of the same pairs of fields); in each space the eigenvalues of the matrix of the
+4 (a particle of $\Psi_{\rm LL}$ and one of $\chi_{\rm SH}$), 4 ($\Psi_{\rm LL}$ with $\chi'_{\rm SH}$), 2 (two particles of
+$\chi_{\rm SH}$), 2 ($\chi_{\rm SH}$ with $\chi'_{\rm SH}$) and 2 (two particles of $\chi'_{\rm SH}$), and 8, 4, 4, 2, 2, 2 for the
+particle-antiparticle bilinears of the same pairs of fields; in each space the eigenvalues of the matrix of the
 conditions (6.2) that count as zero are at most {{GEN:sh_gap_zero}} and the others at least {{GEN:sh_gap_nonzero}} (QN-6).
-The four doublet-singlet pairs are spanned by $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm u}_{\rm SH}$,
-$C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm d}_{\rm SH}$ (parity $+1$) and $C_{\rm LL}\otimes\mathbf e^{\rm u}_{\rm SH}$,
-$C_{\rm LL}\otimes\mathbf e^{\rm d}_{\rm SH}$ (parity $-1$) (QN-6, QN-7). The symmetric Lorentz-invariant matrices of two
-particles of $\Psi_{\rm LL}$ form a space of dimension 2 of isospin singlets: these are the pairs that the anticommutation
-removes, as (3.1) states (QN-6, QN-10). Table 6.1 lists the twelve channels (QN-10).
+The pairs of a particle of $\Psi_{\rm LL}$ with a particle of either singlet are spanned by
+$C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm u}_{\rm SH}$, $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^{\rm d}_{\rm SH}$
+(parity $+1$) and $C_{\rm LL}\otimes\mathbf e^{\rm u}_{\rm SH}$, $C_{\rm LL}\otimes\mathbf e^{\rm d}_{\rm SH}$ (parity $-1$) (QN-6, QN-7).
+The symmetric Lorentz-invariant matrices of two particles of $\Psi_{\rm LL}$ form a space of dimension 2 of isospin
+singlets, those of two particles of one singlet a space of dimension 0: these are the pairs that the anticommutation
+removes, as (3.1) states (QN-6, QN-10). With the two singlets taken together the dimensions are 8, 6, 8 and 8, the sums
+over the separate fields (QN-6). Table 6.1 lists the 24 channels and Table 6.2 the 8 channels of the two singlets taken
+together (QN-10).
 
-Table 6.1. The channels of the Lorentz-invariant bilinears. Each kind of bilinear (6.1) has two channels, of parity
-$+1$ and $-1$, with the same numbers: the number of components of each, the multiplets of $SU(2)_L$ ($\mathbf n$: the
-dimension $n$), the hypercharge and the electric charges of the components, the number of neutral components, and the
-relative number (the number of particles of $\Psi_{\rm LL}$ minus that of $\chi_{\rm SH}$, a global symmetry of the whole
-Lagrangian). The fermion number is 2 for the pairs and 0 for the particle-antiparticle bilinears.
+Table 6.1. The channels of the Lorentz-invariant bilinears. Each kind of bilinear has two channels, of parity $+1$ and
+$-1$, with the same numbers: the number of components of each, the multiplets of $SU(2)_L$ ($\mathbf n$: the dimension $n$),
+the hypercharge and the electric charges of the components, the number of neutral components, the relative number
+$R_{\rm SH}$ and the eigenvalues of $T^{3,{\rm R}}_{\rm SH}$. The particle number is 2 for the pairs and 0 for the
+particle-antiparticle bilinears.
 
 {{GEN:sh_table_channels}}
 
-Three facts follow from the table and the checks.
+Table 6.2. The channels of the bilinears in which the two singlets are taken together as one field
+$(\chi_{\rm SH},\chi'_{\rm SH})$: the number of components, the multiplets of $SU(2)_L\times SU(2)_{\rm R}$ (in each pair of bold
+numbers, the dimension under $SU(2)_L$ and the dimension under $SU(2)_{\rm R}$), the particle number and the relative number.
+Each kind of bilinear has two channels, of parity $+1$ and $-1$, with the same numbers.
 
-1. **The superfluid has the quantum numbers of the Higgs doublet, component by component.** On the column
+{{GEN:sh_table_custodial}}
+
+Five facts follow from the tables and the checks.
+
+1. **The superfluid has the quantum numbers of two Higgs doublets.** On the column
    $(\Pi^{\rm u}_{\rm SH},\Pi^{\rm d}_{\rm SH})$ of (6.3) the generator $T^{a,{\rm SM}}$ acts as $\tau^a/2$ and $Y^{\rm SM}$ as
-   $\tfrac12$, the matrices by which they act on $\Phi^{\rm SM}$; $Q^{\rm SM}$ acts as $\mathrm{diag}(1,0)$, the fermion
-   number as 2 and the relative number as 0 (QN-8). For 25 pseudo-random elements of $SU(2)_L\times U(1)_Y$ the column
-   transforms by the very matrix that transforms $\Phi^{\rm SM}$, and that matrix is unitary, so the pairing term (4.2) is
-   invariant; for 25 pseudo-random elements of $SL(2,\mathbb C)$ every Lorentz-invariant bilinear is unchanged (QN-9).
-   The Wolfram script finds the identities of QN-8 exactly.
-2. **No pair of two particles of the same field is neutral.** The pairs of two particles of $\Psi_{\rm LL}$ have the
-   charges $\tfrac32$, $\tfrac12$, $-\tfrac12$ and those of two particles of $\chi_{\rm SH}$ the charge $\tfrac12$ (QN-10).
-   A condensate of such pairs would therefore break the $U(1)$ of $Q^{\rm SM}$ and give the photon a mass, whatever the
-   strength of the attraction. The particle-antiparticle doublet $\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\chi_{\rm SH}$ is
-   charged as well ($Q^{\rm SM}=\pm\tfrac12$).
-3. **The neutral bilinears** are the singlet and the neutral member of the triplet of
-   $\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\Psi_{\rm LL}$ (the triplet member is the difference of the bilinears of the up and
-   the down components), $\chi^\dagger_{\rm SH}\mathsf V_{\rm SH}\chi_{\rm SH}$, each with both parities, and the neutral
-   components of the two doublet-singlet doublets.
+   $\tfrac12$, the matrices by which they act on $\Phi^{\rm SM}$; $Q^{\rm SM}$ acts as $\mathrm{diag}(1,0)$, the particle number
+   as 2, the relative number as 0 and $T^{3,{\rm R}}_{\rm SH}$ as $\tfrac12$. On the column
+   $(\Pi'^{\rm u}_{\rm SH},\Pi'^{\rm d}_{\rm SH})$, $T^{a,{\rm SM}}$ acts as $\tau^a/2$, $Y^{\rm SM}$ as $-\tfrac12$, $Q^{\rm SM}$ as
+   $\mathrm{diag}(0,-1)$ and $T^{3,{\rm R}}_{\rm SH}$ as $-\tfrac12$, so that its conjugate, $i\tau^2$ times its complex conjugate,
+   transforms with $\tau^a/2$ and $Y^{\rm SM}=\tfrac12$, as $\Phi^{\rm SM}$ does (QN-8). Together the four pairs form the
+   bidoublet $\mathcal M_{\rm SH}$ of (4.4): on its components $T^{a,{\rm SM}}$ acts as $(\tau^a/2)\otimes\mathsf 1_2$ and
+   $T^{a,{\rm R}}_{\rm SH}$ as $\mathsf 1_2\otimes(\tau^a/2)$, so that $\mathcal M_{\rm SH}\to\mathsf L\,\mathcal M_{\rm SH}\mathsf R^T$, the
+   multiplet $(\mathbf 2,\mathbf 2)$ of Table 6.2 (QN-8). For 25 pseudo-random elements of $SU(2)_L\times U(1)_Y$ the two
+   columns transform by the very matrices that transform a doublet with the hypercharge $\tfrac12$ and one with $-\tfrac12$,
+   and for 25 pseudo-random elements of the global group of H4 (generated by $T^{a,{\rm SM}}$, $T^{a,{\rm R}}_{\rm SH}$,
+   $R_{\rm SH}$ and $F^{\rm tot}_{\rm SH}$) $\mathcal M_{\rm SH}\to e^{2i\theta^{\rm F}_{\rm SH}}\mathsf L\,\mathcal M_{\rm SH}\mathsf R^T$, where $\theta^{\rm F}_{\rm SH}$ is the angle of the
+   rotation generated by $F^{\rm tot}_{\rm SH}$; all these matrices are unitary, so the pairing term (4.2), minus $G_{\rm SH}$
+   times $\mathrm{tr}(\mathcal M^\dagger_{\rm SH}\mathcal M_{\rm SH})$ in the pair operators, is invariant. For 25 pseudo-random
+   elements of $SL(2,\mathbb C)$ every Lorentz-invariant bilinear is unchanged (QN-9). The Wolfram script finds the
+   identities of QN-8 exactly.
+2. **The determinant term.** $\det\mathcal M_{\rm SH}=\epsilon_{st}\Pi^s_{\rm SH}\Pi'^t_{\rm SH}$ is unchanged by
+   $SU(2)_L\times SU(2)_{\rm R}$ and by the rotations generated by $R_{\rm SH}$, and it is multiplied by $e^{4i\theta^{\rm F}_{\rm SH}}$ by the rotations of the particle
+   number (QN-9; the Wolfram script checks the infinitesimal form exactly): the interaction (c) of consequence 3 respects
+   every symmetry of the Lagrangian except the particle number.
+3. **The neutral pairs are those of H5.** No pair of two particles of one field and no pair of a particle of
+   $\chi_{\rm SH}$ with one of $\chi'_{\rm SH}$ is neutral: the smallest absolute value of $Q^{\rm SM}$ in these channels is
+   $\tfrac12$ (QN-10). The only neutral pairs are $\Phi^{\rm d}_{\rm SH}$ (a down particle with $\chi_{\rm SH}$) and
+   $\Phi'^{\rm u}_{\rm SH}$ (an up particle with $\chi'_{\rm SH}$), one in each channel of the doublet-singlet pairs (QN-10). A
+   condensate of any other pair would break the $U(1)$ of $Q^{\rm SM}$ and give the photon a mass, whatever the strength of
+   the attraction.
+4. **The neutral particle-antiparticle bilinears** are the singlet and the neutral member of the triplet of
+   $\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\Psi_{\rm LL}$ (the triplet member is the difference of the bilinears of the up and the
+   down components), $\chi^\dagger_{\rm SH}\mathsf V_{\rm SH}\chi_{\rm SH}$ and ${\chi'_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$, each
+   with both parities. $\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\chi_{\rm SH}$, $\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\chi'_{\rm SH}$ and
+   $\chi^\dagger_{\rm SH}\mathsf V_{\rm SH}\chi'_{\rm SH}$ are charged.
+5. **The custodial multiplets.** The pairs of two singlets form a triplet of $SU(2)_{\rm R}$ ($\chi_{\rm SH}\chi_{\rm SH}$,
+   $\chi_{\rm SH}\chi'_{\rm SH}$, $\chi'_{\rm SH}\chi'_{\rm SH}$ with $T^{3,{\rm R}}_{\rm SH}=1,0,-1$), all of whose components are charged;
+   $\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}(\chi_{\rm SH},\chi'_{\rm SH})$ is a $(\mathbf 2,\mathbf 2)$; and the particle-antiparticle bilinears of
+   two singlets are a singlet and a triplet of $SU(2)_{\rm R}$, whose neutral members are the sum and the difference of
+   $\chi^\dagger_{\rm SH}\mathsf V_{\rm SH}\chi_{\rm SH}$ and ${\chi'_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$ (Table 6.2).
 
 ## 6.5 The breaking and the masses of the gauge fields
 
-Every doublet is brought to the form $(0,\varphi)$ with a real $\varphi\ge0$ by an element of $SU(2)_L$, and the
-generators of $SU(2)_L\times U(1)_Y$ that leave $(0,\varphi)$ unchanged form one direction, that of
-$T^{3,{\rm SM}}+Y^{\rm SM}=Q^{\rm SM}$ (QN-11). A second condensate, added to $(0,\varphi)$, leaves no generator unbroken when
-it has a charged component, and keeps exactly $Q^{\rm SM}$ when it lies in the neutral part of its channel (QN-11). A
-vacuum that keeps the $U(1)$ of $Q^{\rm SM}$ can therefore carry, besides $\Phi^{\rm d}_{\rm SH}$, only the neutral bilinears of
-item 3. Among them the neutral member of the triplet breaks $SU(2)_L$ but not $Q^{\rm SM}$, and it is allowed by the
-symmetries that remain when $\Phi^{\rm d}_{\rm SH}\neq0$, because the condensate treats the up and the down particles of
-$\Psi_{\rm LL}$ differently; whether it is different from zero, and how large the other mean fields are, is computed in
-stage 3, with the dynamics.
+Every doublet is brought to the form $(0,\varphi)$ with a real $\varphi\ge0$ by an element of $SU(2)_L$ (QN-11). The
+generators of $SU(2)_L\times U(1)_Y$ that leave the neutral vacuum of H5, $\Phi_{\rm SH}=(0,\varphi)$ and
+$\Phi'_{\rm SH}=(\varphi',0)$, unchanged form one direction, that of $T^{3,{\rm SM}}+Y^{\rm SM}=Q^{\rm SM}$, whatever the lengths and
+the phases of $\varphi$ and $\varphi'$; so do those that leave $\Phi_{\rm SH}=(0,\varphi)$ alone unchanged, as in the first
+version (QN-11). When the two lengths are equal, a rotation generated by $T^{3,{\rm SM}}$ and $F^{\rm tot}_{\rm SH}$ brings
+$\mathcal M_{\rm SH}$ to $\lvert\varphi\rvert\,i\tau^2$; $SU(2)_L\times U(1)_Y$ alone cannot do it, because it does not change
+$\det\mathcal M_{\rm SH}$ (QN-11). The vacuum $\lvert\varphi\rvert\,i\tau^2$ keeps four of the eight generators of the global
+group of H4: $T^{a,{\rm SM}}+T^{a,{\rm R}}_{\rm SH}$ ($a=1,2,3$), the custodial
+$SU(2)_{\rm V}$, and $R_{\rm SH}$; $Q^{\rm SM}=T^{3,{\rm SM}}+T^{3,{\rm R}}_{\rm SH}+\tfrac14R_{\rm SH}$ lies among them. The other
+{{GEN:sh_broken}} are broken: {{GEN:sh_broken_gauge}} of $SU(2)_L\times U(1)_Y$ and the particle number, which is not a
+combination of the kept and the gauged generators (QN-11). There are therefore three Goldstone modes, which $W^\pm_\mu$
+and $Z_\mu$ absorb, and a fourth, physical one, the extra Goldstone boson of consequence 3. A neutral vacuum with equal
+lengths and other phases keeps four generators as well; with unequal lengths it keeps only
+$T^{3,{\rm SM}}+T^{3,{\rm R}}_{\rm SH}$ and $R_{\rm SH}$, so the custodial symmetry needs equal lengths (QN-11). A second
+condensate, added to the neutral vacuum, leaves no generator of $SU(2)_L\times U(1)_Y$ unbroken when it has a charged
+component, and keeps exactly $Q^{\rm SM}$ when it lies in the neutral part of its channel (QN-11). A vacuum that keeps the
+$U(1)$ of $Q^{\rm SM}$ can therefore carry, besides $\Phi^{\rm d}_{\rm SH}$ and $\Phi'^{\rm u}_{\rm SH}$, only the neutral bilinears of
+item 4. Among them the neutral member of the triplet of $\Psi^\dagger_{\rm LL}\mathsf V_{\rm SH}\Psi_{\rm LL}$ and the difference of
+$\chi^\dagger_{\rm SH}\mathsf V_{\rm SH}\chi_{\rm SH}$ and ${\chi'_{\rm SH}}^\dagger\mathsf V_{\rm SH}\chi'_{\rm SH}$ break $SU(2)_{\rm V}$ but not
+$Q^{\rm SM}$; whether they are different from zero, and how large the other mean fields and the two lengths are, is
+computed in stage 3, with the dynamics.
 
-The mass matrix of $(W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)$ that the kinetic term with one coefficient,
-$(D^{\rm SM}_\mu\Phi_{\rm SH})^\dagger D^{{\rm SM},\mu}\Phi_{\rm SH}$ at $\Phi_{\rm SH}=(0,v_{\rm SH}/\sqrt2)$, gives with the generators of
-item 1 has the eigenvalues $0$, $M_W^2$, $M_W^2$ and $M_Z^2$ of (2.2). Its massless field is
-$A_\mu=\sin\theta_W\,W^3_\mu+\cos\theta_W\,B_\mu$ and its field of mass $M_Z$ is $Z_\mu=\cos\theta_W\,W^3_\mu-\sin\theta_W\,B_\mu$; under
-the $U(1)$ of $Q^{\rm SM}$ the field $W^+_\mu=(W^1_\mu-iW^2_\mu)/\sqrt2$ has the charge $+1$ and the mass $M_W$; and
-$\rho=1$ for this kinetic term (QN-12). With $v_{\rm SH}=v$ and the couplings (2.3) the two masses are
-$M_W={{GENM:sh_mw}}$ GeV and $M_Z={{GENM:sh_mz}}$ GeV, the measured ones, as (2.3) is built to give. The couplings of the
-earlier hypotheses become $g^{\rm v}_{\rm LL}=g$ and $g^{\rm F}_{\rm LL}=g'/4={{GENM:sh_gF}}$. For the couplings (2.3)
+The mass matrix of $(W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)$ that the kinetic term with one coefficient for each pair field,
+$(D^{\rm SM}_\mu\Phi_{\rm SH})^\dagger D^{{\rm SM},\mu}\Phi_{\rm SH}+(D^{\rm SM}_\mu\Phi'_{\rm SH})^\dagger D^{{\rm SM},\mu}\Phi'_{\rm SH}$ at the
+neutral vacuum, gives with the generators of item 1 has the eigenvalues $0$, $M_W^2$, $M_W^2$ and $M_Z^2$ of (2.2), with
+$v_{\rm SH}^2=2(\varphi^2+\varphi'^2)$ in the place of $v^2$, for equal lengths and for 25 pseudo-random ratios of the
+lengths (QN-12; the Wolfram script for any $\varphi$, $\varphi'$ and symbolic couplings). Its massless field is
+$A_\mu=\sin\theta_W\,W^3_\mu+\cos\theta_W\,B_\mu$ and its field of mass $M_Z$ is $Z_\mu=\cos\theta_W\,W^3_\mu-\sin\theta_W\,B_\mu$;
+under the $U(1)$ of $Q^{\rm SM}$ the field $W^+_\mu=(W^1_\mu-iW^2_\mu)/\sqrt2$ has the charge $+1$ and the mass $M_W$; and
+$\rho=1$ for this kinetic term, for any ratio of the two lengths, because both pair fields are doublets with
+$\lvert Y^{\rm SM}\rvert=\tfrac12$ (QN-12). The custodial symmetry is what keeps $\rho=1$ beyond this form of the kinetic
+term: in the dynamics $\rho$ is a ratio of responses of the superfluid to the generators of $SU(2)_L$, which $SU(2)_{\rm V}$
+makes equal when the vacuum keeps it; stage 4 computes them. With $v_{\rm SH}=v$ and the couplings (2.3) the two masses
+are $M_W={{GENM:sh_mw}}$ GeV and $M_Z={{GENM:sh_mz}}$ GeV, the measured ones, as (2.3) is built to give. The couplings of
+the earlier hypotheses become $g^{\rm v}_{\rm LL}=g$ and $g^{\rm F}_{\rm LL}=g'/4={{GENM:sh_gF}}$. For the couplings (2.3)
 $e^2/4\pi=1/{{GENM:sh_alpha_inv}}$, which differs from its value at zero momentum transfer by radiative corrections of the
 Standard Model, among them the running of the coupling up to the scale $M_Z$. The ratio $m_H/v={{GENM:sh_mh_over_v}}$ is
 the target of stage 4, where the mass of the amplitude mode of the superfluid is computed.
@@ -398,11 +458,13 @@ The Wolfram script `wolfram/source/sh_quantum.wls`, in exact arithmetic ({{GEN:s
 | $M_W$, $M_Z$, $m_H$, $G_F$ | the masses of the $W$, the $Z$ and the Higgs boson, and the Fermi constant |
 | $\hat\theta_W$, $\hat\alpha(M_Z)$ | the weak mixing angle and the fine-structure constant in the $\overline{\rm MS}$ scheme at the scale $M_Z$ |
 | $\rho$ | the ratio $M_W^2/(M_Z^2\cos^2\theta_W)$ of the masses of the weak bosons; 1 at tree level for a doublet whose kinetic term has one coefficient |
-| $\varphi$ | the length of the pair field in the form $(0,\varphi)$ |
+| $\varphi$, $\varphi'$ | the lengths of the two pair fields in the forms $\Phi_{\rm SH}=(0,\varphi)$ and $\Phi'_{\rm SH}=(\varphi',0)$ (in Section 6.5, $\varphi$ also the length of any doublet in the form $(0,\varphi)$) |
+| $\theta^{\rm F}_{\rm SH}$ | the angle of a rotation generated by the particle number $F^{\rm tot}_{\rm SH}$ |
+| $(\chi_{\rm SH},\chi'_{\rm SH})$ | the two singlet fields taken together as one field of eight components, a doublet of $SU(2)_{\rm R}$ |
 | $\mathsf V_{\rm SH}$ | the coefficient matrix of a bilinear of spin zero (rows: the components of the first field; columns: those of the second) |
 | $\Pi_{\rm SH}[\mathsf V_{\rm SH}]$, $\Xi_{\rm SH}[\mathsf V_{\rm SH}]$ | a pair of two particles and a particle-antiparticle bilinear with the coefficient matrix $\mathsf V_{\rm SH}$, (6.1) |
 | $\mathbf e^{\rm u}_{\rm SH}$, $\mathbf e^{\rm d}_{\rm SH}$ | the isospin columns $(1,0)^T$ and $(0,1)^T$ |
-| $\mathsf U$, $\mathsf U'$ | unitary matrices acting on the components of $\Psi_{\rm LL}$ and of $\chi_{\rm SH}$ |
+| $\mathsf U$, $\mathsf U'$ | unitary matrices acting on the components of the first and of the second field of a bilinear |
 | $\mathbf u$; $J^j_{\rm LL}$, $K^j_{\rm LL}$ | a generator of $SL(2,\mathbb C)$ (an imaginary bi-quaternion); the generators of the rotations and the boosts |
 | $M_{\rm LL}(\mathbf u)$, $\mathsf s_{\rm LL}(\mathbf u)$ | the complex $2\times2$ matrix of a bi-quaternion, and the action $\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))$ of a generator on the Dirac index |
 | $\gamma^0_{\rm LL}$ | the Dirac matrix $\begin{pmatrix}0&\mathsf 1_2\\\mathsf 1_2&0\end{pmatrix}$ of the chiral basis, by which parity acts |

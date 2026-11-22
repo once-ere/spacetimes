@@ -7,8 +7,8 @@ g_prime,g' = g tan(theta_W),3.50045977345777692e-1,1,"from M_W, M_Z and G_F"
 e,e = g sin(theta_W),3.08490159927469088e-1,1,"from M_W, M_Z and G_F"
 g_v_LL,g^v_LL = g (H2),6.52770750432713043e-1,1,the coupling of SU(2)_v of the earlier hypotheses
 g_F_LL,g^F_LL = g'/4 (H2),8.75114943364444231e-2,1,the coupling of U(1)^F_LL of the earlier hypotheses
-M_W_tree,g v / 2,8.03624999999999829e1,GeV,eigenvalue of the mass matrix
-M_Z_tree,sqrt(g^2 + g'^2) v / 2,9.11878999999999849e1,GeV,eigenvalue of the mass matrix
+M_W_tree,g v / 2,8.03624999999999972e1,GeV,eigenvalue of the mass matrix
+M_Z_tree,sqrt(g^2 + g'^2) v / 2,9.11879000000000133e1,GeV,eigenvalue of the mass matrix
 m_H_over_v,m_H / v,5.08204722362080474e-1,1,measured m_H and v
 alpha_inverse_tree,4 pi / e^2,1.32046602863563891e2,1,for these couplings
 rho_with_s2_hat,M_W^2 / (M_Z^2 (1 - s2_hat_Z)),1.01025352023510040e0,1,MS-bar angle
