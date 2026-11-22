@@ -1,8 +1,8 @@
 evaluated in the front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026)
 notebook: /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/in/superfluid.nb
 saved:    /Users/nsh/Developer/github/spacetimes/.git-transfer/mma/sfnb/out/superfluid.nb
-seconds:  290
-kernel:   {0, 18148}   last In line: 776
+seconds:  305
+kernel:   {0, 23368}   last In line: 776
 counts:   <|"inputs" -> 93, "evaluated" -> 93, "outputs" -> 16, "prints" -> 211, "messages" -> 0|>
 --- messages (0) ---
 --- printed lines (211) ---

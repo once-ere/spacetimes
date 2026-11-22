@@ -4,7 +4,7 @@
 # closed input cells (the cells of data), of the formulas in the text cells and of the formulas that the reader of
 # formulas could not read (warnings)
 components: 0
-cells: 400
+cells: 403
 closed input cells: 5
-formulas in text cells: 1571
+formulas in text cells: 1574
 warnings: 0

@@ -1,4 +1,4 @@
-<|"finished" -> "Sun 22 Nov 2026 02:09:01", "kernel" -> {0, 18148}, 
+<|"finished" -> "Sun 22 Nov 2026 02:20:02", "kernel" -> {0, 23368}, 
  "tests" -> {<|"id" -> "WSM-1", "pass" -> True, 
     "deviation" -> Missing["NotNumerical"], "tolerance" -> 
      Missing["NotNumerical"], "text" -> "Standard Model with +i g: the \
@@ -968,4 +968,4 @@ equation and, after the kick 1e-3, the d(t) of the Rust program for 0 <= t <= \
 50 (largest |difference| / d_0, at the 51 stored times) [d_0 against the gap \
 equation of WD-3 6.032e-22; deviation 1.749e-9]", "rust" -> "none", 
     "python" -> "YD-6"|>}, "line" -> 776, 
- "seconds" -> 33819.390679`10.980710772182535|>
+ "seconds" -> 631.484592`9.251907751885323|>

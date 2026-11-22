@@ -22,7 +22,13 @@
 (***The interaction.** The Hamiltonian density contains the free Dirac terms of the three fields, the scalar and the vector contact terms of $\Psi_{\rm LL}$ of Parts II and III, with the couplings $G^{\rm S}_{\rm SF}=-8$ and $G^{\rm V}_{\rm SF}=0.8$, and the pairing terms*)
 
 (* ::DisplayFormula:: *)
-(*-G_{\rm SH}\sum_{s={\rm u},{\rm d}}\Big[{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}+{:}(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}{:}\Big],\qquad\Pi^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\big)\chi_{\rm SH},\qquad\Pi'^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\big)\chi'_{\rm SH},*)
+(*-G_{\rm SH}\sum_{s={\rm u},{\rm d}}\Big[{:}(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}{:}+{:}(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}{:}\Big],*)
+
+(* ::Text:: *)
+(*with the pair operators*)
+
+(* ::DisplayFormula:: *)
+(*\Pi^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\big)\chi_{\rm SH},\qquad\Pi'^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\big)\chi'_{\rm SH},*)
 
 (* ::Text:: *)
 (*with $G_{\rm SH}=100.8$, the isospin columns $\mathbf e^{\rm u}_{\rm SH}=(1,0)^T$ and $\mathbf e^{\rm d}_{\rm SH}=(0,1)^T$, and ${:}\ {:}$ the normal ordering with respect to the normal vacuum. $\Pi^s_{\rm SH}$ annihilates a particle of the component $s$ of $\Psi_{\rm LL}$ together with a particle of $\chi_{\rm SH}$ in the state of spin zero and positive parity, and $\Pi'^s_{\rm SH}$ does the same with a particle of $\chi'_{\rm SH}$. The expectation values $\Phi_{\rm SH}=(\Phi^{\rm u}_{\rm SH},\Phi^{\rm d}_{\rm SH})$ of $(\Pi^{\rm u}_{\rm SH},\Pi^{\rm d}_{\rm SH})$ and $\Phi'_{\rm SH}$ of $(\Pi'^{\rm u}_{\rm SH},\Pi'^{\rm d}_{\rm SH})$ are the two pair fields, and the superfluid is their condensate. The ground state is computed by the five mean-field methods of Part II: HS (1, 1), HS (0, 1) and HS (0, 0) (the method of Hubbard and Stratonovich with three parameter sets), KS (Kohn and Sham) and CJT (Cornwall, Jackiw and Tomboulis).*)
@@ -853,10 +859,13 @@ the linear response give M_H / v from " <> ToString[NumberForm[Min[ratios], 6]] 
 (***The remark.** In HS (0, 1) and HS (0, 0) the amplitude mode lies exactly at $\omega^{\rm H}_{\rm SH}=d^0_{\rm SH}$, below the threshold of two quasi-particles. **Why it holds.** The response of the pair amplitudes along the amplitude and along the phase of the vacuum direction has the eigenvalues*)
 
 (* ::DisplayFormula:: *)
-(*\lambda^{\rm amp}_{\rm SH}(\omega)=\frac{G_{\rm SH}}{4\pi^2}\int_0^1\frac{q^2(q^2+m_{\rm LL}^2)\,dq}{E\,(E^2-\omega^2/4)},\qquad\lambda^{\rm ph}_{\rm SH}(\omega)=\frac{G_{\rm SH}}{4\pi^2}\int_0^1\frac{q^2E\,dq}{E^2-\omega^2/4},\qquad E^2=q^2+m_{\rm LL}^2+\frac{(d^0_{\rm SH})^2}{4},*)
+(*\lambda^{\rm amp}_{\rm SH}(\omega)=\frac{G_{\rm SH}}{4\pi^2}\int_0^1\frac{q^2(q^2+m_{\rm LL}^2)\,dq}{E\,(E^2-\omega^2/4)},*)
+
+(* ::DisplayFormula:: *)
+(*\lambda^{\rm ph}_{\rm SH}(\omega)=\frac{G_{\rm SH}}{4\pi^2}\int_0^1\frac{q^2E\,dq}{E^2-\omega^2/4},*)
 
 (* ::Text:: *)
-(*the forms of the theory of Bardeen, Cooper and Schrieffer; a mode lies where one of them equals 1. The phase eigenvalue at $\omega=0$ is the gap equation, so it equals 1 there: the Goldstone mode. The identity of the integrands, $\frac{q^2+m^2}{E(E^2-\omega^2/4)}-\frac1E=\frac{\omega^2-d^2}{4E(E^2-\omega^2/4)}$, gives*)
+(*with $E^2=q^2+m_{\rm LL}^2+(d^0_{\rm SH})^2/4$, the forms of the theory of Bardeen, Cooper and Schrieffer; a mode lies where one of them equals 1. The phase eigenvalue at $\omega=0$ is the gap equation, so it equals 1 there: the Goldstone mode. The identity of the integrands, $\frac{q^2+m^2}{E(E^2-\omega^2/4)}-\frac1E=\frac{\omega^2-d^2}{4E(E^2-\omega^2/4)}$, gives*)
 
 (* ::DisplayFormula:: *)
 (*\lambda^{\rm amp}_{\rm SH}(\omega)-1=\frac{\omega^2-(d^0_{\rm SH})^2}{4}\,\frac{G_{\rm SH}}{4\pi^2}\int_0^1\frac{q^2\,dq}{E\,(E^2-\omega^2/4)},*)
