@@ -3842,6 +3842,52 @@ the check of self-containedness found it, and it was reworded. (12) The
 first wording of E75 named the manuscript of 16 November with a phrase
 that the same check reads as a referral to another document; it was
 reworded \\
+E78 & 22 Nov 2026, 14:45 to 15:30 & object O20, second part: the
+hypotheses document \texttt{provenance/H0\_hypotheses} and the three
+manuscripts of the stages, \texttt{higgs\_superfluid},
+\texttt{higgs\_masses} and \texttt{higgs\_dynamics}, made complete in
+themselves and friendlier (D38). Each now opens with a note on how to
+read it, explains every technical word in a section before its findings
+(a list of about forty words in four groups: the fields and their
+charges, symmetries and their breaking, states and methods, responses,
+masses and modes), begins each main section with a paragraph that says
+in words what the section does and why, and ends with Appendix A, ``The
+algebra behind the fields, with an example of every object'': the
+material of the article's Sec. II in the notation of the folder (the
+octonions and the Moufang loop of the 16 elements, the bi-octonions and
+the Lorentz super-loop, M31 and the Lorentz group with the rotation, the
+boost and the parity, the eight spinor charges with the automorphism
+that gives their spin, the word super-loop with its example, the fields
+\(\psi'_{\rm LL}\) and isospin with the table of the charges, a Dirac
+spinor, an isodoublet, an isovector, an isodoublet of Dirac spinors, and
+the superfluid of the spinor charges with its gaps, gap equation,
+critical coupling, the proof that the polar state wins and an explicit
+example), with its own list of symbols. The list of words and the
+appendix are written once, as
+\texttt{docs\_src/parts/glossary\_sh.part.md} and
+\texttt{docs\_src/parts/algebra\_sh.part.md}, and included in full by
+the new placeholder PART of \texttt{code/scripts/assemble\_docs.py}, so
+that every built document contains them. Their numbers are read from
+\texttt{data/sh\_examples*.csv} through fragments that
+\texttt{code/scripts/write\_sh\_examples\_fragments.py} now writes for
+every row (with the converter of the article). The manuscript
+\texttt{superfluid.md} of the earlier hypotheses is not yet rewritten.
+Every check of the build of the documents passes \\
+E79 & 22 Nov 2026, during E78 & corrections found while the appendix was
+written in the notation of the folder; none changes a result. (1) The
+article used the letter \(\eta\) both for the metric and for the
+rapidity of a boost; the rapidity is now \(\vartheta\). (2) It used the
+italic \(R\) both for an element of \(SU(2)_{\rm R}\) and for the
+\(3\times3\) rotation matrix of an isospin rotation; the rotation matrix
+is now \(\mathsf R(U)\). (3) It normalized the Dirac spinor of the
+example with ``\(\bar uu=2m\)'', while \(m\) is the mass of the fields
+of the model; it now says ``twice the mass''. In the documents the
+corresponding symbols carry the suffix LL (\(\mathsf L_{\rm LL}\),
+\(\mathsf R_{\rm LL}\), \(U_{\rm LL}\), \(u_{\rm LL}\),
+\(\mathsf X_{\rm LL}\)), because \(\mathsf L_{\rm SH}\) and
+\(\mathsf X_{\rm SH}\) already name other objects there. (4) The formula
+of the critical coupling with its closed form was wider than the page
+and is split over two lines \\
 \end{longtable}
 
 \end{document}

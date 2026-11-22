@@ -237,6 +237,11 @@ before that version was kept; none of them changes a result.
 28. **Wide formulas and matrices in the text.** The Moufang identities, the Hermitian bi-quaternions, the Hamiltonian
     and the matrix of the superfluid of the spinor charges and its critical coupling were wider than a column; they are
     now split over two lines. The matrices of the examples, first set inside the lines of the text, are now displayed.
+29. **One letter for two objects** (found after the first commit of the rewritten article, while the same material was
+    written for the other documents of the folder). The article used $\eta$ for the metric and for the rapidity of a
+    boost, the italic $R$ for an element of $SU(2)_{\rm R}$ and for the rotation matrix of an isospin rotation, and $m$ for
+    the mass of the fields and, in "$\bar uu=2m$", for the mass of the particle of an example. The rapidity is now
+    $\vartheta$, the rotation matrix $\mathsf R(U)$, and the normalization reads "twice the mass".
 
 # 7. Provenance
 

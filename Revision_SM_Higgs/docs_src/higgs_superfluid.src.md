@@ -10,6 +10,12 @@ date: "November 21, 2026"
 
 # 0. What this document is and what it finds
 
+*How to read this document.* It is written for a reader who knows quantum mechanics, special relativity, the Dirac
+equation and second quantization at the level of a first graduate course. Every technical word that it uses is explained
+in Section 0.1, before the findings, and Appendix A builds the algebra from which its fields come (the octonions, the
+Lorentz super-loop, the eight spinor charges, the isodoublet of Dirac spinors $\Psi_{\rm LL}$ and their superfluid), with an
+example of every object. The document refers to no other document for what it uses.
+
 On 21 November 2026 the author asked that the hypotheses of PROJECT spacetimes be modified so that the superfluid can
 be the Higgs field of the Standard Model, with the same quantum numbers as the Higgs doublet. In the first version of
 the revised hypotheses the superfluid was a condensate of spin-zero pairs made of one particle of the isodoublet
@@ -25,7 +31,11 @@ of the six stages of the revision. All quantities are in units of the momentum c
 to GeV, the mass of the amplitude mode and the masses of the weak bosons are computed in the later stages, and
 Section 8 says what they need from this one.
 
-The findings:
+## 0.1 Words used in this document
+
+{{PART:glossary_sh}}
+
+## 0.2 The findings
 
 1. **Only the doublet-singlet channels are unstable.** The normal vacuum (no condensate) is unstable only towards the
    condensation of the pairs of $\Psi_{\rm LL}$ with a singlet. With the pairing terms of the potential $V^{(1)}_{\rm SH}$ the
@@ -67,11 +77,16 @@ of the hypotheses (Section 2.3).
 
 # 1. The hypotheses of this document
 
+*In words.* This section states the model: which fields there are, which charges they carry, which matrices act on
+their spinor indices, and which pairs of particles the interaction binds. Everything later is computed from these
+statements.
+
 ## 1.1 The fields and their charges
 
 There are three spinor fields, all four-component Dirac fields of $SL(2,\mathbb C)$ and all singlets of colour:
 
-* the isodoublet $\Psi_{\rm LL}$ has eight components, numbered $2d+s$, where $d=0,\dots,3$ is the Dirac index of the chiral
+* the isodoublet $\Psi_{\rm LL}$, the field of the eight spinor charges of the Lorentz super-loop (Appendix A.4), has
+  eight components, numbered $2d+s$, where $d=0,\dots,3$ is the Dirac index of the chiral
   basis and $s=0$ (up) or $s=1$ (down) is the isospin index;
 * the singlets $\chi_{\rm SH}$ and $\chi'_{\rm SH}$ have four components each, numbered by the Dirac index.
 
@@ -164,6 +179,11 @@ The neutral components are $\Phi^{\rm d}_{\rm SH}$ (a down particle with $\chi_{
 $\chi'_{\rm SH}$).
 
 # 2. The Hamiltonian density and the potentials
+
+*In words.* The Hamiltonian density says how the fields move and how they interact: freely, through two contact
+terms of $\Psi_{\rm LL}$ with itself (a scalar and a vector one), and through the pairing terms that bind a member of
+$\Psi_{\rm LL}$ to a singlet. Section 2.2 gives the strengths of these terms and where they come from, and Section 2.3 explains
+why the pairing terms, and not the electroweak gauge bosons, form the condensate.
 
 ## 2.1 The Hamiltonian density
 
@@ -262,6 +282,13 @@ The pairing term of $V^{(1)}_{\rm SH}$ is above its critical value (Section 4.2)
 is the pairing term of (2.1) itself. It is an interaction of the hypotheses, not a consequence of the gauge group.
 
 # 3. The uniform states and the three methods
+
+*In words.* A contact interaction of four fermion fields cannot be solved exactly. The methods of this document
+look for the best state among the simplest ones, the uniform quasi-free states, in which the particles move
+independently in an average field (Section 3.1). They differ in how they assign an energy to such a state, that is,
+in which of the three ways of averaging four fields into pairs of two they keep (Sections 3.2 and 3.3). Section 3.4
+proves that two of the methods, KS and CJT, give the same answers on the states of this document, and Section 3.5
+says how the states are found numerically.
 
 ## 3.1 Uniform quasi-free states
 
@@ -502,6 +529,12 @@ the rounding errors, and the restricted iteration converges to the condensate of
 
 # 4. The static response
 
+*In words.* Is a state stable? Push it slightly in some direction and see whether it pushes back. The static response
+measures, for every direction of the self-energies, how strongly the state answers a small change; an answer larger
+than the push (an eigenvalue above 1) means that the push grows by itself, and the state is unstable. Sections 4.2 to
+4.4 apply this to the normal vacuum, the state without pairs, channel by channel, and find the critical coupling above
+which the pairs of $\Psi_{\rm LL}$ with a singlet condense.
+
 ## 4.1 Definition
 
 Let a stationary state have the self-energies $(\mathsf N_{\rm SH},\mathsf P_{\rm SH})$. Change them by small amounts: the change
@@ -665,6 +698,10 @@ stable.
 
 # 5. The stationary states and the ground states
 
+*In words.* Starting from many different initial guesses, each method is iterated until the state reproduces its
+own self-energies. This section lists the states found this way, compares their energies, and names the one of lowest
+energy, the ground state, in each method.
+
 Table 5.1 lists the stationary states reached from the {{GEN:sf_nstarts}} starts of Table 3.1. For each state it gives the
 starts that reached it (their numbers), its energy and, for the states of $V^{(1)}_{\rm SH}$ other than the ground state,
 the largest eigenvalue of its static response in the doublet-singlet pairs (Section 4.1; that of the ground states is
@@ -759,6 +796,11 @@ requires (checks SF-7a and YSF-7).
 
 # 6. The symmetry and the stability of the ground state
 
+*In words.* Which symmetries does the ground state keep, and which does it break? The kept generators leave the state
+unchanged; the broken ones turn it into other states of the same energy, and each gives a Goldstone mode, an
+eigenvalue of the static response exactly equal to 1. Every other eigenvalue below 1 shows that the ground state is
+stable.
+
 **The unbroken generators.** A real combination $\mathsf G$ of generators leaves a state unchanged when its self-energies
 are unchanged by the rotation $e^{i\theta\mathsf G}$, that is, when $[\mathsf G,\mathsf N_{\rm SH}]=0$ and
 $\mathsf G\mathsf P_{\rm SH}+\mathsf P_{\rm SH}\mathsf G^T=0$. For the ground states of the second version, in all five methods:
@@ -818,6 +860,10 @@ there was no second doublet to condense.
 
 # 7. The quasi-particles and the custodial symmetry
 
+*In words.* This section looks at the excitations of the ground state: how much energy it costs to create the
+lightest quasi-particle (the gap), which charges the quasi-particles carry, and how the custodial symmetry shows itself
+in equal masses and densities of the up and down members and of the two singlets.
+
 **The gap.** In the first version the condensate along $\Phi^{\rm d}_{\rm SH}$ paired the down components of $\Psi_{\rm LL}$ with
 $\chi_{\rm SH}$ and left the up components unpaired; the block of (3.1) of the up components is that of a free Dirac field of
 mass $M^{\rm u}_{\rm SH}$, and in every method the lowest quasi-particle energy is $\lvert M^{\rm u}_{\rm SH}\rvert$, reached at zero momentum
@@ -851,6 +897,9 @@ well; that broke the custodial symmetry. Stage 4 computes $\rho$ of both version
 superfluid to the four gauge fields.
 
 # 8. What this stage does not yet decide
+
+*In words.* The numbers of this stage are in units of the cutoff and say nothing yet about masses in GeV, the gauge
+bosons or the Higgs boson. This section lists what the later stages must compute.
 
 The following are left to the later stages:
 
@@ -921,6 +970,8 @@ The Wolfram script `wolfram/source/sh_superfluid.wls`, in exact arithmetic:
 
 # 10. The symbols of this document
 
+The symbols of Appendix A are listed in its Section A.7.
+
 | symbol | meaning |
 |:---|:---|
 | $\Psi_{\rm LL}$; $\chi_{\rm SH}$, $\chi'_{\rm SH}$ | the isodoublet of Dirac fields (eight components, component $2d+s$) and the two singlet Dirac fields (four components each) |
@@ -982,3 +1033,5 @@ The Wolfram script `wolfram/source/sh_superfluid.wls`, in exact arithmetic:
 | $\mathsf A$, $\mathsf A'$, $\mathsf t$, $\mathsf G$ | matrices in the statements: arbitrary matrices (in the proof of Section 3.4, $\mathsf A$ is $\mathsf 1_4$ or $\beta_{\rm LL}$), an isospin matrix, a combination of generators |
 | $\mathsf 1$, $\mathsf 1_2$, $\mathsf 1_4$, $\mathsf 1_8$; ${:}\ {:}$ | unit matrices; the normal ordering with respect to the normal vacuum |
 | ${}^T$, ${}^\dagger$, ${}^*$, $\otimes$, $\oplus$, $\mathrm{tr}$, $\mathrm{diag}$, $\mathrm{Re}$ | the transpose, the Hermitian conjugate, the complex conjugate, the Kronecker product, the direct sum, the trace, the block-diagonal matrix and the real part |
+
+{{PART:algebra_sh}}

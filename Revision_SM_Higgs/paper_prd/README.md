@@ -241,6 +241,11 @@ before that version was kept; none of them changes a result.
 28. **Wide formulas and matrices in the text.** The Moufang identities, the Hermitian bi-quaternions, the Hamiltonian
     and the matrix of the superfluid of the spinor charges and its critical coupling were wider than a column; they are
     now split over two lines. The matrices of the examples, first set inside the lines of the text, are now displayed.
+29. **One letter for two objects** (found after the first commit of the rewritten article, while the same material was
+    written for the other documents of the folder). The article used $\eta$ for the metric and for the rapidity of a
+    boost, the italic $R$ for an element of $SU(2)_{\rm R}$ and for the rotation matrix of an isospin rotation, and $m$ for
+    the mass of the fields and, in "$\bar uu=2m$", for the mass of the particle of an example. The rapidity is now
+    $\vartheta$, the rotation matrix $\mathsf R(U)$, and the normalization reads "twice the mass".
 
 # 7. Provenance
 
@@ -252,7 +257,7 @@ checksums of the templates, of the build program and of the files to upload, at 
 * `paper_prd/scripts/build_paper.py`:\
   `c0fe1cadc1c8851a1c6573c4ce2fa6e0d4f11d47a7bff69e6eea21de1333839c`
 * `paper_prd/src/higgs_composite_qg.template.tex`:\
-  `8bf65410860cded0c3fc268ca09f4e6a5c37fdf94b30acae39e3065c67a0e426`
+  `02de52159350366ff4ea76732d40a600c3fa2c443baee322dcc401b3f57e36ef`
 * `paper_prd/src/higgs_composite_qg_SM.template.tex`:\
   `7829918e8244512bd59f655d01f36d6f809160d3b9c163154cbdfbeb3921e7fb`
 * `paper_prd/src/cover_letter.template.tex`:\
@@ -262,9 +267,9 @@ checksums of the templates, of the build program and of the files to upload, at 
 * `paper_prd/src/references.bib`:\
   `6ee51161bbbcebca68a142d9a3a1114afc593ab66ab1d1c5e2573e34716c3b31`
 * `paper_prd/submission/higgs_composite_qg.pdf`:\
-  `3a284b42b84eed0b28634383a193ea17edc60ddb195f09a6ab0cc6bfab103590`
+  `9bc5050bb86f309059e20be975b6310206ec0df6a038191a8fb45a212477f51f`
 * `paper_prd/submission/higgs_composite_qg.tex`:\
-  `2c17de30782ac36be7daed20b9ce3cfd770db10e1ff8bfdb12d89da1a659a04f`
+  `06a4df0d487d13c854ffd98de45855caa05d0755a5280ac49501730b03c82a45`
 * `paper_prd/submission/higgs_composite_qg.bbl`:\
   `01b06154a457703cbde273d0b7af16df5c3ddceb39888f653a5f03fac9df8457`
 * `paper_prd/submission/higgs_composite_qg_SM.pdf`:\

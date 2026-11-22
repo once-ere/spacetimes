@@ -10,6 +10,12 @@ date: "November 21, 2026"
 
 # 0. What this document is and what it finds
 
+*How to read this document.* It is written for a reader who knows quantum mechanics, special relativity, the Dirac
+equation and second quantization at the level of a first graduate course. Every technical word that it uses is explained
+in Section 0.1, before the findings, and Appendix A builds the algebra from which its fields come (the octonions, the
+Lorentz super-loop, the eight spinor charges, the isodoublet of Dirac spinors $\Psi_{\rm LL}$ and their superfluid), with an
+example of every object. The document refers to no other document for what it uses.
+
 The author asked that the hypotheses of PROJECT spacetimes be modified so that the superfluid can be the Higgs field of
 the Standard Model, with the quantum numbers of the Higgs doublet. In the second version of the revised hypotheses,
 stated in Section 1, the superfluid is a condensate of pairs of a particle of the isodoublet $\Psi_{\rm LL}$ with a particle
@@ -23,7 +29,11 @@ Higgs boson. The first version of the hypotheses (one singlet) is computed along
 are first computed in units of the momentum cutoff $\Lambda_{\rm LL}=1$ and then converted to GeV by the value of the scale,
 $v_{\rm SH}=246.22$ GeV.
 
-The findings:
+## 0.1 Words used in this document
+
+{{PART:glossary_sh}}
+
+## 0.2 The findings
 
 1. **The superfluid is a minimum of its effective potential.** Along the direction of the vacuum, the energy of the
    lowest state with a given pair amplitude is a Mexican hat. It falls from its top, at zero pair amplitude, to the
@@ -66,11 +76,15 @@ The findings:
 
 # 1. The hypotheses and the ground state
 
+*In words.* This section repeats the model of the revision and the ground state that stage 3 found, so that this
+document can be read alone.
+
 ## 1.1 The fields and their charges
 
 There are three spinor fields, all four-component Dirac fields of $SL(2,\mathbb C)$ and all singlets of colour:
 
-* the isodoublet $\Psi_{\rm LL}$ has eight components, numbered $2d+s$, where $d=0,\dots,3$ is the Dirac index of the chiral
+* the isodoublet $\Psi_{\rm LL}$, the field of the eight spinor charges of the Lorentz super-loop (Appendix A.4), has
+  eight components, numbered $2d+s$, where $d=0,\dots,3$ is the Dirac index of the chiral
   basis and $s=0$ (up) or $s=1$ (down) is the isospin index;
 * the singlets $\chi_{\rm SH}$ and $\chi'_{\rm SH}$ have four components each, numbered by the Dirac index.
 
@@ -190,6 +204,11 @@ $\lvert\langle\Pi'^{\rm u}_{\rm SH}\rangle\rvert$, the length of the neutral com
 mean of the two.
 
 # 2. The effective potential
+
+*In words.* The effective potential is the energy of the best uniform state with a prescribed size of the pair
+condensate. Plotted against that size it has the shape of a Mexican hat, high at zero and lowest at the size of the
+ground state; its curvature at the bottom decides how stiff the condensate is against a change of its size, and with it
+the mass of the amplitude mode.
 
 ## 2.1 Definition and method
 
@@ -313,6 +332,12 @@ not compare its top with the scalar condensate of stage 3. The minimum and its c
 
 # 3. The susceptibilities and the masses of the gauge bosons
 
+*In words.* How does the condensate make the $W$ and $Z$ bosons heavy? A static gauge field acts on the state like a
+chemical potential of the charges, and the condensate answers by taking up charge; the size of the answer, the
+susceptibility, measures how much it costs to twist the phase of the condensate, and that cost is the mass term of the
+gauge fields. This section computes the susceptibilities, the mass matrix of the four electroweak gauge fields, the
+massless photon and the parameter $\rho$.
+
 ## 3.1 Chemical potentials as the time components of the gauge fields
 
 A uniform, static gauge field couples to the charge densities. Its time component $A^a_0$ acts on the state like a
@@ -390,6 +415,9 @@ one, cost a different energy than the phase rotation of $T^{3,{\rm SM}}$. That i
 
 # 4. The scale in GeV
 
+*In words.* All computations are made in units of the cutoff. Requiring that the $W$ boson get its measured mass fixes
+the scale of the breaking at $v=246.22$ GeV, and with it the cutoff and every other mass in GeV.
+
 Setting $v_{\rm SH}=v={{GENM:hg_v_gev}}$ GeV, the value of the Standard Model from the Fermi constant, fixes the cutoff in GeV:
 $\Lambda_{\rm LL}=v/v_{\rm SH}$ when $v_{\rm SH}$ is in units of the cutoff. Then $M_{W,{\rm SH}}=gv/2={{GENM:hg_mw_gev}}$ GeV in every method, by
 construction, and $M_{Z,{\rm SH}}=M_{W,{\rm SH}}/(\rho_{\rm SH}^{1/2}\cos\theta_W)$.
@@ -407,6 +435,11 @@ Table 4.2. The gap of the ground states (stage 3) in units of the cutoff and in 
 {{GEN:hg_table_gap}}
 
 # 5. The amplitude mode
+
+*In words.* The amplitude mode is the oscillation of the size of the condensate, the candidate for the Higgs boson.
+Its frequency is computed twice: from the effective Lagrangian, which uses the curvature of the Mexican hat (Section
+5.1), and from the full linear response of the time-dependent mean field (Sections 5.2 and 5.3), which is needed because
+the mode lies close to the energy that breaks a pair. Section 5.4 compares the results with the measured $m_H/v$.
 
 ## 5.1 The effective Lagrangian
 
@@ -558,6 +591,10 @@ from $d^0_{\rm SH}$, its ratio to $v_{\rm SH}$, its value in GeV, the lowest tra
 
 # 6. The dependence on the coupling and the mass
 
+*In words.* The coupling and the mass of the fields were choices. This section repeats the computation over a range of
+couplings and two masses to see whether any choice brings the amplitude mode down to the measured mass of the Higgs
+boson.
+
 The coupling $G_{\rm SH}$ was a choice of stage 3, $G_{\rm SH}/G^{\rm crit}_{\rm SH}=1.1838$ with
 $G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})$, and so was the mass. In HS (0, 0) the ground state has the closed form of Section 2.2
 for any coupling and mass. The program therefore repeats the computation of $v_{\rm SH}$, $\rho_{\rm SH}$ and the amplitude mode for
@@ -576,6 +613,9 @@ $d^0_{\rm SH}/v_{\rm SH}$. It stays between {{GEN:hg_scan_min2}} and {{GEN:hg_sc
 with the condensate, and their ratio does not approach the value $0.508$ of the Standard Model.
 
 # 7. What the results mean
+
+*In words.* What the numbers of this document say about the question of the revision: in which respects the
+superfluid is the Higgs field of the Standard Model, and in which it is not.
 
 * **What works.** The superfluid of the second version has the quantum numbers of the Higgs field, breaks
   $SU(2)_L\times U(1)_Y$ to the $U(1)$ of the electric charge, leaves the photon massless and gives $\rho_{\rm SH}=1$. With the
@@ -658,6 +698,8 @@ Review D 41, 1647 (1990).
 
 # 9. The symbols of this document
 
+The symbols of Appendix A are listed in its Section A.7.
+
 | symbol | meaning |
 |:---|:---|
 | $\Psi_{\rm LL}$; $\chi_{\rm SH}$, $\chi'_{\rm SH}$; $\Psi_{\rm SH}$ | the isodoublet of Dirac fields (eight components, component $2d+s$), the two singlet Dirac fields (four components each), and the three as one field of sixteen components |
@@ -709,3 +751,5 @@ Review D 41, 1647 (1990).
 | $\lambda^{\rm amp}_{\rm SH}(\omega)$, $\lambda^{\rm ph}_{\rm SH}(\omega)$ | the eigenvalues (5.3) of the response of the pair amplitudes in HS (0, 0) along the amplitude and along the phase of the vacuum direction |
 | $a$, $b$, $d$, $s$, $j$, $p$, $k$, $l$ | indices: generators (or $a=1,2,3$ of $SU(2)_L$), the Dirac index, the isospin index, the space coordinates, the spacetime coordinates, eigenvectors |
 | $\mathsf 1_2$, $\mathsf 1_4$; ${}^T$, ${}^\dagger$, $\otimes$, $\mathrm{tr}$, $\mathrm{arsinh}$ | unit matrices; the transpose, the Hermitian conjugate, the Kronecker product, the trace, the inverse hyperbolic sine |
+
+{{PART:algebra_sh}}

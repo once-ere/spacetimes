@@ -10,6 +10,12 @@ date: "November 21, 2026"
 
 # 1. What this document is
 
+*How to read this document.* It is written for a reader who knows quantum mechanics, special relativity, the Dirac
+equation and second quantization at the level of a first graduate course. Every technical word that it uses is explained
+in Section 1.1, and Appendix A builds the algebra from which its fields come (the octonions, the Lorentz super-loop, the
+eight spinor charges, the isodoublet of Dirac spinors $\Psi_{\rm LL}$ and their superfluid), with an example of every
+object. The document refers to no other document for what it uses.
+
 This document states the hypotheses of the folder `Revision_SM_Higgs` of PROJECT spacetimes and why they are what they
 are. The folder was made on 21 November 2026 as a copy of the folder `Revision_HS_CJT_and_Kohn-Sham` at the commit
 `19db425`, which stays unchanged as the record of the earlier hypotheses. The author asked, at 17:09 PST, that the
@@ -33,6 +39,10 @@ stages compute both versions side by side. Section 6 reports the checks of the s
 the first.
 
 "I" in this document is the assistant that does the work.
+
+## 1.1 Words used in this document
+
+{{PART:glossary_sh}}
 
 # 2. The quantum numbers of the Higgs doublet
 
@@ -71,8 +81,9 @@ values, and it no longer quotes $\hat\alpha(M_Z)$.
 
 # 3. Why the superfluid of the earlier hypotheses cannot be the Higgs
 
-Under the earlier hypotheses the only spinor field was the isodoublet $\Psi_{\rm LL}$, and the superfluid was a
-condensate of pairs of two of its particles. The spin-zero, Lorentz-invariant pairs of one Dirac isodoublet are
+Under the earlier hypotheses the only spinor field was the isodoublet $\Psi_{\rm LL}$, the field of the eight spinor
+charges of the Lorentz super-loop (Appendix A.4), and the superfluid was a condensate of pairs of two of its particles
+(Appendix A.6 states that superfluid and gives an explicit example). The spin-zero, Lorentz-invariant pairs of one Dirac isodoublet are
 antisymmetric in the exchange of the two particles (Fermi statistics). The two Lorentz-invariant matrices of a pair of
 Dirac spinors, $C_{\rm LL}$ and $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$, are antisymmetric, so the isospin factor must be symmetric,
 and the symmetric part of the product of two doublets is the triplet:
@@ -464,6 +475,8 @@ The Wolfram script `wolfram/source/sh_quantum.wls`, in exact arithmetic ({{GEN:s
 
 # 7. The symbols of this document
 
+The symbols of Appendix A are listed in its Section A.7.
+
 | symbol | meaning |
 |:---|:---|
 | $\Psi_{\rm LL}$ | the doublet field: an isodoublet of Dirac fields, with $Y^{\rm SM}=1/4$ under these hypotheses |
@@ -510,3 +523,5 @@ The Wolfram script `wolfram/source/sh_quantum.wls`, in exact arithmetic ({{GEN:s
 | $M_{\rm LL}(\mathbf u)$, $\mathsf s_{\rm LL}(\mathbf u)$ | the complex $2\times2$ matrix of a bi-quaternion, and the action $\mathrm{diag}(-M_{\rm LL}(\mathbf u)^\dagger,M_{\rm LL}(\mathbf u))$ of a generator on the Dirac index |
 | $\gamma^0_{\rm LL}$ | the Dirac matrix $\begin{pmatrix}0&\mathsf 1_2\\\mathsf 1_2&0\end{pmatrix}$ of the chiral basis, by which parity acts |
 | $\mathsf 1_2$; ${}^T$, ${}^\dagger$, $\otimes$, $\mathrm{tr}$, $\mathrm{diag}$ | the $2\times2$ unit matrix; the transpose, the Hermitian conjugate, the Kronecker product, the trace and the block-diagonal matrix |
+
+{{PART:algebra_sh}}

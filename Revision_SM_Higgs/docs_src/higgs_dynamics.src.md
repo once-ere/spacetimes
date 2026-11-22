@@ -10,6 +10,12 @@ date: "November 22, 2026"
 
 # 0. What this document is and what it finds
 
+*How to read this document.* It is written for a reader who knows quantum mechanics, special relativity, the Dirac
+equation and second quantization at the level of a first graduate course. Every technical word that it uses is explained
+in Section 0.1, before the findings, and Appendix A builds the algebra from which its fields come (the octonions, the
+Lorentz super-loop, the eight spinor charges, the isodoublet of Dirac spinors $\Psi_{\rm LL}$ and their superfluid), with an
+example of every object. The document refers to no other document for what it uses.
+
 The author asked that the hypotheses of PROJECT spacetimes be modified so that the superfluid can be the Higgs field of
 the Standard Model, with the quantum numbers of the Higgs doublet. In the second version of the revised hypotheses,
 stated in Section 1, the superfluid is a condensate of pairs of a particle of the isodoublet $\Psi_{\rm LL}$ with a particle
@@ -22,7 +28,11 @@ displacement of the pair fields from the ground state then oscillates at the fre
 version of the hypotheses (one singlet) is computed alongside as the comparison. All quantities are in units of the
 momentum cutoff $\Lambda_{\rm LL}=1$; times are in units of $1/\Lambda_{\rm LL}$.
 
-The findings:
+## 0.1 Words used in this document
+
+{{PART:glossary_sh}}
+
+## 0.2 The findings
 
 1. **The equations conserve what they must.** In all {{GEN:dy_nruns}} runs the energy per volume, the charge densities of the
    symmetries and the orthonormality of the quasi-particle vectors are conserved to the accuracy of the integration
@@ -52,11 +62,15 @@ The findings:
 
 # 1. The hypotheses and the ground state
 
+*In words.* This section repeats the model of the revision and the ground state that stage 3 found, so that this
+document can be read alone.
+
 ## 1.1 The fields and their charges
 
 There are three spinor fields, all four-component Dirac fields of $SL(2,\mathbb C)$ and all singlets of colour:
 
-* the isodoublet $\Psi_{\rm LL}$ has eight components, numbered $2d+s$, where $d=0,\dots,3$ is the Dirac index of the chiral
+* the isodoublet $\Psi_{\rm LL}$, the field of the eight spinor charges of the Lorentz super-loop (Appendix A.4), has
+  eight components, numbered $2d+s$, where $d=0,\dots,3$ is the Dirac index of the chiral
   basis and $s=0$ (up) or $s=1$ (down) is the isospin index;
 * the singlets $\chi_{\rm SH}$ and $\chi'_{\rm SH}$ have four components each, numbered by the Dirac index.
 
@@ -164,6 +178,12 @@ $\Phi_{\rm SH}$ alone: the down particles are paired with $\chi_{\rm SH}$ and th
 
 # 2. The time-dependent mean field
 
+*In words.* The static methods find the ground state and predict the frequencies of its oscillations. This document
+watches the oscillations happen: it displaces the ground state slightly (or strongly), lets the averages of the state
+evolve by their equations of motion, and reads the frequencies from the spectra of the motion. Section 2.4 shows that in
+the simplest method the motion reduces to the precession of classical spins, the picture of Anderson for a
+superconductor.
+
 ## 2.1 The equation of motion
 
 A uniform quasi-free state is given, at every momentum $\vec q_{\rm LL}$ of the grid, by its sixteen occupied
@@ -258,6 +278,10 @@ Bardeen, Cooper and Schrieffer, whose amplitude mode lies at twice the gap param
 
 # 3. The numerical method and the conservation laws
 
+*In words.* How the equations of motion are integrated, and how the integration is checked: the energy, the conserved
+charges and the orthonormality of the quasi-particle vectors must stay constant, and the ground state must stay at
+rest.
+
 The grid has 24 radial nodes and the six directions of the coordinate axes, 144 momenta in all, as in stages 3 and 4.
 The unknowns are the real and imaginary parts of the $144\times512$ complex entries of the $\mathsf O_{\rm SH}(\vec q_{\rm LL},t)$. The
 integrator is CVODE (SUNDIALS 7.8.0 in pure Rust): Adams-Moulton formulas, the fixed-point iteration, and error weights
@@ -287,6 +311,11 @@ Table 3.1. The runs: their displacement, the conservation laws, and the steps an
   right side (numpy) and finds the $d_{\rm SH}(t)$ of the Rust program (check YD-1).
 
 # 4. The amplitude mode and the triplet
+
+*In words.* After a small push of the size of the condensate, the size oscillates at the frequency of the amplitude
+mode; after a push along the custodial triplet of the pair fields, the triplet oscillates. This section compares the
+frequencies with the linear response of stage 4 and shows when the oscillation is undamped (a bound state below the
+energy that breaks a pair) and when it decays (a resonance above it).
 
 Figure 1 shows $\lvert d_{\rm SH}(t)\rvert$ after the amplitude kick, relative to the kick, and Figure 2 the spectra of all the
 amplitude and triplet runs. Table 4.1 gives the peaks.
@@ -339,6 +368,10 @@ from the singlet: by {{GEN:dy_split_hs11}} per cent of its frequency in HS (1, 1
 
 # 5. The Josephson relation and a large displacement
 
+*In words.* Two further tests of the dynamics: with a chemical potential of the particle number the phase of the
+condensate must turn at twice the chemical potential (the Josephson relation, because a pair carries the particle
+number 2), and a large push shows how the oscillation softens when it climbs higher on the walls of the Mexican hat.
+
 **The Josephson relation.** A chemical potential $\mu$ of the particle number adds $-\mu F^{\rm tot}_{\rm SH}$ to the Hamiltonian. On
 the Nambu space $F^{\rm tot}_{\rm SH}$ is $\mathsf 1_{16}$ in the particle block and $-\mathsf 1_{16}$ in the hole block, and the
 stationary state of $\mathcal H_{\rm SH}$ evolves as $e^{i\mu F^{\rm tot}_{\rm SH}t}\mathcal R_{\rm SH}e^{-i\mu F^{\rm tot}_{\rm SH}t}$, with
@@ -361,6 +394,8 @@ closed form.
 curves coincide). Drawn as in Figure 1.
 
 # 6. What the results mean
+
+*In words.* What the motion in time adds to the static results of stages 3 and 4.
 
 * **The time-dependent mean field is consistent with the static methods.** Its stationary states are the ground states of
   stage 3, its small oscillations reproduce the linear response of stage 4, it conserves energy, charges and
@@ -430,6 +465,8 @@ The Wolfram script `wolfram/source/sh_dynamics.wls`:
 
 # 8. The symbols of this document
 
+The symbols of Appendix A are listed in its Section A.7.
+
 | symbol | meaning |
 |:---|:---|
 | $\Psi_{\rm LL}$; $\chi_{\rm SH}$, $\chi'_{\rm SH}$; $\Psi_{\rm SH}$ | the isodoublet of Dirac fields (eight components, component $2d+s$), the two singlet Dirac fields (four components each), and the three as one field of sixteen components |
@@ -468,3 +505,5 @@ The Wolfram script `wolfram/source/sh_dynamics.wls`:
 | $v_{\rm SH}$ | the scale of the breaking of $SU(2)_L\times U(1)_Y$ by the superfluid |
 | $a$, $d$, $s$, $j$, $p$, $i$, $x$ | indices: generators, the Dirac index, the isospin index, the space coordinates, the spacetime coordinates, the output times; an offset in units of $2\pi/t^{\rm end}_{\rm SH}$ |
 | $\mathsf 1_2$, $\mathsf 1_4$, $\mathsf 1_{16}$, $\mathsf 1$; ${}^T$, ${}^\dagger$, $\otimes$, $\mathrm{tr}$, $\mathrm{Re}$ | unit matrices; the transpose, the Hermitian conjugate, the Kronecker product, the trace, the real part |
+
+{{PART:algebra_sh}}

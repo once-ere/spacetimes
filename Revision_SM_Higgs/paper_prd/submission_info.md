@@ -211,8 +211,8 @@ submitting.
 | file                        | content                                                         |  kB | SHA-256 (first 16 digits) |
 |:----------------------------|:----------------------------------------------------------------|----:|:--------------------------|
 | file                        | content                                                         |  kB | SHA-256 (first 16 digits) |
-| `higgs_composite_qg.pdf`    | the manuscript (PDF)                                            | 480 | `3a284b42b84eed0b`        |
-| `higgs_composite_qg.tex`    | the manuscript (LaTeX source, REVTeX 4.2)                       |  80 | `2c17de30782ac36b`        |
+| `higgs_composite_qg.pdf`    | the manuscript (PDF)                                            | 480 | `9bc5050bb86f3090`        |
+| `higgs_composite_qg.tex`    | the manuscript (LaTeX source, REVTeX 4.2)                       |  80 | `06a4df0d487d13c8`        |
 | `higgs_composite_qg.bbl`    | the bibliography of the source (from BibTeX with apsrev4-2.bst) |  26 | `01b06154a457703c`        |
 | `fig_prd_sh_potential.pdf`  | Figure 1                                                        |  19 | `99c334598e4a3194`        |
 | `fig_prd_sh_scan.pdf`       | Figure 2                                                        |  17 | `9d2ae12b30f5d189`        |

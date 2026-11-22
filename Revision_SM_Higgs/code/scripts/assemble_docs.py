@@ -14,6 +14,10 @@ text, so that a number written through a placeholder cannot be mistyped:
                       (a fragment that is a number is written as the formula $...$)
     {{FILE:path}}     the verbatim content of a text file (path relative to Revision_SM_Higgs)
     {{SHA256:path}}   the SHA-256 checksum of a file (path relative to Revision_SM_Higgs)
+    {{PART:name}}     the text of docs_src/parts/<name>.part.md, inserted first, so that a part may contain the
+                      placeholders above.  A part is a piece of text that several documents contain in full, such as
+                      the words that the documents of the revision use and the algebra from which their fields come;
+                      it is written once and included, so that every document that needs it is complete in itself.
 
 Not every number of a source is a placeholder.  The parameters of the programs (tolerances, seeds,
 steps, grids), exact values of the model (the couplings, the cutoff), the numbers of earlier runs in
@@ -82,6 +86,14 @@ def assemble(src):
             return mm.group(0)
         return hashlib.sha256(open(p, "rb").read()).hexdigest()
 
+    def part(mm):
+        p = os.path.join(ROOT, "docs_src", "parts", mm.group(1) + ".part.md")
+        if not os.path.exists(p):
+            missing.append("PART:" + mm.group(1))
+            return mm.group(0)
+        return open(p, encoding="utf-8").read().rstrip("\n")
+
+    rest = re.sub(r"\{\{PART:([^}]+)\}\}", part, rest)
     rest = re.sub(r"\{\{GENM:([^}]+)\}\}", genm, rest)
     rest = re.sub(r"\{\{GEN:([^}]+)\}\}", gen, rest)
     rest = re.sub(r"\{\{FILE:([^}]+)\}\}", fil, rest)

@@ -87,8 +87,10 @@ terms that it did not define and gave no explicit examples (the author's instruc
 the task record as C27 with its Section 4.5). The article has since been written again (C28, E73): its new Sec. II
 contains that material with a worked example of every object, and it defines its terms where it first uses them; the
 check `check_self_contained.py` now reads the LaTeX sources of the article and of its Supplemental Material too. The
-manuscripts of the folder have not yet been written again; they come next (decision D38). This README is the list of
-contents of the folder.
+hypotheses document and the manuscripts of the stages 3, 4 and 6 have been made complete in themselves as well (E78):
+each explains the words that it uses before its findings and contains, as its Appendix A, the algebra from which its
+fields come, with an example of every object. The manuscript `superfluid.md` of the earlier hypotheses has not yet been
+written again (decision D38). This README is the list of contents of the folder.
 
 # 2. State
 
