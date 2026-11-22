@@ -46,9 +46,10 @@ PASS P-5     deviation 5.551e-16 (tolerance 1.0e-13): Lord's 4x4 change of repre
 PASS P-6a    deviation 0.000e0 (tolerance 1.0e-14): the project's conjugation of bi-quaternions is Lord's sigma-bar: M_LL(b-bar) = -epsilon M_LL(b)^T epsilon for every bi-quaternion b (50 random b)
 PASS P-6b    deviation 3.997e-15 (tolerance 1.0e-12): the frame f'_p = g-tilde f_p g-tilde^dag of the project is Lord's change of representation (1.22): its Dirac matrices (3.6) are Lord's gamma (4.5) of sigma'^p = S sigma^p S^dag and equal S_LL(g) gamma^p S_LL(g)^{-1}
 PASS P-7     deviation 1.554e-15 (tolerance 1.0e-12): Lord's Lorentz matrix (1.8) of L = M_LL(g-tilde) is the transpose of the project's L_LL(g) (2.10): Lambda_nu^mu = (L_LL(g))_{mu nu}
+PASS P-9     the changes of representation that keep the Weyl form: for 50 random A of SL(2,C), the matrices C for which A X C is Hermitian for every Hermitian X form a real line spanned by A^dag (the Gram matrix of the map has exactly one zero eigenvalue); with det A = det B this leaves S = diag(A, B), B = +-(A^dag)^{-1}: Lord's group and the reflection by gamma^5 [largest smallest eigenvalue relative to the largest 4.1e-16 (zero to rounding); smallest second eigenvalue relative to the largest 5.000e-1; A sigma A^dag Hermitian to 0.0e0]
 PASS P-8     deviation 1.162e-15 (tolerance 1.0e-13): the Lorentz part of the GEE derivative of the earlier hypotheses, nabla_p = d_p + Gamma^LL_p with Gamma'^LL = S_LL Gamma^LL S_LL^{-1} - (d_p S_LL) S_LL^{-1}, is covariant, and it is Lord's derivative (4.13) with Gamma_a = -Gamma^LL_a and his inhomogeneous term corrected (L4-2) (relative deviation, 12 points)
 
 Notes:
   tolerances: exact identities of the matrices 0 or 1e-15; products of random matrices 1e-12 to 1e-14 (rounding); findings about an equation as printed pass when the printed form fails by the stated amount
 
-VERDICT: ALL PASS (45 of 45)
+VERDICT: ALL PASS (46 of 46)

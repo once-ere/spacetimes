@@ -248,8 +248,8 @@ the task record and this README.
 \texttt{lord\_gravity.md} (\texttt{.tex}, \texttt{.pdf}): Lord's paper
 read and restated section by section, with every equation that the task
 uses re-derived and checked by three programs: the Rust program
-\texttt{lg\_lord} (ALL PASS (45 of 45)), the Python program
-\texttt{python/lg\_lord.py} (ALL PASS (16 of 16)) and the Wolfram script
+\texttt{lg\_lord} (ALL PASS (46 of 46)), the Python program
+\texttt{python/lg\_lord.py} (ALL PASS (17 of 17)) and the Wolfram script
 \texttt{wolfram/source/lg\_lord.wls} (ALL PASS (7 of 7), exact
 arithmetic). Several equations of Lord's Section 4, as printed, do not
 follow from his definitions: the sign of the inhomogeneous term of the
@@ -260,8 +260,19 @@ connection, which is \(\tfrac14R_{\mu\nu ab}\gamma^{ab}\), not
 forms, and the two factors compensate each other only to first order in
 the fields.
 
-The next stage is Part II: the association of the group
-\(SL(2,\mathbb C)\) of the project with Lord's gauge group.
+\textbf{Stage 3} (22 November 2026): Part II of the manuscript: the
+association. Lord's representations of the Clifford algebra in the Weyl
+form are the orthonormal frames of the space-time M31 of the project;
+his change of representation is the action of a unit bi-quaternion of
+the Lorentz super-loop on frames, and the unit bi-quaternions are all
+the continuous changes that keep the Weyl form (Theorem L1); his gauge
+group is the \(SL(2,\mathbb C)\) factor of the gauge group GEE of the
+earlier hypotheses, and his auxiliary fields are minus its spin
+connection. What the gauging adds is the dynamics of that connection,
+which the earlier hypotheses, on their flat space-time, leave out.
+
+The next stage is Part III: the gravitational coupling of the brochon by
+Lord's covariant derivative.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -302,7 +313,9 @@ elsewhere?) & written \\
 \texttt{docs\_src/} & the hand-edited sources of the documents &
 written \\
 \texttt{lord\_gravity.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript
-of the task: Part I (Lord's paper read and checked) & Part I written \\
+of the task: Part I (Lord's paper read and checked), Part II (the
+association of the project's \(SL(2,\mathbb C)\) with Lord's gauge
+group) & Parts I and II written \\
 \texttt{provenance/generated/} & the fragments that the programs write
 for the documents (\texttt{lg\_lord.md}, written by
 \texttt{code/scripts/write\_lg\_lord\_fragments.py}) & written for Part

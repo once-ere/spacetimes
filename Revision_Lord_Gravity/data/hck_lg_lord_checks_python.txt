@@ -18,8 +18,9 @@ PASS YL-7    deviation 3.852e-14 (tolerance 1.0e-08): (4.48): [D_mu, D_nu] psi =
 PASS YL-7b   deviation 7.006e-15 (tolerance 1.0e-09): the spinor image Gamma_mu = 1/4 omega_{mu ab} gamma^{ab} of a vector connection keeps gamma_b constant, and its curvature is 1/4 R_{mu nu alpha beta} gamma^{alpha beta} [L4-10a, L4-10b]
 PASS YL-7c   the printed coefficient 1/2 of (4.47), (4.48) gives twice the spinor curvature [L4-10c] [smallest relative deviation: 1.00000000]
 PASS YL-8    deviation 4.761e-13 (tolerance 1.0e-11): the dictionary: Lord's sigma, sigma-bar, gamma, C equal the project's; his gamma^5 = -gamma^ch_LL; his diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) is S_LL(g); M_LL(b-bar) = -epsilon M_LL(b)^T epsilon; the frame g-tilde f g-tilde^dag has Lord's Dirac matrices; his Lambda of M_LL(g-tilde) is L_LL(g)^T [P-1 to P-7]
+PASS YL-9    for 50 random A of SL(2,C), the C with A X C Hermitian for every Hermitian X form a real line, spanned by A^dag (singular values of the real-linear map): the changes of representation that keep the Weyl form are diag(A, +-(A^dag)^{-1}) [P-9] [smallest singular value relative 2.1e-16; second 0.707; null vector minus kappa A^dag 4.6e-16]
 
 Notes:
   derivatives by central finite differences of eighth order (step 0.01), nested for second derivatives; tolerances 1e-12 for exact matrix identities, 1e-8 to 1e-9 where finite differences enter
 
-VERDICT: ALL PASS (16 of 16)
+VERDICT: ALL PASS (17 of 17)

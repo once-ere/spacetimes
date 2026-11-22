@@ -16,7 +16,8 @@ Checks (the counterparts in the Rust report data/hck_lg_lord_checks.txt in brack
   YL-5  the coefficients a_abc under the gauge transformation (4.16), (4.32)       [L4-4, L4-5]
   YL-6  the vector connection C of (4.19) and the printed (4.20)                   [L4-6a to L4-6d, L4-7]
   YL-7  the spinor curvature (4.48) and the curvature of the vector connection     [L4-9, L4-10a to L4-10c]
-  YL-8  the dictionary with the project's matrices and the GEE spin connection     [P-1 to P-8]
+  YL-8  the dictionary with the project's matrices                                 [P-1 to P-7]
+  YL-9  the changes of representation that keep the Weyl form                      [P-9]
 
 Run (from the folder Revision_Lord_Gravity):   python3 python/lg_lord.py
 Output: data/hck_lg_lord_checks_python.txt
@@ -428,6 +429,36 @@ def main():
             "his diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) is S_LL(g); M_LL(b-bar) = -epsilon M_LL(b)^T epsilon; "
             "the frame g-tilde f g-tilde^dag has Lord's Dirac matrices; his Lambda of M_LL(g-tilde) is L_LL(g)^T "
             "[P-1 to P-7]", dev, 1e-11)
+    # ------------------------------------------------------------------ YL-9: the changes that keep the Weyl form
+    worst_null, worst_gap, worst_dir = 0.0, np.inf, 0.0
+    for _ in range(50):
+        am = rand_sl2c()
+        cols = []
+        for k in range(8):
+            cm = np.zeros((2, 2), dtype=complex)
+            cm[(k // 2) // 2, (k // 2) % 2] = 1.0 if k % 2 == 0 else 1j
+            v = []
+            for r in range(4):
+                m = am @ SIG[r] @ cm
+                anti = m - m.conj().T
+                v.extend(np.column_stack([anti.real.ravel(), anti.imag.ravel()]).ravel())
+            cols.append(v)
+        mat = np.array(cols).T                      # 16 x 8 real
+        sv = np.linalg.svd(mat, compute_uv=False)
+        worst_null = max(worst_null, sv[-1] / sv[0])
+        worst_gap = min(worst_gap, sv[-2] / sv[0])
+        _, _, vt = np.linalg.svd(mat)
+        nv = vt[-1]
+        cm = np.array([nv[0] + 1j * nv[1], nv[2] + 1j * nv[3], nv[4] + 1j * nv[5], nv[6] + 1j * nv[7]]).reshape(2, 2)
+        ad = am.conj().T
+        kappa = np.vdot(ad.ravel(), cm.ravel()).real / np.vdot(ad.ravel(), ad.ravel()).real
+        worst_dir = max(worst_dir, np.abs(cm - kappa * ad).max() / np.abs(cm).max())
+    rep.add_bool("YL-9", "for 50 random A of SL(2,C), the C with A X C Hermitian for every Hermitian X form a real line, "
+                 "spanned by A^dag (singular values of the real-linear map): the changes of representation that keep the "
+                 "Weyl form are diag(A, +-(A^dag)^{-1}) [P-9]",
+                 worst_null < 1e-13 and worst_gap > 1e-3 and worst_dir < 1e-12,
+                 "smallest singular value relative %.1e; second %.3f; null vector minus kappa A^dag %.1e"
+                 % (worst_null, worst_gap, worst_dir))
     rep.write("hck_lg_lord_checks_python.txt")
     print("lg_lord.py: %d of %d checks passed" % (rep.npass, rep.n))
 

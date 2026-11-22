@@ -18,19 +18,19 @@ $2.000000$
 $0.56$
 <!-- END lgl_l46d_rel -->
 <!-- BEGIN lgl_n_python -->
-16
+17
 <!-- END lgl_n_python -->
 <!-- BEGIN lgl_n_rust -->
-45
+46
 <!-- END lgl_n_rust -->
 <!-- BEGIN lgl_n_wolfram -->
 7
 <!-- END lgl_n_wolfram -->
 <!-- BEGIN lgl_verdict_python -->
-ALL PASS (16 of 16)
+ALL PASS (17 of 17)
 <!-- END lgl_verdict_python -->
 <!-- BEGIN lgl_verdict_rust -->
-ALL PASS (45 of 45)
+ALL PASS (46 of 46)
 <!-- END lgl_verdict_rust -->
 <!-- BEGIN lgl_verdict_wolfram -->
 ALL PASS (7 of 7)

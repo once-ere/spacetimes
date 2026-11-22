@@ -18,13 +18,14 @@ parts, each pushed when it is complete:
   the Cambridge Philosophical Society 69, 423 (1971), read and restated section by section in my words, with every
   equation that the later parts use re-derived and checked by programs. Section 7 lists the equations whose printed form
   does not follow from Lord's definitions, with the corrected form and the check that decides.
-* **Part II** (planned): the association of the group $SL(2,\mathbb C)$ of the project with Lord's gauging of the
-  representation of the Clifford algebra.
+* **Part II** (Sections 9 to 12, this version): the association of the group $SL(2,\mathbb C)$ of the project with Lord's
+  gauging of the representation of the Clifford algebra: the project's objects, the dictionary between his objects and
+  the project's, each entry checked, and what the gauging adds to the earlier hypotheses.
 * **Parts III to VI** (planned): the gravitational coupling of the brochon by Lord's covariant derivative; the brochon in
   the Schwarzschild field; the brochon in the Vaidya metric; the brochon pair bound by the zeugon and the predictions.
 
-Section 9 gives the provenance of Part I: the three programs that check it and their complete reports. The checks of
-Part II are already made by the same programs and are printed there too.
+Section 13 gives the provenance of Parts I and II: the three programs that check them and their complete reports;
+Section 14 lists the symbols.
 
 # 1. Conventions, units and notation
 
@@ -34,7 +35,7 @@ $\eta^{{\rm LL}\,\mu\nu}$ (the same numbers). A repeated index is summed. The su
 LL for the objects of the earlier work on the Lorentz super-loop, SF for those of the earlier hypotheses of the project,
 LG for those that this folder introduces, and **Lord** for the objects of Lord's paper that the project does not
 otherwise have. Where an object of Lord's paper is the same as an object of the project, the project's symbol is used;
-Part II proves each such identity (checks P-1 to P-4 of Section 9).
+Part II proves each such identity (checks P-1 to P-4 of Section 13).
 
 **The matrices of Lord's Section 1.** The four $2\times2$ matrices $\sigma^{\rm LL}_\mu$ are the unit matrix and the
 Pauli matrices, $\sigma^{\rm LL}_0=\mathsf 1_2$, $\sigma^{\rm LL}_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$,
@@ -61,7 +62,7 @@ Section 4 must be read as $\mathrm{tr}_{\rm N}$.
 
 **Equation numbers.** An equation number without a name, such as (5.3), refers to this manuscript; Lord's equations are
 cited as "Lord (4.13)". Lord's paper is not in the repository; the copy that was read is identified by its SHA-256
-checksum in Section 9.
+checksum in Section 13.
 
 # Part I. Lord's paper, read and understood
 
@@ -90,7 +91,7 @@ $$\Lambda_{{\rm Lord}\,\nu}{}^\mu\,L_{\rm Lord}\,\sigma^{\rm LL}_\nu\,L_{\rm Lor
 A Weyl spinor $\phi$ of the kind $(\tfrac12,0)$ transforms as $\phi\mapsto L_{\rm Lord}\phi$, one of the kind $(0,\tfrac12)$
 as $\chi\mapsto(L_{\rm Lord}^\dagger)^{-1}\chi$; a Dirac spinor is the pair $(\phi,\chi)$.
 
-*Checks* (Section 9): L1-1 to L1-6 (Rust), YL-1, YL-2 (Python), WL-1, WL-4 (Wolfram, exact): the relations (2.1),
+*Checks* (Section 13): L1-1 to L1-6 (Rust), YL-1, YL-2 (Python), WL-1, WL-4 (Wolfram, exact): the relations (2.1),
 (2.2), the self-duality, the infinitesimal solution of (2.3), and for random matrices $L_{\rm Lord}$ that the
 $\Lambda_{\rm Lord}$ of (2.3) is a proper orthochronous Lorentz matrix.
 
@@ -390,7 +391,178 @@ $a_{efg}$, is presumably a misprint as well (a third factor $\Lambda^{-1}$ belon
 
 These are the facts that Part III uses to couple the brochon to gravitation.
 
-# 9. Provenance of Part I
+# Part II. The $SL(2,\mathbb C)$ of the project and Lord's gauge group
+
+Part II answers the second item of the task: what in the project is Lord's group, and how the project's own gauge
+structure is his. The earlier hypotheses already contain his group as the $SL(2,\mathbb C)$ factor of their gauge group,
+acting on frames of space-time and on spinors; what they do not contain is the dynamics of its gauge field, which on
+their flat space-time is a pure gauge. Lord's construction supplies exactly that.
+
+# 9. The objects of the project
+
+## 9.1 Bi-quaternions, M31 and frames
+
+A **bi-quaternion** is $\mathbf b=\sum_{p=0}^3\xi^{\rm LL}_p(\mathbf b)\,\mathbf e_p$ with four complex coefficients and the units
+$\mathbf e_0=1$, $\mathbf e_1,\mathbf e_2,\mathbf e_3$, multiplied by the rules of the quaternions ($\mathbf e_j^2=-1$,
+$\mathbf e_1\mathbf e_2=-\mathbf e_2\mathbf e_1=\mathbf e_3$ and cyclically; the imaginary unit commutes with the units). Its
+**conjugate** $\bar{\mathbf b}$ has the signs of the coefficients of $\mathbf e_1,\mathbf e_2,\mathbf e_3$ reversed, its complex
+conjugate $\mathbf b^*$ has every coefficient conjugated, and $\mathbf b^\dagger=(\bar{\mathbf b})^*$. Its **matrix** is
+$$M_{\rm LL}(\mathbf b)=\xi^{\rm LL}_0(\mathbf b)\,\sigma^{\rm LL}_0-i\sum_{j=1}^3\xi^{\rm LL}_j(\mathbf b)\,\sigma^{\rm LL}_j;\tag{9.1}$$
+the map is multiplicative, $M_{\rm LL}(\mathbf b^\dagger)=M_{\rm LL}(\mathbf b)^\dagger$, every complex $2\times2$ matrix is the matrix of
+exactly one bi-quaternion, and $\det M_{\rm LL}(\mathbf b)=N_{\rm LL}(\mathbf b)=\sum_p\xi^{\rm LL}_p(\mathbf b)^2$, the complex norm. The **unit
+bi-quaternions**, $N_{\rm LL}(\mathbf g)=1$, are therefore exactly the matrices of $SL(2,\mathbb C)$; they form a subgroup of the
+Lorentz super-loop of the bi-octonions. The element $\tilde{\mathbf g}=\mathbf g^*$ has the matrix
+$M_{\rm LL}(\tilde{\mathbf g})=(M_{\rm LL}(\mathbf g)^\dagger)^{-1}$.
+
+**Space-time.** M31 is the real vector space of the Hermitian bi-quaternions
+$\mathbf x=x^0\mathbf e_0+i\sum_jx^j\mathbf e_j$, with $M_{\rm LL}(\mathbf x)=\sum_px^p\sigma^{\rm LL}_p$ a Hermitian matrix and
+$N_{\rm LL}(\mathbf x)=(x^0)^2-|\vec x|^2$: Minkowski space-time with the metric $\eta^{\rm LL}$. A **frame** is a set of four
+Hermitian bi-quaternions $\mathbf f_p$ with $N_{\rm LL}(\mathbf f_p,\mathbf f_q)=\eta^{\rm LL}_{pq}$, where
+$N_{\rm LL}(\mathbf b,\mathbf b')=\sum_r\xi^{\rm LL}_r(\mathbf b)\xi^{\rm LL}_r(\mathbf b')$ is the polarized norm; because
+$N_{\rm LL}=\det M_{\rm LL}$, it is the polarized determinant $N_{\rm LG}$ of Section 2.4 applied to the matrices,
+$N_{\rm LL}(\mathbf b,\mathbf b')=N_{\rm LG}(M_{\rm LL}(\mathbf b),M_{\rm LL}(\mathbf b'))$. The **canonical frame** has
+$M_{\rm LL}(\mathbf f_p)=\sigma^{\rm LL}_p$.
+
+## 9.2 The two actions of a unit bi-quaternion
+
+A unit bi-quaternion $\mathbf g$ acts on M31 by $\mathbf x\mapsto\mathbf g\,\mathbf x\,\mathbf g^\dagger$, that is
+$M_{\rm LL}(\mathbf x)\mapsto M_{\rm LL}(\mathbf g)M_{\rm LL}(\mathbf x)M_{\rm LL}(\mathbf g)^\dagger$, a proper orthochronous Lorentz
+transformation with the matrix
+$$\mathsf L_{\rm LL}(\mathbf g)_{pp'}=\tfrac12\,\mathrm{Re}\,\mathrm{tr}\big(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\,\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger\big).\tag{9.2}$$
+On Dirac spinors it acts by the **spinor matrix**
+$$\mathsf S_{\rm LL}(\mathbf g)=\begin{pmatrix}M_{\rm LL}(\tilde{\mathbf g})&0\\0&M_{\rm LL}(\mathbf g)\end{pmatrix},\tag{9.3}$$
+which satisfies $\mathsf S_{\rm LL}(\mathbf g)^{-1}\gamma^p_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)=\mathsf L_{\rm LL}(\mathbf g)_{pp'}\gamma^{p'}_{\rm LL}$. The same element
+also acts on **frames**, $\mathbf f_p\mapsto\tilde{\mathbf g}\,\mathbf f_p\,\tilde{\mathbf g}^\dagger$, keeping the points of space-time
+fixed. The **Dirac matrices of a frame** are
+$$\gamma^p_{\rm LL}[\mathbf f]=\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix},\tag{9.4}$$
+and for the transformed frame $\gamma^p_{\rm LL}[\tilde{\mathbf g}\mathbf f\tilde{\mathbf g}^\dagger]=\mathsf S_{\rm LL}(\mathbf g)\gamma^p_{\rm LL}[\mathbf f]\mathsf S_{\rm LL}(\mathbf g)^{-1}$.
+
+## 9.3 The brochon and the gauge group GEE
+
+The brochon $\Psi_{\rm LL}$ has eight complex anticommuting components, a Dirac index and an isospin index; a $4\times4$
+Dirac matrix acts on it as its Kronecker product with $\mathsf 1_2$, a $2\times2$ isospin matrix as $\mathsf 1_4\otimes t$. Its
+mass is $m_{\rm LL}$. The gauge group of the earlier hypotheses is
+$\mathrm{GEE}=SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$. A **local GEE transformation** is a unit
+bi-quaternion $\mathbf g(x)$, an isospin rotation $\mathsf U_{\rm LL}(x)$ of $SU(2)$ and a phase $\theta^{\rm F}_{\rm LL}(x)$; it acts by
+$\Psi_{\rm LL}\mapsto e^{i\theta^{\rm F}_{\rm LL}}\big(\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}\big)\Psi_{\rm LL}$ and on the frame by
+$\mathbf f_p\mapsto\tilde{\mathbf g}\mathbf f_p\tilde{\mathbf g}^\dagger$. The covariant derivative is
+$$\nabla^{\rm GEE}_p\Psi_{\rm LL}=\big(\partial_p+\Gamma^{\rm LL}_p\otimes\mathsf 1_2+ig^{\rm v}_{\rm LL}\,\mathsf 1_4\otimes\mathsf W_{{\rm SF},p}+ig^{\rm F}_{\rm LL}B_{{\rm SF},p}\big)\Psi_{\rm LL},\tag{9.5}$$
+with the spin connection $\Gamma^{\rm LL}_p$ in the Lorentz algebra, the isospin gauge field
+$\mathsf W_{{\rm SF},p}=\sum_\iota W^\iota_{{\rm SF},p}\tau^{\rm LL}_\iota/2$ (with the Pauli matrices $\tau^{\rm LL}_\iota$ acting on the isospin index)
+and the gauge field $B_{{\rm SF},p}$ of the fermion number; the spin connection changes as
+$\Gamma'^{\rm LL}_p=\mathsf S\Gamma^{\rm LL}_p\mathsf S^{-1}-(\partial_p\mathsf S)\mathsf S^{-1}$, $\mathsf S=\mathsf S_{\rm LL}(\mathbf g(x))$. The operator
+$\gamma^p_{\rm LL}[\mathbf f]\nabla^{\rm GEE}_p$ is covariant, and $\bar\Psi_{\rm LL}(i\gamma^p_{\rm LL}[\mathbf f]\nabla^{\rm GEE}_p-m_{\rm LL})\Psi_{\rm LL}$
+is invariant. On the flat M31 the spin connection is a pure gauge, $\Gamma^{\rm LL}_p=-(\partial_p\mathsf S)\mathsf S^{-1}$, and every result of the
+earlier hypotheses is computed in the canonical frame, where it vanishes.
+
+The **zeugon** is the massless gauge boson that survives the condensation of brochon pairs under the earlier
+hypotheses: the pairs form an isospin triplet, the polar condensate points along one isospin direction $\vec n$, and the
+gauge field $\vec n\cdot\vec W_{{\rm SF},p}$ of the rotations about it stays massless. Taking $\vec n$ along the third axis, the
+zeugon couples to the isospin charge $Q_{\rm LL}=T^3_{\rm LL}$, $\pm\tfrac12$ on the two isospin components of the brochon.
+
+# 10. The dictionary
+
+Table 10.1 lists every object of Lord's construction with its counterpart in the project; each line is proved by the
+check named in its last column (Section 13).
+
+Table 10.1. Lord's objects and the project's.
+
+| Lord | the project | check |
+|:---|:---|:---|
+| $\sigma^\mu=(1,\boldsymbol\sigma)$, $\epsilon$, $\bar\sigma^\mu=-\epsilon(\sigma^\mu)^T\epsilon$ | $\sigma^{\rm LL}_p$, $\mathsf E_{\rm LL}$, $M_{\rm LL}(\bar{\mathbf f}_p)$ of the canonical frame | P-1, P-2 |
+| the bar of a $2\times2$ matrix (his (1.2) as a definition) | the conjugation of bi-quaternions: $M_{\rm LL}(\bar{\mathbf b})=-\mathsf E_{\rm LL}M_{\rm LL}(\mathbf b)^T\mathsf E_{\rm LL}$ | P-6a |
+| $\gamma^\mu$ in the Weyl form, $C$ | $\gamma^p_{\rm LL}$ of the chiral basis, $C_{\rm LL}$ | P-3 |
+| $\gamma^5$ | $-\gamma^{\rm ch}_{\rm LL}$ | P-4 |
+| the Minkowski product of a set of four matrices, $\tfrac12(\sigma_a\bar\sigma_b+\sigma_b\bar\sigma_a)$ | $N_{\rm LL}(\mathbf f_a,\mathbf f_b)$ of the four bi-quaternions | L1-13, WL-3 |
+| a set $S\sigma^\mu S^\dagger$ (any $S$ of determinant 1) | a frame $\tilde{\mathbf g}\mathbf f_p\tilde{\mathbf g}^\dagger$ of M31 | P-6b |
+| a change of representation $S$, his (1.22) | the unit bi-quaternion $\mathbf g$ with $S=M_{\rm LL}(\tilde{\mathbf g})$ | P-6b |
+| its $4\times4$ form $\mathrm{diag}(S,(S^\dagger)^{-1})$, his (1.21), (4.1) | the spinor matrix $\mathsf S_{\rm LL}(\mathbf g)$ (9.3) | P-5 |
+| the Dirac matrices of a set, his (1.9), (4.5) | the Dirac matrices of a frame (9.4) | P-6b |
+| a Lorentz matrix $\Lambda_\nu{}^\mu$ of $L=M_{\rm LL}(\tilde{\mathbf g})$, his (1.8) | the transpose of $\mathsf L_{\rm LL}(\mathbf g)$ (9.2) | P-7 |
+| the auxiliary field $\Gamma_a$ with $D_a=d_a-\Gamma_a$, his (4.13) | $-\Gamma^{\rm LL}_a$ with $\nabla_a=\partial_a+\Gamma^{\rm LL}_a$ | P-8 |
+| his law (4.31), corrected (5.5) | the law of $\Gamma^{\rm LL}$ in (9.5) | P-8 |
+| his gauge group: $SL(2,\mathbb C)$ of the changes of representation, made local | the $SL(2,\mathbb C)$ factor of GEE: local unit bi-quaternions acting on frames and spinors | P-5, P-6b, P-8, P-9 |
+
+**Theorem L1 (the changes that keep the Weyl form).** Let $\mathsf S=\mathrm{diag}(\mathsf A_{\rm LG},\mathsf B_{\rm LG})$ be a change of
+representation that leaves the chirality matrix unchanged (every such change is block-diagonal), with
+$\det\mathsf A_{\rm LG}=1$ (a normalization of the overall scale, which a change of representation does not see). It keeps the
+Weyl form, with Hermitian upper blocks $\mathsf A_{\rm LG}\sigma_a\mathsf B_{\rm LG}^{-1}$ and the lower blocks their bars, for every
+orthonormal set $\sigma_a$, exactly when $\mathsf B_{\rm LG}=\pm(\mathsf A_{\rm LG}^\dagger)^{-1}$.
+
+*Proof.* The four $\sigma_a$ are a real basis of the Hermitian matrices, so $\mathsf A_{\rm LG}X\mathsf B_{\rm LG}^{-1}$ must be Hermitian for
+every Hermitian $X$. The real-linear map $\mathsf C\mapsto(\mathsf A_{\rm LG}X_r\mathsf C-(\mathsf A_{\rm LG}X_r\mathsf C)^\dagger)_{r=0..3}$ has a
+null space of real dimension 1, spanned by $\mathsf A_{\rm LG}^\dagger$ (check P-9: for fifty random $\mathsf A_{\rm LG}$ the Gram matrix of the
+map has exactly one zero eigenvalue; YL-9 in Python with singular values), so $\mathsf B_{\rm LG}^{-1}=\kappa_{\rm LG}\mathsf A_{\rm LG}^\dagger$ with a
+real $\kappa_{\rm LG}$. The lower block of the transformed matrix is $\mathsf B_{\rm LG}\bar\sigma_a\mathsf A_{\rm LG}^{-1}$, and the bar of the upper
+block is, because the bar of a $2\times2$ matrix is its adjugate ($\bar X=\det X\,X^{-1}$ for invertible $X$),
+$\overline{\mathsf A_{\rm LG}\sigma_a\mathsf B_{\rm LG}^{-1}}=\overline{\mathsf B_{\rm LG}^{-1}}\,\bar\sigma_a\,\overline{\mathsf A_{\rm LG}}=(\det\mathsf A_{\rm LG}/\det\mathsf B_{\rm LG})\,\mathsf B_{\rm LG}\bar\sigma_a\mathsf A_{\rm LG}^{-1}$;
+the two agree exactly when $\det\mathsf B_{\rm LG}=\det\mathsf A_{\rm LG}=1$, that is $\kappa_{\rm LG}^{-2}=1$. $\square$
+
+The sign $+$ is Lord's group; the sign $-$ adds the change by Lord's chirality matrix, which reverses all four Dirac
+matrices (the reflection of the whole frame) and is not connected to the identity. So the group of the continuous
+changes of representation of the Clifford algebra that keep its Weyl form is $SL(2,\mathbb C)$, and in the project it is
+the group of the unit bi-quaternions: the subgroup of the Lorentz super-loop that the earlier work found inside the
+bi-octonions.
+
+# 11. The association
+
+**11.1 The representation of the Clifford algebra is a frame of space-time.** Lord's Dirac matrices
+$\gamma^a(x)$ (5.2) are the Dirac matrices (9.4) of a frame field $\mathbf f_a(x)$ of M31: his four Pauli-type matrices are
+the matrices $M_{\rm LL}(\mathbf f_a(x))$ of four Hermitian bi-quaternions, which are points (vectors) of space-time, and their
+bars are the matrices of the conjugate bi-quaternions (check P-6a). The Clifford relation of $\eta^{\rm LL}$ holds exactly
+when the four vectors are orthonormal, $N_{\rm LL}(\mathbf f_a,\mathbf f_b)=\eta^{\rm LL}_{ab}$ (Section 2.4): Lord's representations of the
+Clifford algebra in the Weyl form are the orthonormal frames of M31.
+
+**11.2 The change of representation is the action of the super-loop on frames.** A change of representation
+(Lord's (1.22), (4.30)) by $S$ of determinant 1 is the action $\mathbf f_a\mapsto\tilde{\mathbf g}\mathbf f_a\tilde{\mathbf g}^\dagger$ of the unit
+bi-quaternion $\mathbf g$ with $M_{\rm LL}(\tilde{\mathbf g})=S$; its $4\times4$ form is the project's spinor matrix $\mathsf S_{\rm LL}(\mathbf g)$
+(checks P-5, P-6b). By Theorem L1 these are all the continuous changes that keep the Weyl form. Lord's distinction
+between his gauge group and the Lorentz group is the project's distinction between the two actions of Section 9.2: the
+Lorentz group moves the points of space-time ($\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger$, with the Lorentz matrix of
+(9.2), whose relation to Lord's (2.3) is check P-7), while Lord's group changes the frame at a point and leaves the points
+in place. The earlier hypotheses make the second action local: their local GEE transformation acts on the frame by
+$\mathbf f_p\mapsto\tilde{\mathbf g}(x)\mathbf f_p\tilde{\mathbf g}(x)^\dagger$ and on the brochon by $\mathsf S_{\rm LL}(\mathbf g(x))$. **The
+$SL(2,\mathbb C)$ factor of GEE is therefore Lord's gauge group**, realized by the unit bi-quaternions of the super-loop.
+
+**11.3 The auxiliary fields are the spin connection of GEE.** Lord's derivative $D_a=d_a-\Gamma^{\rm Lord}_a$ is the Lorentz part
+of the GEE derivative (9.5) with $\Gamma^{\rm Lord}_a=-\Gamma^{\rm LL}_a$, and the law of $\Gamma^{\rm LL}$ is Lord's law with the
+corrected sign of Section 5.3 (check P-8: both derivatives are covariant to the rounding with their laws, and they agree
+term by term). The internal factors $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$ act on the isospin index and on the phase, which
+Lord's group does not touch; their gauge fields add to his derivative.
+
+**11.4 What the gauging adds.** On the flat M31 of the earlier hypotheses the frame field is obtained from the canonical
+frame by a local unit bi-quaternion, and the spin connection is the pure gauge $-(\partial\mathsf S)\mathsf S^{-1}$, whose curvature
+(5.11) vanishes; the earlier hypotheses leave its dynamics out of their problem. Lord's construction supplies it in three
+steps, which Part III carries out for the brochon:
+
+1. *Reference vectors.* The labels $a$ of the frame are related to the coordinates by a tetrad $h_a{}^\mu(x)$, and the metric
+   is $g^{\mu\nu}=h_a{}^\mu h^{a\nu}$; the frame of Dirac matrices then belongs to the curved metric, $\gamma^\mu(x)=h_a{}^\mu\gamma^a$.
+2. *Compatibility.* The connection of the vectors is fixed by the requirement that the Dirac matrices be covariantly
+   constant, (5.7); with vanishing torsion it is the Levi-Civita connection of the metric, and the spin connection is
+   $\Gamma_\mu=\tfrac14W_{\mu\,ab}\gamma^{ab}$ with its curvature $\tfrac14R_{\mu\nu ab}\gamma^{ab}$, (5.11).
+3. *Dynamics.* The auxiliary fields are the potentials of a self-interacting spin-2 field, whose equations are
+   Einstein's, (6.1); the brochon and the gauge fields of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, among them the zeugon, are its
+   sources through their stress-energy.
+
+The covariant derivative of the brochon in a curved space-time is therefore, in Lord's form,
+$$D_\mu\Psi_{\rm LL}=\big(\partial_\mu-\Gamma^{\rm Lord}_\mu\otimes\mathsf 1_2+ig^{\rm v}_{\rm LL}\,\mathsf 1_4\otimes\mathsf W_{{\rm SF},\mu}+ig^{\rm F}_{\rm LL}B_{{\rm SF},\mu}\big)\Psi_{\rm LL},\qquad
+\Gamma^{\rm Lord}_\mu=\tfrac14\,\omega_{\mu\,ab}\,\gamma^{ab}_{\rm LL},\tag{11.1}$$
+with $\omega_{\mu\,ab}$ the connection of the vectors of the tetrad; Part III derives it, with its field equations and
+stress-energy, and checks it.
+
+# 12. Summary of Part II
+
+* Lord's representation of the Clifford algebra in the Weyl form is an orthonormal frame of M31; his change of
+  representation is the action of a unit bi-quaternion of the Lorentz super-loop on frames; his $4\times4$ change is the
+  project's spinor matrix $\mathsf S_{\rm LL}(\mathbf g)$; and by Theorem L1 the unit bi-quaternions are all the continuous
+  changes that keep the Weyl form.
+* Lord's gauge group is the $SL(2,\mathbb C)$ factor of the gauge group GEE of the earlier hypotheses, and his auxiliary
+  fields are its spin connection, with the opposite sign of the name.
+* What the earlier hypotheses lack, and what Lord's construction adds, is the dynamics of that connection: with a
+  tetrad and the compatibility condition, it becomes the connection of a curved space-time whose equations are
+  Einstein's.
+
+# 13. Provenance of Parts I and II
 
 **The input.** E. A. Lord, "General relativity from gauge invariance", Proc. Camb. Phil. Soc. 69, 423 (1971): twenty pages
 (the journal pages 423 to 442), a scan with recognized text; all pages were read. The file is not in the repository;
@@ -402,10 +574,10 @@ c928b11e5721bb37093f9b19b19e8e9d4a743fcd3f8f4779e804845fcaff2275  General relati
 **The programs.** Three programs check Part I and Part II, each independently of the others:
 
 * the Rust program `lg_lord` (`rust/lglord/src/main.rs`, with the library `rust/lgcore`, whose module `lord.rs` builds
-  Lord's matrices from his definitions): ALL PASS (45 of 45). Its local checks use fields of the four coordinates built
+  Lord's matrices from his definitions): ALL PASS (46 of 46). Its local checks use fields of the four coordinates built
   from smooth pseudo-random functions, with exact first and second derivatives by forward-mode automatic
   differentiation;
-* the Python program `python/lg_lord.py` (with `python/lgcommon.py`): ALL PASS (16 of 16); it writes every matrix again
+* the Python program `python/lg_lord.py` (with `python/lgcommon.py`): ALL PASS (17 of 17); it writes every matrix again
   from the definitions and differentiates by central finite differences of eighth order;
 * the Wolfram script `wolfram/source/lg_lord.wls`: ALL PASS (7 of 7), in exact arithmetic (symbolic matrices).
 
@@ -471,12 +643,13 @@ PASS P-5     deviation 5.551e-16 (tolerance 1.0e-13): Lord's 4x4 change of repre
 PASS P-6a    deviation 0.000e0 (tolerance 1.0e-14): the project's conjugation of bi-quaternions is Lord's sigma-bar: M_LL(b-bar) = -epsilon M_LL(b)^T epsilon for every bi-quaternion b (50 random b)
 PASS P-6b    deviation 3.997e-15 (tolerance 1.0e-12): the frame f'_p = g-tilde f_p g-tilde^dag of the project is Lord's change of representation (1.22): its Dirac matrices (3.6) are Lord's gamma (4.5) of sigma'^p = S sigma^p S^dag and equal S_LL(g) gamma^p S_LL(g)^{-1}
 PASS P-7     deviation 1.554e-15 (tolerance 1.0e-12): Lord's Lorentz matrix (1.8) of L = M_LL(g-tilde) is the transpose of the project's L_LL(g) (2.10): Lambda_nu^mu = (L_LL(g))_{mu nu}
+PASS P-9     the changes of representation that keep the Weyl form: for 50 random A of SL(2,C), the matrices C for which A X C is Hermitian for every Hermitian X form a real line spanned by A^dag (the Gram matrix of the map has exactly one zero eigenvalue); with det A = det B this leaves S = diag(A, B), B = +-(A^dag)^{-1}: Lord's group and the reflection by gamma^5 [largest smallest eigenvalue relative to the largest 4.1e-16 (zero to rounding); smallest second eigenvalue relative to the largest 5.000e-1; A sigma A^dag Hermitian to 0.0e0]
 PASS P-8     deviation 1.162e-15 (tolerance 1.0e-13): the Lorentz part of the GEE derivative of the earlier hypotheses, nabla_p = d_p + Gamma^LL_p with Gamma'^LL = S_LL Gamma^LL S_LL^{-1} - (d_p S_LL) S_LL^{-1}, is covariant, and it is Lord's derivative (4.13) with Gamma_a = -Gamma^LL_a and his inhomogeneous term corrected (L4-2) (relative deviation, 12 points)
 
 Notes:
   tolerances: exact identities of the matrices 0 or 1e-15; products of random matrices 1e-12 to 1e-14 (rounding); findings about an equation as printed pass when the printed form fails by the stated amount
 
-VERDICT: ALL PASS (45 of 45)
+VERDICT: ALL PASS (46 of 46)
 ```
 
 **The report of the Python program** (`data/hck_lg_lord_checks_python.txt`):
@@ -502,11 +675,12 @@ PASS YL-7    deviation 3.852e-14 (tolerance 1.0e-08): (4.48): [D_mu, D_nu] psi =
 PASS YL-7b   deviation 7.006e-15 (tolerance 1.0e-09): the spinor image Gamma_mu = 1/4 omega_{mu ab} gamma^{ab} of a vector connection keeps gamma_b constant, and its curvature is 1/4 R_{mu nu alpha beta} gamma^{alpha beta} [L4-10a, L4-10b]
 PASS YL-7c   the printed coefficient 1/2 of (4.47), (4.48) gives twice the spinor curvature [L4-10c] [smallest relative deviation: 1.00000000]
 PASS YL-8    deviation 4.761e-13 (tolerance 1.0e-11): the dictionary: Lord's sigma, sigma-bar, gamma, C equal the project's; his gamma^5 = -gamma^ch_LL; his diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) is S_LL(g); M_LL(b-bar) = -epsilon M_LL(b)^T epsilon; the frame g-tilde f g-tilde^dag has Lord's Dirac matrices; his Lambda of M_LL(g-tilde) is L_LL(g)^T [P-1 to P-7]
+PASS YL-9    for 50 random A of SL(2,C), the C with A X C Hermitian for every Hermitian X form a real line, spanned by A^dag (singular values of the real-linear map): the changes of representation that keep the Weyl form are diag(A, +-(A^dag)^{-1}) [P-9] [smallest singular value relative 2.1e-16; second 0.707; null vector minus kappa A^dag 4.6e-16]
 
 Notes:
   derivatives by central finite differences of eighth order (step 0.01), nested for second derivatives; tolerances 1e-12 for exact matrix identities, 1e-8 to 1e-9 where finite differences enter
 
-VERDICT: ALL PASS (16 of 16)
+VERDICT: ALL PASS (17 of 17)
 ```
 
 **The report of the Wolfram script** (`data/hck_lg_lord_checks_wolfram.txt`):
@@ -530,7 +704,7 @@ Notes:
 VERDICT: ALL PASS (7 of 7)
 ```
 
-# 10. The symbols of this manuscript
+# 14. The symbols of this manuscript
 
 | symbol | meaning |
 |:---|:---|
@@ -566,3 +740,25 @@ VERDICT: ALL PASS (7 of 7)
 | $B^{\rm Lord}_{\mu\nu\rho\sigma}$ | the tensor of Lord's Section 3 that has the symmetries of the Riemann tensor |
 | $j^{\rm Lord}_{\nu\rho\sigma}$, $j^{\rm Lord}_{\mu\nu}$, $j^{\rm Lord}$, $f_{\rm Lord}$ | the current of the spin-2 field, the symmetric tensor from which it derives, its trace, and the coupling of Lord's Section 3 |
 | $f_{\mu\nu}$, $A_\mu$, $e$ | the electromagnetic field strength, its potential and the electric charge (Lord's Sections 1 and 2) |
+| $\mathbf b$, $\xi^{\rm LL}_p(\mathbf b)$, $\mathbf e_p$ | a bi-quaternion, its four complex coefficients, and the units |
+| $\bar{\mathbf b}$, $\mathbf b^*$, $\mathbf b^\dagger$ | the conjugate, the complex conjugate and the Hermitian conjugate of a bi-quaternion |
+| $M_{\rm LL}(\mathbf b)$ | the $2\times2$ matrix of a bi-quaternion (9.1) |
+| $N_{\rm LL}(\mathbf b)$, $N_{\rm LL}(\mathbf b,\mathbf b')$ | the complex norm $\det M_{\rm LL}(\mathbf b)$ and its polarization |
+| $\mathbf g$, $\tilde{\mathbf g}$ | a unit bi-quaternion ($N_{\rm LL}(\mathbf g)=1$), an element of $SL(2,\mathbb C)$, and $\tilde{\mathbf g}=\mathbf g^*$ |
+| M31, $\mathbf x$, $x^p$ | the space-time of the Hermitian bi-quaternions, a point, and its coordinates |
+| $\mathbf f_p$ | a frame: four Hermitian bi-quaternions with $N_{\rm LL}(\mathbf f_p,\mathbf f_q)=\eta^{\rm LL}_{pq}$ |
+| $\mathsf L_{\rm LL}(\mathbf g)$ | the Lorentz matrix of a unit bi-quaternion (9.2) |
+| $\mathsf S_{\rm LL}(\mathbf g)$ | the spinor matrix of a unit bi-quaternion (9.3) |
+| $\gamma^p_{\rm LL}[\mathbf f]$ | the Dirac matrices of a frame (9.4) |
+| $\Psi_{\rm LL}$, $m_{\rm LL}$ | the brochon (eight components: Dirac index and isospin index) and its mass |
+| GEE | the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ of the earlier hypotheses |
+| $\mathsf U_{\rm LL}$, $\theta^{\rm F}_{\rm LL}$ | an isospin rotation and a phase of the fermion number (a local GEE transformation with $\mathbf g$) |
+| $\nabla^{\rm GEE}_p$ | the GEE covariant derivative of the brochon (9.5) |
+| $\Gamma^{\rm LL}_p$ | the spin connection of GEE, the gauge field of its $SL(2,\mathbb C)$ factor |
+| $\mathsf W_{{\rm SF},p}$, $W^\iota_{{\rm SF},p}$, $\tau^{\rm LL}_\iota$ | the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index |
+| $B_{{\rm SF},p}$ | the gauge field of $U(1)^{\rm F}_{\rm LL}$ |
+| $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$ | the couplings of $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$ |
+| $T^3_{\rm LL}$, $Q_{\rm LL}$, $\vec n$ | the third isospin generator, the charge $Q_{\rm LL}=T^3_{\rm LL}$ of the zeugon, and the direction of the polar condensate |
+| $\mathsf A_{\rm LG}$, $\mathsf B_{\rm LG}$, $\kappa_{\rm LG}$ | the blocks of a change of representation that keeps the chirality matrix, and the real factor of Theorem L1 |
+| $\mathsf C$, $X_r$ | the unknown matrix and the basis of the Hermitian matrices in the proof of Theorem L1 |
+| $\omega_{\mu\,ab}$ | the connection of the vectors of a tetrad, with both frame indices lowered (11.1) |

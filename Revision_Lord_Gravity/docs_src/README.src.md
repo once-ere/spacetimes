@@ -40,7 +40,14 @@ the auxiliary fields, a factor 2 in the connection of the vectors, and the coeff
 connection, which is $\tfrac14R_{\mu\nu ab}\gamma^{ab}$, not $\tfrac12R_{\mu\nu ab}\gamma^{ab}$; the manuscript gives the corrected forms, and
 the two factors compensate each other only to first order in the fields.
 
-The next stage is Part II: the association of the group $SL(2,\mathbb C)$ of the project with Lord's gauge group.
+**Stage 3** (22 November 2026): Part II of the manuscript: the association. Lord's representations of the Clifford
+algebra in the Weyl form are the orthonormal frames of the space-time M31 of the project; his change of representation
+is the action of a unit bi-quaternion of the Lorentz super-loop on frames, and the unit bi-quaternions are all the
+continuous changes that keep the Weyl form (Theorem L1); his gauge group is the $SL(2,\mathbb C)$ factor of the gauge group
+GEE of the earlier hypotheses, and his auxiliary fields are minus its spin connection. What the gauging adds is the
+dynamics of that connection, which the earlier hypotheses, on their flat space-time, leave out.
+
+The next stage is Part III: the gravitational coupling of the brochon by Lord's covariant derivative.
 
 # 3. Contents
 
@@ -51,7 +58,7 @@ The next stage is Part II: the association of the group $SL(2,\mathbb C)$ of the
 | `provenance/inputs_sha256.txt` | the SHA-256 checksum of the copy of Lord's paper that is read (the paper is not in the repository) | written |
 | `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?) | written |
 | `docs_src/` | the hand-edited sources of the documents | written |
-| `lord_gravity.md`, `.tex`, `.pdf` | the manuscript of the task: Part I (Lord's paper read and checked) | Part I written |
+| `lord_gravity.md`, `.tex`, `.pdf` | the manuscript of the task: Part I (Lord's paper read and checked), Part II (the association of the project's $SL(2,\mathbb C)$ with Lord's gauge group) | Parts I and II written |
 | `provenance/generated/` | the fragments that the programs write for the documents (`lg_lord.md`, written by `code/scripts/write_lg_lord_fragments.py`) | written for Part I |
 | `rust/` | the Cargo workspace: the library `lgcore` (complex matrices, bi-quaternions, Dirac matrices, automatic differentiation, and `lord.rs`, Lord's matrices from his definitions) and the program `lg_lord` (the checks of Parts I and II) | written for Parts I and II |
 | `python/` | `lgcommon.py` (common definitions, finite differences, the report) and `lg_lord.py` (the independent check of `lg_lord`) | written for Parts I and II |

@@ -13,7 +13,8 @@
 //!   curvature of the vector connection (4.46);
 //! * P-*: the dictionary between his objects and the project's (Part II): the Pauli, Dirac and charge-conjugation
 //!   matrices, the frames of M31 and their Dirac matrices, the spinor matrix S_LL(g) of a unit bi-quaternion, the Lorentz
-//!   matrices, and the spin connection of the gauge group GEE of the earlier hypotheses.
+//!   matrices, the spin connection of the gauge group GEE of the earlier hypotheses, and the changes of representation
+//!   that keep the Weyl form of the Dirac matrices (P-9).
 //!
 //! The local checks (L4, P-8) use fields of the four coordinates built from smooth pseudo-random functions with exact
 //! first and second derivatives (forward-mode automatic differentiation, module lgcore::dual): no finite difference is
@@ -780,6 +781,51 @@ fn project(rep: &mut Report, rng: &mut Rng) {
             d8 = d8.max(lord_gp.add(&gp).max_abs());
         }
     }
+    // P-9: the changes of representation that keep the Weyl form.  For a matrix A of SL(2,C), the real-linear map
+    // C -> (A X_r C - (A X_r C)^dag)_{r = 0..3} (X_r = sigma_r, a real basis of the Hermitian matrices) has a null
+    // space of real dimension 1, spanned by A^dag: A X C is Hermitian for every Hermitian X exactly when C = kappa A^dag
+    let (mut d9, mut null_max, mut gap_min) = (0.0f64, 0.0f64, f64::MAX);
+    for _ in 0..50 {
+        let am = rand_sl2c(rng, 0.8);
+        // the 16 x 8 real matrix of the map, built column by column from the 8 real basis directions of C
+        let mut cols: Vec<Vec<f64>> = Vec::new();
+        for k in 0..8 {
+            let mut cm = CMat::zeros(2);
+            let z = if k % 2 == 0 { C64::ONE } else { C64::I };
+            cm.set((k / 2) / 2, (k / 2) % 2, z);
+            let mut v = Vec::new();
+            for r in 0..4 {
+                let m = am.mul(&s[r]).mul(&cm);
+                let anti = m.sub(&m.dagger());
+                for e in anti.a.iter() {
+                    v.push(e.re);
+                    v.push(e.im);
+                }
+            }
+            cols.push(v);
+        }
+        // Gram matrix M^T M (8 x 8, real symmetric) and its eigenvalues
+        let mut gram = CMat::zeros(8);
+        for i in 0..8 {
+            for j in 0..8 {
+                let x: f64 = cols[i].iter().zip(&cols[j]).map(|(u, w)| u * w).sum();
+                gram.set(i, j, c(x, 0.0));
+            }
+        }
+        let (ev, _) = lgcore::cmat::eigh(&gram);
+        let mut evs = ev.clone();
+        evs.sort_by(|u, w| u.partial_cmp(w).unwrap());
+        let scale = evs[7].max(1e-300);
+        // the smallest eigenvalue is zero up to the rounding of the eigensolver (about 1e-16 of the largest)
+        null_max = null_max.max(evs[0].abs() / scale);
+        gap_min = gap_min.min(evs[1] / scale);
+        // A^dag satisfies the equations
+        for r in 0..4 {
+            let m = am.mul(&s[r]).mul(&am.dagger());
+            d9 = d9.max(m.sub(&m.dagger()).max_abs());
+        }
+    }
+    rep.add_bool("P-9", "the changes of representation that keep the Weyl form: for 50 random A of SL(2,C), the matrices C for which A X C is Hermitian for every Hermitian X form a real line spanned by A^dag (the Gram matrix of the map has exactly one zero eigenvalue); with det A = det B this leaves S = diag(A, B), B = +-(A^dag)^{-1}: Lord's group and the reflection by gamma^5", null_max < 1e-13 && gap_min > 1e-6 && d9 < 1e-13, &format!("largest smallest eigenvalue relative to the largest {:.1e} (zero to rounding); smallest second eigenvalue relative to the largest {:.3e}; A sigma A^dag Hermitian to {:.1e}", null_max, gap_min, d9));
     rep.add("P-8", "the Lorentz part of the GEE derivative of the earlier hypotheses, nabla_p = d_p + Gamma^LL_p with Gamma'^LL = S_LL Gamma^LL S_LL^{-1} - (d_p S_LL) S_LL^{-1}, is covariant, and it is Lord's derivative (4.13) with Gamma_a = -Gamma^LL_a and his inhomogeneous term corrected (L4-2) (relative deviation, 12 points)", d8, 1e-13);
 }
 
