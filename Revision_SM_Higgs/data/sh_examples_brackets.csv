@@ -1,0 +1,65 @@
+s_k,s_l,bracket,in_J_and_K
+e4,e4,0,0
+e4,e5,2 e1,4 J1
+e4,e6,2 e2,4 J2
+e4,e7,2 e3,4 J3
+e4,i e4,0,0
+e4,i e5,2 i e1,4 K1
+e4,i e6,2 i e2,4 K2
+e4,i e7,2 i e3,4 K3
+e5,e4,-2 e1,-4 J1
+e5,e5,0,0
+e5,e6,-2 e3,-4 J3
+e5,e7,2 e2,4 J2
+e5,i e4,-2 i e1,-4 K1
+e5,i e5,0,0
+e5,i e6,-2 i e3,-4 K3
+e5,i e7,2 i e2,4 K2
+e6,e4,-2 e2,-4 J2
+e6,e5,2 e3,4 J3
+e6,e6,0,0
+e6,e7,-2 e1,-4 J1
+e6,i e4,-2 i e2,-4 K2
+e6,i e5,2 i e3,4 K3
+e6,i e6,0,0
+e6,i e7,-2 i e1,-4 K1
+e7,e4,-2 e3,-4 J3
+e7,e5,-2 e2,-4 J2
+e7,e6,2 e1,4 J1
+e7,e7,0,0
+e7,i e4,-2 i e3,-4 K3
+e7,i e5,-2 i e2,-4 K2
+e7,i e6,2 i e1,4 K1
+e7,i e7,0,0
+i e4,e4,0,0
+i e4,e5,2 i e1,4 K1
+i e4,e6,2 i e2,4 K2
+i e4,e7,2 i e3,4 K3
+i e4,i e4,0,0
+i e4,i e5,-2 e1,-4 J1
+i e4,i e6,-2 e2,-4 J2
+i e4,i e7,-2 e3,-4 J3
+i e5,e4,-2 i e1,-4 K1
+i e5,e5,0,0
+i e5,e6,-2 i e3,-4 K3
+i e5,e7,2 i e2,4 K2
+i e5,i e4,2 e1,4 J1
+i e5,i e5,0,0
+i e5,i e6,2 e3,4 J3
+i e5,i e7,-2 e2,-4 J2
+i e6,e4,-2 i e2,-4 K2
+i e6,e5,2 i e3,4 K3
+i e6,e6,0,0
+i e6,e7,-2 i e1,-4 K1
+i e6,i e4,2 e2,4 J2
+i e6,i e5,-2 e3,-4 J3
+i e6,i e6,0,0
+i e6,i e7,2 e1,4 J1
+i e7,e4,-2 i e3,-4 K3
+i e7,e5,-2 i e2,-4 K2
+i e7,e6,2 i e1,4 K1
+i e7,e7,0,0
+i e7,i e4,2 e3,4 J3
+i e7,i e5,2 e2,4 J2
+i e7,i e6,-2 e1,-4 J1
+i e7,i e7,0,0

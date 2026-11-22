@@ -80,6 +80,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "shexamples"
+version = "0.1.0"
+dependencies = [
+ "sfcore",
+]
+
+[[package]]
 name = "shhiggs"
 version = "0.1.0"
 dependencies = [

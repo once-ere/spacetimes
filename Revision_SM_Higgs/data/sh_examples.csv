@@ -1,0 +1,79 @@
+name,value
+ex1_order,16
+ex1_e1e2,e3
+ex1_e2e1,-e3
+ex1_(e1e2)e4,e7
+ex1_e1(e2e4),-e7
+ex1_assoc_e1_e2_e4,2 e7
+ex1_nonassoc_triples,1344 of 4096
+ex1_noncommuting_pairs,168 of 256
+ex1_moufang_failures,0
+ex2_x,3/5 e0 + 4/5 e1
+ex2_y,3/5 e2 + 4/5 e4
+ex2_z,1/3 e0 + 2/3 e3 + 2/3 e6
+ex2_xy,9/25 e2 + 12/25 e3 + 12/25 e4 + 16/25 e5
+ex2_(xy)z,-8/25 e0 + 6/25 e1 + 11/25 e2 - 4/15 e3 - 2/25 e4 + 8/15 e5 + 32/75 e6 - 8/25 e7
+ex2_x(yz),-8/25 e0 + 6/25 e1 + 11/25 e2 + 44/75 e3 - 2/25 e4 - 8/75 e5 - 32/75 e6 - 8/25 e7
+ex2_assoc_x_y_z,-64/75 e3 + 16/25 e5 + 64/75 e6
+ex2_xbar,3/5 e0 - 4/5 e1
+ex3_g_rot,3/5 e0 + 4/5 e1
+ex3_g_boost,5/4 e0 + 3/4 i e3
+ex3_s,3/5 e0 + 4/5 e4
+ex3_M_g_rot,"((3/5, -4/5 i), (-4/5 i, 3/5))"
+ex3_M_g_boost,"((2, 0), (0, 1/2))"
+ex3_L_g_boost,"((17/8, 0, 0, 15/8), (0, 1, 0, 0), (0, 0, 1, 0), (15/8, 0, 0, 17/8))"
+ex3_L_g_rot,"((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, -7/25, -24/25), (0, 0, 24/25, -7/25))"
+ex3_boost_of_rest,"(17/8, 0, 0, 15/8)"
+ex3_w,3/4 e0 + 9/20 i e3 + e4 + 3/5 i e7
+ex3_wbar,3/4 e0 - 9/20 i e3 - e4 - 3/5 i e7
+ex3_x_solving_wx_e5,-e1 + 3/5 i e2 + 3/4 e5 + 9/20 i e6
+ex3_assoc_grot_gboost_s,-24/25 i e6
+"ex3_[e4,e5]",2 e1 = 4 J1
+"ex3_[e4,i e5]",2 i e1 = 4 K1
+"ex3_[J1,K2]",K3
+"ex3_Jac(e4,e5,e6)",-12 e7
+ex3_conj_g_e4_gbar,17/8 e4 + 15/8 i e7
+"ex3_parity_of_(2,1,3,5)",2 e0 - i e1 - 3 i e2 - 5 i e3
+ex4_mass,1
+ex4_momentum,"(17/8, 0, 0, 15/8)"
+ex4_u_rest_up,"(1, 0, 1, 0)"
+ex4_u_up,"(1/2, 0, 2, 0)"
+ex4_u_down,"(0, 2, 0, 1/2)"
+ex4_ubar_u,2
+ex4_udag_u,17/4
+ex4_gamma_ch_u_up,"(-1/2, 0, 2, 0)"
+ex5_U,"((3/5, -4/5 i), (-4/5 i, 3/5))"
+ex5_R_of_U,"((1, 0, 0), (0, -7/25, -24/25), (0, 24/25, -7/25))"
+"ex5_R_(0,0,1)","(0, -24/25, -7/25)"
+ex6_psi,"(1, 0)"
+ex6_U_psi,"(3/5, -4/5 i)"
+ex6_n_psi,"(0, 0, 1)"
+ex6_n_U_psi,"(0, -24/25, -7/25)"
+ex7_triplet_states,"|u u>, |u d> + |d u>, |d d>  (T^2 = 2, T3 = 1, 0, -1)"
+ex7_singlet_state,|u d> - |d u>  (T^2 = 0)
+ex7_T2_eigenvalues,"0, 2, 2, 2"
+ex7_E_tau1,"((1, 0), (0, -1))"
+ex7_E_tau2,"((i, 0), (0, i))"
+ex7_E_tau3,"((0, -1), (-1, 0))"
+ex7_E,"((0, 1), (-1, 0))"
+ex7_E_tau1_minus_i_E_tau2,"((2, 0), (0, 0))"
+ex7_E_tau1_plus_i_E_tau2,"((0, 0), (0, -2))"
+ex7_X_of_U,"((1, 0, 0), (0, -7/25, -24/25), (0, 24/25, -7/25))"
+ex8_Psi_up,"(1/2, 0, 0, 0, 2, 0, 0, 0)"
+ex8_Psi_down,"(0, 1/2, 0, 0, 0, 2, 0, 0)"
+ex8_(1xU)Psi_up,"(3/10, -2/5 i, 0, 0, 6/5, -8/5 i, 0, 0)"
+ex9_psi_prime_e4,"((0, -1), (1, 0))"
+ex9_Q_eigenvalues,"-0.5, -0.5, 0.5, 0.5"
+ex9_bracket_span_rank,6
+ex10_K3_nonzero_entries,"(0,3) 1; (1,2) 1; (2,1) -1; (3,0) -1; (4,7) 1; (5,6) 1; (6,5) -1; (7,4) -1"
+ex10_Gcrit_m0.2,21.286610
+ex10_Gcrit_m0,19.739209
+ex10_vacuum_G30_gap,0.6641405875
+ex10_vacuum_G30_Omega_min,-2.3656704935e-3
+ex10_test_gap,0.0904165695
+ex10_test_Omega_unitary,-9.7206051525e-5
+ex10_test_Omega_zeta1,-4.8603025763e-5
+ex10_test_d_zeta1,0.0639341652
+ex10_test_qF,0.4582575695
+ex10_test_E_minus_q0.3,0.1661927450
+ex10_test_E_plus_q0.3,0.8652920221

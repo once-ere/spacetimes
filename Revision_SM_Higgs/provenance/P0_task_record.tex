@@ -1647,6 +1647,45 @@ and CJT keep every contraction. The range keeps the attraction in every
 pair channel. With the other couplings fixed, every change of a result
 is the effect of the new term.
 
+\textbf{D37. The explicit examples (my decisions of interpretation, 22
+November 2026).} The author asked on 22 November 2026 (C27) for concrete
+and explicit examples of a Moufang loop, a super-loop, a Lorentz
+super-loop, a Dirac spinor, an isovector, an isodoublet, an isospin
+triplet, an isodoublet of Dirac spinors, the eight spinor charges and
+the spin-zero superfluid of these charges, and he stopped the writing of
+manuscripts. I compute and check the examples now, as programs, data and
+reports (object O21), so that the rewriting (object O20) can print
+numbers that three programs have verified. * \emph{The definitions} are
+those of the author's manuscript of 16 November 2026 on the Lorentz
+super-loop (in the repository, folder
+\texttt{Revision\_SuperLoop/manuscript}): the bi-octonions with the
+Cayley-Dickson product, the loop \(\mathbb L_{\rm LL}\) of the
+bi-octonions of norm 1, \(M_{\rm LL}\), the Dirac matrices of the chiral
+basis, the fields \(\psi'_{\rm LL}\) of the spinor charges (its Eq.
+(23)) and its superfluid (its Section IX). * \emph{Super-loop and
+Lorentz super-loop.} That manuscript defines one super-loop,
+\(\mathbb L_{\rm LL}\), which it calls the Lorentz super-loop and also,
+for short, the super-loop; it gives no definition of a class of
+super-loops. The example of the Lorentz super-loop is therefore also the
+example of a super-loop. A wider meaning of ``a super-loop'' would be
+the author's to give; the related Moufang loop of the real octonions of
+norm 1 (the seven-sphere) is computed beside it. * \emph{The numbers}
+are chosen so that every exact example has rational values: unit
+elements built from Pythagorean triples and quadruples (for example
+\((3\mathbf e_0+4\mathbf e_1)/5\)), and the boost with \(e^{\eta/2}=2\),
+whose Lorentz factor is \(17/8\). The superfluid uses the couplings,
+masses and chemical potentials that the manuscript of 16 November used
+(its check S-6 and its Figure 6), so that its printed numbers are
+recomputed, and a superfluid of the vacuum at \(G_{\rm LL}=30\). *
+\emph{The checks.} The exact examples are computed with integers scaled
+by known denominators and compared exactly; Python repeats them with its
+own algebra in rational arithmetic; Wolfram derives the general
+identities behind them symbolically.
+
+\emph{Reasons.} Examples that a program has computed and checked cannot
+carry a typing error into the rewritten manuscripts, and the decision
+about the words ``super-loop'' stays with the author.
+
 \textbf{D11. Documents.} The manuscript \texttt{superfluid.md} (with
 \texttt{.tex} and \texttt{.pdf}); this record; the MASTER provenance of
 the symbols; a provenance of the code, the computed values and the
@@ -1732,6 +1771,9 @@ explicit example of every object it names and a definition of every term
 at its first use, written for a student; the check of the rule against
 references to other documents reads the LaTeX sources of the article
 too \\
+O21 & the explicit examples of the objects that the author named on 22
+November 2026 (C27, decision D37), computed and checked in Rust, Python
+and the Wolfram Language as data for the rewriting O20 \\
 \end{longtable}
 
 The objects O13 and O14 are carried out for the second version, with the
@@ -3610,6 +3652,62 @@ missing field is read as \texttt{NaN}. The run of request 334 printed no
 warning and gave the same numbers to all digits of its report (ALL PASS
 (6 of 6)); request 333 ran the uncorrected script again, because the
 copy on the author's computer had not yet been replaced \\
+E71 & 22 Nov 2026, 08:35 to 08:50 & object O21, the explicit examples
+(D37): the Rust program \texttt{sh\_examples} (crate
+\texttt{rust/shexamples}; ALL PASS (27 of 27)), the Python program
+\texttt{python/sh\_examples.py} (ALL PASS (9 of 9); exact rational
+arithmetic with its own implementation of the bi-octonions, and adaptive
+quadrature), and the Wolfram script
+\texttt{wolfram/source/sh\_examples.wls} (ALL PASS (6 of 6), in Wolfram
+15.0.1 on the author's computer through the watcher, requests 335 and
+336; it also proves the Moufang identities and the multiplicativity of
+the norm for general bi-octonions, the bracket of two spinor charges for
+general bi-quaternions, and the law of the pair matrices for a general
+\(SU(2)\) matrix). The data: \texttt{data/sh\_examples.csv} (every
+value, as exact fractions where exact),
+\texttt{sh\_examples\_loop16.csv} (the product table of the loop of the
+16 elements \(\pm\mathbf e_p\)), \texttt{sh\_examples\_charges.csv} (the
+eight spinor charges and their fields \(\psi'_{\rm LL}\)) and
+\texttt{sh\_examples\_brackets.csv} (their 64 brackets); the writer of
+the fragments \texttt{code/scripts/write\_sh\_examples\_fragments.py}.
+One correction before any result was used: the first run of
+\texttt{sh\_examples} failed its check EX-7b. That check expected the
+three pair matrices \(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\) of two
+isodoublets to be multiplied, under an isospin rotation, by the
+transpose of the rotation matrix of the rotation; the program found the
+rotation matrix itself, and the derivation (the transpose of an
+\(SU(2)\) matrix times \(\mathsf E_{\rm LL}\) is \(\mathsf E_{\rm LL}\)
+times its inverse) gives the rotation matrix itself, so the expectation
+was wrong and was corrected; the second Wolfram request only changed the
+printing of its report. No manuscript is written (C27) \\
+E72 & 22 Nov 2026, 08:50 & the examples of O21 (E71), in brief (every
+value is in \texttt{data/sh\_examples.csv}): a \emph{Moufang loop}, the
+16 elements \(\pm\mathbf e_0,\dots,\pm\mathbf e_7\) with the product of
+the octonion units, which obeys the Moufang identities but is not a
+group, since \((\mathbf e_1\mathbf e_2)\mathbf e_4=\mathbf e_7\) and
+\(\mathbf e_1(\mathbf e_2\mathbf e_4)=-\mathbf e_7\); the \emph{Lorentz
+super-loop}, with the rotation \((3\mathbf e_0+4\mathbf e_1)/5\), the
+boost \(\tfrac54\mathbf e_0+\tfrac34i\mathbf e_3\) (Lorentz factor
+\(17/8\), velocity \(15/17\)) and the element
+\((3\mathbf e_0+4\mathbf e_4)/5\) off \(SL(2,\mathbb C)\), their
+associator \(-\tfrac{24}{25}i\mathbf e_6\), and the brackets
+\([\mathbf e_4,\mathbf e_5]=2\mathbf e_1\); a \emph{Dirac spinor},
+\(u=(\tfrac12,0,2,0)\) of mass 1 and momentum
+\((\tfrac{17}8,0,0,\tfrac{15}8)\); an \emph{isovector}, \((0,0,1)\)
+turned by the isospin rotation
+\(M_{\rm LL}((3\mathbf e_0+4\mathbf e_1)/5)\) into
+\((0,-\tfrac{24}{25},-\tfrac7{25})\); an \emph{isodoublet}, \((1,0)\)
+turned by the same rotation into \((\tfrac35,-\tfrac45i)\); an
+\emph{isospin triplet}, the three symmetric states of two isodoublets
+and the three symmetric pair matrices
+\(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\); an \emph{isodoublet of Dirac
+spinors}, \(u\otimes(1,0)\) with the charge \(+\tfrac12\); the
+\emph{eight spinor charges}
+\(\mathbf e_4,\dots,\mathbf e_7,i\mathbf e_4,\dots,i\mathbf e_7\) with
+their fields and brackets; and their \emph{spin-zero superfluid}, the
+polar state with the pair matrix \(\mathsf K^3_{\rm LL}\), recomputed at
+the test point of the manuscript of 16 November (gap \(0.0904166\)) and
+in the vacuum at \(G_{\rm LL}=30\) (gap \(0.664141\)) \\
 \end{longtable}
 
 \end{document}
