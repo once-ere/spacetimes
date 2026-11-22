@@ -640,8 +640,10 @@ ENTRIES = [
      "Standard Model, its quartic coupling $m_H^2/(2v^2)$, and the Fermi constant ($v=(\\sqrt2G_F)^{-1/2}$)", "SM"),
     (G13, "$SU(2)_L$, $U(1)_Y$", "", "the electroweak gauge group of the Standard Model", "SM"),
     (G13, "$\\hat\\theta_W$, $\\hat\\alpha(M_Z)$", "SM_s2w SM_alpha", "the weak mixing angle and the fine-structure constant "
-     "in the $\\overline{\\rm MS}$ scheme at the scale $M_Z$, the inputs of the couplings $g=e/\\sin\\hat\\theta_W$ and "
-     "$g'=e/\\cos\\hat\\theta_W$ with $e^2=4\\pi\\hat\\alpha(M_Z)$", "SM"),
+     "in the $\\overline{\\rm MS}$ scheme at the scale $M_Z$; $\\sin^2\\hat\\theta_W$ is measured independently of the ratio "
+     "$M_W/M_Z$ and is therefore the angle with which the parameter $\\rho$ can be tested", "SM"),
+    (G13, "$\\rho$", "rho_with_s2_hat", "the ratio $M_W^2/(M_Z^2\\cos^2\\theta_W)$ of the masses of the weak bosons; equal to 1 "
+     "at tree level when the field that breaks the symmetry is a doublet whose kinetic term has one coefficient", "SM"),
     # ------------------------------------------------------------------ group 14 (Revision_SM_Higgs)
     (G14, "$\\chi_{\\rm SH}$", "chi_SH", "the singlet field of the revised hypotheses: a four-component Dirac field of "
      "$SL(2,\\mathbb C)$, a singlet of $SU(2)_L$ and of colour, with the hypercharge $Y^{\\rm SM}=1/4$, the fermion number 1 and "
@@ -660,6 +662,17 @@ ENTRIES = [
      "$\\Pi^{\\rm u}_{\\rm SH}$, $\\Pi^{\\rm d}_{\\rm SH}$ in the state: a Lorentz scalar, a colour singlet, an $SU(2)_L$ doublet with "
      "$Y^{\\rm SM}=+1/2$, whose components have the electric charges $+1$ and $0$; the quantum numbers of the Higgs doublet "
      "$\\Phi^{\\rm SM}$", "new-SH"),
+    (G14, "$\\mathsf V_{\\rm SH}$", "V_SH", "the matrix of the coefficients of a spin-zero bilinear of the two fields: its rows "
+     "are numbered by the components of the first field and its columns by those of the second (eight components for "
+     "$\\Psi_{\\rm LL}$, four for $\\chi_{\\rm SH}$)", "new-SH"),
+    (G14, "$\\Pi_{\\rm SH}[\\mathsf V_{\\rm SH}]$", "Pi_SH", "a pair of two particles with the coefficient matrix "
+     "$\\mathsf V_{\\rm SH}$: $\\Psi^T_{\\rm LL}\\mathsf V_{\\rm SH}\\chi_{\\rm SH}$, or the same with two particles of one field; an "
+     "operator that annihilates two particles, of which the superfluid is a condensate", "new-SH"),
+    (G14, "$\\Xi_{\\rm SH}[\\mathsf V_{\\rm SH}]$", "Xi_SH", "a particle-antiparticle bilinear with the coefficient matrix "
+     "$\\mathsf V_{\\rm SH}$: $\\Psi^\\dagger_{\\rm LL}\\mathsf V_{\\rm SH}\\chi_{\\rm SH}$, or the same with one field twice; its "
+     "expectation values are the mean fields of the methods HS, KS and CJT", "new-SH"),
+    (G14, "$\\mathbf e^{\\rm u}_{\\rm SH}$, $\\mathbf e^{\\rm d}_{\\rm SH}$", "e_up e_down", "the isospin columns $(1,0)^T$ and "
+     "$(0,1)^T$ of the up and the down component of $\\Psi_{\\rm LL}$", "new-SH"),
     (G14, "$v_{\\rm SH}$", "v_SH", "the scale of the breaking of $SU(2)_L\\times U(1)_Y$ by the superfluid, defined by the mass "
      "$M_W=g\\,v_{\\rm SH}/2$ that the superfluid gives the $W$ boson (the definition that the Standard Model gives $v$); identified with "
      "$v$ to fix the scale of the model in GeV", "new-SH"),

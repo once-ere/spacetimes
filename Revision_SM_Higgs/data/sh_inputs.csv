@@ -1,0 +1,7 @@
+name,value,uncertainty,unit,source
+G_F,1.1663785e-5,6e-12,GeV^-2,"Review of Particle Physics 2026: F. Takahashi et al. (Particle Data Group), Int. J. Mod. Phys. A 41, 2630011 (2026), Table 1.1 (Physical Constants) and Section 10, Eq. (10.24)"
+M_W,80.3625,0.0077,GeV,"Review of Particle Physics 2026, Table 1.1 (Physical Constants) and Section 10, Eq. (10.33)"
+M_Z,91.1879,0.0020,GeV,"Review of Particle Physics 2026, Table 1.1 (Physical Constants) and Section 10, Eq. (10.29)"
+m_H,125.13,0.11,GeV,"Review of Particle Physics 2026, Summary Tables, Gauge and Higgs Bosons (scale factor S = 1.5), and Section 10, Eq. (10.34)"
+s2_hat_Z,0.23122,0.00006,1,"Review of Particle Physics 2026, Table 1.1 (Physical Constants): sin^2 theta-hat(M_Z) in the MS-bar scheme"
+alpha_inverse,137.035999177,0.000000021,1,"Review of Particle Physics 2026, Table 1.1 (Physical Constants): 1/alpha, the fine-structure constant at zero momentum transfer"

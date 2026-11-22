@@ -1,0 +1,55 @@
+sh_quantum: checks of the quantum numbers and of the breaking under the revised hypotheses (Revision_SM_Higgs, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS QN-1a   deviation 0.000e0 (tolerance 1.0e-12): [T^a, T^b] = i eps_abc T^c on the twelve components (the algebra of SU(2)_L)
+PASS QN-1b   deviation 0.000e0 (tolerance 1.0e-12): Y, F and R commute with T^1, T^2, T^3 and with each other
+PASS QN-1c   deviation 0.000e0 (tolerance 1.0e-12): T^1, T^2, T^3, Y, Q, F, R are Hermitian (a unitary representation)
+PASS QN-2a   the six real generators S(u) = diag(-M(u)^dag, M(u)) on each field satisfy S([u, u']) = [S(u), S(u')] and are independent over the real numbers [largest deviation 0.0e0; smallest eigenvalue of the real Gram matrix 3.0000]
+PASS QN-2b   deviation 0.000e0 (tolerance 1.0e-12): the Lorentz generators commute with T^a, Y, Q, F, R (space-time and internal symmetries)
+PASS QN-3    deviation 0.000e0 (tolerance 1.0e-12): the free Hamiltonian diag(h_Psi(q), h_chi(q)) commutes with T^a, Y, Q, F, R (25 random momenta; m_LL = 0.2, m^chi_SH = 0.35 and 0.2)
+PASS QN-4a   deviation 0.000e0 (tolerance 1.0e-12): Y = F/4 (equation (4.1)) and Y = 1/4 on all twelve components
+PASS QN-4b   deviation 0.000e0 (tolerance 1.0e-12): Q = T^3 + Y is 3/4 on the up components of Psi_LL, -1/4 on the down components and 1/4 on chi_SH
+PASS QN-5a   deviation 0.000e0 (tolerance 1.0e-12): the anomaly traces tr(gamma^ch Y^3), tr(gamma^ch Y), tr(gamma^ch {T^a, T^b} Y), tr(gamma^ch Y^2 T^a), tr(gamma^ch T^a {T^b, T^c}) vanish (47 traces)
+PASS QN-5b   deviation 0.000e0 (tolerance 1.0e-12): the fields are vector-like: gamma^0, which exchanges the two chiralities, commutes with every internal generator
+PASS QN-5c   the number of Weyl doublets of SU(2)_L is even (no global anomaly; the right-handed doublet counts as the conjugate of a left-handed one) [8 components with Casimir 3/4, 2 Weyl doublets]
+PASS QN-6a   Lorentz-invariant pairs, antisymmetric (Fermi statistics) of the sector Psi Psi: dimension 6 [dimension 6; largest eigenvalue counted as zero 6.6e-15, smallest not zero 3.000]
+PASS QN-6b   Lorentz-invariant pairs of the sector Psi chi: dimension 4 [dimension 4; largest eigenvalue counted as zero 3.3e-16, smallest not zero 3.000]
+PASS QN-6c   Lorentz-invariant pairs, antisymmetric (Fermi statistics) of the sector chi chi: dimension 2 [dimension 2; largest eigenvalue counted as zero 2.1e-15, smallest not zero 3.000]
+PASS QN-6d   Lorentz-invariant particle-antiparticle bilinears of the sector Psi^dag Psi: dimension 8 [dimension 8; largest eigenvalue counted as zero 7.8e-16, smallest not zero 3.000]
+PASS QN-6e   Lorentz-invariant particle-antiparticle bilinears of the sector Psi^dag chi: dimension 4 [dimension 4; largest eigenvalue counted as zero 2.2e-16, smallest not zero 3.000]
+PASS QN-6f   Lorentz-invariant particle-antiparticle bilinears of the sector chi^dag chi: dimension 2 [dimension 2; largest eigenvalue counted as zero 2.2e-16, smallest not zero 3.000]
+PASS QN-6g   the symmetric Lorentz-invariant matrices of the sector Psi Psi, which give no operator (Fermi statistics): dimension 2 [dimension 2; gap 2.0e-15 / 3.000]
+PASS QN-6h   deviation 3.201e-16 (tolerance 1.0e-12): the four matrices C gamma^ch (x) e_s and C (x) e_s (s = up, down) are Lorentz invariant, orthogonal and lie in the space of QN-6b, which they therefore span
+PASS QN-7    deviation 0.000e0 (tolerance 1.0e-12): parity (phi -> gamma^0 phi, intrinsic parities +1): gamma^0 K gamma^0 = +K for C gamma^ch (x) e_s (spin 0, positive parity) and -K for C (x) e_s
+PASS QN-8a   deviation 0.000e0 (tolerance 1.0e-12): on Phi_SH = (Pi[C gamma^ch (x) e_up], Pi[C gamma^ch (x) e_down]) / norm(C gamma^ch): G_{T^a} = tau^a / 2 and G_Y = 1/2, the generators of the Higgs doublet Phi^SM
+PASS QN-8b   deviation 0.000e0 (tolerance 1.0e-12): the two pair components span an invariant space (closure of L_X for all seven generators)
+PASS QN-8c   deviation 0.000e0 (tolerance 1.0e-12): G_Q = diag(1, 0) (the charges +1 and 0 of Phi^u_SH and Phi^d_SH), G_F = 2 and G_R = 0 (the relative number is not changed)
+PASS QN-8d   deviation 0.000e0 (tolerance 1.0e-12): the Casimir sum_a G_{T^a}^2 = 3/4 on both components (a doublet)
+PASS QN-9a   deviation 5.910e-15 (tolerance 1.0e-11): for 25 random elements of SU(2)_L x U(1)_Y the pair field transforms as Phi_SH -> U_SM Phi_SH with U_SM = exp(i alpha.tau/2 + i beta/2), the transformation of Phi^SM
+PASS QN-9b   deviation 1.255e-14 (tolerance 1.0e-11): the matrix of the transformation of Phi_SH is unitary: the pairing term (4.2), minus G_SH times the sum of Pi_s^dag Pi_s, is invariant
+PASS QN-9c   deviation 9.687e-16 (tolerance 1.0e-10): for 25 random elements g of SL(2,C) every Lorentz-invariant bilinear of QN-6 (all six sectors) is unchanged by phi -> S(g) phi
+PASS QN-10a  deviation 3.159e-15 (tolerance 1.0e-12): each of the six spaces of QN-6 is the sum of a part of parity +1 and one of parity -1, and each of the twelve parts is invariant under T^a, Y, Q, F, R (a representation)
+PASS QN-10b  the eigenvalues of every Casimir operator are those of whole SU(2) multiplets [12 channels]
+PASS QN-10c  the channels: Psi Psi = triplet with Y = 1/2 and Q = 3/2, 1/2, -1/2 (equation (3.1): the isospin singlet is symmetric and absent); Psi chi = doublet, Y = 1/2, Q = 1, 0; chi chi = singlet, Y = Q = 1/2; Psi^dag Psi = 1 + 3, Y = 0; Psi^dag chi = doublet, Y = 0, Q = 1/2, -1/2; chi^dag chi = singlet, Y = Q = 0 (each for both parities) [largest deviation of a charge 2.0e-15]
+PASS QN-10d  the symmetric Lorentz-invariant Psi Psi matrices of QN-6g form isospin singlets (2 (x) 2 = 1 + 3: the singlet is the part that Fermi statistics removes) [multiplets 1 + 1]
+PASS QN-10e  no pair of two Psi_LL particles and no pair of two chi_SH particles is neutral: a condensate of such pairs would carry electric charge [smallest absolute value of Q in these channels 1/2]
+PASS QN-11a  deviation 4.441e-16 (tolerance 1.0e-12): every doublet is brought to the form (0, phi) with real phi > 0 by an element of SU(2)_L (25 random doublets)
+PASS QN-11b  the generators of SU(2)_L x U(1)_Y that leave Phi_SH = (0, phi) unchanged form a space of dimension 1, spanned by T^3 + Y = Q: the breaking SU(2)_L x U(1)_Y -> U(1)_Q [dimension 1; deviation of the unit vector from (0, 0, 1, 1)/sqrt2 1.1e-16; gap 5.6e-17 / 0.250]
+PASS QN-11c  a generic second condensate in any channel with a charged component, added to (0, phi), leaves no generator unbroken (the photon would become massive); in the neutral channels chi^dag chi it leaves Q [Psi Psi (+): generic 0, neutral -; Psi Psi (-): generic 0, neutral -; Psi chi (+): generic 0, neutral 1 (Q); Psi chi (-): generic 0, neutral 1 (Q); chi chi (+): generic 0, neutral -; chi chi (-): generic 0, neutral -; Psi^dag Psi (+): generic 0, neutral 1 (Q); Psi^dag Psi (-): generic 0, neutral 1 (Q); Psi^dag chi (+): generic 0, neutral -; Psi^dag chi (-): generic 0, neutral -; chi^dag chi (+): generic 1, neutral 1 (Q); chi^dag chi (-): generic 1, neutral 1 (Q)]
+PASS QN-11d  a second condensate in the neutral part of any channel (Q = 0) keeps exactly Q unbroken: the mean fields compatible with U(1)_Q are the neutral ones [dimension of the stabilizer 1 and along Q in every channel with a neutral part]
+PASS QN-12a  v = (sqrt2 G_F)^(-1/2) = 246.22 GeV to the five digits stated in H0 [v = 246.2197 GeV]
+PASS QN-12b  deviation 4.375e-16 (tolerance 1.0e-13): the eigenvalues of the mass matrix are 0, M_W^2, M_W^2, M_Z^2 with M_W = g v_SH/2 and M_Z = sqrt(g^2 + g'^2) v_SH/2 (relative deviation)
+PASS QN-12c  deviation 1.768e-16 (tolerance 1.0e-13): with v_SH = v (H5) and these couplings the two masses are the measured M_W and M_Z (relative deviation)
+PASS QN-12d  deviation 0.000e0 (tolerance 1.0e-12): the massless field is A = sin(theta_W) W^3 + cos(theta_W) B and the field of mass M_Z is Z = cos(theta_W) W^3 - sin(theta_W) B, with tan(theta_W) = g'/g (the conventions (10.3) of the Review)
+PASS QN-12e  deviation 2.220e-16 (tolerance 1.0e-12): under the unbroken U(1)_Q the field (W^1 - i W^2)/sqrt2 = W^+ has the charge +1 and the mass M_W; W^3 and B are neutral (the eigenvalues of the adjoint action of Q are -1, 0, 0, 1)
+PASS QN-12f  deviation 0.000e0 (tolerance 1.0e-13): rho = M_W^2 / (M_Z^2 cos^2 theta_W) = 1 for a canonical kinetic term of the doublet (the value of the dynamics is computed in stage 5)
+PASS QN-12g  deviation 0.000e0 (tolerance 1.0e-14): e = g g' / sqrt(g^2 + g'^2) = g sin(theta_W), and g^F_LL = g'/4 reproduces g' Y = g^F_LL F on both fields
+
+Notes:
+  couplings of the set used here (tree-level relations exact with the measured M_W and M_Z): g = 0.652771, g' = 0.350046, e = 0.308490, sin^2(theta_W) = 1 - M_W^2/M_Z^2 = 0.22334, g^F_LL = g'/4 = 0.087511
+  e^2/(4 pi) = 1/132.047 for these couplings; the measured 1/alpha = 137.035999 at zero momentum transfer (about 128 at M_Z); the MS-bar sin^2(theta-hat(M_Z)) = 0.23122 differs from 1 - M_W^2/M_Z^2 by a radiative correction of the Standard Model
+  the measured masses with the MS-bar angle give M_W^2/(M_Z^2 (1 - sin^2(theta-hat(M_Z)))) = 1.01025; in the Standard Model this deviation from 1 comes from radiative corrections, mainly those of the top quark. A test of the rho of the superfluid (stage 5) needs an angle measured independently of M_W/M_Z, and these corrections
+  m_H = 125.13 GeV (input; compared with the amplitude mode in stage 4): m_H / v = 0.50820
+
+VERDICT: ALL PASS (43 of 43)

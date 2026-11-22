@@ -261,7 +261,11 @@ with the methods HS, KS and CJT; (4) the effective potential and the
 mass of the amplitude mode against \(m_H\); (5) the masses of
 \(W^\pm_\mu\) and \(Z_\mu\), the massless photon and the parameter
 \(\rho\); (6) the dynamics in time, the notebook and the article. Every
-inherited document begins with a note that says so.
+inherited document begins with a note that says so. Stages 1 and 2 are
+complete: the quantum numbers and the breaking are checked in Section 6
+of the hypotheses document (Rust: ALL PASS (43 of 43); Python: ALL PASS
+(14 of 14); Wolfram, in exact arithmetic: ALL PASS (11 of 11)), with the
+measured inputs of the 2026 edition of the Review of Particle Physics.
 
 \hypertarget{what-this-folder-is}{%
 \section{1. What this folder is}\label{what-this-folder-is}}
@@ -387,6 +391,23 @@ built from the data files and the reports of the checks by
 the title is outlined, not computed. The submission itself is the
 author's.
 
+\textbf{Stage 2 of the revision of the hypotheses} (21 November 2026,
+17:30 to 18:15 PST). The program \texttt{sh\_quantum} of the crate
+\texttt{rust/shquantum} (ALL PASS (43 of 43)), its second computation
+\texttt{python/sh\_quantum.py} (ALL PASS (14 of 14)) and the exact
+computation \texttt{wolfram/source/sh\_quantum.wls} (ALL PASS (11 of
+11), run in Wolfram 15.0.1) check the quantum numbers of the two fields
+and of all their spin-zero bilinears, and the pattern of the breaking:
+the doublet-singlet pairs of positive parity carry exactly the
+generators of the Higgs doublet; no pair of two particles of the same
+field is neutral; a vacuum that keeps the group of the electric charge
+can carry, besides the pair field, only the neutral
+particle-antiparticle bilinears; and a kinetic term of the pair field
+with one coefficient gives the masses of the \(W\) and the \(Z\) of the
+Standard Model and the massless photon. The measured inputs are those of
+the 2026 edition of the Review of Particle Physics
+(\texttt{data/sh\_inputs.csv}).
+
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
 
@@ -484,14 +505,20 @@ program \texttt{sf\_part3} (part III), the program \texttt{sf\_part4}
 (part IV), the integrators CVODE and IDA of the vendored pure-Rust
 SUNDIALS 7.8.0 with a plain interface (\texttt{sfsundials}), and their C
 interface for Python, the shared library \texttt{libsfsundials\_c}
-(\texttt{sfsundials\_c}) & parts I to IV written \\
+(\texttt{sfsundials\_c}); for the revision of the hypotheses the program
+\texttt{sh\_quantum} (crate \texttt{shquantum}: the quantum numbers of
+the fields and of their bilinears, the breaking, the masses of the gauge
+fields from the pair field) & parts I to IV written; stage 2 of the
+revision written \\
 \texttt{python/} & \texttt{sfcommon.py} (common definitions),
 \texttt{sfsundials.py} (CVODE and IDA through the C interface),
 \texttt{sf\_part1.py}, \texttt{sf\_part2.py}, \texttt{sf\_part3.py},
 \texttt{sf\_part4.py} (the second, independent computations of parts I
 to IV), \texttt{sf\_part1\_figures.py}, \texttt{sf\_part2\_figures.py},
 \texttt{sf\_part3\_figures.py}, \texttt{sf\_part4\_figures.py} (the
-figures, and the videos of part IV) & parts I to IV written \\
+figures, and the videos of part IV); \texttt{sh\_quantum.py} (the second
+computation of \texttt{sh\_quantum}) & parts I to IV written; stage 2 of
+the revision written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
 \texttt{part1.source.wl}, \texttt{part2.source.wl},
@@ -506,8 +533,10 @@ TeX of the texts into two-dimensional formulas
 end of Wolfram (\texttt{guirun.wl} and the three calls
 \texttt{gui\_start.wl}, \texttt{gui\_go.wl}, \texttt{gui\_status.wl}),
 the dry run (\texttt{make\_dryrun.py}), and the writer of the data cells
-(\texttt{make\_data\_cells.py}) & Parts I and II and the sections III.L,
-III.T and III.G of Part III written \\
+(\texttt{make\_data\_cells.py}); the exact computation of the checks of
+\texttt{sh\_quantum}, \texttt{wolfram/source/sh\_quantum.wls} & Parts I
+and II and the sections III.L, III.T and III.G of Part III written;
+stage 2 of the revision written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},
@@ -520,7 +549,15 @@ III.T and III.G of Part III written \\
 \texttt{hck\_symbol\_checks.txt},
 \texttt{hck\_self\_contained\_checks.txt}) and the data of parts I to IV
 (\texttt{part1\_*.csv}, \texttt{part2\_*.csv}, \texttt{part3\_*.csv},
-\texttt{part4\_*.csv}) & parts I to IV written \\
+\texttt{part4\_*.csv}); for the revision of the hypotheses the measured
+inputs \texttt{sh\_inputs.csv}, the reports
+\texttt{hck\_sh\_quantum\_checks.txt},
+\texttt{hck\_sh\_quantum\_checks\_python.txt},
+\texttt{hck\_sh\_quantum\_checks\_wolfram.txt} and the data
+\texttt{sh\_quantum\_numbers.csv}, \texttt{sh\_channels.csv},
+\texttt{sh\_couplings.csv}, \texttt{sh\_mass\_matrix.csv},
+\texttt{sh\_quantum\_values.csv} & parts I to IV written; stage 2 of the
+revision written \\
 \texttt{figures/}, \texttt{videos/} & the figures
 (\texttt{fig\_part1\_*}, \texttt{fig\_part2\_*}, \texttt{fig\_part3\_*},
 \texttt{fig\_part4\_*}, each \texttt{.pdf} and \texttt{.png}) and the
@@ -531,6 +568,10 @@ videos (\texttt{video\_part4\_v1\_condensate\_growth.mp4},
 \texttt{write\_part3\_fragments.py}, \texttt{write\_part4\_fragments.py}
 & turn the reports and values of parts I to IV into the tables and
 numbers of the manuscript & written \\
+\texttt{code/scripts/write\_sh\_fragments.py} & turns the reports and
+data of stage 2 of the revision into the tables and numbers of the
+hypotheses document (\texttt{provenance/generated/sh\_quantum.md}) &
+written \\
 \texttt{code/scripts/write\_bound\_fragments.py} & writes every bound of
 agreement stated in the manuscript and in
 \texttt{provenance/P4\_remarks.md} from the reports of the checks (the
@@ -577,6 +618,10 @@ folder \texttt{Revision\_SM\_Higgs}:
 \ExtensionTok{python3}\NormalTok{ python/sf\_part4\_figures.py            }\CommentTok{\# part IV: the figures and the two videos (needs ffmpeg)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_part4\_fragments.py }\CommentTok{\# the tables and numbers of part IV for the manuscript}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_bound\_fragments.py }\CommentTok{\# the bounds of agreement of the documents (after the programs of parts I to IV)}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_quantum}\KeywordTok{)}      \CommentTok{\# revision, stage 2: the quantum numbers and the breaking (under a second)}
+\ExtensionTok{python3}\NormalTok{ python/sh\_quantum.py                  }\CommentTok{\# revision, stage 2: the Python computation (after sh\_quantum)}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_quantum.wls data/sh\_channels.csv data/hck\_sh\_quantum\_checks\_wolfram.txt}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_fragments.py    }\CommentTok{\# the tables and numbers of stage 2 for the hypotheses document}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_notebook\_fragments.py }\CommentTok{\# the tables of the provenance of the notebook (from data/hck\_notebook\_log.txt)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}

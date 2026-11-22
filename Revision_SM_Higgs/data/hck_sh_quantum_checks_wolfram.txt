@@ -1,0 +1,20 @@
+sh_quantum.wls: the exact computation of the checks of sh_quantum (Revision_SM_Higgs, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier (that of the Rust program with the prefix W), the statement and, in brackets, the
+facts that decide it.  Exact arithmetic: no tolerance.
+
+PASS WQN-1    [T^a, T^b] = i eps_abc T^c, Y, F, R commute with T^a, all generators Hermitian [identities of exact matrices]
+PASS WQN-2    the six real Lorentz generators: S([u, u']) = [S(u), S(u')], independent over the reals, commuting with the internal generators [identities of exact matrices; real rank 6]
+PASS WQN-4    Y = F/4 = 1/4; Q = 3/4 (up), -1/4 (down) on Psi_LL and 1/4 on chi_SH [Q on the components 0..11: {3/4, -1/4, 3/4, -1/4, 3/4, -1/4, 3/4, -1/4, 1/4, 1/4, 1/4, 1/4}]
+PASS WQN-5    no anomaly (47 traces exactly 0), vector-like fields, an even number of Weyl doublets [2 Weyl doublets]
+PASS WQN-6    the dimensions 6, 4, 2 (pairs Psi Psi, Psi chi, chi chi), 8, 4, 2 (particle-antiparticle) and 2 (symmetric Psi Psi); C gamma^ch (x) e_s, C (x) e_s are invariant and span the Psi chi pairs [dimensions {6, 4, 2, 8, 4, 2}, symmetric 2]
+PASS WQN-7    parity: +1 for C gamma^ch (x) e_s, -1 for C (x) e_s [identities of exact matrices]
+PASS WQN-8    on Phi_SH: G_{T^a} = tau^a/2, G_Y = 1/2, G_Q = diag(1, 0), G_F = 2, G_R = 0, Casimir 3/4, closure: the generators of the Higgs doublet [G_Y = {{1/2, 0}, {0, 1/2}}]
+PASS WQN-10   the twelve channels: parity split, closure, SU(2) multiplets, Y and Q agree with the table of the Rust program [all 12 agree]
+PASS WQN-10e  no pair of two Psi_LL or of two chi_SH particles is neutral [smallest absolute value of Q 1/2]
+PASS WQN-11   the stabilizer of (0, phi) is spanned by Q = T^3 + Y; a generic second condensate with a charged component breaks Q, a neutral one keeps exactly Q [stabilizer {{0, 0, 1, 1}}]
+PASS WQN-12   the mass matrix of (W^1, W^2, W^3, B) from Phi_SH = (0, v/sqrt2): eigenvalues 0, g^2 v^2/4 (twice), (g^2 + g'^2) v^2/4, the massless vector along (0, 0, g', g) (symbolic couplings) [eigenvalues {0, (g^2*v^2)/4, (g^2*v^2)/4, ((g^2 + gp^2)*v^2)/4}]
+
+Notes:
+  Wolfram Language 15.0.1; run time 1.4 s
+
+VERDICT: ALL PASS (11 of 11)

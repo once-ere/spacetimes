@@ -1,0 +1,14 @@
+# sh_quantum: the quantum numbers of the fields and of the spin-zero pair channels under the revised hypotheses of the
+# folder Revision_SM_Higgs (stage 2), and the pattern of the breaking of SU(2)_L x U(1)_Y by the doublet-singlet
+# superfluid.  Run from the folder rust/:  cargo run --release --bin sh_quantum
+[package]
+name = "shquantum"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "sh_quantum"
+path = "src/main.rs"
+
+[dependencies]
+sfcore = { path = "../sfcore" }

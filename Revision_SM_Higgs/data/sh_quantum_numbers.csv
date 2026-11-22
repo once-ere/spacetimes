@@ -1,0 +1,13 @@
+component,field,isospin,Dirac_index,chirality,T3,Y,F,Q,R
+0,Psi_LL,up,0,-1,1/2,1/4,1,3/4,1
+1,Psi_LL,down,0,-1,-1/2,1/4,1,-1/4,1
+2,Psi_LL,up,1,-1,1/2,1/4,1,3/4,1
+3,Psi_LL,down,1,-1,-1/2,1/4,1,-1/4,1
+4,Psi_LL,up,2,1,1/2,1/4,1,3/4,1
+5,Psi_LL,down,2,1,-1/2,1/4,1,-1/4,1
+6,Psi_LL,up,3,1,1/2,1/4,1,3/4,1
+7,Psi_LL,down,3,1,-1/2,1/4,1,-1/4,1
+8,chi_SH,singlet,0,-1,0,1/4,1,1/4,-1
+9,chi_SH,singlet,1,-1,0,1/4,1,1/4,-1
+10,chi_SH,singlet,2,1,0,1/4,1,1/4,-1
+11,chi_SH,singlet,3,1,0,1/4,1,1/4,-1

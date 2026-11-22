@@ -1084,7 +1084,12 @@ Particle Physics, because a field that is to be the Higgs of the
 Standard Model couples with the couplings of the Standard Model; the
 couplings of the earlier hypotheses were free numbers of the model. The
 mass of the singlet field is first taken equal to \(m_{\rm LL}\); its
-effect is studied when the dynamics is computed.
+effect is studied when the dynamics is computed. \emph{Revised on 21
+November 2026 (E35, D25):} the couplings are computed from the Fermi
+constant and the masses \(M_W\) and \(M_Z\) of the 2026 edition of the
+Review of Particle Physics, which no longer quotes \(\hat\alpha(M_Z)\);
+\(\sin^2\hat\theta_W\) is kept as the angle with which the parameter
+\(\rho\) is tested.
 
 \textbf{D23. The scale (a consequence of the author's requirement).} The
 model has one scale, the cutoff; the requirement that the superfluid be
@@ -1097,6 +1102,29 @@ choice).} The correction of \texttt{3+1super-loop.nb} and
 \texttt{Revision\_SuperLoop} that the author asked for at 17:04 (entry
 C20) was paused at his choice until the revised hypotheses are settled,
 because under them the isodoublet carries electric charge again.
+
+\textbf{D25. The set of couplings (my decision of interpretation, 21
+November 2026).} The couplings are \(g=2M_W/v\),
+\(\cos\theta_W=M_W/M_Z\), \(g'=g\tan\theta_W\) and \(e=g\sin\theta_W\),
+with \(v=(\sqrt2G_F)^{-1/2}\), computed from \(G_F\), \(M_W\) and
+\(M_Z\) of the 2026 edition of the Review of Particle Physics.
+\emph{Reason.} With these couplings the relations \(M_W=gv/2\) and
+\(M_Z=\sqrt{g^2+g'^2}\,v/2\) hold exactly with the measured masses, so a
+mass of a gauge field computed from the superfluid can be compared with
+the measured one without a change of scheme, and the three inputs are
+quoted directly by that edition. The angle of this set is the ratio of
+the measured masses, so it cannot test \(\rho\); the angle
+\(\sin^2\hat\theta_W\), measured independently of that ratio, is kept
+for the test (stage 5).
+
+\textbf{D26. The intrinsic parities (a convention, 21 November 2026).}
+The intrinsic parities of \(\Psi_{\rm LL}\) and \(\chi_{\rm SH}\) are
+both \(+1\). \emph{Reason.} The sign of their product is a convention:
+to change it is to compose the parity with the rotation
+\(e^{i\pi F_{\rm LL}/2}\) by the fermion number, which is a symmetry of
+the Lagrangian. With this choice the pairs built with
+\(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\), the channel of the pairing term,
+are even, as the Higgs doublet is.
 
 \textbf{D11. Documents.} The manuscript \texttt{superfluid.md} (with
 \texttt{.tex} and \texttt{.pdf}); this record; the MASTER provenance of
@@ -1303,9 +1331,11 @@ method \(X\) about its vacuum (D8; the author's name) \\
 2.2 only: the Higgs doublet of the Standard Model, its components, its
 covariant derivative \\
 \(W^a_\mu\), \(B_\mu\); \(g\), \(g'\); \(\tau^a\), \(T^{a,{\rm SM}}\);
-\(Y^{\rm SM}\), \(Q^{\rm SM}\) & Section 2.2 only: the gauge fields,
-couplings, Pauli matrices, generators, hypercharge and charge of the
-Standard Model (\(a=1,2,3\), \(\mu=0,1,2,3\)) \\
+\(Y^{\rm SM}\), \(Q^{\rm SM}\) & the gauge fields, couplings, Pauli
+matrices, generators, hypercharge and charge of the Standard Model
+(\(a=1,2,3\), \(\mu=0,1,2,3\)); in Section 2.2 the author's conventions,
+in the revision of the hypotheses (from D19 on) the gauge fields,
+couplings and charges of the model itself \\
 \(W^\pm_\mu\), \(Z_\mu\), \(A_\mu\), \(\theta_W\), \(e\), \(v\) &
 Section 2.2 only: the mass eigenstates, the weak mixing angle, the
 elementary charge and the vacuum value of the Standard Model \\
@@ -1381,6 +1411,16 @@ hypercharge and the electric charge, and the Higgs doublet \\
 \(\sin^2\hat\theta_W\), \(\hat\alpha(M_Z)\) & the weak mixing angle and
 the fine-structure constant in the \(\overline{\rm MS}\) scheme at the
 scale \(M_Z\) \\
+\(M_W\), \(M_Z\), \(m_H\), \(G_F\) & the masses of the \(W\), the \(Z\)
+and the Higgs boson of the Standard Model, and the Fermi constant
+(\(v=(\sqrt2G_F)^{-1/2}\)) \\
+\(\rho\) & the ratio \(M_W^2/(M_Z^2\cos^2\theta_W)\) of the masses of
+the weak bosons, 1 at tree level for a doublet whose kinetic term has
+one coefficient \\
+\(F_{\rm LL}\) & the fermion number (1 on both fields of the revised
+hypotheses), whose group is \(U(1)^{\rm F}_{\rm LL}\) \\
+\(C_{\rm LL}\), \(\gamma^{\rm ch}_{\rm LL}\) & the charge-conjugation
+matrix and the chirality matrix of the Dirac spinors \\
 \end{longtable}
 
 \hypertarget{log-of-errors-and-changes}{%
@@ -2155,6 +2195,92 @@ entry of \(\hat\theta_W\), \(\hat\alpha(M_Z)\), and the meaning of
 accept the suffix SH for the symbols of the revision (HCK-S3, HCK-S7).
 The programs, the data, the notebook and the article are inherited
 unchanged \\
+E35 & 21 Nov 2026, about 17:45 & the measured inputs of the first
+version of the document of the hypotheses (E34) were those of the 2024
+edition of the Review of Particle Physics and its 2025 update
+(\(G_F=1.1663788(6)\times10^{-5}\) GeV\(^{-2}\), \(m_H=125.20\pm0.11\)
+GeV, \(M_W=80.3692\pm0.0133\) GeV, \(M_Z=91.1880\pm0.0020\) GeV,
+\(\sin^2\hat\theta_W=0.23129(4)\), \(\hat\alpha(M_Z)^{-1}=127.930(8)\)).
+The 2026 edition (F. Takahashi et al., Particle Data Group,
+International Journal of Modern Physics A 41, 2630011 (2026), dated 1
+June 2026) supersedes them: \(G_F=1.1663785(6)\times10^{-5}\)
+GeV\(^{-2}\), \(m_H=125.13\pm0.11\) GeV, \(M_W=80.3625\pm0.0077\) GeV,
+\(M_Z=91.1879\pm0.0020\) GeV and \(\sin^2\hat\theta_W=0.23122(6)\), and
+it no longer quotes \(\hat\alpha(M_Z)\). What the first version
+attributed to the 2024 edition was correct, but it presented superseded
+values as the measured ones. \emph{Cause:} in stage 1 I took the values
+of the 2024 edition and did not check whether a later edition existed.
+\emph{How it was found:} in stage 2 the source of every input was
+checked in the Review before the input file \texttt{data/sh\_inputs.csv}
+was written. \emph{Correction:} the input file and Section 2 of the
+document of the hypotheses give the values of the 2026 edition with
+their tables and equations, and the document states what its first
+version used; the couplings are those of D25, and D22 is annotated \\
+C23 & 21 Nov 2026, 18:02 & the author's next task, to be undertaken
+after the stages of the revision are complete and pushed: read,
+understand and remember E. A. Lord's paper ``General relativity from
+gauge invariance''; associate the group \(SL(2,\mathbb C)\) of the
+project with Lord's gauging of the representation of a Clifford algebra;
+introduce a gravitational coupling of the spinor field, which is to
+receive a name, by Lord's covariant derivative (a connection added to
+the partial derivative); analyze, discuss and document this coupling
+with provenance; solve the field equations of the spinor in the
+Schwarzschild field and in the Vaidya metric (a mass that changes by
+absorbing or radiating null dust), study the behaviour on both sides of
+the horizon, and make predictions that involve the zeugon and the
+spinor, so that they can be detected gravitationally; push every item as
+soon as it is complete. I answered that the zeugon exists only under the
+earlier hypotheses (under the revised ones the massless gauge boson is
+the photon) and proposed to do this work in a new folder on the earlier
+hypotheses, leaving both existing folders unchanged, and to propose
+names for the spinor when the task starts \\
+E36 & 21 Nov 2026, 17:30 to 18:15 & object O11, stage 2 of the revision:
+the crate \texttt{rust/shquantum} with the program \texttt{sh\_quantum}
+(ALL PASS (43 of 43)); the Python program
+\texttt{python/sh\_quantum.py}, a second computation by other numerical
+methods that also compares its results with the data of the Rust program
+(ALL PASS (14 of 14)); the Wolfram script
+\texttt{wolfram/source/sh\_quantum.wls}, the same checks in exact
+arithmetic, run on the author's computer in Wolfram 15.0.1 through the
+watcher (requests 283 to 290; ALL PASS (11 of 11)); the input file
+\texttt{data/sh\_inputs.csv}; the data files
+\texttt{data/sh\_quantum\_numbers.csv}, \texttt{data/sh\_channels.csv},
+\texttt{data/sh\_couplings.csv}, \texttt{data/sh\_mass\_matrix.csv} and
+\texttt{data/sh\_quantum\_values.csv}; the writer of the fragments
+\texttt{code/scripts/write\_sh\_fragments.py}; Section 6 of the document
+of the hypotheses (its symbols are now Section 7) and the new couplings
+of its Section 2 (E35); the decisions D25 and D26; the registry gains
+the coefficient matrix of a bilinear, the two kinds of bilinears, the
+isospin columns of the up and the down components, and \(\rho\) (now 208
+entries); the symbol table of this record gains \(M_W\), \(M_Z\),
+\(m_H\), \(G_F\), \(\rho\), \(F_{\rm LL}\), \(C_{\rm LL}\) and
+\(\gamma^{\rm ch}_{\rm LL}\), of which \(M_W\), \(m_H\), \(\rho\),
+\(F_{\rm LL}\), \(C_{\rm LL}\) and \(\gamma^{\rm ch}_{\rm LL}\) had been
+used in this record since E34 without a row (an omission of E34) \\
+E37 & 21 Nov 2026, 17:30 to 18:15 & the results and the corrections of
+stage 2 (E36). The results: the doublet-singlet pairs of positive parity
+carry exactly the generators of the Higgs doublet; no pair of two
+particles of the same field is neutral, so a condensate of such pairs
+would break the group of the electric charge and give the photon a mass;
+a vacuum that keeps that group can carry, besides the pair field, only
+the neutral particle-antiparticle bilinears; the mass matrix of the
+gauge fields from a kinetic term with one coefficient has the masses of
+the Standard Model and the massless photon. Corrections during the
+stage, each found before the commit: (1) the check QN-1b first counted
+\(Q^{\rm SM}\) among the generators that commute with
+\(T^{a,{\rm SM}}\), which it does not; (2) the checks of the dimensions
+first required the eigenvalues counted as zero to be below \(10^{-20}\),
+which is below the rounding of the eigensolver (they are near
+\(10^{-15}\)); the bound is now \(10^{-12}\), with the gap to the other
+eigenvalues reported; (3) the Wolfram script read the parity ``-'' of
+the table of the channels as a missing value, because the importer of
+CSV files treats a lone minus sign so; the parity is now written \(+1\)
+and \(-1\); (4) four texts of checks (three of the Rust program, one of
+the Wolfram script) contained the character of a vertical bar, which the
+tables of the documents cannot show; they were reworded; (5) an
+identifier of seven characters ran into the first word of its statement
+in the Wolfram report; the identifiers are now padded to nine
+characters \\
 \end{longtable}
 
 \end{document}

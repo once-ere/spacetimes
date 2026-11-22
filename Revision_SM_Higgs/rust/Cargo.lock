@@ -65,5 +65,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "shquantum"
+version = "0.1.0"
+dependencies = [
+ "sfcore",
+]
+
+[[package]]
 name = "sundials_core"
 version = "7.8.0"
