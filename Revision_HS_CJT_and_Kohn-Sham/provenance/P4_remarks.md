@@ -169,8 +169,8 @@ $\mathcal V^X_{\rm SF}$ is not a polynomial in $\lvert\vec\Phi\rvert^2$, and no 
 
 **The Taylor series converges only near the origin.** A series of powers of $\lvert\vec\Phi\rvert^2$ about the origin can
 converge only within a radius of the order of the Dirac mass (the singularity lies at $\Phi_{\rm a}^2=-(M^{X,{\rm D}}_{\rm SF})^2$, and
-$M^{X,{\rm D}}_{\rm SF}=m_{\rm LL}=0.2$ at the origin), while $\Phi^X_{0,{\rm SF}}=0.31$ to $0.40$ and the fitted interval reaches $0.42$ to
-$0.56$. The superfluid is therefore far from the regime of Landau's theory, in which the order parameter is small and
+$M^{X,{\rm D}}_{\rm SF}=m_{\rm LL}=0.2$ at the origin), while $\Phi^X_{0,{\rm SF}}$ is $0.307$ (HS (0, 0)) to $0.403$ (HS (1, 1)) and the fitted interval reaches
+$0.42$ to $0.56$. The superfluid is therefore far from the regime of Landau's theory, in which the order parameter is small and
 the Landau coefficients are Taylor coefficients. (R1.3) has the Landau form, but its coefficients are least-squares
 numbers.
 
@@ -840,7 +840,7 @@ $\vec\Phi\cdot\vec\Phi$ without the complex conjugate has the fermion number 4).
 $\lvert\vec\Phi\rvert^4$ and $\lvert\vec\Phi\cdot\vec\Phi\rvert^2$ coincide on the polar fields (Section 2.1), where the minimum lies;
 (A2.1) keeps the coefficient along them. The static field suffices: a fluctuation with a nonzero Matsubara frequency
 $2\pi nT$ costs an energy of the order of $(2\pi T)^2$ times the coefficient of the time derivatives, and
-$2\pi T^{X,{\rm c}}_{\rm SF}$ is $1.3$ to $1.6$, of the order of the cutoff.
+$2\pi T^{X,{\rm c}}_{\rm SF}$ is $1.3$ (HS (0, 0)) to $1.6$ (HS (1, 1)), of the order of the cutoff.
 
 ## 5.2 The Ginzburg number
 
@@ -1407,4 +1407,6 @@ electrodynamics, Nuclear Physics B 386, 3 (1992); U. Leonhardt and G. E. Volovik
    bound of agreement of Sections 2, 3 and 5 is now written by `code/scripts/write_bound_fragments.py` from the reports
    (the largest deviation over the methods, rounded up), so that a stated bound is never smaller than the deviation it
    summarizes. The tolerance of the self-consistency of the computed points (Section 2) is a parameter of the program
-   and stays written in the text.
+   and stays written in the text. Four more numbers typed in Sections 2.3, 2.4 and 5.1 (the number of the fitted
+   points, the ranges of $\Phi^X_{0,{\rm SF}}$ and of the fitted interval, and the range of $2\pi T^{X,{\rm c}}_{\rm SF}$) were correct as
+   rounded and are now written by `code/scripts/write_part3_fragments.py` from the data files.

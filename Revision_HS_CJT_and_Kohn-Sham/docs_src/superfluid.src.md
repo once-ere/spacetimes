@@ -1221,8 +1221,8 @@ $10^4$), pair amplitude, Dirac mass and gap. Data: `data/part2_states.csv`.
 ## 10.1 Step 0: the author's interaction $V^{(0)}_{\rm SF}$
 
 $V^{(0)}_{\rm SF}$ has $G^{\rm S}_{\rm SF}=-8$, $G^{\rm V}_{\rm SF}=0.8$ and no pairing term (Section 5.1). Its pair couplings are small,
-$g^{X,{\rm P}}_{\rm SF}=0$ (HS with $s^{\rm HS,S}_{\rm SF}=1$), $2$ (HS with $s^{\rm HS,S}_{\rm SF}=0$) and $1.2$ (KS, CJT), far below
-$G^{\rm crit}_{\rm LL}$; the scalar channel is stable ($\lambda^{\rm S}_{\rm SF}=0.665$ and $0.615$). Every start of every method ends in
+$g^{X,{\rm P}}_{\rm SF}={{GENM:p2_gP_V0_HS_1_1}}$ (HS $(1,1)$), ${{GENM:p2_gP_V0_HS_0_1}}$ (HS $(0,1)$) and ${{GENM:p2_gP_V0_HS_0_0}}$ (HS $(0,0)$, KS, CJT), far below
+$G^{\rm crit}_{\rm LL}$; the scalar channel is stable ($\lambda^{\rm S}_{\rm SF}={{GENM:p2_t_lamS_V0_HS_1_1}}$ in HS $(1,1)$ and ${{GENM:p2_t_lamS_V0_CJT}}$ in KS and CJT). Every start of every method ends in
 the normal vacuum (*check P2-6e*): **$V^{(0)}_{\rm SF}$ admits no superfluid in any method**, whatever the HS parameters. The
 scalar attraction of the author's ansatz helps the pairing only in the pair contraction ($-G^{\rm S}_{\rm SF}/4=2$ in
 $G^{\rm ch}_{\rm SF}$), an order of magnitude too weak.
@@ -1230,14 +1230,14 @@ $G^{\rm ch}_{\rm SF}$), an order of magnitude too weak.
 ## 10.2 Step 1: $V^{(1)}_{\rm SF}$ adds the pairing term
 
 $V^{(1)}_{\rm SF}$ adds the pairing term with $G_{\rm LL}=22.5>G^{\rm crit}_{\rm LL}$, the value of AS3. In HS the pair channel becomes
-unstable ($\lambda^{\rm P}_{\rm SF}=1.057$ to $1.151$) and the ground state is a polar superfluid for all three parameter sets.
+unstable ($\lambda^{\rm P}_{\rm SF}$ from {{GEN:p2_t_lamP_V1_HS}}) and the ground state is a polar superfluid for all three parameter sets.
 In KS and CJT, however, the exchange contraction of the pairing term acts in the scalar channel like the scalar
 attraction $-\tfrac38G_{\rm LL}=-8.44$ of (9.6), and with the author's $G^{\rm S}_{\rm SF}=-8$ the scalar coupling becomes
-$g^{{\rm CJT},{\rm S}}_{\rm SF}=-15.84$: $\lambda^{\rm S}_{\rm SF}=1.317>1$, the normal vacuum is unstable towards a scalar condensate, and the
-ground state of KS and CJT is a **massive state** with the Dirac mass $-0.931$ (the condensate of $\bar\Psi\Psi$ has the
-opposite sign to $m_{\rm LL}$; a second massive state with the mass $+0.539$ lies higher). No start reaches a superfluid
+$g^{{\rm CJT},{\rm S}}_{\rm SF}={{GENM:p2_t_gS_V1_CJT}}$: $\lambda^{\rm S}_{\rm SF}={{GENM:p2_t_lamS_V1_CJT}}>1$, the normal vacuum is unstable towards a scalar condensate, and the
+ground state of KS and CJT is a **massive state** with the Dirac mass ${{GENM:p2_t_M0_V1_CJT}}$ (the condensate of $\bar\Psi\Psi$ has the
+opposite sign to $m_{\rm LL}$; a second massive state with the mass $+{{GENM:p2_t_M1_V1_CJT}}$ lies higher). No start reaches a superfluid
 (*check P2-6f*): with the large Dirac mass the pair channel is subcritical, since
-the critical coupling grows with the mass ($\pi^2/I^{(1)}_{\rm SF}(0.931)=35.39>g^{{\rm CJT},{\rm P}}_{\rm SF}=23.7$). **$V^{(1)}_{\rm SF}$ admits a superfluid in HS
+the critical coupling grows with the mass ($\pi^2/I^{(1)}_{\rm SF}(\lvert M^{{\rm CJT},{\rm D}}_{\rm SF}\rvert)={{GENM:p2_t_Gcrit_M0_V1}}>g^{{\rm CJT},{\rm P}}_{\rm SF}=23.7$). **$V^{(1)}_{\rm SF}$ admits a superfluid in HS
 but not in KS and CJT.** (This is the reason why the pairing term must be accompanied by a change of the scalar
 term: in the methods that keep the exchange contraction, an attraction in the pair channel brings with it, by the Fierz
 identities, an attraction in the scalar channel.)
@@ -1495,7 +1495,7 @@ Rust program, finds the same energy (*check YP2-8d*).
 $s^{\rm g}_{\rm SF}$ of the couplings grows (with the masses of the contact solution scaled with the couplings). The pair amplitude
 falls; at $s^{\rm g}_{\rm SF}=2$ ($g^{\rm v}_{\rm LL}=1.4$, $g^{\rm F}_{\rm LL}=0.9$) the superfluid has disappeared (the iteration ends, slowly, in the
 normal vacuum); at $s^{\rm g}_{\rm SF}=2.5$ the exchange contractions of the gauge bosons, acting in the scalar channel as the
-pairing term did in $V^{(1)}_{\rm SF}$, make a massive state with the Dirac mass $-0.42$ the ground state.
+pairing term did in $V^{(1)}_{\rm SF}$, make a massive state with the Dirac mass ${{GENM:p2_t_scan_M_25}}$ the ground state.
 
 {{GEN:p2_table_scan}}
 
@@ -1647,7 +1647,7 @@ Mexican hat of CJT over the complex plane of $\Phi^3$. Data: `data/part3_effpot_
 
 **The accuracy of the Landau form.** The coefficients $a^X_{\rm SF}$, $b^X_{\rm SF}$, $c^X_{\rm SF}$ of (12.2) are not derived
 from the theory: they minimize the sum of the squares of the residuals $\mathcal V_{\rm L}(\Phi_i)-\mathcal V^X_{\rm SF}(\Phi_i)$ over the
-computed points $\Phi_i\le1.4\Phi^X_{0,{\rm SF}}$ (47 to 51 points), where
+computed points $\Phi_i\le1.4\Phi^X_{0,{\rm SF}}$ ({{GEN:p3_lf_npts}} points), where
 $\mathcal V_{\rm L}(\Phi)=a^X_{\rm SF}\Phi^2+b^X_{\rm SF}\Phi^4+c^X_{\rm SF}\Phi^6$ is (12.2) along the polar fields $\vec\Phi=\Phi\vec e_3$. The
 computed points are accurate to {{GEN:bnd_P3-1}} (*check P3-1*), so every deviation of (12.2) from them is an error of
 the form, not of the computation. The largest residual is {{GEN:p3_lf_res6}} of the depth
@@ -1669,7 +1669,7 @@ momenta $q=\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$ of functions of $(q^2+s
 integral $\int_0^{\Lambda_{\rm LL}}q^2(q^2+s)^{1/2}\,dq$ contains the term $\tfrac1{16}s^2\ln s$, which is not analytic at $s=0$, that is,
 at $\Phi_{\rm a}^2=-(M^{X,{\rm D}}_{\rm SF})^2$. Hence $\mathcal V^X_{\rm SF}$ is not a polynomial in $\lvert\vec\Phi\rvert^2$, and its Taylor series
 about the origin can converge only within a radius of the order of the Dirac mass ($m_{\rm LL}=0.2$ at the origin),
-while $\Phi^X_{0,{\rm SF}}=0.31$ to $0.40$: the superfluid is far from the regime of Landau's theory, in which the order
+while $\Phi^X_{0,{\rm SF}}$ is {{GEN:p4_phi0_lam}}: the superfluid is far from the regime of Landau's theory, in which the order
 parameter is small and the Landau coefficients are Taylor coefficients. The coefficients of (12.2) are therefore
 properties of the fit:
 
@@ -1956,7 +1956,7 @@ cutoff $\Lambda_{\rm LL}=1$, as in Section 12.4.
 **The form of Ginzburg and Landau.** Near $T^{X,{\rm c}}_{\rm SF}$ the field $\vec\Phi$ is small. For a static field
 $\vec\Phi(\vec x)$ that varies slowly in space (near a continuous transition the fluctuations that matter are static and
 slow: a fluctuation with a nonzero Matsubara frequency $2\pi nT$ costs an energy of the order of $(2\pi T)^2$ times the
-coefficient of the time derivatives, and $2\pi T^{X,{\rm c}}_{\rm SF}$ is $1.3$ to $1.6$ here, of the order of the cutoff), the free energy of method $X$ to second order in the field and in its derivatives and to fourth
+coefficient of the time derivatives, and $2\pi T^{X,{\rm c}}_{\rm SF}$ is {{GEN:p3_gz_2pitc}} here, of the order of the cutoff), the free energy of method $X$ to second order in the field and in its derivatives and to fourth
 order in the field is the functional of Ginzburg and Landau
 $$\mathcal F^{X,{\rm GL}}_{\rm SF}[\vec\Phi]=\int d^3x\Big[\mathsf c^X_{\rm SF}\sum_{j=1}^3(\partial_j\vec\Phi)^\dagger\cdot\partial_j\vec\Phi+a^{X,{\rm Tay}}_{\rm SF}(T)\,\lvert\vec\Phi\rvert^2+b^{X,{\rm Tay}}_{\rm SF}(T)\,\lvert\vec\Phi\rvert^4\Big],\tag{12.12}$$
 with $a^{X,{\rm Tay}}_{\rm SF}(T)\approx\alpha^{X,{\rm GL}}_{\rm SF}\,t^{\rm red}_{\rm SF}$ near $T^{X,{\rm c}}_{\rm SF}$, the reduced temperature
@@ -2056,7 +2056,7 @@ spheres), a moving pair loses the pairs in a shell at the cutoff whose thickness
 $a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T)-a^{X,{\rm Tay}}_{\rm SF}(0;T)$ is linear in $\lvert q^{\rm pair}_{\rm SF}\rvert$: doubling $q^{\rm pair}_{\rm SF}$ from $0.005$ to
 $0.01$ multiplies it by {{GEN:p3_gz_lens}} (2 for a linear function; the slope is {{GEN:p3_gz_lensslope}}), and a gradient
 expansion does not exist (*check P3-G9*). With the cutoff on the relative momentum, $\lvert\vec q_{\rm LL}\rvert<\Lambda_{\rm LL}$, the
-change is quadratic (the factor is $4.0000$ to five digits, Table 12.5): this is the routing of the momenta of the space
+change is quadratic (the factor is {{GEN:p3_gz_sphere}}, to five digits, Table 12.5): this is the routing of the momenta of the space
 components of Section 12.2, where the uniform twist shifts the momenta inside the fixed sphere, and it is used here. The
 remaining error of the regularization is measured by two quantities:
 
@@ -2125,8 +2125,8 @@ CJT would have ${\rm Gi}^{\rm CJT}_{\rm SF}\approx$ {{GEN:p3_gz_gi_cjt_tw}}.
 
 **What this means for Section 12.4 (a remark, and why it matters).** The statements of items 1 to 4 of Section 12.4
 are statements about the mean-field free energy, and as such they are correct (and checked). But the temperatures at
-which that free energy shows the behaviour of Landau's theory, from about $0.4\,T^{X,{\rm c}}_{\rm SF}$ to
-$0.98\,T^{X,{\rm c}}_{\rm SF}$, lie inside the critical region (12.13). The mean-field theory of the five methods therefore does not
+which that free energy shows the behaviour of Landau's theory, from {{GEN:p4_cross}} times $T^{X,{\rm c}}_{\rm SF}$ (where the
+order parameter enters the radius of convergence, Section 12.4) to $0.98\,T^{X,{\rm c}}_{\rm SF}$, lie inside the critical region (12.13). The mean-field theory of the five methods therefore does not
 describe the superfluid anywhere near its transition: the critical temperatures of Table 12.4, the exponent $\tfrac12$ of
 the order parameter and the continuity of the transition are not reliable, and the answer of Section 12.4 ("smaller and
 more physically reasonable near the critical temperature") holds for the mean-field free energy only. It matters
@@ -2191,7 +2191,7 @@ project, $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$ (Section 13.3). Dat
 The effective Lagrangian, which keeps the derivatives to second order, gives the masses of the amplitude and of the
 non-unitary modes above the exact linear response, by {{GEN:p3_h_meff_h}} per cent for the amplitude mode and by
 {{GEN:p3_h_meff_nu}} per cent for the non-unitary modes (Table 13.1 and Figure 11). The difference is
-expected: the modes lie at 0.8 to 0.9 of the threshold $2E^{X,{\rm gap}}_{\rm SF}$, where the response depends strongly on the
+expected: the modes lie at {{GEN:p3_h_thr}} of the threshold $2E^{X,{\rm gap}}_{\rm SF}$, where the response depends strongly on the
 frequency and the expansion to second order in the derivatives (in $\omega$) is not accurate; the ordering of the modes
 (in CJT and KS the amplitude mode below the non-unitary doublet; in HS $(0,1)$ and $(0,0)$ the two degenerate) is the
 same in both.
@@ -3226,6 +3226,14 @@ Each of the following was found before part II was committed.
    CSV files when they were read back; the names are now `HS_1_1`, `HS_0_1`, `HS_0_0`.
 6. A run of the Python program was once started while an earlier run was still writing to the same output file; the
    interleaved output was discarded, and the program was run again alone.
+7. Section 10.1 gave the pair couplings of $V^{(0)}_{\rm SF}$ as "$0$ (HS with $s^{\rm HS,S}_{\rm SF}=1$), $2$ (HS with $s^{\rm HS,S}_{\rm SF}=0$) and $1.2$
+   (KS, CJT)". Of the two HS methods with $s^{\rm HS,S}_{\rm SF}=0$, only HS $(0,1)$ has the pair coupling $2$; HS $(0,0)$ has $1.2$, like
+   KS and CJT (Table 10.1). The numbers had been typed by hand, grouped by one HS parameter instead of by method. Found
+   on 21 November 2026, when the numbers typed in the manuscript were compared with the data files; the numbers of
+   Sections 10.1 to 10.3 and 11.4 (the pair couplings, the eigenvalues of the static response, the scalar coupling of
+   $V^{(1)}_{\rm SF}$, the Dirac masses of its massive states and the critical pair coupling at the larger of them, and the
+   Dirac mass of Table 11.4 at the largest scale of the couplings) are now written by `code/scripts/write_part2_fragments.py`
+   from the data files.
 
 ## 17.3 Part III
 
@@ -3302,6 +3310,11 @@ Each of the following was found before part II was committed.
     computes from `data/part3_higgs.csv`; the ranges of the masses of the effective Lagrangian against the linear response
     (Sections 13.2 and 14.6), typed as "7 to 17 per cent", are now computed by the same program, separately for the
     amplitude mode and for the non-unitary modes.
+12. Six more numbers of Sections 12.1, 12.5 and 13.2 had been typed by hand: the number 47 to 51 of the fitted points, the range $0.31$ to $0.40$ of
+    $\Phi^X_{0,{\rm SF}}$, the range $1.3$ to $1.6$ of $2\pi T^{X,{\rm c}}_{\rm SF}$, the factor $4.0000$ of the doubled pair momentum with
+    the cutoff on the relative momentum, the lower end "about $0.4\,T^{X,{\rm c}}_{\rm SF}$" of the temperatures with the
+    behaviour of Landau's theory, and "0.8 to 0.9" for the modes relative to the threshold. Compared with the data files on
+    21 November 2026, all six were correct as rounded; they are now written by `code/scripts/write_part3_fragments.py`.
 
 ## 17.4 Part IV
 

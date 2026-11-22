@@ -942,3 +942,36 @@ $65$
 <!-- BEGIN p2_ksex_energy_with_the_masses_of_the_CJT_state -->
 $-0.0001322502068$
 <!-- END p2_ksex_energy_with_the_masses_of_the_CJT_state -->
+<!-- BEGIN p2_t_lamS_V0_HS_1_1 -->
+$0.6653$
+<!-- END p2_t_lamS_V0_HS_1_1 -->
+<!-- BEGIN p2_t_lamS_V0_CJT -->
+$0.6154$
+<!-- END p2_t_lamS_V0_CJT -->
+<!-- BEGIN p2_t_lamP_V1_HS -->
+$1.057$ to $1.151$
+<!-- END p2_t_lamP_V1_HS -->
+<!-- BEGIN p2_t_gS_V1_CJT -->
+$-15.84$
+<!-- END p2_t_gS_V1_CJT -->
+<!-- BEGIN p2_t_lamS_V1_CJT -->
+$1.317$
+<!-- END p2_t_lamS_V1_CJT -->
+<!-- BEGIN p2_t_M0_V1_CJT -->
+$-0.9308$
+<!-- END p2_t_M0_V1_CJT -->
+<!-- BEGIN p2_t_M1_V1_CJT -->
+$0.5388$
+<!-- END p2_t_M1_V1_CJT -->
+<!-- BEGIN p2_t_Gcrit_M0_V1 -->
+$35.39$
+<!-- END p2_t_Gcrit_M0_V1 -->
+<!-- BEGIN p2_t_lamP_V2 -->
+$1.113$ to $1.184$
+<!-- END p2_t_lamP_V2 -->
+<!-- BEGIN p2_t_lamS_V2_CJT -->
+$0.6154$
+<!-- END p2_t_lamS_V2_CJT -->
+<!-- BEGIN p2_t_scan_M_25 -->
+$-0.4187$
+<!-- END p2_t_scan_M_25 -->

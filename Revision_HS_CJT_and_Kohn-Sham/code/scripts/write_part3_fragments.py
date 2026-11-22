@@ -168,6 +168,17 @@ def main():
     frags["p3_lf_c_cjt"] = "%s, %s and %s" % tuple(sig(vals["p3_landau_rng%d_c_CJT" % i] * 1e3, 4) for i in (1, 2, 3))
     frags["p3_lf_cK4_cjt"] = sig(vals["p3_landau_cK4_CJT"] * 1e3, 4)
     frags["p3_lf_signs"] = "$%d$" % int(round(max(vals["p3_landau_signs_" + t] for t in tags)))
+    # the fitted interval of (12.2): the computed points with Phi <= 1.4 Phi_0 (data/part3_effpot_<method>.csv), their
+    # number and the largest of them, over the five methods
+    npts, fmax = {}, {}
+    for t in tags:
+        with open(os.path.join(D, "part3_effpot_%s.csv" % t)) as f:
+            ph = [float(r["Phi3"]) for r in csv.DictReader(f)]
+        lim = 1.4 * vals["p3_Phi0_" + t]
+        fit = [x for x in ph if x <= lim * (1 + 1e-12)]
+        npts[t], fmax[t] = len(fit), max(fit)
+    frags["p3_lf_npts"] = "%d to %d" % (min(npts.values()), max(npts.values()))
+    frags["p3_lf_fitmax"] = "%s to %s" % (sig(min(fmax.values()), 2), sig(max(fmax.values()), 2))
     # ---- the free energy at finite temperature (Section 12.4): Table 12.4 and the numbers of the text
     th = {}
     with open(os.path.join(D, "part3_thermal.csv")) as f:
@@ -343,6 +354,12 @@ def main():
                                                      sig(max(100 * (gz[t]["c_twisted_states"] / gz[t]["c"] - 1) for t in hsks), 2))
     frags["p3_gz_tw_cjt"] = sig(100 * (1 - gz["CJT"]["c_twisted_states"] / gz["CJT"]["c"]), 2) + " per cent"
     frags["p3_gz_lens"] = span2(lambda t: reg[(t, 0.01)][1] / reg[(t, 0.005)][1], 4)
+    # the same doubling with the cutoff on the relative momentum (the sphere): the factor 4 of a quadratic function
+    sph = [reg[(t, 0.01)][0] / reg[(t, 0.005)][0] for t in tags]
+    frags["p3_gz_sphere"] = (sig(sph[0], 5) + " in every method" if len(set(sig(x, 5) for x in sph)) == 1
+                             else span2(lambda t: reg[(t, 0.01)][0] / reg[(t, 0.005)][0], 5))
+    # 2 pi T_c, the lowest Matsubara frequency of a boson at the critical temperature (Section 12.5)
+    frags["p3_gz_2pitc"] = span2(lambda t: 2 * math.pi * gz[t]["T_c"], 2)
     frags["p3_gz_lensslope"] = span2(lambda t: reg[(t, 0.005)][1] / 0.005, 3)
     frags["p3_gz_mn"] = span2(lambda t: gz[t]["Dirac_mass_normal"], 4)
     # ---- the superfluid as a Higgs sector (Table 14.2, Section 14.6)
@@ -399,6 +416,10 @@ def main():
     frags["p3_h_mwmz"] = hspan("M_W_over_M_Z", 3)
     frags["p3_h_tcv"] = hspan("T_c_over_v_SF", 3)
     frags["p3_h_fi_gap"] = span2(lambda t: hg[t]["f_I"] / g(t, 0.0, "gap"), 2)
+    # the amplitude mode and the non-unitary modes relative to the threshold 2 E_gap of two quasi-particles (Section 13.2):
+    # the smallest and the largest of M_H/2E_gap and M_NU/2E_gap over the methods
+    thr = [hg[t]["M_H_over_2E_gap"] for t in tags] + [hg[t]["M_NU"] / hg[t]["M_H"] * hg[t]["M_H_over_2E_gap"] for t in tags]
+    frags["p3_h_thr"] = "%s to %s" % (sig(min(thr), 2), sig(max(thr), 2))
     # the decay of the amplitude mode into W+W- and ZZ (Section 14.6): the width (14.10) into pairs of Goldstone quanta is
     # that into pairs of gauge bosons up to corrections of relative order (M_V/M_H)^2; at tree level the width into a pair
     # of bosons of the mass M_V carries the factor (1 - 4r)^(1/2) (1 - 4r + 12r^2), r = (M_V/M_H)^2 (phase space and the

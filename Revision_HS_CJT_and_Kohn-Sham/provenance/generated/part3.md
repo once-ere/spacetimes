@@ -1599,6 +1599,12 @@ $11.61$
 <!-- BEGIN p3_lf_signs -->
 $3$
 <!-- END p3_lf_signs -->
+<!-- BEGIN p3_lf_npts -->
+47 to 51
+<!-- END p3_lf_npts -->
+<!-- BEGIN p3_lf_fitmax -->
+$0.42$ to $0.56$
+<!-- END p3_lf_fitmax -->
 <!-- BEGIN p3_table_thermal -->
 | quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
 |:-----------------------------|-------:|-------:|-------:|-------:|-------:|
@@ -1852,6 +1858,12 @@ $60$ per cent
 <!-- BEGIN p3_gz_lens -->
 $2.014$ (HS (1, 1)) to $2.015$ (HS (0, 0))
 <!-- END p3_gz_lens -->
+<!-- BEGIN p3_gz_sphere -->
+$4.0000$ in every method
+<!-- END p3_gz_sphere -->
+<!-- BEGIN p3_gz_2pitc -->
+$1.3$ (HS (0, 0)) to $1.6$ (HS (1, 1))
+<!-- END p3_gz_2pitc -->
 <!-- BEGIN p3_gz_lensslope -->
 $0.0240$ (HS (1, 1)) to $0.0247$ (KS, CJT)
 <!-- END p3_gz_lensslope -->
@@ -1924,6 +1936,9 @@ $1.64$ (CJT) to $1.82$ (HS (1, 1))
 <!-- BEGIN p3_h_fi_gap -->
 $0.16$ (HS (1, 1)) to $0.18$ (KS, CJT)
 <!-- END p3_h_fi_gap -->
+<!-- BEGIN p3_h_thr -->
+$0.82$ to $0.90$
+<!-- END p3_h_thr -->
 <!-- BEGIN p3_h_vv_ratio -->
 $0.0785$ (HS (1, 1)) to $0.106$ (KS, CJT)
 <!-- END p3_h_vv_ratio -->
