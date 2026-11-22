@@ -307,7 +307,14 @@ symmetry, breaks the particle number explicitly, and gives the boson a
 mass. The document of the hypotheses states it (H3, consequence 3), and
 the task record states the decisions of interpretation (D36) and the
 plan (object O19, stage 7). The stages computed before the decision are
-its case \(G^{\rm det}_{\rm SH}=0\).
+its case \(G^{\rm det}_{\rm SH}=0\). The computations of stage 7 are
+done: the program \texttt{sh\_det} of the crate \texttt{rust/shdet} (ALL
+PASS (23 of 23)), \texttt{python/sh\_det.py} (ALL PASS (6 of 6)) with
+the figure by \texttt{python/sh\_det\_figures.py}, and
+\texttt{wolfram/source/sh\_det.wls} (ALL PASS (6 of 6)); the task record
+states their results (entries E65 to E70). No manuscript of stage 7 is
+written, because the author stopped the writing of manuscripts on 22
+November 2026 (C27).
 
 \hypertarget{what-this-folder-is}{%
 \section{1. What this folder is}\label{what-this-folder-is}}
@@ -323,9 +330,16 @@ boson singlet state of spin zero, described by three methods
 the effective Lagrangian of each method, the spontaneous breaking of the
 symmetry and the masses of the gauge bosons.
 
-Every document of the folder is complete in itself: every equation,
-symbol and definition that it uses is written in it. This README is the
-list of contents of the folder.
+Every document of the folder is meant to be complete in itself: every
+equation, symbol and definition that it uses written in it. The article
+in \texttt{paper\_prd/} is not: it sends its reader to the author's
+manuscript of 16 November 2026 on the Lorentz super-loop in place of
+that material, and like the manuscripts of the folder it uses terms that
+it does not define and gives no explicit examples (the author's
+instruction of 22 November 2026, recorded in the task record as C27 with
+its Section 4.5); the check \texttt{check\_self\_contained.py} does not
+read the LaTeX sources of the article. This README is the list of
+contents of the folder.
 
 \hypertarget{state}{%
 \section{2. State}\label{state}}
@@ -689,9 +703,13 @@ frequency of the states of several Dirac fields) the program
 \texttt{sh\_higgs} (crate \texttt{shhiggs}: the effective potential, the
 susceptibilities, the masses of the gauge bosons and the amplitude mode)
 and the program \texttt{sh\_dynamics} (crate \texttt{shdynamics}: the
-time-dependent mean field of the five methods, integrated with CVODE) &
-parts I to IV written; stages 2 to 4 and the first part of stage 6 of
-the revision written \\
+time-dependent mean field of the five methods, integrated with CVODE);
+the pair-pair terms of the modules \texttt{uniform\_n} and
+\texttt{rpa\_n} of \texttt{sfcore} and the program \texttt{sh\_det}
+(crate \texttt{shdet}: the determinant interaction of stage 7, its
+ground states and the mass of the pseudo-Goldstone boson) & parts I to
+IV written; stages 2 to 4, the first part of stage 6 and the
+computations of stage 7 of the revision written \\
 \texttt{python/} & \texttt{sfcommon.py} (common definitions),
 \texttt{sfsundials.py} (CVODE and IDA through the C interface),
 \texttt{sf\_part1.py}, \texttt{sf\_part2.py}, \texttt{sf\_part3.py},
@@ -710,8 +728,10 @@ and the amplitude mode of the pairing-only method);
 motion) and \texttt{sh\_dynamics\_figures.py} (its figures);
 \texttt{sh\_higgs\_figures.py} (the figure of the effective potential of
 stage 4) and \texttt{sh\_article\_figures.py} (the three figures of the
-article) & parts I to IV written; stages 2 to 4 and stage 6 of the
-revision written \\
+article); \texttt{sh\_det.py} (the second computation of
+\texttt{sh\_det}) and \texttt{sh\_det\_figures.py} (its figure) & parts
+I to IV written; stages 2 to 4, stage 6 and the computations of stage 7
+of the revision written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
 \texttt{part1.source.wl}, \texttt{part2.source.wl},
@@ -731,10 +751,12 @@ the dry run (\texttt{make\_dryrun.py}), and the writer of the data cells
 \texttt{sh\_quantum} and \texttt{sh\_superfluid},
 \texttt{wolfram/source/sh\_quantum.wls} and
 \texttt{wolfram/source/sh\_superfluid.wls}, of \texttt{sh\_higgs},
-\texttt{wolfram/source/sh\_higgs.wls}, and of \texttt{sh\_dynamics},
-\texttt{wolfram/source/sh\_dynamics.wls} & Parts I and II, the sections
-III.L, III.T and III.G of Part III and Part R written; stages 2 to 4 and
-the first two parts of stage 6 of the revision written \\
+\texttt{wolfram/source/sh\_higgs.wls}, of \texttt{sh\_dynamics},
+\texttt{wolfram/source/sh\_dynamics.wls}, and of \texttt{sh\_det},
+\texttt{wolfram/source/sh\_det.wls} & Parts I and II, the sections
+III.L, III.T and III.G of Part III and Part R written; stages 2 to 4,
+the first two parts of stage 6 and the computations of stage 7 of the
+revision written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_part1\_checks.txt},
 \texttt{hck\_part1\_checks\_python.txt},
@@ -772,17 +794,22 @@ reports \texttt{hck\_sh\_higgs\_checks.txt},
 \texttt{hck\_sh\_dynamics\_checks\_python.txt},
 \texttt{hck\_sh\_dynamics\_checks\_wolfram.txt} and the data
 \texttt{sh\_dyn\_runs.csv}, \texttt{sh\_dyn\_signals.csv},
-\texttt{sh\_dyn\_spectra.csv}, \texttt{sh\_dyn\_values.csv} & parts I to
-IV written; stages 2 to 4 and the first part of stage 6 of the revision
-written \\
+\texttt{sh\_dyn\_spectra.csv}, \texttt{sh\_dyn\_values.csv}; of stage 7,
+the reports \texttt{hck\_sh\_det\_checks.txt},
+\texttt{hck\_sh\_det\_checks\_python.txt},
+\texttt{hck\_sh\_det\_checks\_wolfram.txt} and the data
+\texttt{sh\_det\_states.csv}, \texttt{sh\_det\_modes.csv},
+\texttt{sh\_det\_scan.csv}, \texttt{sh\_det\_values.csv} & parts I to IV
+written; stages 2 to 4, the first part of stage 6 and the computations
+of stage 7 of the revision written \\
 \texttt{figures/}, \texttt{videos/} & the figures
 (\texttt{fig\_part1\_*}, \texttt{fig\_part2\_*}, \texttt{fig\_part3\_*},
 \texttt{fig\_part4\_*}, and of the revision
-\texttt{fig\_sh\_hg\_potential}, \texttt{fig\_sh\_dyn\_*} and the
-figures of the article \texttt{fig\_prd\_sh\_potential},
-\texttt{fig\_prd\_sh\_scan}, \texttt{fig\_prd\_sh\_modes}, each
-\texttt{.pdf} and \texttt{.png}) and the videos
-(\texttt{video\_part4\_v1\_condensate\_growth.mp4},
+\texttt{fig\_sh\_hg\_potential}, \texttt{fig\_sh\_dyn\_*},
+\texttt{fig\_sh\_det\_mass} and the figures of the article
+\texttt{fig\_prd\_sh\_potential}, \texttt{fig\_prd\_sh\_scan},
+\texttt{fig\_prd\_sh\_modes}, each \texttt{.pdf} and \texttt{.png}) and
+the videos (\texttt{video\_part4\_v1\_condensate\_growth.mp4},
 \texttt{video\_part4\_v2\_gauge\_fields.mp4}) & written \\
 \texttt{code/scripts/write\_part1\_fragments.py},
 \texttt{write\_part2\_fragments.py},
@@ -805,6 +832,9 @@ reports and data of stage 6, part one, into the tables and numbers of
 and data of stage 4 of the revision into the tables and numbers of
 \texttt{higgs\_masses.md} (\texttt{provenance/generated/sh\_higgs.md}) &
 written \\
+\texttt{code/scripts/write\_sh\_det\_fragments.py} & turns the reports
+and data of stage 7 of the revision into the verdicts and numbers of the
+task record (\texttt{provenance/generated/sh\_det.md}) & written \\
 \texttt{code/scripts/write\_bound\_fragments.py} & writes every bound of
 agreement stated in the manuscript and in
 \texttt{provenance/P4\_remarks.md} from the reports of the checks (the
@@ -873,6 +903,12 @@ folder \texttt{Revision\_SM\_Higgs}:
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_dynamics.wls data/sh\_dyn\_runs.csv data/sh\_dyn\_signals.csv }\DataTypeTok{\textbackslash{}}
 \NormalTok{    data/hck\_sh\_dynamics\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_dynamics\_fragments.py }\CommentTok{\# the tables and numbers of stage 6, part one}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_det}\KeywordTok{)}          \CommentTok{\# revision, stage 7: the determinant interaction (about forty minutes)}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ python }\KeywordTok{\&\&} \ExtensionTok{python3}\NormalTok{ sh\_det.py}\KeywordTok{)}              \CommentTok{\# revision, stage 7: the Python computation (after sh\_det)}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_det.wls data/sh\_det\_states.csv data/sh\_det\_values.csv }\DataTypeTok{\textbackslash{}}
+\NormalTok{    data/hck\_sh\_det\_checks\_wolfram.txt}
+\ExtensionTok{python3}\NormalTok{ python/sh\_det\_figures.py              }\CommentTok{\# the figure of stage 7}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_det\_fragments.py }\CommentTok{\# the verdicts and numbers of stage 7 for the task record}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_notebook\_fragments.py }\CommentTok{\# the tables of the provenance of the notebook (from data/hck\_notebook\_log.txt)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_symbol\_registry.py }\CommentTok{\# the registry of the symbols and its tables}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_symbols.py         }\CommentTok{\# writes data/hck\_symbol\_checks.txt}

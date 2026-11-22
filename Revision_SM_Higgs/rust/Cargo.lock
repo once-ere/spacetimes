@@ -65,6 +65,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "shdet"
+version = "0.1.0"
+dependencies = [
+ "sfcore",
+]
+
+[[package]]
 name = "shdynamics"
 version = "0.1.0"
 dependencies = [

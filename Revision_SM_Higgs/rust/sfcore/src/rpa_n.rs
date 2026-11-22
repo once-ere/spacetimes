@@ -22,6 +22,13 @@
 //! The sector.  The amplitudes are restricted to a list of normal index pairs (i, j) (entries of dN and drho) and a
 //! list of pair index pairs (i, j), i < j (entries of the antisymmetric dP, dkap, dPbar, dkbar).  A sector closed under
 //! the symmetries of the state (for example all amplitudes of relative number 0) gives the exact response in it.
+//!
+//! Added on 22 November 2026 (decision D36): the pair-pair terms of `uniform_n` (the determinant interaction), whose
+//! pair self-energy is P = L(kap^*) with a complex-linear map L.  Since dkbar is the amplitude of kap^dag = -kap^* (kap is
+//! antisymmetric), the amplitude of kap^* at e^{-i omega t} is -dkbar, and that of kap at e^{+i omega t} is dkbar^dag;
+//! so these terms add dP = L(-dkbar) and dPbar = [L(dkap^*)]^dag to the kernel.  At omega = 0, for a Hermitian
+//! perturbation (dkbar = dkap^dag), dP = L(dkap^*), the static self-energy.  A model without these terms gives the
+//! kernel of before, bit for bit.
 use crate::c64::{c, C64};
 use crate::cmat::{eigh, CMat};
 use crate::uniform_n::ModelN;
@@ -125,10 +132,16 @@ pub fn kernel_n(model: &ModelN, sec: &SectorN) -> CMat {
     let mut f = CMat::new(nv, nv);
     for b in 0..nv {
         let (drho, dk, dkb) = sec.from_vec(&sec.unit(b));
-        let (n, _) = model.self_energy_lin(&drho, &z);
-        let (_, p) = model.self_energy_lin(&z, &dk);
-        let (_, pq) = model.self_energy_lin(&z, &dkb.dagger());
-        let col = sec.to_vec(&n, &p, &pq.dagger());
+        let (n, _) = model.self_energy_lin_terms(&drho, &z);
+        let (_, mut p) = model.self_energy_lin_terms(&z, &dk);
+        let (_, pq) = model.self_energy_lin_terms(&z, &dkb.dagger());
+        let mut pbar = pq.dagger();
+        if !model.pair_pair.is_empty() {
+            // the pair-pair terms: dP = L(-dkbar), dPbar = [L(dkap^*)]^dag
+            p = p.add(&model.pair_conj_lin(&dkb.scale_r(-1.0)));
+            pbar = pbar.add(&model.pair_conj_lin(&dk.conj()).dagger());
+        }
+        let col = sec.to_vec(&n, &p, &pbar);
         for a in 0..nv {
             f.set(a, b, col[a]);
         }

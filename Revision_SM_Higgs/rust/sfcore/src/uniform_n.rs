@@ -24,6 +24,22 @@
 //!       N = -G wF K^dag drho^T K,   P = wP d K^dag with d = -(G/2) tr(K kap^T)
 //! For the Kohn-Sham method the exchange contraction is evaluated with drho replaced by its orthogonal projection onto
 //! the span of a list of density matrices (the Kohn-Sham densities), and its self-energy is projected likewise.
+//!
+//! Added on 22 November 2026 (decision D36 of the task record: the determinant interaction that the author chose for
+//! the Goldstone boson of the particle number): the pair-pair terms `PairPairN`,
+//!   c [ (Psi^T A Psi)(Psi^T B Psi) + h.c. ]      (A, B antisymmetric, c real),
+//! a product of two pair operators.  All three of its Wick contractions are pair contractions (the four fields are all
+//! Psi, none Psi^dag, so normal ordering changes nothing): with tA = tr(A kap^T), tB = tr(B kap^T),
+//!       <(Psi^T A Psi)(Psi^T B Psi)> = tA tB + 2 tr(A kap B kap^T),
+//! the direct contraction (weight wD) and the two exchange contractions, which are equal (weight wX):
+//!       E = 2 c Re[ wD tA tB + 2 wX tr(A kap B kap^T) ],
+//!       P = L(kap^*),  L(X) = -2 c [ wD (tr(B^* X^T) A^* + tr(A^* X^T) B^*) + 2 wX (A^* X B^* + B^* X A^*) ],
+//! from P = -2 dE/dkap^* (antisymmetrized), the convention of the other terms (the first variation of the energy is
+//! tr(N d drho) - Re tr(P d kap^dag)).  The energy is unchanged by kap -> -kap and kap -> kap^*, so it does not depend on
+//! which of the equivalent conventions for the pair matrix the engine uses.  The pair self-energy is antilinear in kap
+//! (complex-linear in kap^*): the linear response of the module rpa_n therefore feeds the change of kap^* into the
+//! change of P (the function kernel_n).  A model without these terms gives the same results as before, bit for bit:
+//! every new contribution is added only when the list `pair_pair` is not empty.
 use crate::c64::{c, C64};
 use crate::cmat::{eigh, CMat};
 use crate::dirac::{alpha, beta, h_free};
@@ -139,6 +155,47 @@ impl TermN {
     }
 }
 
+/// a pair-pair contact term c [ (Psi^T A Psi)(Psi^T B Psi) + h.c. ] with the weights of its direct and of its two
+/// exchange contractions in a method (added on 22 November 2026, decision D36: the determinant interaction)
+#[derive(Clone, Debug)]
+pub struct PairPairN {
+    pub c: f64,
+    pub a: CMat,
+    pub b: CMat,
+    pub w_d: f64,
+    pub w_x: f64,
+    pub label: String,
+}
+
+impl PairPairN {
+    /// the holomorphic expectation value w_D tA tB + 2 w_X tr(A kap B kap^T) of the product of the two pair operators
+    /// (without the factor c and without its Hermitian conjugate)
+    pub fn amplitude(&self, kap: &CMat) -> C64 {
+        let ta = self.a.mul(&kap.transpose()).trace();
+        let tb = self.b.mul(&kap.transpose()).trace();
+        let ex = self.a.mul(kap).mul(&self.b).mul(&kap.transpose()).trace();
+        (ta * tb).scale(self.w_d) + ex.scale(2.0 * self.w_x)
+    }
+    /// the energy per volume of the term, 2 c Re(amplitude)
+    pub fn energy(&self, kap: &CMat) -> f64 {
+        2.0 * self.c * self.amplitude(kap).re
+    }
+    /// the complex-linear map L with P = L(kap^*): L(X) = -2 c [ w_D (tr(B^* X^T) A^* + tr(A^* X^T) B^*)
+    /// + 2 w_X (A^* X B^* + B^* X A^*) ]
+    pub fn lin_conj(&self, x: &CMat) -> CMat {
+        let (ac, bc) = (self.a.conj(), self.b.conj());
+        let tb = bc.mul(&x.transpose()).trace();
+        let ta = ac.mul(&x.transpose()).trace();
+        let direct = ac.scale(tb).add(&bc.scale(ta)).scale_r(self.w_d);
+        let exch = ac.mul(x).mul(&bc).add(&bc.mul(x).mul(&ac)).scale_r(2.0 * self.w_x);
+        direct.add(&exch).scale_r(-2.0 * self.c)
+    }
+    /// the energy and the pair self-energy P = L(kap^*) of the local pair matrix kap
+    pub fn eval(&self, kap: &CMat) -> (f64, CMat) {
+        (self.energy(kap), self.lin_conj(&kap.conj()))
+    }
+}
+
 /// the result of a self-consistent solution
 #[derive(Clone, Debug)]
 pub struct SolutionN {
@@ -166,6 +223,8 @@ pub struct ModelN {
     /// an external one-body term Psi^dag X Psi (Hermitian X): a uniform gauge potential or minus a chemical potential
     /// times a charge (used for the susceptibilities)
     pub ext_n: Option<CMat>,
+    /// the pair-pair terms (decision D36; empty in every model built before 22 November 2026)
+    pub pair_pair: Vec<PairPairN>,
     vac: Vec<CMat>,
     hq: Vec<CMat>,
     hmq: Vec<CMat>,
@@ -186,7 +245,7 @@ impl ModelN {
             hq.push(h.sub(&one.scale_r(mu)));
             hmq.push(hm.sub(&one.scale_r(mu)));
         }
-        ModelN { dim, blocks, mu, terms, grid, ext_pair: None, ext_n: None, vac, hq, hmq }
+        ModelN { dim, blocks, mu, terms, grid, ext_pair: None, ext_n: None, pair_pair: vec![], vac, hq, hmq }
     }
     /// the BdG matrix at the node n for the self-energies (N, P)
     pub fn bdg(&self, n: usize, nself: &CMat, pself: &CMat) -> CMat {
@@ -243,6 +302,11 @@ impl ModelN {
             nself = nself.add(&nt);
             pself = pself.add(&pt);
         }
+        for t in &self.pair_pair {
+            let (et, pt) = t.eval(kap);
+            e += et;
+            pself = pself.add(&pt);
+        }
         if let Some((k, lam)) = &self.ext_pair {
             let t = k.mul(&kap.transpose()).trace();
             e += 2.0 * lam * t.re;
@@ -254,8 +318,19 @@ impl ModelN {
         }
         (e, nself, pself)
     }
-    /// the self-energies of the contact terms alone, as linear functions of drho and kap (used by the static response)
+    /// the self-energies of the contact terms alone, as linear functions of drho and kap (used by the static response).
+    /// The pair self-energy of the pair-pair terms is antilinear in kap, P = L(kap^*): real-linear, which is what the
+    /// static response, built on real directions, needs
     pub fn self_energy_lin(&self, drho: &CMat, kap: &CMat) -> (CMat, CMat) {
+        let (nself, mut pself) = self.self_energy_lin_terms(drho, kap);
+        if !self.pair_pair.is_empty() {
+            pself = pself.add(&self.pair_conj_lin(&kap.conj()));
+        }
+        (nself, pself)
+    }
+    /// the self-energies of the contact terms of the list `terms` (all complex-linear in drho and kap), without the
+    /// pair-pair terms
+    pub fn self_energy_lin_terms(&self, drho: &CMat, kap: &CMat) -> (CMat, CMat) {
         let mut nself = CMat::zeros(self.dim);
         let mut pself = CMat::zeros(self.dim);
         for t in &self.terms {
@@ -264,6 +339,14 @@ impl ModelN {
             pself = pself.add(&pt);
         }
         (nself, pself)
+    }
+    /// the sum of the complex-linear maps L of the pair-pair terms (their pair self-energy is L(kap^*))
+    pub fn pair_conj_lin(&self, x: &CMat) -> CMat {
+        let mut p = CMat::zeros(self.dim);
+        for t in &self.pair_pair {
+            p = p.add(&t.lin_conj(x));
+        }
+        p
     }
     /// the self-consistent solution from the initial self-energies, by linear mixing of the self-energies
     pub fn solve(&self, n0: &CMat, p0: &CMat, mix: f64, tol: f64, maxit: usize) -> SolutionN {
