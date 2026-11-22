@@ -1,0 +1,16 @@
+# lgschw: the program lg_schw of the folder Revision_Lord_Gravity (PROJECT spacetimes): stage 5 of task C23, the brochon
+# in the Schwarzschild field (the separation of its Dirac equation, the behaviour on both sides of the horizon, the
+# quasi-bound states and the scattering), integrated with CVODE.
+[package]
+name = "lgschw"
+version = "0.1.0"
+edition = "2021"
+description = "The Dirac equation of the brochon in the Schwarzschild field: separation, horizon, interior, quasi-bound states, greybody factors"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+lgsundials = { path = "../lgsundials" }
+
+[[bin]]
+name = "lg_schw"
+path = "src/main.rs"

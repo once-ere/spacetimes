@@ -293,11 +293,47 @@ Einstein's equations. Three programs check Part III: the Rust program
 \texttt{python/lg\_curved.py} (ALL PASS (19 of 19)) and the Wolfram
 script \texttt{wolfram/source/lg\_curved.wls} (ALL PASS (6 of 6), exact
 arithmetic, including the Schwarzschild, Painlevé-Gullstrand and Vaidya
-space-times that Parts IV and V use).
+space-times that stages 5 and 6 use).
 
-The next stages: the provenance of the remarks and the registry of the
-symbols of Parts I to III; then Part IV, the brochon in the
-Schwarzschild field on both sides of the horizon.
+\textbf{The manuscript is not complete in itself.} Parts I to III use
+objects of the earlier hypotheses of the project and of the author's
+unpublished manuscript of 16 November 2026 on the Lorentz super-loop
+without stating them, and terms that they do not define. The task record
+states this, with its provenance, in its Section 4.1; the check HCK-H2
+of \texttt{code/scripts/check\_self\_contained.py} fails until the
+manuscript is rewritten. On 22 November 2026 the author instructed to
+continue the calculations and the analysis and to stop writing
+manuscripts; the rewriting waits for his request.
+
+\textbf{Stage 5} (22 November 2026), computed and checked, not written
+up: the brochon in the Schwarzschild field. In the freely falling tetrad
+of Painlevé and Gullstrand (the frame of observers who fall freely from
+rest at infinity), which is regular at the horizon, the Dirac equation
+separates into two angular and two radial equations of the first order.
+At the horizon the solution that falls in is analytic and continues
+through it, while the solution that would come out is singular there;
+inside the horizon both radial functions behave as \(r^{1/4}\) near
+\(r=0\). The quasi-bound states (solutions that fall into the black hole
+and decay at infinity; their frequencies are complex, the imaginary part
+being the rate of absorption) approach the levels of a hydrogen atom
+when the product
+\(\mathcal M_{\rm LG}m_{\rm LL}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)\)
+of the masses of the black hole and of the brochon is small; the
+greybody factors (the fractions of incoming partial waves that the black
+hole absorbs) are computed for the massless and for the massive brochon.
+The Rust program \texttt{lg\_schw} computes them with CVODE (ALL PASS
+(13 of 13)); the Python program \texttt{python/lg\_schw.py} (ALL PASS (9
+of 9)) and the Wolfram script \texttt{wolfram/source/lg\_schw.wls} (ALL
+PASS (8 of 8), exact algebra and arithmetic of 32 digits) check them.
+The task record gives the results with their numbers (entries E7 to
+E12); the data are in \texttt{data/lg\_schw\_*.csv}.
+
+The next stages, as computations: stage 6, the brochon in the Vaidya
+metric (a black hole whose mass grows by absorbing null dust, or shrinks
+by radiating it), and stage 7, the brochon pair bound by the zeugon and
+the predictions. The manuscript, the provenance of the remarks, the
+registry of the symbols and the notebook wait for the author's request
+(the task record, Section 6).
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -341,33 +377,47 @@ written \\
 of the task: Part I (Lord's paper read and checked), Part II (the
 association of the project's \(SL(2,\mathbb C)\) with Lord's gauge
 group), Part III (the gravitational coupling of the brochon) & Parts I
-to III written \\
+to III written, not complete in themselves (Section 2); Parts IV to VI
+not written (the author's instruction of 22 November 2026) \\
 \texttt{provenance/generated/} & the fragments that the programs write
-for the documents (\texttt{lg\_lord.md} and \texttt{lg\_curved.md},
-written by \texttt{code/scripts/write\_lg\_lord\_fragments.py} and
-\texttt{code/scripts/write\_lg\_curved\_fragments.py}) & written for
-Parts I to III \\
+for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md} and
+\texttt{lg\_schw.md}, written by
+\texttt{code/scripts/write\_lg\_lord\_fragments.py},
+\texttt{write\_lg\_curved\_fragments.py} and
+\texttt{write\_lg\_schw\_fragments.py}) & written for Parts I to III and
+stage 5 \\
 \texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
 (complex matrices, bi-quaternions, Dirac matrices, automatic
 differentiation, \texttt{lord.rs}, Lord's matrices from his definitions,
-and \texttt{curved.rs}, the geometry of a tetrad and the brochon in it),
+and \texttt{curved.rs}, the geometry of a tetrad and the brochon in it);
 the program \texttt{lg\_lord} (the checks of Parts I and II) and the
-program \texttt{lg\_curved} (the checks of Part III) & written for Parts
-I to III \\
+program \texttt{lg\_curved} (the checks of Part III); the crate
+\texttt{lgsundials} (the integrator CVODE of SUNDIALS 7.8.0 in pure
+Rust) with its C interface \texttt{lgsundials\_c} for the Python
+programs; and the program \texttt{lg\_schw} (stage 5: the brochon in the
+Schwarzschild field) & written for Parts I to III and stage 5 \\
 \texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
 differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_curved.py} (the independent checks of \texttt{lg\_lord} and
-\texttt{lg\_curved}) & written for Parts I to III \\
+\texttt{lg\_curved}), \texttt{lgsundials.py} (CVODE through
+\texttt{lgsundials\_c}) and \texttt{lg\_schw.py} (the independent check
+of \texttt{lg\_schw}) & written for Parts I to III and stage 5 \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
 Lord's identities, signs and factors; \texttt{lg\_curved.wls}: the exact
-checks of Part III & written \\
+checks of Part III; \texttt{lg\_schw.wls}: the exact checks of stage 5
+and some of its numbers in arithmetic of 32 digits & written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_lg\_lord\_checks.txt},
-\texttt{hck\_lg\_curved\_checks.txt}, each with \texttt{\_python.txt}
-and \texttt{\_wolfram.txt}), the numbers of the findings
-(\texttt{lg\_lord\_findings.csv}) and of Part III
-(\texttt{lg\_curved\_values.csv}), and the report of the check that no
-document sends its reader elsewhere & written \\
+\texttt{hck\_lg\_curved\_checks.txt},
+\texttt{hck\_lg\_schw\_checks.txt}, each with \texttt{\_python.txt} and
+\texttt{\_wolfram.txt}), the numbers of the findings
+(\texttt{lg\_lord\_findings.csv}), of Part III
+(\texttt{lg\_curved\_values.csv}) and of stage 5
+(\texttt{lg\_schw\_qbs.csv}, the quasi-bound states;
+\texttt{lg\_schw\_grey.csv}, the greybody factors;
+\texttt{lg\_schw\_interior.csv}, a solution on both sides of the
+horizon; \texttt{lg\_schw\_values.csv}, single values), and the report
+of the check whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures & planned \\
 \end{longtable}
 
@@ -381,21 +431,27 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \begin{Highlighting}[]
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Lord\_Gravity"}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_lord} \KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_curved}\KeywordTok{)}   \CommentTok{\# Parts I to III}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_schw}\KeywordTok{)}          \CommentTok{\# stage 5 (CVODE; about 3 s)}
 \ExtensionTok{python3}\NormalTok{ python/lg\_lord.py                      }\CommentTok{\# the independent checks}
 \ExtensionTok{python3}\NormalTok{ python/lg\_curved.py}
+\ExtensionTok{python3}\NormalTok{ python/lg\_schw.py                      }\CommentTok{\# uses rust/target/release/liblgsundials\_c (about 20 s)}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_curved.wls data/hck\_lg\_curved\_checks\_wolfram.txt}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_schw.wls data/lg\_schw\_qbs.csv data/lg\_schw\_grey.csv data/hck\_lg\_schw\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_lord\_fragments.py   }\CommentTok{\# the numbers of the documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_curved\_fragments.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_schw\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
-\ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# no document sends its reader elsewhere}
+\ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (HCK{-}H2 fails, Section 2)}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}
 \end{Highlighting}
 \end{Shaded}
 
-The programs need Rust (cargo), Python 3 with numpy, and the Wolfram
-Language (wolframscript); the pipeline needs pandoc (2.11 or later),
-XeLaTeX and latexmk (TeX Live), the DejaVu fonts and the Latin Modern
-Math font.
+The programs need Rust (cargo), Python 3 with numpy, sympy and mpmath,
+and the Wolfram Language (wolframscript); the Rust program
+\texttt{lg\_schw} uses the pure-Rust SUNDIALS vendored in the folder
+\texttt{vendor/sundials\_rs-7.8.0} of the repository. The pipeline needs
+pandoc (2.11 or later), XeLaTeX and latexmk (TeX Live), the DejaVu fonts
+and the Latin Modern Math font.
 
 \end{document}

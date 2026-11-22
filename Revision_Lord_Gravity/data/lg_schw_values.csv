@@ -1,0 +1,6 @@
+name,value
+ls1_largest_residual,1.25459719817392547e-15
+ls2_largest_residual,9.77181753504814492e-15
+ls4b_slope,-4.99986225499338299e-1
+ls8c_largest_dev_over_Mm4,2.75084111583723123e0
+ls8_local_power_of_Im_omega,1S1/2 6.03 (Mm = 0.05 to 0.1); 2S1/2 6.03 (Mm = 0.05 to 0.1); 2P1/2 7.92 (Mm = 0.05 to 0.1); 2P3/2 10.87 (Mm = 0.1 to 0.15); 3P3/2 10.90 (Mm = 0.1 to 0.15); 3D3/2 14.79 (Mm = 0.2 to 0.25)

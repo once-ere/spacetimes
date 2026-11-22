@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "cvode_rs"
+version = "7.8.0"
+dependencies = [
+ "sundials_core",
+]
+
+[[package]]
 name = "lgcore"
 version = "0.1.0"
 
@@ -19,3 +26,29 @@ version = "0.1.0"
 dependencies = [
  "lgcore",
 ]
+
+[[package]]
+name = "lgschw"
+version = "0.1.0"
+dependencies = [
+ "lgcore",
+ "lgsundials",
+]
+
+[[package]]
+name = "lgsundials"
+version = "0.1.0"
+dependencies = [
+ "cvode_rs",
+]
+
+[[package]]
+name = "lgsundials_c"
+version = "0.1.0"
+dependencies = [
+ "lgsundials",
+]
+
+[[package]]
+name = "sundials_core"
+version = "7.8.0"

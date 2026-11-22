@@ -1,0 +1,18 @@
+# lgsundials: the integrator CVODE of the folder Revision_Lord_Gravity (PROJECT spacetimes).
+#
+# CVODE of SUNDIALS 7.8.0 in the pure-Rust translation of the author's repository rustSolveIt_macos-silicon_SUNDIALS_7_8_0,
+# vendored in PROJECT spacetimes as vendor/sundials_rs-7.8.0 (no foreign library, no unsafe code in this crate).  The
+# module cvode is a copy of the module of the crate sfsundials of the folder Revision_SM_Higgs.
+[package]
+name = "lgsundials"
+version = "0.1.0"
+edition = "2021"
+description = "CVODE (SUNDIALS 7.8.0, pure Rust) with a plain interface of real vectors, for the radial equations of stage 5 of task C23"
+
+[lib]
+path = "src/lib.rs"
+# the comments of the modules contain indented formulas, which are not code examples
+doctest = false
+
+[dependencies]
+cvode_rs = { path = "../../../vendor/sundials_rs-7.8.0/crates/cvode_rs" }

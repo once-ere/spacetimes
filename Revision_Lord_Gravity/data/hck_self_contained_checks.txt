@@ -1,7 +1,8 @@
 PROJECT spacetimes, Revision_Lord_Gravity: does any document send its reader to another document? (Hard Rules 4 and 10)
-1 of 1 checks passed
+1 of 2 checks passed
 
-[PASS] HCK-H1  none of the 6 documents and document sources of Revision_Lord_Gravity refers its reader to another document for an equation, a symbol or a definition
+[PASS] HCK-H1  none of the 6 documents and document sources of Revision_Lord_Gravity contains one of the wordings by which a text sends its reader to another document (the patterns listed in this script: 'see the document ...', 'is defined in the manuscript ...', 'supplement', 'companion paper', 'an earlier paper', a provenance document named as a place to read); this does not find a text that uses an object of another document without naming the document (check HCK-H2)
+[FAIL] HCK-H2  the manuscript lord_gravity takes no object from the earlier hypotheses of the project or from the earlier work on the Lorentz super-loop without restating it: the words 'earlier hypotheses' and 'earlier work' occur in no line of it  -- 60 lines (docs_src/lord_gravity.src.md: 30, lord_gravity.md: 30); first lines: docs_src/lord_gravity.src.md:24, docs_src/lord_gravity.src.md:40, docs_src/lord_gravity.src.md:402, docs_src/lord_gravity.src.md:449, docs_src/lord_gravity.src.md:461, docs_src/lord_gravity.src.md:509, docs_src/lord_gravity.src.md:528, docs_src/lord_gravity.src.md:538
 
 Allowed exceptions:
   README: a provenance document named as a place to read (the README is the list of contents of the folder: naming its documents is its purpose)
