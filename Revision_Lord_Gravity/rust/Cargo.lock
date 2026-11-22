@@ -50,5 +50,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "lgvaidya"
+version = "0.1.0"
+dependencies = [
+ "lgcore",
+ "lgsundials",
+]
+
+[[package]]
 name = "sundials_core"
 version = "7.8.0"

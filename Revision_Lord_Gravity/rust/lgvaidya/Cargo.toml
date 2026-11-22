@@ -1,0 +1,16 @@
+# lgvaidya: the program lg_vaidya of the folder Revision_Lord_Gravity (PROJECT spacetimes): stage 6 of task C23, the brochon
+# in the ingoing Vaidya space-time (a black hole whose mass changes), across the apparent horizon; the time evolution by
+# the method of lines with CVODE.
+[package]
+name = "lgvaidya"
+version = "0.1.0"
+edition = "2021"
+description = "The Dirac equation of the brochon in the ingoing Vaidya space-time: separation, the static limit, time evolution with CVODE"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+lgsundials = { path = "../lgsundials" }
+
+[[bin]]
+name = "lg_vaidya"
+path = "src/main.rs"

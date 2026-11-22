@@ -337,12 +337,41 @@ and arithmetic of 32 digits) check them. The task record gives the
 results with their numbers (entries E7 to E14); the data are in
 \texttt{data/lg\_schw\_*.csv}.
 
-The next stages, as computations: stage 6, the brochon in the Vaidya
-metric (a black hole whose mass grows by absorbing null dust, or shrinks
-by radiating it), and stage 7, the brochon pair bound by the zeugon and
-the predictions. The manuscript, the provenance of the remarks, the
-registry of the symbols and the notebook wait for the author's request
-(the task record, Section 6).
+\textbf{Stage 6} (22 November 2026), computed and checked, not written
+up: the brochon in the field of a black hole whose mass changes. The
+space-time is that of Vaidya with the advanced time \(v\) (constant
+along every light ray that falls radially inward): a black hole that
+grows by absorbing a radial inflow of null dust (radiation without
+pressure, moving at the speed of light), or, with an inflow of negative
+energy, one that shrinks as an evaporating black hole does near its
+horizon (the task record, decision D10). In a coframe that is regular on
+both sides of the apparent horizon (the sphere on which the outgoing
+light rays stop moving outward) the Dirac equation separates for every
+history of the mass into an equation that carries one radial function
+along the outgoing light rays and one that gives the other by an
+integral along the ingoing rays; the charge of the brochon is conserved
+up to its fluxes, and for a constant mass the solutions are those of
+stage 5, seen in a frame boosted in the radial direction. The field is
+evolved in time on a grid of radii that reaches inside the apparent
+horizon, where nothing needs to be prescribed because everything moves
+inward. A brochon in the ground state \(1S_{1/2}\) around a black hole
+that grows by 25 \% or shrinks by 20 \%, slowly or fast: a slow growth
+leaves it in the ground state of the new mass (the adiabatic limit of
+quantum mechanics), a fast change leaves the old state written in terms
+of the new states (the sudden limit), and because the black hole absorbs
+the brochon the states are not orthogonal, so that the share of each
+state is determined only to about 10 \% when the levels are nearly as
+broad as they are apart. The Rust program \texttt{lg\_vaidya} computes
+this with CVODE (ALL PASS (8 of 8)); the Python program
+\texttt{python/lg\_vaidya.py} (ALL PASS (9 of 9)) and the Wolfram script
+\texttt{wolfram/source/lg\_vaidya.wls} (ALL PASS (6 of 6), exact
+algebra) check it. The task record gives the results with their numbers
+(entries E15 to E19); the data are in \texttt{data/lg\_vaidya\_*.csv}.
+
+The next stage, as a computation: stage 7, the brochon pair bound by the
+zeugon and the predictions. The manuscript, the provenance of the
+remarks, the registry of the symbols and the notebook wait for the
+author's request (the task record, Section 6).
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -389,12 +418,13 @@ group), Part III (the gravitational coupling of the brochon) & Parts I
 to III written, not complete in themselves (Section 2); Parts IV to VI
 not written (the author's instruction of 22 November 2026) \\
 \texttt{provenance/generated/} & the fragments that the programs write
-for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md} and
-\texttt{lg\_schw.md}, written by
+for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
+\texttt{lg\_schw.md} and \texttt{lg\_vaidya.md}, written by
 \texttt{code/scripts/write\_lg\_lord\_fragments.py},
-\texttt{write\_lg\_curved\_fragments.py} and
-\texttt{write\_lg\_schw\_fragments.py}) & written for Parts I to III and
-stage 5 \\
+\texttt{write\_lg\_curved\_fragments.py},
+\texttt{write\_lg\_schw\_fragments.py} and
+\texttt{write\_lg\_vaidya\_fragments.py}) & written for Parts I to III
+and stages 5 and 6 \\
 \texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
 (complex matrices, bi-quaternions, Dirac matrices, automatic
 differentiation, \texttt{lord.rs}, Lord's matrices from his definitions,
@@ -403,18 +433,22 @@ the program \texttt{lg\_lord} (the checks of Parts I and II) and the
 program \texttt{lg\_curved} (the checks of Part III); the crate
 \texttt{lgsundials} (the integrator CVODE of SUNDIALS 7.8.0 in pure
 Rust) with its C interface \texttt{lgsundials\_c} for the Python
-programs; and the program \texttt{lg\_schw} (stage 5: the brochon in the
-Schwarzschild field) & written for Parts I to III and stage 5 \\
+programs; the program \texttt{lg\_schw} (stage 5: the brochon in the
+Schwarzschild field) and the program \texttt{lg\_vaidya} (stage 6: the
+brochon in the Vaidya space-time, crate \texttt{lgvaidya}) & written for
+Parts I to III and stages 5 and 6 \\
 \texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
 differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_curved.py} (the independent checks of \texttt{lg\_lord} and
 \texttt{lg\_curved}), \texttt{lgsundials.py} (CVODE through
-\texttt{lgsundials\_c}) and \texttt{lg\_schw.py} (the independent check
-of \texttt{lg\_schw}) & written for Parts I to III and stage 5 \\
+\texttt{lgsundials\_c}), \texttt{lg\_schw.py} and \texttt{lg\_vaidya.py}
+(the independent checks of \texttt{lg\_schw} and \texttt{lg\_vaidya}) &
+written for Parts I to III and stages 5 and 6 \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
 Lord's identities, signs and factors; \texttt{lg\_curved.wls}: the exact
 checks of Part III; \texttt{lg\_schw.wls}: the exact checks of stage 5
-and some of its numbers in arithmetic of 32 digits & written \\
+and some of its numbers in arithmetic of 32 digits;
+\texttt{lg\_vaidya.wls}: the exact checks of stage 6 & written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_lg\_lord\_checks.txt},
 \texttt{hck\_lg\_curved\_checks.txt},
@@ -427,7 +461,10 @@ and some of its numbers in arithmetic of 32 digits & written \\
 \texttt{lg\_schw\_interior.csv}, a solution on both sides of the
 horizon; \texttt{lg\_schw\_small.csv}, the states at small masses and
 their comparison with the small-mass formulas;
-\texttt{lg\_schw\_values.csv}, single values), and the report of the
+\texttt{lg\_schw\_values.csv}, single values), of stage 6
+(\texttt{lg\_vaidya\_runs.csv}, the four runs with a changing mass at
+every output time; \texttt{lg\_vaidya\_values.csv}, single values;
+reports \texttt{hck\_lg\_vaidya\_checks*.txt}), and the report of the
 check whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures & planned \\
 \end{longtable}
@@ -443,15 +480,19 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Lord\_Gravity"}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_lord} \KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_curved}\KeywordTok{)}   \CommentTok{\# Parts I to III}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_schw}\KeywordTok{)}          \CommentTok{\# stage 5 (CVODE; about 3 s)}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_vaidya}\KeywordTok{)}        \CommentTok{\# stage 6 (CVODE; about 5 minutes)}
 \ExtensionTok{python3}\NormalTok{ python/lg\_lord.py                      }\CommentTok{\# the independent checks}
 \ExtensionTok{python3}\NormalTok{ python/lg\_curved.py}
 \ExtensionTok{python3}\NormalTok{ python/lg\_schw.py                      }\CommentTok{\# uses rust/target/release/liblgsundials\_c (about 20 s)}
+\ExtensionTok{python3}\NormalTok{ python/lg\_vaidya.py                    }\CommentTok{\# after lg\_vaidya, whose data it checks (about 30 s)}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_curved.wls data/hck\_lg\_curved\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_schw.wls data/lg\_schw\_qbs.csv data/lg\_schw\_grey.csv data/hck\_lg\_schw\_checks\_wolfram.txt}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_vaidya.wls data/hck\_lg\_vaidya\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_lord\_fragments.py   }\CommentTok{\# the numbers of the documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_curved\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_schw\_fragments.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_vaidya\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (HCK{-}H2 fails, Section 2)}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}
@@ -459,10 +500,10 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \end{Shaded}
 
 The programs need Rust (cargo), Python 3 with numpy, sympy and mpmath,
-and the Wolfram Language (wolframscript); the Rust program
-\texttt{lg\_schw} uses the pure-Rust SUNDIALS vendored in the folder
-\texttt{vendor/sundials\_rs-7.8.0} of the repository. The pipeline needs
-pandoc (2.11 or later), XeLaTeX and latexmk (TeX Live), the DejaVu fonts
-and the Latin Modern Math font.
+and the Wolfram Language (wolframscript); the Rust programs
+\texttt{lg\_schw} and \texttt{lg\_vaidya} use the pure-Rust SUNDIALS
+vendored in the folder \texttt{vendor/sundials\_rs-7.8.0} of the
+repository. The pipeline needs pandoc (2.11 or later), XeLaTeX and
+latexmk (TeX Live), the DejaVu fonts and the Latin Modern Math font.
 
 \end{document}
