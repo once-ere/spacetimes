@@ -32,7 +32,7 @@ PASS P3-G11 HS_1_1 deviation 4.441e-16 (tolerance 1.0e-12): HS_1_1: the two form
 PASS P3-6 HS_1_1 deviation 2.471e-16 (tolerance 1.0e-10): HS_1_1: the unbroken T^3 has no temporal stiffness in the effective Lagrangian (chi_33 = 2.5e-16)
 PASS P3-H1 HS_1_1 deviation 0.000e0 (tolerance 0.0e0): HS_1_1: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.813693 < 2 E_gap = 0.905935 (M_H / 2 E_gap = 0.8982)
 PASS P3-H2 HS_1_1 deviation 2.098e-14 (tolerance 1.0e-8): HS_1_1: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = 0.07096573 and f_I^2/f_F = 0.07212812 (largest relative difference)
-PASS P3-H3 HS_1_1 deviation 1.624e-16 (tolerance 1.0e-12): HS_1_1: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = 0.14308913, M_H/v_SF = 5.686617, lambda_SF = 16.16881, Gamma/M_H = 3.92324) = the module higgs (largest relative difference)
+PASS P3-H3 HS_1_1 deviation 0.000e0 (tolerance 1.0e-12): HS_1_1: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = 0.14308913, M_H/v_SF = 5.686617, lambda_SF = 16.16881, Gamma/M_H = 3.92324) = the module higgs (largest relative difference)
 PASS P3-1 HS_0_1 deviation 3.606e-14 (tolerance 1.0e-9): HS_0_1: the applied field Phi0 = 0.3620090014 gives back Phi^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II
 PASS P3-2 HS_0_1 deviation 3.451e-8 (tolerance 1.0e-6): HS_0_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'')
 PASS P3-3 HS_0_1 deviation 1.082e-14 (tolerance 1.0e-10): HS_0_1: the effective potential depends only on |Phi| (a phase of U(1)F and the isospin direction 1 give the same energy)
@@ -156,10 +156,9 @@ PASS P3-6 CJT deviation 1.269e-15 (tolerance 1.0e-10): CJT: the unbroken T^3 has
 PASS P3-H1 CJT deviation 0.000e0 (tolerance 0.0e0): CJT: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.603476 < 2 E_gap = 0.732781 (M_H / 2 E_gap = 0.8235)
 PASS P3-H2 CJT deviation 7.683e-14 (tolerance 1.0e-8): CJT: the couplings of h to (d theta_0)^2 and (d theta_1)^2 from finite differences of (12.4) are f_F = 0.07134817 and f_I^2/f_F = 0.06416246 (largest relative difference)
 PASS P3-H3 CJT deviation 3.573e-16 (tolerance 1.0e-12): CJT: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = 0.13531998, M_H/v_SF = 4.459622, lambda_SF = 9.94412, Gamma/M_H = 2.13489) = the module higgs (largest relative difference)
-PASS P3-H4   deviation 1.531e-4 (tolerance 1.0e-3): the Standard-Model row: M_H/v = 0.50849, lambda = M_H^2/(2 v^2) = 0.12928, M_H/M_W = 1.55781, M_W/M_Z = 0.88136 from m_H = 125.20, v = 246.22, M_W = 80.3692, M_Z = 91.1880 GeV (Particle Data Group 2024) agree with the rounded values 0.5085, 0.1293, 1.558, 0.8814 typed independently (largest relative difference; the rounding allows 1e-3)
 PASS P3-7    deviation 4.002e-7 (tolerance 2.0e-6): the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative)
 
 Notes:
-  run time 898.7 s
+  run time 885.8 s
 
-VERDICT: ALL PASS (156 of 156)
+VERDICT: ALL PASS (155 of 155)

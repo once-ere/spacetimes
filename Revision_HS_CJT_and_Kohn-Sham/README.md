@@ -42,7 +42,7 @@ complete, with the program `sf_part2` (VERDICT: ALL PASS (44 of 44)) and the Pyt
 
 **Part III of the manuscript** (the effective Lagrangians $\mathcal L^{\rm CJT}$, $\mathcal L^{\rm HS}$, $\mathcal L^{\rm KS}$, their potential parts
 (the Mexican hat) and kinetic parts, the vacua and the breaking of the symmetry, and $\mathrm{SFBSv}^X$) is complete, with the
-program `sf_part3` (VERDICT: ALL PASS (156 of 156)) and the Python programs `python/sf_part3.py` (VERDICT: ALL PASS (113 of 113)) and
+program `sf_part3` (VERDICT: ALL PASS (155 of 155)) and the Python programs `python/sf_part3.py` (VERDICT: ALL PASS (112 of 112)) and
 `python/sf_part3_figures.py`. Section 12.1 now also defines the Landau form, with examples, and states its accuracy,
 the cause of its error and why the error matters (Table 12.2, Figure 9); the answer to the author's questions on this
 remark is kept in `provenance/P4_remarks.md`. Section 12.4, added at the author's request of 21 November 2026, computes
@@ -53,7 +53,8 @@ remark R2 on the mean-field free energies that it contains, are kept in `provena
 
 **Part IV of the manuscript** (the mass matrix of the gauge bosons in every vacuum and its diagonalization, the
 theorem that the massless gauge bosons are the generators that leave the condensate unchanged, the surviving group
-$SL(2,\mathbb C)\times O(2)$ and its $U(1)$ with the massless photon; the dynamics of the superfluid and of its gauge
+$SL(2,\mathbb C)\times O(2)$ and its $U(1)$ with the massless gauge boson, named the zeugon (not the photon: the spinor
+field, the DiracLike spinor, has electric charge 0 and no electroweak quantum numbers); the dynamics of the superfluid and of its gauge
 fields, integrated with CVODE and IDA; two videos) is complete, with the program `sf_part4` (VERDICT: ALL PASS (120 of 120)),
 the integrators `sfsundials` and their C interface `sfsundials_c`, and the Python programs `python/sf_part4.py`
 (VERDICT: ALL PASS (20 of 20)) and `python/sf_part4_figures.py`.
@@ -64,7 +65,7 @@ definition, examples, accuracy, the cause of its error and why the error matters
 (Section III.T: the free energy of the five methods at finite temperature, the critical temperatures, the size of the
 order parameter, and the remark that the free energies are mean-field free energies), and the third section of
 Part III (Section III.G: the gradient coefficient at the critical temperature, the Ginzburg number and the width of the
-critical region, and the superfluid as a Higgs sector against the Standard Model): 154 checks, each
+critical region, and the superfluid as the Higgs sector of its own gauge group): 154 checks, each
 repeated by the Rust and the Python programs (verdict of the evaluation in the front end of Wolfram:
 ALL PASS (154 of 154), 0 messages). Its provenance is `provenance/P3_notebook.md`. The rest of Part III and Part IV of the notebook
 follow.
@@ -72,9 +73,11 @@ follow.
 **The article for Physical Review D** (folder `paper_prd/`), asked for by the author on 21 November 2026 at 11:29 PST:
 the Regular Article "Higgs as a Composite, and Quantum Gravity", which answers how wide the critical region near the
 critical temperature is (the Ginzburg number, from the gradient coefficient at the critical temperature: $7.6$ (KS, CJT) to $11$ (HS (1, 1))),
-whether the superfluid of each method can play the role of the Higgs particle (it realizes the Higgs mechanism, but its
-amplitude mode is $8.8$ to $11$ times too heavy against the scale of the breaking, broad and strongly coupled, and
-accompanied by charged scalars), and whether the Higgs is a composite particle (yes, by construction); with its
+whether the superfluid of each method can play the role of the Higgs particle (it is the Higgs field of its own gauge
+group $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, with the massless zeugon and an amplitude mode that becomes a resonance
+broader than its mass once it can decay, $2.1$ (KS, CJT) to $3.9$ (HS (1, 1)) times its mass; it cannot be the Higgs field of the Standard
+Model, because the DiracLike spinor carries no electroweak quantum numbers), and whether the Higgs is a composite particle
+(yes, by construction); with its
 Supplemental Material, the cover letter, the information for the submission server of the APS and the folder of the
 files to upload, all built from the data files and the reports of the checks by `paper_prd/scripts/build_paper.py`. The
 gravitational sector of the title is outlined, not computed. The submission itself is the author's.

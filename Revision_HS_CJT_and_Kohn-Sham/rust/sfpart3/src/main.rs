@@ -9,8 +9,8 @@
 //! Output in data/: hck_part3_checks.txt and the data files part3_*.csv (among them part3_landau.csv and
 //! part3_landau_residuals.csv, the accuracy of the Landau form, module landau; part3_ginzburg.csv and
 //! part3_ginzburg_regions.csv, the gradient coefficient at T_c and the Ginzburg number, module ginzburg; part3_higgs.csv,
-//! the numbers of the superfluid as a Higgs sector, module higgs, with a last row of the Standard Model).  Run time about
-//! fifteen minutes.
+//! the numbers of the superfluid as the Higgs sector of SU(2)_v x U(1)^F_LL, module higgs).  Run time about fifteen
+//! minutes.
 mod effpot;
 mod ginzburg;
 mod higgs;
@@ -211,18 +211,18 @@ fn main() {
                 let (f_i, f_f) = (st.chi11.sqrt(), 0.5 * st.chiff.sqrt());
                 let (mw, mz) = (GV * f_i, 2.0 * GF * f_f);
                 let mine = [v, f_f, f_i, rpa_h / v, rpa_h * rpa_h / (2.0 * v * v), rpa_h / mw, rpa_h / (2.0 * gap0), rpa_nu / rpa_h, f_f / f_i, mw / mz,
-                            3.0 * rpa_h * rpa_h / (32.0 * std::f64::consts::PI * f_f * f_f), th.tc / v, rpa_h * 246.22 / v];
+                            3.0 * rpa_h * rpa_h / (32.0 * std::f64::consts::PI * f_f * f_f), th.tc / v];
                 let theirs = [hg.v_sf, hg.f_f, hg.f_i, hg.mh_over_v, hg.lambda, hg.mh_over_mw, hg.mh_over_2gap, hg.mnu_over_mh, hg.ff_over_fi, hg.mw_over_mz,
-                              hg.width_over_mh, hg.tc_over_v, hg.mh_gev];
+                              hg.width_over_mh, hg.tc_over_v];
                 let dev = mine.iter().zip(&theirs).map(|(a, b)| (a - b).abs() / b.abs()).fold(0.0, f64::max);
                 rep.add(&format!("P3-H3 {}", tag), &format!("{}: the numbers of Table 14.2 recomputed from chi_11, chi_FF, M_H, M_NU, E_gap and T_c by (14.9), (14.10) (v_SF = {:.8}, M_H/v_SF = {:.6}, lambda_SF = {:.5}, Gamma/M_H = {:.5}) = the module higgs (largest relative difference)", tag, v, rpa_h / v, mine[4], mine[10]),
                         dev, 1e-12);
             }
-            println!("{:<20} Higgs: v_SF {:.6} M_H/v {:.4} lambda {:.3} M_H/M_W {:.3} M_H/2E_gap {:.4} M_NU/M_H {:.4} f_F/f_I {:.4} Gamma/M_H {:.3} Lambda = {:.1} GeV, M_H = {:.1} GeV", m.name(), hg.v_sf, hg.mh_over_v, hg.lambda, hg.mh_over_mw, hg.mh_over_2gap, hg.mnu_over_mh, hg.ff_over_fi, hg.width_over_mh, hg.lambda_gev, hg.mh_gev);
+            println!("{:<20} Higgs: v_SF {:.6} M_H/v {:.4} lambda {:.3} M_H/M_W {:.3} M_H/2E_gap {:.4} M_NU/M_H {:.4} f_F/f_I {:.4} Gamma/M_H {:.3}", m.name(), hg.v_sf, hg.mh_over_v, hg.lambda, hg.mh_over_mw, hg.mh_over_2gap, hg.mnu_over_mh, hg.ff_over_fi, hg.width_over_mh);
             higgs_rows.push(vec![tag.clone(), f(hg.v_sf), f(hg.f_f), f(hg.f_i), f(hg.mh), f(hg.mnu), f(hg.mw), f(hg.mz), f(hg.mh_over_v), f(hg.lambda), f(hg.mh_over_mw), f(hg.mh_over_2gap),
-                                 f(hg.mnu_over_mh), f(hg.ff_over_fi), f(hg.mw_over_mz), f(hg.width_over_mh), f(hg.tc_over_v), f(hg.lambda_gev), f(hg.mh_gev), f(hg.gap_gev), f(hg.tc_gev)]);
+                                 f(hg.mnu_over_mh), f(hg.ff_over_fi), f(hg.mw_over_mz), f(hg.width_over_mh), f(hg.tc_over_v)]);
             for (k, v) in [("vSF", hg.v_sf), ("fF", hg.f_f), ("fI", hg.f_i), ("MH_v", hg.mh_over_v), ("lambda", hg.lambda), ("MH_MW", hg.mh_over_mw), ("MH_2gap", hg.mh_over_2gap), ("MNU_MH", hg.mnu_over_mh),
-                           ("fF_fI", hg.ff_over_fi), ("MW_MZ", hg.mw_over_mz), ("width_MH", hg.width_over_mh), ("Tc_v", hg.tc_over_v), ("LambdaGeV", hg.lambda_gev), ("MHGeV", hg.mh_gev), ("gapGeV", hg.gap_gev), ("TcGeV", hg.tc_gev)] {
+                           ("fF_fI", hg.ff_over_fi), ("MW_MZ", hg.mw_over_mz), ("width_MH", hg.width_over_mh), ("Tc_v", hg.tc_over_v)] {
                 vals.push((format!("p3_h_{}_{}", k, tag), v));
             }
         }
@@ -239,23 +239,11 @@ fn main() {
     write_csv(&data.join("part3_ginzburg.csv"), &["method", "T_c", "Dirac_mass_normal", "alpha", "b", "c", "c_isospin_twist", "c_fixed_channels", "c_T3_twist", "c_twisted_states",
         "c_k001", "c_k002", "other_channels_k0", "other_channels_k001", "a_at_Tc", "Gi", "Gi_Tc", "xi0", "Phi_G"], &gz_rows);
     write_csv(&data.join("part3_ginzburg_regions.csv"), &["method", "k", "a_minus_a0_sphere", "a_minus_a0_lens", "sphere_over_k2", "lens_over_k"], &gz_regions);
-    {
-        // the last row: the Standard Model values of the ratios that have an analogue here (NaN for the others)
-        let sm = higgs::standard_model();
-        // P3-H4: the row from the values of the Particle Data Group against rounded values typed independently
-        let typed = [0.5085, 0.1293, 1.558, 0.8814];
-        let dev = sm.iter().zip(&typed).map(|(a, b)| (a - b).abs() / b).fold(0.0, f64::max);
-        rep.add("P3-H4", &format!("the Standard-Model row: M_H/v = {:.5}, lambda = M_H^2/(2 v^2) = {:.5}, M_H/M_W = {:.5}, M_W/M_Z = {:.5} from m_H = 125.20, v = 246.22, M_W = 80.3692, M_Z = 91.1880 GeV (Particle Data Group 2024) agree with the rounded values 0.5085, 0.1293, 1.558, 0.8814 typed independently (largest relative difference; the rounding allows 1e-3)", sm[0], sm[1], sm[2], sm[3]),
-                dev, 1e-3);
-        let mut row = vec!["SM".to_string()];
-        let nan = f64::NAN;
-        for v in [higgs::SM_V, nan, higgs::SM_V / 2.0, higgs::SM_MH, nan, higgs::SM_MW, higgs::SM_MZ, sm[0], sm[1], sm[2], nan, nan, nan, sm[3], nan, nan, nan, nan, nan, nan] {
-            row.push(f(v));
-        }
-        higgs_rows.push(row);
-    }
+    // part3_higgs.csv has one row per method and no row of the Standard Model, and the check P3-H4 of that row was
+    // removed (21 November 2026): the DiracLike spinor carries no electroweak quantum numbers, so the superfluid is not
+    // compared with the Higgs boson of the Standard Model (Sections 14.6 and 17.6 of superfluid.md)
     write_csv(&data.join("part3_higgs.csv"), &["method", "v_SF", "f_F", "f_I", "M_H", "M_NU", "M_W", "M_Z", "M_H_over_v_SF", "lambda_SF", "M_H_over_M_W", "M_H_over_2E_gap",
-        "M_NU_over_M_H", "f_F_over_f_I", "M_W_over_M_Z", "Gamma_over_M_H", "T_c_over_v_SF", "Lambda_GeV", "M_H_GeV", "E_gap_GeV", "T_c_GeV"], &higgs_rows);
+        "M_NU_over_M_H", "f_F_over_f_I", "M_W_over_M_Z", "Gamma_over_M_H", "T_c_over_v_SF"], &higgs_rows);
     write_csv(&data.join("part3_landau_residuals.csv"), &["method", "Phi", "Phi_over_Phi0", "res_K2_over_depth", "res_K3_over_depth", "res_K4_over_depth"], &resid_rows);
     for (tag, rows) in &curves_out {
         let r: Vec<Vec<String>> = rows.iter().map(|x| vec![f(x.0), f(x.1), f(x.2), f(x.3)]).collect();

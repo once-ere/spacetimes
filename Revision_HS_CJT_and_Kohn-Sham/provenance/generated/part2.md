@@ -32,18 +32,18 @@
 | P2-7a HS_0_0 | PASS | 2.403e-13 | 1.0e-9 | HS(s\_S=0,s\_V=0): three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1) |
 | P2-7a KS | PASS | 2.502e-13 | 1.0e-9 | KS: three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1) |
 | P2-7a CJT | PASS | 2.485e-13 | 1.0e-9 | CJT: three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1) |
-| P2-8a HS_1_1 | PASS | 2.278e-15 | 1.0e-10 | HS(s\_S=1,s\_V=1): the photon (W\^3) is massless, chi\_33 = -1.47e-15; no mixing (largest off-diagonal chi 2.3e-15) |
+| P2-8a HS_1_1 | PASS | 2.278e-15 | 1.0e-10 | HS(s\_S=1,s\_V=1): the zeugon (W\^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi\_33 = -1.47e-15; no mixing (largest off-diagonal chi 2.3e-15) |
 | P2-8b HS_1_1 | PASS | 8.820e-9 | 1.0e-7 | HS(s\_S=1,s\_V=1): thermodynamic consistency -d2 Omega/d mu\^2 = d&lt;Q>/d mu (relative); chi\_11 = chi\_22 = 0.0051186247, chi\_FF = 0.0201445392 |
-| P2-8a KS | PASS | 2.159e-15 | 1.0e-10 | KS: the photon (W\^3) is massless, chi\_33 = -3.69e-16; no mixing (largest off-diagonal chi 2.2e-15) |
+| P2-8a KS | PASS | 2.159e-15 | 1.0e-10 | KS: the zeugon (W\^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi\_33 = -3.69e-16; no mixing (largest off-diagonal chi 2.2e-15) |
 | P2-8b KS | PASS | 4.283e-9 | 1.0e-7 | KS: thermodynamic consistency -d2 Omega/d mu\^2 = d&lt;Q>/d mu (relative); chi\_11 = chi\_22 = 0.0043170062, chi\_FF = 0.0203622430 |
-| P2-8a CJT | PASS | 1.879e-15 | 1.0e-10 | CJT: the photon (W\^3) is massless, chi\_33 = -1.86e-16; no mixing (largest off-diagonal chi 1.9e-15) |
+| P2-8a CJT | PASS | 1.879e-15 | 1.0e-10 | CJT: the zeugon (W\^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi\_33 = -1.86e-16; no mixing (largest off-diagonal chi 1.9e-15) |
 | P2-8b CJT | PASS | 3.584e-9 | 1.0e-7 | CJT: thermodynamic consistency -d2 Omega/d mu\^2 = d&lt;Q>/d mu (relative); chi\_11 = chi\_22 = 0.0045778739, chi\_FF = 0.0203622430 |
 | P2-8c | PASS | 5.102e-12 | 1.0e-9 | Thouless eigenvalues of the exchange: the four bosons together = the sum of the four alone (one radial eigenvector) |
 | P2-8d | PASS | 2.041e-11 | 1.0e-9 | Thouless eigenvalues: W\^3 attracts and W\^1 repels the pair K\^3 equally, B repels four times as strongly |
 | P2-8j | PASS | 0.000e0 | 1.0e-4 | the masses used in the final CJT state are those of its own susceptibilities |
-| P2-8i | PASS | 8.163e-16 | 1.0e-9 | CJT with exchange: the photon stays massless (chi\_33 = 8.2e-16) and does not mix with B (chi\_3F = 1.7e-16) |
+| P2-8i | PASS | 8.163e-16 | 1.0e-9 | CJT with exchange: the zeugon stays massless (chi\_33 = 8.2e-16) and does not mix with B (chi\_3F = 1.7e-16) |
 | P2-8e | PASS | 1.355e-20 | 1.0e-14 | CJT with exchange: the energies of the four bosons add up to the exchange energy |
-| P2-8f | PASS | 0.000e0 | 0.0e0 | CJT with exchange at g\_v = 0.7, g\_F = 0.45: still superfluid (/D/ = 0.276176), the photon attracts (E\_W3 = -4.835e-5 &lt; 0), W\^1, W\^2, B repel |
+| P2-8f | PASS | 0.000e0 | 0.0e0 | CJT with exchange at g\_v = 0.7, g\_F = 0.45: still superfluid (/D/ = 0.276176), the zeugon attracts (E\_W3 = -4.835e-5 &lt; 0), W\^1, W\^2, B repel |
 | P2-8g | PASS | 3.223e-14 | 1.0e-8 | KS with local potentials and no exchange reproduces the KS (= CJT) contact solution (energy) |
 | P2-8h | PASS | 0.000e0 | 0.0e0 | variational order: with the same boson masses, the KS energy with local potentials (-1.32250207e-4) lies above the CJT energy (-1.32402018e-4) |
 <!-- END p2_checks_rust -->
@@ -70,11 +70,11 @@ VERDICT: ALL PASS (44 of 44)
 | YP2-7b KS | PASS | 1.333e-13 | 1.0e-07 | KS: the collective modes below the threshold ['0.60347597', '0.65728473'] = Rust ['0.60347597', '0.65728473'] |
 | YP2-7a CJT | PASS | 2.329e-13 | 1.0e-09 | CJT: three Goldstone modes (LAPACK eigenvalues of M(0) equal to 1); spectrum of every node +-E (spread 4.4e-15) |
 | YP2-7b CJT | PASS | 1.180e-13 | 1.0e-07 | CJT: the collective modes below the threshold ['0.60347597', '0.64400715'] = Rust ['0.60347597', '0.64400715'] |
-| YP2-8a HS_1_1 | PASS | 3.744e-15 | 1.0e-08 | HS\_1\_1: chi\_11 = 0.0051186247, chi\_FF = 0.0201445392 = Rust; chi\_33 = 1.1e-15 (massless photon), no mixing |
-| YP2-8a KS | PASS | 5.405e-15 | 1.0e-08 | KS: chi\_11 = 0.0043170062, chi\_FF = 0.0203622430 = Rust; chi\_33 = 1.3e-16 (massless photon), no mixing |
-| YP2-8a CJT | PASS | 3.879e-15 | 1.0e-08 | CJT: chi\_11 = 0.0045778739, chi\_FF = 0.0203622430 = Rust; chi\_33 = 8.2e-16 (massless photon), no mixing |
+| YP2-8a HS_1_1 | PASS | 3.744e-15 | 1.0e-08 | HS\_1\_1: chi\_11 = 0.0051186247, chi\_FF = 0.0201445392 = Rust; chi\_33 = 1.1e-15 (massless zeugon), no mixing |
+| YP2-8a KS | PASS | 5.405e-15 | 1.0e-08 | KS: chi\_11 = 0.0043170062, chi\_FF = 0.0203622430 = Rust; chi\_33 = 1.3e-16 (massless zeugon), no mixing |
+| YP2-8a CJT | PASS | 3.879e-15 | 1.0e-08 | CJT: chi\_11 = 0.0045778739, chi\_FF = 0.0203622430 = Rust; chi\_33 = 8.2e-16 (massless zeugon), no mixing |
 | YP2-8b | PASS | 1.443e-14 | 1.0e-12 | angular averages D0, D1 of the Yukawa kernel (closed forms of the Rust program) = 400-point quadrature in the angle |
-| YP2-8c | PASS | 5.918e-12 | 1.0e-09 | Thouless eigenvalues of the exchange per unit coupling\^2: photon 0.0357317832, B -0.1429271327 = Rust |
+| YP2-8c | PASS | 5.918e-12 | 1.0e-09 | Thouless eigenvalues of the exchange per unit coupling\^2: zeugon (W\^3) 0.0357317832, B -0.1429271327 = Rust |
 | YP2-8d | PASS | 1.492e-08 | 1.0e-07 | CJT with exchange at g\_v = 0.7, g\_F = 0.45: energy -1.3240201973e-04 = Rust (relative; 294 iterations) |
 <!-- END p2_checks_python -->
 <!-- BEGIN p2_verdict_python -->
@@ -193,11 +193,11 @@ VERDICT: ALL PASS (23 of 23)
 |:---|---:|
 | W1 alone, massless, per unit coupling\^2 | $-0.035731783$ |
 | W2 alone, massless, per unit coupling\^2 | $-0.035731783$ |
-| W3 (the photon of the condensate) alone, massless, per unit coupling\^2 | $0.035731783$ |
+| W3 (the zeugon of the condensate) alone, massless, per unit coupling\^2 | $0.035731783$ |
 | B alone, massless, per unit coupling\^2 | $-0.14292713$ |
 | all four massless, couplings 1 | $-0.17865892$ |
 | all four massless, g\_v = 0.7, g\_F = 0.45 | $-0.046451318$ |
-| critical g\_v of the photon alone | $5.2902069$ |
+| critical g\_v of the zeugon alone | $5.2902069$ |
 | V\^(0) by CJT, contact terms alone | $0.056373467$ |
 <!-- END p2_table_thouless -->
 <!-- BEGIN p2_table_cjt -->
@@ -209,7 +209,7 @@ VERDICT: ALL PASS (23 of 23)
 | eigenvalue 3 of the mass matrix | $0.0018509955$ |
 | eigenvalue 4 of the mass matrix | $0.0033110942$ |
 | M\_W | $0.043023197$ |
-| M\_photon | $1.9999467\times10^{-8}$ |
+| M\_A | $1.9999467\times10^{-8}$ |
 | M\_Z | $0.057542108$ |
 | D | $0.27617557$ |
 | Dirac mass | $0.15696812$ |
@@ -867,9 +867,9 @@ $0.003311094203$
 <!-- BEGIN p2_cjtex_M_W -->
 $0.04302319693$
 <!-- END p2_cjtex_M_W -->
-<!-- BEGIN p2_cjtex_M_photon -->
+<!-- BEGIN p2_cjtex_M_A -->
 $1.999946729\times10^{-8}$
-<!-- END p2_cjtex_M_photon -->
+<!-- END p2_cjtex_M_A -->
 <!-- BEGIN p2_cjtex_M_Z -->
 $0.05754210808$
 <!-- END p2_cjtex_M_Z -->

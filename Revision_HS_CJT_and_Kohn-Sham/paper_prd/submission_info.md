@@ -27,7 +27,7 @@ author can confirm.
   Letter, Comment or Reply; no earlier paper needs to be named).
 
 - Length: the manuscript has 10 pages in the two-column format of REVTeX
-  4.2, the Supplemental Material 37 pages, the cover letter 2 page(s).
+  4.2, the Supplemental Material 36 pages, the cover letter 2 page(s).
   Physical Review D sets no limit to the length of Regular Articles (the
   appropriate length depends on the information presented); the word
   limits of Letters and Comments do not apply.
@@ -214,7 +214,7 @@ submitting.
 | `fig_part3_q4_thermal.pdf`    | Figure 3                                                        |  43 | `c7bac6536492b220`        |
 | `fig_prd_ginzburg.pdf`        | Figure 4                                                        |  26 | `1e79446ef1c9c36e`        |
 | `fig_prd_higgs.pdf`           | Figure 5                                                        |  23 | `aaed0cb24621a722`        |
-| `higgs_composite_qg_SM.pdf`   | the Supplemental Material (PDF)                                 | 637 | `e27e5434013abd78`        |
+| `higgs_composite_qg_SM.pdf`   | the Supplemental Material (PDF)                                 | 635 | `68580df864e4b763`        |
 | `cover_letter.pdf`            | the cover letter (PDF)                                          |  86 | `7a7af727c5d82a82`        |
 
 # The steps on the submission server

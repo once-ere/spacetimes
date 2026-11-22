@@ -100,7 +100,6 @@ PASS YP3-H3 KS deviation 2.514e-13 (tolerance 1.0e-09): KS: the numbers of Table
 PASS YP3-H1 CJT CJT: the amplitude mode lies below the threshold of two quasi-particles, M_H = 0.603476 < 2 E_gap = 0.732781 (M_H / 2 E_gap = 0.8235; data/part3_values.csv, data/part3_thermal.csv) [2 E_gap - M_H = 0.129305]
 PASS YP3-H2 CJT deviation 3.334e-11 (tolerance 1.0e-06): CJT: the couplings of h to (d theta_0)^2 and (d theta_1)^2, 0.07134817 and 0.06416246, by differentiating the field = f_F and f_I^2/f_F (largest relative difference)
 PASS YP3-H3 CJT deviation 3.085e-13 (tolerance 1.0e-09): CJT: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = 0.13531998, M_H/v_SF = 4.459622, lambda_SF = 9.94412, Gamma/M_H = 2.13489) = data/part3_higgs.csv (largest relative difference)
-PASS YP3-H4  deviation 0.000e+00 (tolerance 1.0e-10): the Standard Model row: M_H/v = 0.50849, lambda = 0.12928, M_H/M_W = 1.55781, M_W/M_Z = 0.88136 (Particle Data Group 2024; largest relative difference)
 PASS YP3-1 HS_1_1 deviation 5.519e-14 (tolerance 1.0e-09): HS_1_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406)
 PASS YP3-2 HS_1_1 deviation 2.068e-10 (tolerance 1.0e-06): HS_1_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative)
 PASS YP3-4 HS_1_1 deviation 4.316e-10 (tolerance 1.0e-05): HS_1_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative)
@@ -117,6 +116,6 @@ PASS YP3-10 CJT deviation 2.872e-12 (tolerance 1.0e-08): CJT: the coefficient of
 PASS YP3-7 CJT deviation 1.972e-11 (tolerance 1.0e-07): CJT: the stiffness of the phase from the twisted states f^2 = 2.2552881119e-03 = Rust (relative)
 
 Notes:
-  run time 99 s
+  run time 92 s
 
-VERDICT: ALL PASS (113 of 113)
+VERDICT: ALL PASS (112 of 112)

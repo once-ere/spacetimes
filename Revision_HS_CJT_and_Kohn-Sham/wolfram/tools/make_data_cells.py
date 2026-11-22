@@ -86,8 +86,11 @@ def main():
         pieces.append(table_list("part3_ginzburg.csv", "rustGinzburg", cols, set(cols[1:])))
         cols = ["method", "k", "a_minus_a0_sphere", "a_minus_a0_lens", "sphere_over_k2", "lens_over_k"]
         pieces.append(table_list("part3_ginzburg_regions.csv", "rustGinzburgRegions", cols, set(cols[1:])))
+        # the Higgs sector of the new group, one row per method, in the units of the model (Lambda = 1): no values in GeV and
+        # no row of the Standard Model, because the DiracLike spinor carries no electroweak quantum numbers and nothing fixes
+        # the scale of the new group in GeV (C18 of the task record)
         cols = ["method", "v_SF", "f_F", "f_I", "M_H", "M_NU", "M_W", "M_Z", "M_H_over_v_SF", "lambda_SF", "M_H_over_M_W", "M_H_over_2E_gap",
-                "M_NU_over_M_H", "f_F_over_f_I", "M_W_over_M_Z", "Gamma_over_M_H", "T_c_over_v_SF", "Lambda_GeV", "M_H_GeV", "E_gap_GeV", "T_c_GeV"]
+                "M_NU_over_M_H", "f_F_over_f_I", "M_W_over_M_Z", "Gamma_over_M_H", "T_c_over_v_SF"]
         pieces.append(table_list("part3_higgs.csv", "rustHiggs", cols, set(cols[1:])))
     elif part == "4":
         pieces.append(values_assoc("part4_values.csv", "rustPart4"))

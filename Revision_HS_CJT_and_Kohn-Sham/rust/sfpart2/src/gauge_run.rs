@@ -124,7 +124,7 @@ pub fn run(rep: &mut Report, v2: Potential, nr: usize) -> GaugeResults {
         let sol = model.solve(&CMat::zeros(8), &k_scalar(3).dagger().scale_r(0.3), 0.6, 1e-14, 40000);
         let (chi, curv) = susceptibilities(&mut model, &sol.n_self, &sol.p_self, 2e-3);
         let off = (0..4).flat_map(|a| (0..4).map(move |b| (a, b))).filter(|(a, b)| a != b).fold(0.0f64, |s, (a, b)| s.max(chi[a][b].abs()));
-        rep.add(&format!("P2-8a {}", m.short()), &format!("{}: the photon (W^3) is massless, chi_33 = {:.2e}; no mixing (largest off-diagonal chi {:.1e})", m.name(), chi[2][2], off), chi[2][2].abs().max(off), 1e-10);
+        rep.add(&format!("P2-8a {}", m.short()), &format!("{}: the zeugon (W^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi_33 = {:.2e}; no mixing (largest off-diagonal chi {:.1e})", m.name(), chi[2][2], off), chi[2][2].abs().max(off), 1e-10);
         let dc = (0..4).fold(0.0f64, |s, b| s.max((curv[b] - chi[b][b]).abs() / chi[b][b].abs().max(1e-3)));
         rep.add(&format!("P2-8b {}", m.short()), &format!("{}: thermodynamic consistency -d2 Omega/d mu^2 = d<Q>/d mu (relative); chi_11 = chi_22 = {:.10}, chi_FF = {:.10}", m.name(), chi[0][0], chi[3][3]), dc.max((chi[0][0] - chi[1][1]).abs()), 1e-7);
         chis.push((m, chi));
@@ -134,7 +134,7 @@ pub fn run(rep: &mut Report, v2: Potential, nr: usize) -> GaugeResults {
     let model0 = Model::new(M_LL, 0.0, vec![], grid(nr));
     let pr = PairResponse::new(&model0);
     let mut lam_single = vec![];
-    for (i, name) in ["W1", "W2", "W3 (the photon of the condensate)", "B"].iter().enumerate() {
+    for (i, name) in ["W1", "W2", "W3 (the zeugon of the condensate)", "B"].iter().enumerate() {
         let bs: Vec<_> = bosons(1.0, 1.0, [0.0; 3], 0.0).into_iter().enumerate().filter(|(j, _)| *j == i).map(|(_, b)| b).collect();
         let (lam, _) = thouless(&model0, &pr, &with_kernels(&model0, bs), false, 400);
         lam_single.push(lam);
@@ -146,8 +146,8 @@ pub fn run(rep: &mut Report, v2: Potential, nr: usize) -> GaugeResults {
     rep.add("P2-8d", "Thouless eigenvalues: W^3 attracts and W^1 repels the pair K^3 equally, B repels four times as strongly", (lam_single[2] + lam_single[0]).abs().max((lam_single[3] - 4.0 * lam_single[0]).abs()), 1e-9);
     let (lam_ref, _) = thouless(&model0, &pr, &with_kernels(&model0, bosons(GV, GF, [0.0; 3], 0.0)), false, 400);
     res.thouless.push((format!("all four massless, g_v = {}, g_F = {}", GV, GF), lam_ref));
-    res.thouless.push(("critical g_v of the photon alone".into(), 1.0 / lam_single[2].sqrt()));
-    // the photon with the contact terms of V^(0) by CJT
+    res.thouless.push(("critical g_v of the zeugon alone".into(), 1.0 / lam_single[2].sqrt()));
+    // the zeugon (W^3) with the contact terms of V^(0) by CJT
     let mv0 = Model::new(M_LL, 0.0, terms(&Method::Cjt, &crate::recursion::V0), grid(nr));
     let (lc, _) = thouless(&mv0, &pr, &[], true, 400);
     res.thouless.push(("V^(0) by CJT, contact terms alone".into(), lc));
@@ -172,22 +172,22 @@ pub fn run(rep: &mut Report, v2: Potential, nr: usize) -> GaugeResults {
         }
     }
     res.cjt.push(("mass iterations".into(), iters as f64));
-    // the mass matrix M^2_ab = g_a g_b chi_ab of the state with exchange and its eigenvalues (photon, W, W, Z)
+    // the mass matrix M^2_ab = g_a g_b chi_ab of the state with exchange and its eigenvalues (zeugon, W, W, Z)
     let (ev, _) = mass_matrix(&chi_ex, GV, GF);
     for (i, e) in ev.iter().enumerate() {
         res.cjt.push((format!("eigenvalue {} of the mass matrix", i + 1), *e));
     }
     rep.add("P2-8j", "the masses used in the final CJT state are those of its own susceptibilities", (0..4).fold(0.0f64, |s, i| s.max((out.masses[i] - masses_of(&chi_ex, GV, GF)[i]).abs())), 1e-4);
-    rep.add("P2-8i", &format!("CJT with exchange: the photon stays massless (chi_33 = {:.1e}) and does not mix with B (chi_3F = {:.1e})", chi_ex[2][2], chi_ex[2][3]), chi_ex[2][2].abs().max(chi_ex[2][3].abs()).max(chi_ex[3][2].abs()), 1e-9);
+    rep.add("P2-8i", &format!("CJT with exchange: the zeugon stays massless (chi_33 = {:.1e}) and does not mix with B (chi_3F = {:.1e})", chi_ex[2][2], chi_ex[2][3]), chi_ex[2][2].abs().max(chi_ex[2][3].abs()).max(chi_ex[3][2].abs()), 1e-9);
     res.chi.push(("CJT_exchange".into(), chi_ex));
-    for (k, v) in [("M_W", masses[0]), ("M_photon", masses[2]), ("M_Z", masses[3]), ("D", out.d0.abs()), ("Dirac mass", out.mass0), ("energy", out.ex.sol.energy), ("exchange energy", out.ex.e_ex), ("gap", out.gap), ("residual", out.ex.sol.residual)] {
+    for (k, v) in [("M_W", masses[0]), ("M_A", masses[2]), ("M_Z", masses[3]), ("D", out.d0.abs()), ("Dirac mass", out.mass0), ("energy", out.ex.sol.energy), ("exchange energy", out.ex.e_ex), ("gap", out.gap), ("residual", out.ex.sol.residual)] {
         res.cjt.push((k.into(), v));
     }
     for (i, nm) in ["W1", "W2", "W3", "B"].iter().enumerate() {
         res.cjt.push((format!("exchange energy {}", nm), out.e_by_boson[i]));
     }
     rep.add("P2-8e", "CJT with exchange: the energies of the four bosons add up to the exchange energy", (out.e_by_boson.iter().sum::<f64>() - out.ex.e_ex).abs(), 1e-14);
-    rep.add_bool("P2-8f", &format!("CJT with exchange at g_v = {}, g_F = {}: still superfluid (|D| = {:.6}), the photon attracts (E_W3 = {:.3e} < 0), W^1, W^2, B repel", GV, GF, out.d0.abs(), out.e_by_boson[2]), out.d0.abs() > 1e-3 && out.e_by_boson[2] < 0.0 && out.e_by_boson[0] > 0.0 && out.e_by_boson[3] > 0.0, "");
+    rep.add_bool("P2-8f", &format!("CJT with exchange at g_v = {}, g_F = {}: still superfluid (|D| = {:.6}), the zeugon attracts (E_W3 = {:.3e} < 0), W^1, W^2, B repel", GV, GF, out.d0.abs(), out.e_by_boson[2]), out.d0.abs() > 1e-3 && out.e_by_boson[2] < 0.0 && out.e_by_boson[0] > 0.0 && out.e_by_boson[3] > 0.0, "");
     // the grid
     for nr2 in [16usize, 32] {
         let m2 = Model::new(M_LL, 0.0, terms(&Method::Cjt, &v2), grid(nr2));

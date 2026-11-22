@@ -1504,7 +1504,7 @@ pairing term did in $V^{(1)}_{\rm SF}$, make a massive state with the Dirac mass
 ![](figures/fig_part2_p3_gauge.png){width=100%}
 
 **Figure 7.** Left: the exchange energies of the four gauge bosons in the CJT superfluid at the couplings of the project;
-the massless $W^3_{\rm SF}$ attracts, $W^1$, $W^2$ and $B$ repel. Right: the pair amplitude and the gap of the CJT solution as the
+the zeugon $W^3_{\rm SF}$ (massless) attracts, $W^1$, $W^2$ and $B$ repel. Right: the pair amplitude and the gap of the CJT solution as the
 couplings grow. Data: `data/part2_gauge_cjt.csv`, `data/part2_gauge_scan.csv`.
 
 ## 11.5 KS and HS with the gauge bosons
@@ -2371,7 +2371,7 @@ the **zeugon**, from the Greek ζεῦγος, a yoked pair, because it is the on
 spinors of the condensed pair (Sections 8.2 and 11.4). What the computation establishes about it:
 
 1. *It is massless in every method:* by theorem M1, and in the microscopic theory of Part II
-   (*checks P2-8a, P4-M2*); in CJT with the exchange of the gauge bosons its computed mass is ${{GENM:p2_cjtex_M_photon}}$,
+   (*checks P2-8a, P4-M2*); in CJT with the exchange of the gauge bosons its computed mass is ${{GENM:p2_cjtex_M_A}}$,
    against $M^{\rm CJT}_{W,{\rm SF}}={{GENM:p2_cjtex_M_W}}$ (Section 11.4).
 2. *It attracts the pair, but does not by itself hold it at the couplings of the project:* its exchange energy in the
    CJT condensate is ${{GENM:p2_cjtex_exchange_energy_W3}}$ (attraction), while $W^1$, $W^2$ and $B$ repel; its attraction alone
@@ -2785,7 +2785,7 @@ massive Z. The Python program repeats both sections through the C interface (*ch
 
 ![](figures/fig_part4_r4_waves.png){width=100%}
 
-**Figure 15.** Top left: the transverse massless $A_{{\rm SF},p}$ and massive $W^1_{{\rm SF},p}$ at $t=900$, driven at
+**Figure 15.** Top left: the transverse zeugon $A_{{\rm SF},p}$ (massless) and the massive $W^1_{{\rm SF},p}$ at $t=900$, driven at
 $0.7M^{\rm CJT}_{W,{\rm SF}}$ by the current sheet at $x=0$. Top right: the amplitude of $W^1_{{\rm SF},p}$ at the source frequency, the
 evanescent steady state and the slope $e^{-x/\ell_{\rm W}}$. Bottom left: the energy density of the free Goldstone packet (up)
 and of the longitudinal $Z_{{\rm SF},p}$ (down) at three times. Bottom right: the centres of
@@ -2794,9 +2794,9 @@ their energies. Data: `data/part4_waves_transverse.csv`, `data/part4_waves_Wclou
 ## 15.5 The videos
 
 * `videos/video_part4_v1_condensate_growth.mp4` -- the growth of the condensate of CJT from the normal vacuum (Section
-  15.1): $\lvert\Phi^3(t)\rvert/\Phi_0$, the pair amplitude $\lVert\mathsf C^{\rm p}(\vec q)\rVert/\sqrt8$ and the number of charges in the upper
-  band at the momenta of the grid along $+\vec e_3$, compared with the ground state, every 0.5 time units to $t=250$.
-* `videos/video_part4_v2_gauge_fields.mp4` -- the massless $A_{{\rm SF},p}$ radiating and the massive $W^1_{{\rm SF},p}$ bound
+  15.1): $\lvert\Phi^3(t)\rvert/\Phi_0$, the pair amplitude $\lVert\mathsf C^{\rm p}(\vec q)\rVert/\sqrt8$ and the occupation of the upper band (the
+  number of quanta of the DiracLike field in its band of positive energy) at the momenta of the grid along $+\vec e_3$, compared with the ground state, every 0.5 time units to $t=250$.
+* `videos/video_part4_v2_gauge_fields.mp4` -- the zeugon $A_{{\rm SF},p}$ (massless) radiating and the massive $W^1_{{\rm SF},p}$ bound
   (Section 15.3), and the free Goldstone packet against the same packet eaten by the gauge field (Section 15.4).
 
 Both are drawn by `python/sf_part4_figures.py` from the data files of `sf_part4` and encoded by the program ffmpeg
@@ -2973,7 +2973,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   pair response (12.14) of a moving pair, the gradient coefficient at the critical temperature, the two regularizations
   of a moving pair, the twisted states, the slope in closed form, the Ginzburg number, Table 12.5, with the checks
   P3-G1 to P3-G12) and `higgs` (Section 14.6: the numbers of Table 14.2, the couplings of the amplitude field to the
-  Goldstone fields and the width (14.10), with the checks P3-H1 to P3-H4)) uses the library `sfcore`, with two functions added for this part in the
+  Goldstone fields and the width (14.10), with the checks P3-H1 to P3-H3)) uses the library `sfcore`, with two functions added for this part in the
   module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix) and, for
   Section 12.4, the thermal states (`fermi`, `mode_entropy`, `states_t`, `solve_t`, `fixed_pair_state_t`). It reads
   `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
@@ -3000,8 +3000,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
   the twisted states of HS $(0,0)$, the independence of the quadrature, the two regularizations, the slope in closed
   form, the two forms of the Ginzburg number and the quartic coefficient of CJT (checks YP3-G1 to YP3-G12), and
   repeats the checks of Section 14.6: the amplitude mode below the threshold, the couplings of the amplitude field by
-  differentiating (12.4), the numbers of Table 14.2 recomputed from the data files and the row of the Standard Model
-  (checks YP3-H1 to YP3-H4); each check has the identifier of the Rust check of the same statement with the prefix Y,
+  differentiating (12.4), and the numbers of Table 14.2 recomputed from the data files (checks YP3-H1 to YP3-H3); each check has the identifier of the Rust check of the same statement with the prefix Y,
   and the program compares its values with those of the Rust program;
   `python/sf_part3_figures.py` draws Figures 8, 9, 10 and 11; it writes each PDF file without its creation date, so
   that a rerun gives the same bytes and the same SHA-256 checksums as those of Section 16.12:
@@ -3055,7 +3054,7 @@ All paths are relative to the folder `Revision_HS_CJT_and_Kohn-Sham` of PROJECT 
 * `data/part3_ginzburg_regions.csv` (Table 12.5, rows 16 and 17: $a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T^{X,{\rm c}}_{\rm SF})-a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})$
   for the two regularizations at $q^{\rm pair}_{\rm SF}=0.005$, $0.01$, $0.02$, $0.04$):\
   `{{SHA256:data/part3_ginzburg_regions.csv}}`
-* `data/part3_higgs.csv` (Table 14.2; the last row: the Standard Model):\
+* `data/part3_higgs.csv` (Table 14.2; one row per method):\
   `{{SHA256:data/part3_higgs.csv}}`
 * `data/part3_effpot_HS_1_1.csv`, `data/part3_effpot_HS_0_1.csv`, `data/part3_effpot_HS_0_0.csv`, `data/part3_effpot_KS.csv`,
   `data/part3_effpot_CJT.csv` (Figure 8):\
@@ -3282,7 +3281,10 @@ Each of the following was found before part II was committed.
     of Table 14.2 recomputed from the data files, the row of the Standard Model) received Rust checks of the same
     statements, P3-G10 to P3-G12, P3-H3 and P3-H4, whose identifiers they now carry; the earlier YP3-G1 (the gradient
     coefficient on 64 directions) is now YP3-G8, the counterpart of P3-G8 (the gradient coefficient does not depend on
-    the quadrature). The Rust program makes 156 checks (all pass, 899 s), the Python program 113 (all pass, 99 s).
+    the quadrature). The Rust program then made 156 checks (all pass, 899 s), the Python program 113 (all pass, 99 s).
+    The check P3-H4 of the row of the Standard Model and its counterparts YP3-H4 and WP3-H4 were removed on
+    21 November 2026 together with that row (Section 17.6, item 2); the present numbers of checks are those of the
+    verdicts in Sections 16.10 and 16.11.
 11. Section 14.6 said that the masses of $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$ "are at most about a fifth of
     $M^{X,{\rm H}}_{\rm SF}/2$ (the phase-space factor $(1-4M^2/(M^{X,{\rm H}}_{\rm SF})^2)^{1/2}$ is above $0.97$)". No program had computed
     the ratio: the bound holds for the three HS methods but not for KS and CJT, where the larger mass is
@@ -3398,7 +3400,9 @@ the spontaneous breaking of the new group. The earlier versions were wrong in th
    separately whether the superfluid is the Higgs field of its own gauge group (yes, in every method, with an amplitude
    mode that is a resonance broader than its mass) and whether it can be the Higgs field of the Standard Model (no, by
    its quantum numbers, in every method). Table 14.2 no longer contains the values in GeV and the values of the Standard
-   Model.
+   Model, and the programs no longer compute them: the Rust module `higgs` and its Python counterpart write no row of
+   the Standard Model and no values in GeV into `data/part3_higgs.csv`, and the checks P3-H4, YP3-H4 and WP3-H4 of that
+   row were removed.
 3. **The name of the spinor field.** The manuscript now calls the spinor field the DiracLike field (the DiracLike
    isodoublet $\Psi_{\rm LL}$, an isodoublet of DiracLike fields) and keeps the word Dirac only in the names of the Lorentz
    structure: the Dirac matrices, the Dirac adjoint, the Dirac mass, the Dirac sea.

@@ -1,9 +1,9 @@
 case,eigenvalue
 "W1 alone, massless, per unit coupling^2",-3.57317831646064288e-2
 "W2 alone, massless, per unit coupling^2",-3.57317831646064496e-2
-"W3 (the photon of the condensate) alone, massless, per unit coupling^2",3.57317831646064357e-2
+"W3 (the zeugon of the condensate) alone, massless, per unit coupling^2",3.57317831646064357e-2
 "B alone, massless, per unit coupling^2",-1.42927132678833280e-1
 "all four massless, couplings 1",-1.78658915848541766e-1
 "all four massless, g_v = 0.7, g_F = 0.45",-4.64513181139883866e-2
-critical g_v of the photon alone,5.29020686897011672e0
+critical g_v of the zeugon alone,5.29020686897011672e0
 "V^(0) by CJT, contact terms alone",5.63734673478073489e-2

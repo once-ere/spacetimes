@@ -32,7 +32,7 @@
 | P3-6 HS_1_1 | PASS | 2.471e-16 | 1.0e-10 | HS\_1\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 2.5e-16) |
 | P3-H1 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.813693 &lt; 2 E\_gap = 0.905935 (M\_H / 2 E\_gap = 0.8982) |
 | P3-H2 HS_1_1 | PASS | 2.098e-14 | 1.0e-8 | HS\_1\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.07096573 and f\_I\^2/f\_F = 0.07212812 (largest relative difference) |
-| P3-H3 HS_1_1 | PASS | 1.624e-16 | 1.0e-12 | HS\_1\_1: the numbers of Table 14.2 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module higgs (largest relative difference) |
+| P3-H3 HS_1_1 | PASS | 0.000e0 | 1.0e-12 | HS\_1\_1: the numbers of Table 14.2 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module higgs (largest relative difference) |
 | P3-1 HS_0_1 | PASS | 3.606e-14 | 1.0e-9 | HS\_0\_1: the applied field Phi0 = 0.3620090014 gives back Phi\^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II |
 | P3-2 HS_0_1 | PASS | 3.451e-8 | 1.0e-6 | HS\_0\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_0_1 | PASS | 1.082e-14 | 1.0e-10 | HS\_0\_1: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
@@ -156,11 +156,10 @@
 | P3-H1 CJT | PASS | 0.000e0 | 0.0e0 | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235) |
 | P3-H2 CJT | PASS | 7.683e-14 | 1.0e-8 | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.07134817 and f\_I\^2/f\_F = 0.06416246 (largest relative difference) |
 | P3-H3 CJT | PASS | 3.573e-16 | 1.0e-12 | CJT: the numbers of Table 14.2 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = the module higgs (largest relative difference) |
-| P3-H4 | PASS | 1.531e-4 | 1.0e-3 | the Standard-Model row: M\_H/v = 0.50849, lambda = M\_H\^2/(2 v\^2) = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 from m\_H = 125.20, v = 246.22, M\_W = 80.3692, M\_Z = 91.1880 GeV (Particle Data Group 2024) agree with the rounded values 0.5085, 0.1293, 1.558, 0.8814 typed independently (largest relative difference; the rounding allows 1e-3) |
 | P3-7 | PASS | 4.002e-7 | 2.0e-6 | the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative) |
 <!-- END p3_checks_rust -->
 <!-- BEGIN p3_verdict_rust -->
-VERDICT: ALL PASS (156 of 156)
+VERDICT: ALL PASS (155 of 155)
 <!-- END p3_verdict_rust -->
 <!-- BEGIN p3_checks_python -->
 | check | result | deviation | tolerance | statement |
@@ -263,7 +262,6 @@ VERDICT: ALL PASS (156 of 156)
 | YP3-H1 CJT | PASS | -- | -- | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235; data/part3\_values.csv, data/part3\_thermal.csv) (2 E\_gap - M\_H = 0.129305) |
 | YP3-H2 CJT | PASS | 3.334e-11 | 1.0e-06 | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07134817 and 0.06416246, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
 | YP3-H3 CJT | PASS | 3.085e-13 | 1.0e-09 | CJT: the numbers of Table 14.2 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv (largest relative difference) |
-| YP3-H4 | PASS | 0.000e+00 | 1.0e-10 | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 (Particle Data Group 2024; largest relative difference) |
 | YP3-1 HS_1_1 | PASS | 5.519e-14 | 1.0e-09 | HS\_1\_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406) |
 | YP3-2 HS_1_1 | PASS | 2.068e-10 | 1.0e-06 | HS\_1\_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative) |
 | YP3-4 HS_1_1 | PASS | 4.316e-10 | 1.0e-05 | HS\_1\_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative) |
@@ -280,7 +278,7 @@ VERDICT: ALL PASS (156 of 156)
 | YP3-7 CJT | PASS | 1.972e-11 | 1.0e-07 | CJT: the stiffness of the phase from the twisted states f\^2 = 2.2552881119e-03 = Rust (relative) |
 <!-- END p3_checks_python -->
 <!-- BEGIN p3_verdict_python -->
-VERDICT: ALL PASS (113 of 113)
+VERDICT: ALL PASS (112 of 112)
 <!-- END p3_verdict_python -->
 <!-- BEGIN p3_th_Tc_HS_1_1 -->
 $0.2604672394$
@@ -516,18 +514,6 @@ $3.92324396$
 <!-- BEGIN p3_h_Tc_v_HS_1_1 -->
 $1.820314669$
 <!-- END p3_h_Tc_v_HS_1_1 -->
-<!-- BEGIN p3_h_LambdaGeV_HS_1_1 -->
-$1720.745684$
-<!-- END p3_h_LambdaGeV_HS_1_1 -->
-<!-- BEGIN p3_h_MHGeV_HS_1_1 -->
-$1400.158875$
-<!-- END p3_h_MHGeV_HS_1_1 -->
-<!-- BEGIN p3_h_gapGeV_HS_1_1 -->
-$779.441708$
-<!-- END p3_h_gapGeV_HS_1_1 -->
-<!-- BEGIN p3_h_TcGeV_HS_1_1 -->
-$448.1978779$
-<!-- END p3_h_TcGeV_HS_1_1 -->
 <!-- BEGIN p3_th_Tc_HS_0_1 -->
 $0.2404654563$
 <!-- END p3_th_Tc_HS_0_1 -->
@@ -762,18 +748,6 @@ $3.470786568$
 <!-- BEGIN p3_h_Tc_v_HS_0_1 -->
 $1.775309252$
 <!-- END p3_h_Tc_v_HS_0_1 -->
-<!-- BEGIN p3_h_LambdaGeV_HS_0_1 -->
-$1817.793918$
-<!-- END p3_h_LambdaGeV_HS_0_1 -->
-<!-- BEGIN p3_h_MHGeV_HS_0_1 -->
-$1318.052179$
-<!-- END p3_h_MHGeV_HS_0_1 -->
-<!-- BEGIN p3_h_gapGeV_HS_0_1 -->
-$751.8078253$
-<!-- END p3_h_gapGeV_HS_0_1 -->
-<!-- BEGIN p3_h_TcGeV_HS_0_1 -->
-$437.1166441$
-<!-- END p3_h_TcGeV_HS_0_1 -->
 <!-- BEGIN p3_th_Tc_HS_0_0 -->
 $0.2137990984$
 <!-- END p3_th_Tc_HS_0_0 -->
@@ -1008,18 +982,6 @@ $2.988509758$
 <!-- BEGIN p3_h_Tc_v_HS_0_0 -->
 $1.741206273$
 <!-- END p3_h_Tc_v_HS_0_0 -->
-<!-- BEGIN p3_h_LambdaGeV_HS_0_0 -->
-$2005.246102$
-<!-- END p3_h_LambdaGeV_HS_0_0 -->
-<!-- BEGIN p3_h_MHGeV_HS_0_0 -->
-$1231.997907$
-<!-- END p3_h_MHGeV_HS_0_0 -->
-<!-- BEGIN p3_h_gapGeV_HS_0_0 -->
-$734.7034524$
-<!-- END p3_h_gapGeV_HS_0_0 -->
-<!-- BEGIN p3_h_TcGeV_HS_0_0 -->
-$428.7198086$
-<!-- END p3_h_TcGeV_HS_0_0 -->
 <!-- BEGIN p3_th_Tc_KS -->
 $0.2221187371$
 <!-- END p3_th_Tc_KS -->
@@ -1254,18 +1216,6 @@ $2.13489115$
 <!-- BEGIN p3_h_Tc_v_KS -->
 $1.690300288$
 <!-- END p3_h_Tc_v_KS -->
-<!-- BEGIN p3_h_LambdaGeV_KS -->
-$1873.708371$
-<!-- END p3_h_LambdaGeV_KS -->
-<!-- BEGIN p3_h_MHGeV_KS -->
-$1130.737971$
-<!-- END p3_h_MHGeV_KS -->
-<!-- BEGIN p3_h_gapGeV_KS -->
-$686.5092558$
-<!-- END p3_h_gapGeV_KS -->
-<!-- BEGIN p3_h_TcGeV_KS -->
-$416.1857369$
-<!-- END p3_h_TcGeV_KS -->
 <!-- BEGIN p3_th_Tc_CJT -->
 $0.2221187371$
 <!-- END p3_th_Tc_CJT -->
@@ -1500,18 +1450,6 @@ $2.13489115$
 <!-- BEGIN p3_h_Tc_v_CJT -->
 $1.641433472$
 <!-- END p3_h_Tc_v_CJT -->
-<!-- BEGIN p3_h_LambdaGeV_CJT -->
-$1819.539202$
-<!-- END p3_h_LambdaGeV_CJT -->
-<!-- BEGIN p3_h_MHGeV_CJT -->
-$1098.048179$
-<!-- END p3_h_MHGeV_CJT -->
-<!-- BEGIN p3_h_gapGeV_CJT -->
-$666.662178$
-<!-- END p3_h_gapGeV_CJT -->
-<!-- BEGIN p3_h_TcGeV_CJT -->
-$404.1537495$
-<!-- END p3_h_TcGeV_CJT -->
 <!-- BEGIN p3_table_potential -->
 | method | $\Phi^X_{0,{\rm SF}}$ | $10^4\,\mathcal V^X_{\rm SF}$ at the minimum | $10^3a^X_{\rm SF}$ | $10^3b^X_{\rm SF}$ | $10^3c^X_{\rm SF}$ | $10^3u^X_{\rm SF}$ | largest fit residual / depth |
 |:---|---:|---:|---:|---:|---:|---:|---:|
@@ -1980,36 +1918,12 @@ $0.992$ (HS (1, 1)) to $1.09$ (KS)
 <!-- BEGIN p3_h_mwmz -->
 $0.716$ (KS) to $0.784$ (HS (1, 1))
 <!-- END p3_h_mwmz -->
-<!-- BEGIN p3_h_gev_mh -->
-$1098$ GeV (CJT) to $1400$ GeV (HS (1, 1))
-<!-- END p3_h_gev_mh -->
-<!-- BEGIN p3_h_gev_lambda -->
-$1.72\times10^{3}$ GeV (HS (1, 1)) to $2.01\times10^{3}$ GeV (HS (0, 0))
-<!-- END p3_h_gev_lambda -->
-<!-- BEGIN p3_h_gev_tc -->
-$404$ GeV (CJT) to $448$ GeV (HS (1, 1))
-<!-- END p3_h_gev_tc -->
 <!-- BEGIN p3_h_tcv -->
 $1.64$ (CJT) to $1.82$ (HS (1, 1))
 <!-- END p3_h_tcv -->
-<!-- BEGIN p3_h_times_sm -->
-$8.8$ to $11$
-<!-- END p3_h_times_sm -->
 <!-- BEGIN p3_h_fi_gap -->
 $0.16$ (HS (1, 1)) to $0.18$ (KS, CJT)
 <!-- END p3_h_fi_gap -->
-<!-- BEGIN p3_h_sm_mhv -->
-$0.5085$
-<!-- END p3_h_sm_mhv -->
-<!-- BEGIN p3_h_sm_lambda -->
-$0.1293$
-<!-- END p3_h_sm_lambda -->
-<!-- BEGIN p3_h_sm_mhmw -->
-$1.558$
-<!-- END p3_h_sm_mhmw -->
-<!-- BEGIN p3_h_sm_mwmz -->
-$0.8814$
-<!-- END p3_h_sm_mwmz -->
 <!-- BEGIN p3_h_vv_ratio -->
 $0.0785$ (HS (1, 1)) to $0.106$ (KS, CJT)
 <!-- END p3_h_vv_ratio -->
@@ -2090,7 +2004,7 @@ $9.4$ (CJT) to $16$ (HS (1, 1))
 | P3-G11 HS_1_1 | PASS | $4.44\times10^{-16}$ | $1\times10^{-12}$ | HS\_1\_1: the two forms of the Ginzburg number (12.13) agree: n\^2 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 11.3796139519 and n\^2/(256 pi\^2 (Delta C xi0\^3)\^2) = 11.3796139519, with Delta C = alpha\^2/(2 b T\_c) = 3.053509e-2 and xi0 = (c/alpha)\^(1/2) = 1.05036315 (relative difference) |
 | P3-H1 HS_1_1 | PASS | -- | -- | HS\_1\_1: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.813693 &lt; 2 E\_gap = 0.905935 (M\_H / 2 E\_gap = 0.8982) |
 | P3-H2 HS_1_1 | PASS | $2.1\times10^{-14}$ | $1\times10^{-8}$ | HS\_1\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.07096573 and f\_I\^2/f\_F = 0.07212812 (largest relative difference) |
-| P3-H3 HS_1_1 | PASS | $1.62\times10^{-16}$ | $1\times10^{-12}$ | HS\_1\_1: the numbers of Table A3 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module higgs (largest relative difference) |
+| P3-H3 HS_1_1 | PASS | $0$ | $1\times10^{-12}$ | HS\_1\_1: the numbers of Table A3 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module higgs (largest relative difference) |
 | P3-G1 HS_0_1 | PASS | $1.75\times10^{-10}$ | $1\times10^{-7}$ | HS\_0\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.2087983988e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.2087983990e-3) (relative difference) |
 | P3-G2 HS_0_1 | PASS | $3.93\times10^{-12}$ | $1\times10^{-9}$ | HS\_0\_1: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
 | P3-G3 HS_0_1 | PASS | $9.01\times10^{-15}$ | $1\times10^{-9}$ | HS\_0\_1: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0126991375) |
@@ -2142,7 +2056,6 @@ $9.4$ (CJT) to $16$ (HS (1, 1))
 | P3-H1 CJT | PASS | -- | -- | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235) |
 | P3-H2 CJT | PASS | $7.68\times10^{-14}$ | $1\times10^{-8}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.07134817 and f\_I\^2/f\_F = 0.06416246 (largest relative difference) |
 | P3-H3 CJT | PASS | $3.57\times10^{-16}$ | $1\times10^{-12}$ | CJT: the numbers of Table A3 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = the module higgs (largest relative difference) |
-| P3-H4 | PASS | $0.000153$ | $0.001$ | the Standard-Model row: M\_H/v = 0.50849, lambda = M\_H\^2/(2 v\^2) = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 from m\_H = 125.20, v = 246.22, M\_W = 80.3692, M\_Z = 91.1880 GeV (Particle Data Group 2024) agree with the rounded values 0.5085, 0.1293, 1.558, 0.8814 typed independently (largest relative difference; the rounding allows 1e-3) |
 | YP3-G1 HS_1_1 | PASS | $7.98\times10^{-10}$ | $1\times10^{-7}$ | HS\_1\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response of this engine (-1.3427965859e-03) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.3427965869e-03, data/part3\_thermal.csv) (relative difference) |
 | YP3-G2 HS_1_1 | PASS | $9.72\times10^{-12}$ | $1\times10^{-9}$ | HS\_1\_1: a(0, T) of this engine = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002, with lambda\^P(T) from (12.9) on 400 radial nodes (largest relative difference) |
 | YP3-G3 HS_1_1 | PASS | $7.22\times10^{-14}$ | $1\times10^{-9}$ | HS\_1\_1: a(0, T\_c) of this engine vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0140378852 in closed form) |
@@ -2210,8 +2123,7 @@ $9.4$ (CJT) to $16$ (HS (1, 1))
 | YP3-H1 CJT | PASS | -- | -- | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235; data/part3\_values.csv, data/part3\_thermal.csv) (2 E\_gap - M\_H = 0.129305) |
 | YP3-H2 CJT | PASS | $3.33\times10^{-11}$ | $1\times10^{-6}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07134817 and 0.06416246, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
 | YP3-H3 CJT | PASS | $3.08\times10^{-13}$ | $1\times10^{-9}$ | CJT: the numbers of Table A3 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv (largest relative difference) |
-| YP3-H4 | PASS | $0$ | $1\times10^{-10}$ | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 (Particle Data Group 2024; largest relative difference) |
 <!-- END p4_checks_ginzburg -->
 <!-- BEGIN p4_ngchecks -->
-132
+130
 <!-- END p4_ngchecks -->

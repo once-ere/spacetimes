@@ -1,6 +1,6 @@
 (* The values of the Rust programs that Part 3 of the notebook uses or compares with its own results, written by
    wolfram/tools/make_data_cells.py from the data files of the folder data/ (do not edit):
-     data/part3_values.csv   SHA-256 a71ca8cdadaf08e64e9ca5556e83c7ded16d4d1337ae9f32479ffd5dd071e0ba
+     data/part3_values.csv   SHA-256 ddd902b2a676351f6903cd034bd788d9d1183377e829b51c84bcfe847a4e2752
      data/part3_effpot_HS_1_1.csv   SHA-256 adec9b41732d6e022c680889612a4f56a4610a52765d36d44a1ae76de2e2dc5c
      data/part3_effpot_HS_0_1.csv   SHA-256 d2a263df26a3949391ed3cf24626c1116b9fd794c00a81dcdbfb156a85b8fce7
      data/part3_effpot_HS_0_0.csv   SHA-256 b0439dd3ee1bd3a71d6851e4389af27a480fed96707ec6e46c06ae19be0700bc
@@ -86,10 +86,6 @@ rustPart3 = <|
    "p3_h_MW_MZ_HS_1_1" -> 7.841217487271*^-1,
    "p3_h_width_MH_HS_1_1" -> 3.923243959678*^0,
    "p3_h_Tc_v_HS_1_1" -> 1.820314669385*^0,
-   "p3_h_LambdaGeV_HS_1_1" -> 1.720745683519*^3,
-   "p3_h_MHGeV_HS_1_1" -> 1.400158875228*^3,
-   "p3_h_gapGeV_HS_1_1" -> 7.794417079748*^2,
-   "p3_h_TcGeV_HS_1_1" -> 4.481978778959*^2,
    "p3_th_Tc_HS_0_1" -> 2.404654563265*^-1,
    "p3_th_lam0_HS_0_1" -> 1.150958291684*^0,
    "p3_th_gP_HS_0_1" -> 2.450000000000*^1,
@@ -168,10 +164,6 @@ rustPart3 = <|
    "p3_h_MW_MZ_HS_0_1" -> 7.834648392948*^-1,
    "p3_h_width_MH_HS_0_1" -> 3.470786567658*^0,
    "p3_h_Tc_v_HS_0_1" -> 1.775309252310*^0,
-   "p3_h_LambdaGeV_HS_0_1" -> 1.817793918434*^3,
-   "p3_h_MHGeV_HS_0_1" -> 1.318052178509*^3,
-   "p3_h_gapGeV_HS_0_1" -> 7.518078253496*^2,
-   "p3_h_TcGeV_HS_0_1" -> 4.371166441038*^2,
    "p3_th_Tc_HS_0_0" -> 2.137990983941*^-1,
    "p3_th_lam0_HS_0_0" -> 1.113375980119*^0,
    "p3_th_gP_HS_0_0" -> 2.370000000000*^1,
@@ -250,10 +242,6 @@ rustPart3 = <|
    "p3_h_MW_MZ_HS_0_0" -> 7.777777754510*^-1,
    "p3_h_width_MH_HS_0_0" -> 2.988509758172*^0,
    "p3_h_Tc_v_HS_0_0" -> 1.741206273159*^0,
-   "p3_h_LambdaGeV_HS_0_0" -> 2.005246101586*^3,
-   "p3_h_MHGeV_HS_0_0" -> 1.231997906596*^3,
-   "p3_h_gapGeV_HS_0_0" -> 7.347034524355*^2,
-   "p3_h_TcGeV_HS_0_0" -> 4.287198085773*^2,
    "p3_th_Tc_KS" -> 2.221187370593*^-1,
    "p3_th_lam0_KS" -> 1.113375980119*^0,
    "p3_th_gP_KS" -> 2.370000000000*^1,
@@ -332,10 +320,6 @@ rustPart3 = <|
    "p3_h_MW_MZ_KS" -> 7.162490389419*^-1,
    "p3_h_width_MH_KS" -> 2.134891150088*^0,
    "p3_h_Tc_v_KS" -> 1.690300288102*^0,
-   "p3_h_LambdaGeV_KS" -> 1.873708370786*^3,
-   "p3_h_MHGeV_KS" -> 1.130737970766*^3,
-   "p3_h_gapGeV_KS" -> 6.865092557893*^2,
-   "p3_h_TcGeV_KS" -> 4.161857369365*^2,
    "p3_th_Tc_CJT" -> 2.221187370593*^-1,
    "p3_th_lam0_CJT" -> 1.113375980119*^0,
    "p3_th_gP_CJT" -> 2.370000000000*^1,
@@ -413,11 +397,7 @@ rustPart3 = <|
    "p3_h_fF_fI_CJT" -> 1.054510475061*^0,
    "p3_h_MW_MZ_CJT" -> 7.375723581434*^-1,
    "p3_h_width_MH_CJT" -> 2.134891150088*^0,
-   "p3_h_Tc_v_CJT" -> 1.641433472268*^0,
-   "p3_h_LambdaGeV_CJT" -> 1.819539201837*^3,
-   "p3_h_MHGeV_CJT" -> 1.098048179158*^3,
-   "p3_h_gapGeV_CJT" -> 6.666621779611*^2,
-   "p3_h_TcGeV_CJT" -> 4.041537495419*^2|>;
+   "p3_h_Tc_v_CJT" -> 1.641433472268*^0|>;
 rustEffPot["HS_1_1"] = {
    {0.00000000000000000*^0, 0.00000000000000000*^0, 1.85628055584762074*^-17, 2.00000000000000039*^-1},
    {1.34354713532457166*^-2, 1.59012649354813261*^-2, -1.55704708719809380*^-6, 2.00011056138993476*^-1},

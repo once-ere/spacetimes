@@ -184,14 +184,14 @@ def fig_modes():
 # ---------------------------------------------------------------------------------------------- figure 13
 def fig_waves():
     p4 = values("part4_values.csv")
-    ts, tr = frames("part4_waves_transverse.csv", ["x", "photon", "W"])
+    ts, tr = frames("part4_waves_transverse.csv", ["x", "A", "W"])
     cl, _ = table("part4_waves_Wcloud.csv")
     tl, lo = frames("part4_waves_longitudinal.csv", ["x", "energy_free", "energy_Z", "E"])
     fig, axs = plt.subplots(2, 2, figsize=(9.6, 6.6))
     ax = axs[0, 0]
     x = tr["x"][-1]
-    # the column "photon" of the data file is the massless gauge boson A_SF of the new group (not the photon)
-    ax.plot(x, tr["photon"][-1] * 1e3, color=PAL[0], lw=1.0, label=r"massless $A_{\rm SF}$ (mass 0)")
+    # the column "A" of the data file is the zeugon, the massless gauge boson A_SF of the new group (not the photon)
+    ax.plot(x, tr["A"][-1] * 1e3, color=PAL[0], lw=1.0, label=r"the zeugon $A_{\rm SF}$ (mass 0)")
     ax.plot(x, tr["W"][-1] * 1e3, color=PAL[1], lw=1.2, ls="--", label=r"$W^1_{\rm SF}$ (mass $M^{\rm CJT}_{W,{\rm SF}}$)")
     ax.set_xlim(-1000, 1000)
     ax.set_xlabel(r"$x$ (source at $x=0$, frequency $0.7\,M^{\rm CJT}_{W,{\rm SF}}$; $t=900$)")
@@ -268,7 +268,9 @@ def video_growth():
             axs[2].plot(gp["q"], gp["upper_occupation"], color=INK2, lw=0.8, ls=":", label="ground state")
             axs[2].set_ylim(0, 2.2)
             axs[2].set_xlabel(r"momentum $|\vec q|$")
-            axs[2].set_ylabel("charges in the upper band at $\\vec q$")
+            # the occupation of the upper band: the number of quanta of the DiracLike field in its positive-energy band
+            # at q, Tr[(1 - P_vac(q)) C^n(q)] (column upper_occupation); it is not a charge of any kind
+            axs[2].set_ylabel("occupation of the upper band at $\\vec q$")
             axs[2].legend(fontsize=8, loc="upper right")
             fig.suptitle("CJT: the condensate grows from the normal vacuum (time-dependent mean field, CVODE)   t = %6.1f" % t, fontsize=10)
             fig.tight_layout(rect=(0, 0, 1, 0.94))
@@ -277,12 +279,12 @@ def video_growth():
 
 
 def video_gauge():
-    ts, tr = frames("part4_waves_transverse.csv", ["x", "photon", "W"])
+    ts, tr = frames("part4_waves_transverse.csv", ["x", "A", "W"])
     tl, lo = frames("part4_waves_longitudinal.csv", ["x", "energy_free", "energy_Z"])
     fig, axs = plt.subplots(2, 1, figsize=(12.8, 7.2), dpi=100)
     path = os.path.join(VID, "video_part4_v2_gauge_fields.mp4")
     w = writer(path, 20)
-    umax = max(abs(tr["photon"]).max(), abs(tr["W"]).max()) * 1e3 * 1.1
+    umax = max(abs(tr["A"]).max(), abs(tr["W"]).max()) * 1e3 * 1.1
     emax = max(lo["energy_free"].max(), lo["energy_Z"].max()) * 1e4 * 1.1
     nfr = max(len(ts), len(tl))
     with w.saving(fig, path, dpi=100):
@@ -291,7 +293,7 @@ def video_gauge():
             b = min(i, len(tl) - 1)
             for ax in axs:
                 ax.cla()
-            axs[0].plot(tr["x"][a], tr["photon"][a] * 1e3, color=PAL[0], lw=1.0, label=r"massless $A_{\rm SF}$ (mass 0): radiates")
+            axs[0].plot(tr["x"][a], tr["A"][a] * 1e3, color=PAL[0], lw=1.0, label=r"the zeugon $A_{\rm SF}$ (mass 0): radiates")
             axs[0].plot(tr["x"][a], tr["W"][a] * 1e3, color=PAL[1], lw=1.4, ls="--", label=r"$W^1_{\rm SF}$ (mass $M_{W,{\rm SF}}$): stays bound")
             axs[0].set_xlim(-1000, 1000)
             axs[0].set_ylim(-umax, umax)

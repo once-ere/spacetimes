@@ -330,7 +330,7 @@ that a rerun reproduces these checksums):
   `96e7485937c714b51f0df37fa06661a407e204cde4156caef7e5274ac29f49d0`\
   `32c3fb53937001c51a23a33b2790112e0970043d8b33f08473d277be1bb9954c`
 * `data/part3_values.csv` (all numbers of Part III, among them those of Table R1):\
-  `a71ca8cdadaf08e64e9ca5556e83c7ded16d4d1337ae9f32479ffd5dd071e0ba`
+  `ddd902b2a676351f6903cd034bd788d9d1183377e829b51c84bcfe847a4e2752`
 * `data/part3_landau.csv` (Table R1, Figure R1 right):\
   `f2b56e0925e8494c23b4365ab6b91747ccc34bd3c7f3774d8a3817d4685be089`
 * `data/part3_landau_residuals.csv` (Figure R1 left):\
@@ -719,7 +719,7 @@ that a rerun reproduces these checksums):
 * `data/part3_thermal_curves.csv` (Figure A1 (c); the free-energy curves (A1.2)):\
   `519b410f803a762dcdb4d503197344d25079c751b45388421a0d79cc80e69e9b`
 * `data/part3_values.csv` (the critical temperatures, the couplings and the eigenvalues of rows 1 to 4):\
-  `a71ca8cdadaf08e64e9ca5556e83c7ded16d4d1337ae9f32479ffd5dd071e0ba`
+  `ddd902b2a676351f6903cd034bd788d9d1183377e829b51c84bcfe847a4e2752`
 * `figures/fig_p4_a1_thermal.pdf` (Figure A1):\
   `3f2786a08c6a0ea71ff872fd8f06ebec38de9b8f21b3d30e3b54378e17b3c339`
 
@@ -1196,7 +1196,7 @@ with the couplings (A2.8) by exact symbolic differentiation); the figures by `py
     python3 python/sf_part3_figures.py
     python3 code/scripts/write_part3_fragments.py
 
-**The checks.** The 132 checks of this addendum (the Rust identifiers P3-G and P3-H; the Python identifiers
+**The checks.** The 130 checks of this addendum (the Rust identifiers P3-G and P3-H; the Python identifiers
 YP3-G and YP3-H; deviation and tolerance as in the reports, a check of a fact shown with "--"):
 
 | check | result | deviation | tolerance | statement |
@@ -1212,7 +1212,7 @@ YP3-G and YP3-H; deviation and tolerance as in the reports, a check of a fact sh
 | P3-G11 HS_1_1 | PASS | $4.44\times10^{-16}$ | $1\times10^{-12}$ | HS\_1\_1: the two forms of the Ginzburg number (12.13) agree: n\^2 b\^2 T\_c\^2/(64 pi\^2 alpha c\^3) = 11.3796139519 and n\^2/(256 pi\^2 (Delta C xi0\^3)\^2) = 11.3796139519, with Delta C = alpha\^2/(2 b T\_c) = 3.053509e-2 and xi0 = (c/alpha)\^(1/2) = 1.05036315 (relative difference) |
 | P3-H1 HS_1_1 | PASS | -- | -- | HS\_1\_1: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.813693 &lt; 2 E\_gap = 0.905935 (M\_H / 2 E\_gap = 0.8982) |
 | P3-H2 HS_1_1 | PASS | $2.1\times10^{-14}$ | $1\times10^{-8}$ | HS\_1\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.07096573 and f\_I\^2/f\_F = 0.07212812 (largest relative difference) |
-| P3-H3 HS_1_1 | PASS | $1.62\times10^{-16}$ | $1\times10^{-12}$ | HS\_1\_1: the numbers of Table A3 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module higgs (largest relative difference) |
+| P3-H3 HS_1_1 | PASS | $0$ | $1\times10^{-12}$ | HS\_1\_1: the numbers of Table A3 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module higgs (largest relative difference) |
 | P3-G1 HS_0_1 | PASS | $1.75\times10^{-10}$ | $1\times10^{-7}$ | HS\_0\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response (-1.2087983988e-3) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.2087983990e-3) (relative difference) |
 | P3-G2 HS_0_1 | PASS | $3.93\times10^{-12}$ | $1\times10^{-9}$ | HS\_0\_1: a(0, T) = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002 (largest relative difference) |
 | P3-G3 HS_0_1 | PASS | $9.01\times10^{-15}$ | $1\times10^{-9}$ | HS\_0\_1: a(0, T\_c) vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0126991375) |
@@ -1264,7 +1264,6 @@ YP3-G and YP3-H; deviation and tolerance as in the reports, a check of a fact sh
 | P3-H1 CJT | PASS | -- | -- | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235) |
 | P3-H2 CJT | PASS | $7.68\times10^{-14}$ | $1\times10^{-8}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (A2.8) are f\_F = 0.07134817 and f\_I\^2/f\_F = 0.06416246 (largest relative difference) |
 | P3-H3 CJT | PASS | $3.57\times10^{-16}$ | $1\times10^{-12}$ | CJT: the numbers of Table A3 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = the module higgs (largest relative difference) |
-| P3-H4 | PASS | $0.000153$ | $0.001$ | the Standard-Model row: M\_H/v = 0.50849, lambda = M\_H\^2/(2 v\^2) = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 from m\_H = 125.20, v = 246.22, M\_W = 80.3692, M\_Z = 91.1880 GeV (Particle Data Group 2024) agree with the rounded values 0.5085, 0.1293, 1.558, 0.8814 typed independently (largest relative difference; the rounding allows 1e-3) |
 | YP3-G1 HS_1_1 | PASS | $7.98\times10^{-10}$ | $1\times10^{-7}$ | HS\_1\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^2 from the linear response of this engine (-1.3427965859e-03) equals the Taylor coefficient a\^Tay of the nonlinear free energy of Section 3 (-1.3427965869e-03, data/part3\_thermal.csv) (relative difference) |
 | YP3-G2 HS_1_1 | PASS | $9.72\times10^{-12}$ | $1\times10^{-9}$ | HS\_1\_1: a(0, T) of this engine = (1 - lambda\^P(T)) / (lambda\^P(T) g\^P) at T/T\_c = 0.9, 0.998, 1.002, with lambda\^P(T) from (12.9) on 400 radial nodes (largest relative difference) |
 | YP3-G3 HS_1_1 | PASS | $7.22\times10^{-14}$ | $1\times10^{-9}$ | HS\_1\_1: a(0, T\_c) of this engine vanishes to the accuracy of T\_c (/a(0, T\_c)/ / alpha; alpha = 0.0140378852 in closed form) |
@@ -1332,7 +1331,6 @@ YP3-G and YP3-H; deviation and tolerance as in the reports, a check of a fact sh
 | YP3-H1 CJT | PASS | -- | -- | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235; data/part3\_values.csv, data/part3\_thermal.csv) (2 E\_gap - M\_H = 0.129305) |
 | YP3-H2 CJT | PASS | $3.33\times10^{-11}$ | $1\times10^{-6}$ | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07134817 and 0.06416246, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
 | YP3-H3 CJT | PASS | $3.08\times10^{-13}$ | $1\times10^{-9}$ | CJT: the numbers of Table A3 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv (largest relative difference) |
-| YP3-H4 | PASS | $0$ | $1\times10^{-10}$ | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 (Particle Data Group 2024; largest relative difference) |
 
 **Data files and figures** (SHA-256 checksums; the figure program writes its PDF files without their creation date, so
 that a rerun reproduces these checksums):
@@ -1349,10 +1347,8 @@ that a rerun reproduces these checksums):
   (lens), divided by k squared and by k):\
   `8838a87b0a15124b283f32962b18148fbf6b08b0e4101a355689e2abeaf63b0c`
 * `data/part3_higgs.csv` (Table A3, Figure A3; one row per method: the scale v, the decay constants f_F and f_I, the
-  masses M_H, M_NU, M_W and M_Z, the ratios of Table A3 and the width ratio; the file also has a row and columns written
-  for the withdrawn comparison with the Standard Model (Section 5.10, item 2), which Table A3 and Figure A3 do not
-  use):\
-  `b660c129254e86955c47f5acfb92388fd63329a23030e2fe38ebdbbaa149ab7e`
+  masses M_H, M_NU, M_W and M_Z, the ratios of Table A3 and the width ratio):\
+  `fc2b3fb56517fb1557ca9c355371472e761ab852189deff8fcb4860feba9ed7b`
 * `figures/fig_p4_a2_ginzburg.pdf` (Figure A2):\
   `0fbfb389653d65574d1a72e7f0ca9c2775863b9b74b4a3c26ee4101dd8110bb7`
 * `figures/fig_p4_a2_higgs.pdf` (Figure A3):\

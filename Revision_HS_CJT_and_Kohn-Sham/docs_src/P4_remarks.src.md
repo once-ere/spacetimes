@@ -980,7 +980,7 @@ constrains, but does not exclude, its compositeness at a higher scale.
   and $B$ repel). *Why it holds:* the massless gauge bosons of a vacuum correspond one to one to the generators that leave
   it unchanged, and the stabilizer of the polar vacuum has the single generator $\vec n\cdot\vec T_{\rm LL}$; the
   microscopic mass matrix confirms it in every method (its smallest eigenvalue is zero to rounding), and in CJT with the
-  exchange of the gauge bosons the computed mass is ${{GENM:p2_cjtex_M_photon}}$, against
+  exchange of the gauge bosons the computed mass is ${{GENM:p2_cjtex_M_A}}$, against
   $M^{\rm CJT}_{W,{\rm SF}}={{GENM:p2_cjtex_M_W}}$. Two qualifications: its attraction alone would pair the normal vacuum only
   for $g^{\rm v}_{\rm LL}>{{GENM:p2_thouless7}}$, so at the coupling $0.7$ of the project it attracts the pair but does not by itself
   hold the condensate, which the pairing term of the potential produces; and the zeugon is a prediction of the model, not
@@ -1039,9 +1039,7 @@ that a rerun reproduces these checksums):
   (lens), divided by k squared and by k):\
   `{{SHA256:data/part3_ginzburg_regions.csv}}`
 * `data/part3_higgs.csv` (Table A3, Figure A3; one row per method: the scale v, the decay constants f_F and f_I, the
-  masses M_H, M_NU, M_W and M_Z, the ratios of Table A3 and the width ratio; the file also has a row and columns written
-  for the withdrawn comparison with the Standard Model (Section 5.10, item 2), which Table A3 and Figure A3 do not
-  use):\
+  masses M_H, M_NU, M_W and M_Z, the ratios of Table A3 and the width ratio):\
   `{{SHA256:data/part3_higgs.csv}}`
 * `figures/fig_p4_a2_ginzburg.pdf` (Figure A2):\
   `{{SHA256:figures/fig_p4_a2_ginzburg.pdf}}`

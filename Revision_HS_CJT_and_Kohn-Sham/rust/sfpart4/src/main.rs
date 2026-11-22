@@ -1,5 +1,5 @@
 //! sf_part4 -- part IV of superfluid.md (folder Revision_HS_CJT_and_Kohn-Sham of PROJECT spacetimes): the mass matrix
-//! of the gauge bosons in the vacua of the superfluid, its diagonalization, the surviving U(1) and its massless photon
+//! of the gauge bosons in the vacua of the superfluid, its diagonalization, the surviving U(1) and its massless gauge boson, the zeugon (not the photon)
 //! (Section 14); the dynamics of the uniform superfluid (the time-dependent mean field (6.6), integrated with CVODE) and
 //! of the gauge fields of the effective theory (CVODE and IDA) (Section 15).
 //!
@@ -236,13 +236,13 @@ fn section14(rep: &mut Report, vals: &mut Vec<(String, f64)>, p3: &HashMap<Strin
         let (lw, lz) = (GV * GV * chi11, GF * GF * chiff);
         let mut expect = [0.0, lw, lw, lz];
         expect.sort_by(|a, b| a.partial_cmp(b).unwrap());
-        let photon = mass::column(&vecs, 0);
-        let ov_photon = mass::overlap(&photon, &[1.0, 0.0, 0.0, 0.0]);
+        let zeugon = mass::column(&vecs, 0);
+        let ov_zeugon = mass::overlap(&zeugon, &[1.0, 0.0, 0.0, 0.0]);
         let zcol = (0..4).find(|&k| (ev[k] - lz).abs() < 1e-3 * lz).unwrap_or(3);
         let ov_z = mass::overlap(&mass::column(&vecs, zcol), &[0.0, 0.0, 0.0, 1.0]);
         rep.add(&format!("P4-M1 {}", tag), &format!("{}: the susceptibility matrix of the vacuum along e_1 is symmetric (largest asymmetry relative to chi_FF; largest residual of the self-consistency {:.1e})", tag, resmax), asym / chiff_r, 1e-7);
-        rep.add(&format!("P4-M2 {}", tag), &format!("{}: the smallest eigenvalue of the mass matrix g_a g_b chi^ab of this vacuum vanishes: the photon is massless ({:.3e}, relative to M_Z^2 = {:.6e})", tag, ev[0], lz), ev[0].abs() / lz, 1e-7);
-        rep.add(&format!("P4-M3 {}", tag), &format!("{}: its eigenvector is (1, 0, 0, 0): the photon is W^1, the gauge field of the generator T^1 that leaves the condensate along e_1 unchanged (1 minus the overlap)", tag), 1.0 - ov_photon, 1e-9);
+        rep.add(&format!("P4-M2 {}", tag), &format!("{}: the smallest eigenvalue of the mass matrix g_a g_b chi^ab of this vacuum vanishes: the zeugon is massless ({:.3e}, relative to M_Z^2 = {:.6e})", tag, ev[0], lz), ev[0].abs() / lz, 1e-7);
+        rep.add(&format!("P4-M3 {}", tag), &format!("{}: its eigenvector is (1, 0, 0, 0): the zeugon is W^1, the gauge field of the generator T^1 that leaves the condensate along e_1 unchanged (1 minus the overlap)", tag), 1.0 - ov_zeugon, 1e-9);
         let dev = (1..4).map(|k| (ev[k] - expect[k]).abs() / expect[k]).fold(0.0, f64::max);
         rep.add(&format!("P4-M4 {}", tag), &format!("{}: the other eigenvalues are M_W^2, M_W^2, M_Z^2 of the vacuum along e_3 ({:.9e}, {:.9e}, {:.9e} against {:.9e}, {:.9e}, {:.9e}; relative) and the Z is B (1 minus overlap {:.1e})", tag, ev[1], ev[2], ev[3], expect[1], expect[2], expect[3], 1.0 - ov_z), dev + (1.0 - ov_z), 1e-6);
         // the effective Lagrangian (14.3) at this vacuum
@@ -251,7 +251,7 @@ fn section14(rep: &mut Report, vals: &mut Vec<(String, f64)>, p3: &HashMap<Strin
         let ml = mass::mass_matrix_l(z, y, &ph_r, GV, GF);
         let dl = (0..4).flat_map(|a| (0..4).map(move |b| (a, b))).map(|(a, b)| (ml[a][b] - mm[a][b]).abs()).fold(0.0, f64::max);
         rep.add(&format!("P4-M5 {}", tag), &format!("{}: the mass matrix (14.3) of the effective Lagrangian L^X at this vacuum equals the microscopic one (largest difference relative to M_Z^2)", tag), dl / lz, 1e-6);
-        // the vacuum along n = (1, 1, 1)/sqrt 3 with the phase e^{i pi/5}, from (14.3): the photon is n.W
+        // the vacuum along n = (1, 1, 1)/sqrt 3 with the phase e^{i pi/5}, from (14.3): the zeugon is n.W
         let s3 = 1.0 / 3f64.sqrt();
         let ph_n: [C64; 3] = [C64::cis(th).scale(phi0 * s3), C64::cis(th).scale(phi0 * s3), C64::cis(th).scale(phi0 * s3)];
         let mn = mass::mass_matrix_l(z, y, &ph_n, GV, GF);
@@ -259,13 +259,13 @@ fn section14(rep: &mut Report, vals: &mut Vec<(String, f64)>, p3: &HashMap<Strin
         let ovn = mass::overlap(&mass::column(&vn, 0), &[s3, s3, s3, 0.0]);
         let devn = (1..4).map(|k| (evn[k] - expect[k]).abs() / expect[k]).fold(0.0, f64::max);
         rep.add(&format!("P4-M6 {}", tag), &format!("{}: the mass matrix (14.3) of L^X at the vacuum Phi_0 e^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 ({:.1e}), M_W^2, M_W^2, M_Z^2, and the massless field is n.W = (W^1 + W^2 + W^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M_Z^2 and the relative deviations)", tag, evn[0]), (1.0 - ovn) + evn[0].abs() / lz + devn, 1e-12);
-        println!("{:<20} Phi0 {:.8} vacuum along e1: eigenvalues {:.3e} {:.9e} {:.9e} {:.9e} | photon overlap 1-{:.1e} | residual {:.1e} ({:.0} s)", m.name(), phi0, ev[0], ev[1], ev[2], ev[3], 1.0 - ov_photon, resmax, t1.elapsed().as_secs_f64());
-        for (k, v) in [("ev0", ev[0]), ("ev1", ev[1]), ("ev2", ev[2]), ("ev3", ev[3]), ("MW", ev[1].sqrt()), ("MZ", ev[3].sqrt()), ("photon_overlap_defect", 1.0 - ov_photon), ("chi11_e1", chi[0][0]), ("chi22_e1", chi[1][1]), ("chiFF_e1", chi[3][3])] {
+        println!("{:<20} Phi0 {:.8} vacuum along e1: eigenvalues {:.3e} {:.9e} {:.9e} {:.9e} | zeugon overlap 1-{:.1e} | residual {:.1e} ({:.0} s)", m.name(), phi0, ev[0], ev[1], ev[2], ev[3], 1.0 - ov_zeugon, resmax, t1.elapsed().as_secs_f64());
+        for (k, v) in [("ev0", ev[0]), ("ev1", ev[1]), ("ev2", ev[2]), ("ev3", ev[3]), ("MW", ev[1].sqrt()), ("MZ", ev[3].sqrt()), ("A_overlap_defect", 1.0 - ov_zeugon), ("chi11_e1", chi[0][0]), ("chi22_e1", chi[1][1]), ("chiFF_e1", chi[3][3])] {
             vals.push((format!("p4_mass_{}_{}", k, tag), v));
         }
-        rows.push(vec![tag.clone(), f(phi0), f(ev[0]), f(ev[1]), f(ev[2]), f(ev[3]), f(lw), f(lz), f(1.0 - ov_photon), f(1.0 - ov_z), f(chi[0][0]), f(chi[1][1]), f(chi[2][2]), f(chi[3][3]), f(dl / lz)]);
+        rows.push(vec![tag.clone(), f(phi0), f(ev[0]), f(ev[1]), f(ev[2]), f(ev[3]), f(lw), f(lz), f(1.0 - ov_zeugon), f(1.0 - ov_z), f(chi[0][0]), f(chi[1][1]), f(chi[2][2]), f(chi[3][3]), f(dl / lz)]);
     }
-    write_csv(&data.join("part4_massmatrix.csv"), &["method", "Phi0", "eigenvalue_0", "eigenvalue_1", "eigenvalue_2", "eigenvalue_3", "MW2_e3", "MZ2_e3", "photon_overlap_defect", "Z_overlap_defect", "chi_11", "chi_22", "chi_33", "chi_FF", "L_minus_micro"], &rows);
+    write_csv(&data.join("part4_massmatrix.csv"), &["method", "Phi0", "eigenvalue_0", "eigenvalue_1", "eigenvalue_2", "eigenvalue_3", "MW2_e3", "MZ2_e3", "A_overlap_defect", "Z_overlap_defect", "chi_11", "chi_22", "chi_33", "chi_FF", "L_minus_micro"], &rows);
     // the polar vacuum along e_3 from (14.3): {0, 2 Z Phi0^2 g_v^2 (twice), 8 (Z + Y) Phi0^2 g_F^2}
     let tag = "CJT";
     let z = p3[&format!("p3_Z_{}", tag)];
@@ -568,7 +568,7 @@ fn section15_waves(rep: &mut Report, vals: &mut Vec<(String, f64)>, p3: &HashMap
     let mz = p3["p3_MZ_CJT"];
     let f2 = p3["p3_fF2_t_CJT"];
     rep.add("P4-W0", &format!("the mass of the Z of L^CJT is M_Z = 2 g_F f_F = {:.12} (f_F^2 = {:.9e}); g_F (chi_FF)^(1/2) of Part III = {:.12} (relative)", 2.0 * GF * f2.sqrt(), f2, mz), ((2.0 * GF * f2.sqrt() - mz) / mz).abs(), 1e-10);
-    // ---------------------------------------------------------------- (a) the transverse photon and W with a source
+    // ---------------------------------------------------------------- (a) the transverse zeugon A and W with a source
     let g1 = spectral::Grid1::new(511, 2000.0);
     let d1 = g1.dmatrix();
     // the derivative is exact for a Fourier mode inside the grid: D sin(k x) = k cos(k x) with k = 2 pi 37 / L
@@ -602,15 +602,15 @@ fn section15_waves(rep: &mut Report, vals: &mut Vec<(String, f64)>, p3: &HashMap
     let we = waves::transverse_exact(&g1, mw, &src, &tt);
     let eu = waves::max_diff(&tr.u, &ue, n) / waves::max_abs(&ue, n);
     let ew = waves::max_diff(&tr.w, &we, n) / waves::max_abs(&we, n);
-    rep.add("P4-W2", &format!("the photon driven by the source (15.2) to t = 900 ({}) equals the exact Duhamel solution of every Fourier mode (largest difference relative to the largest field)", tr.stats.describe()), eu, 1e-6);
+    rep.add("P4-W2", &format!("the zeugon A driven by the source (15.2) to t = 900 ({}) equals the exact Duhamel solution of every Fourier mode (largest difference relative to the largest field)", tr.stats.describe()), eu, 1e-6);
     rep.add("P4-W3", "the W (mass M_W of L^CJT) driven by the same source equals its exact solution (largest difference relative to the largest field)", ew, 1e-6);
-    // the radiation of the photon: amplitude J_0 |s^(omega)|/(2 omega) with s^(omega) = (2 pi)^(1/2) sigma^3 omega^2 e^{-omega^2 sigma^2/2}
+    // the radiation of the zeugon: amplitude J_0 |s^(omega)|/(2 omega) with s^(omega) = (2 pi)^(1/2) sigma^3 omega^2 e^{-omega^2 sigma^2/2}
     let om = src.omega;
     let shat = (2.0 * PI).sqrt() * src.sigma.powi(3) * om * om * (-0.5 * om * om * src.sigma * src.sigma).exp();
     let a_pred = src.j0 * shat / (2.0 * om);
     let ulast = tr.u.last().unwrap();
     let a_num = g1.x.iter().zip(ulast).filter(|(x, _)| **x > 100.0 && **x < 400.0).map(|(_, u)| u.abs()).fold(0.0, f64::max);
-    rep.add("P4-W4", &format!("the photon radiates: at t = 900 its amplitude for 100 < x < 400 is {:.6e}, the outgoing wave J_0 |s^(omega_s)|/(2 omega_s) = {:.6e} (relative)", a_num, a_pred), ((a_num - a_pred) / a_pred).abs(), 2e-2);
+    rep.add("P4-W4", &format!("the zeugon radiates: at t = 900 its amplitude for 100 < x < 400 is {:.6e}, the outgoing wave J_0 |s^(omega_s)|/(2 omega_s) = {:.6e} (relative)", a_num, a_pred), ((a_num - a_pred) / a_pred).abs(), 2e-2);
     // the W stays bound: its amplitude at the source frequency over the last four periods against the evanescent
     // steady state, and its decay length against 1/(M_W^2 - omega_s^2)^(1/2)
     let period = 2.0 * PI / om;
@@ -642,7 +642,7 @@ fn section15_waves(rep: &mut Report, vals: &mut Vec<(String, f64)>, p3: &HashMap
     let a0s = wss.iter().map(|x| x.abs()).fold(0.0, f64::max);
     let prof = (0..n).filter(|&j| g1.x[j].abs() < 100.0).map(|j| (aw[j] - wss[j]).abs()).fold(0.0, f64::max) / a0s;
     rep.add("P4-W5", &format!("the W stays a bound cloud: its decay length for 30 < x < 100 is {:.4} against 1/(M_W^2 - omega_s^2)^(1/2) = {:.4}, and its amplitude for |x| < 100 differs from the evanescent steady state by at most {:.2e} of its largest value {:.5e} (sum of the relative difference of the lengths and this profile difference)", -1.0 / slope, 1.0 / kap, prof, a0s), ((-1.0 / slope) * kap - 1.0).abs() + prof, 5e-2);
-    for (k, v) in [("MW", mw), ("MZ", mz), ("omega_s", om), ("photon_amplitude", a_num), ("photon_amplitude_pred", a_pred), ("W_decay_length", -1.0 / slope), ("W_decay_length_pred", 1.0 / kap), ("W_amplitude", a0n), ("W_amplitude_ss", a0s)] {
+    for (k, v) in [("MW", mw), ("MZ", mz), ("omega_s", om), ("A_amplitude", a_num), ("A_amplitude_pred", a_pred), ("W_decay_length", -1.0 / slope), ("W_decay_length_pred", 1.0 / kap), ("W_amplitude", a0n), ("W_amplitude_ss", a0s)] {
         vals.push((format!("p4_waves_{}", k), v));
     }
     let mut rows = vec![];
@@ -651,7 +651,7 @@ fn section15_waves(rep: &mut Report, vals: &mut Vec<(String, f64)>, p3: &HashMap
             rows.push(vec![f(t), f(g1.x[j]), e9(tr.u[i][j]), e9(tr.w[i][j])]);
         }
     }
-    write_csv(&data.join("part4_waves_transverse.csv"), &["t", "x", "photon", "W"], &rows);
+    write_csv(&data.join("part4_waves_transverse.csv"), &["t", "x", "A", "W"], &rows);
     let rows: Vec<Vec<String>> = (0..n).map(|j| vec![f(g1.x[j]), e9(aw[j]), e9(wss[j])]).collect();
     write_csv(&data.join("part4_waves_Wcloud.csv"), &["x", "W_amplitude", "W_steady_state"], &rows);
     // ---------------------------------------------------------------- (b) the Goldstone field and the longitudinal Z

@@ -563,7 +563,7 @@ def gauge(rep, sols, vals, v2):
         r11 = vals["p2_chi11_" + rk]
         rff = vals["p2_chiFF_" + rk]
         off = np.abs(chi - np.diag(np.diag(chi))).max()
-        rep.add("YP2-8a %s" % key, "%s: chi_11 = %.10f, chi_FF = %.10f = Rust; chi_33 = %.1e (massless photon), no mixing" % (key, chi[0, 0], chi[3, 3], chi[2, 2]), max(abs(chi[0, 0] - r11), abs(chi[3, 3] - rff), abs(chi[2, 2]), off), 1e-8)
+        rep.add("YP2-8a %s" % key, "%s: chi_11 = %.10f, chi_FF = %.10f = Rust; chi_33 = %.1e (massless zeugon), no mixing" % (key, chi[0, 0], chi[3, 3], chi[2, 2]), max(abs(chi[0, 0] - r11), abs(chi[3, 3] - rff), abs(chi[2, 2]), off), 1e-8)
     # the angular kernels against direct quadrature over the angle (massive boson, where the integrand is smooth)
     g = Grid(24)
     kern = Kern(g, 0.5)
@@ -573,7 +573,7 @@ def gauge(rep, sols, vals, v2):
     d1 = 0.5 * np.sum(ws * xs / (q * q + qp * qp + 0.25 - 2 * q * qp * xs))
     lm = np.log((q - qp) ** 2 + 0.25)
     rep.add("YP2-8b", "angular averages D0, D1 of the Yukawa kernel (closed forms of the Rust program) = 400-point quadrature in the angle", max(abs(kern.r[0][5, 11] + kern.s[0][5, 11] * lm - d0), abs(kern.r[1][5, 11] + kern.s[1][5, 11] * lm - d1)), 1e-12)
-    # Thouless eigenvalue of the photon alone in the normal vacuum (power iteration)
+    # Thouless eigenvalue of the zeugon (W^3) alone in the normal vacuum (power iteration)
     mo = Model([])
     ev, v = np.linalg.eigh(mo.bdg(np.zeros((8, 8), complex), np.zeros((8, 8), complex)))
     f = (ev < 0).astype(float)
@@ -605,7 +605,7 @@ def gauge(rep, sols, vals, v2):
                 break
             l_old = l_new
         lam[name] = l_new
-    rep.add("YP2-8c", "Thouless eigenvalues of the exchange per unit coupling^2: photon %.10f, B %.10f = Rust" % (lam["W3"], lam["B"]), max(abs(lam["W3"] - vals["p2_thouless3"]), abs(lam["B"] - vals["p2_thouless4"])), 1e-9)
+    rep.add("YP2-8c", "Thouless eigenvalues of the exchange per unit coupling^2: zeugon (W^3) %.10f, B %.10f = Rust" % (lam["W3"], lam["B"]), max(abs(lam["W3"] - vals["p2_thouless3"]), abs(lam["B"] - vals["p2_thouless4"])), 1e-9)
     # the CJT solution with exchange at the couplings of the project and the masses of the Rust program
     masses = [vals["p2_cjtex_M_W"], vals["p2_cjtex_M_W"], 0.0, vals["p2_cjtex_M_Z"]]
     mo, s = sols["V2_CJT"]

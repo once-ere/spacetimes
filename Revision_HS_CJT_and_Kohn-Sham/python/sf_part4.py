@@ -12,7 +12,7 @@ What it computes (the identifiers of the checks are those of the Rust program, w
   YP4-T   the time-dependent mean field (6.6) of CJT on the grid of 8 radial nodes (CVODE): the growth from the normal
           vacuum against the Rust run and against the linear response at imaginary frequency, and the amplitude mode
           after a kick against the linear response;
-  YP4-W   the gauge fields of the effective theory: the photon and the W with the source (CVODE), the free Goldstone
+  YP4-W   the gauge fields of the effective theory: the zeugon A and the W with the source (CVODE), the free Goldstone
           field, the temporal gauge (CVODE) and the unitary gauge (IDA), against the exact solutions and against the
           Rust data.
 The values of the Rust program are read from data/part4_*.csv and data/hck_part4_checks.txt; the report is written to
@@ -20,7 +20,7 @@ data/hck_part4_checks_python.txt.
 
 Run (from the folder python/, after the Rust programs sf_part2, sf_part3, sf_part4 and after 'cargo build --release',
 which builds the library of sfsundials.py):   python3 sf_part4.py
-Requires: Python 3, numpy.  Run time: about ten minutes.
+Requires: Python 3, numpy.  Run time: about one minute.
 """
 import csv
 import os
@@ -131,7 +131,7 @@ def masses(rep, p3, p4):
         rust = [p4["p4_mass_ev%d_%s" % (k, tag)] for k in range(4)]
         dev = max(abs(ev[k] - rust[k]) for k in range(4)) / rust[3]
         ovl = abs(vec[0, 0])
-        rep.add("YP4-M1 %s" % tag, "%s: the mass matrix of the vacuum Phi_0 e^(i pi/5) e_1 (Python engine, largest residual %.1e): eigenvalues %s = Rust %s, the photon W^1 (1 minus the overlap %.1e); largest difference relative to M_Z^2 (%.0f s)"
+        rep.add("YP4-M1 %s" % tag, "%s: the mass matrix of the vacuum Phi_0 e^(i pi/5) e_1 (Python engine, largest residual %.1e): eigenvalues %s = Rust %s, the zeugon W^1 (1 minus the overlap %.1e); largest difference relative to M_Z^2 (%.0f s)"
                 % (tag, rmax, ["%.9e" % x for x in ev], ["%.9e" % x for x in rust], 1 - ovl, time.time() - t0), dev + (1 - ovl), 1e-8)
         z, y = p3["p3_Z_%s" % tag], p3["p3_Y_%s" % tag]
         s3 = 1 / np.sqrt(3)
@@ -320,7 +320,7 @@ def read_frames(name, cols):
 
 def waves(rep, p3):
     mw, mz, f2 = p3["p3_MW_CJT"], p3["p3_MZ_CJT"], p3["p3_fF2_t_CJT"]
-    # ---- the transverse photon and W with the source
+    # ---- the transverse zeugon A and W with the source
     n, length = 511, 2000.0
     x, k = grid1(n, length)
     d = dmatrix(n, length)
@@ -337,24 +337,24 @@ def waves(rep, p3):
     tt = np.arange(0, 900.0001, 4.5)
     t0 = time.time()
     ys, st = S.cvode(rhs, np.zeros(4 * n), 0.0, tt, rtol=1e-10, atol=1e-13)
-    ts, rust = read_frames("part4_waves_transverse.csv", ["photon", "W"])
+    ts, rust = read_frames("part4_waves_transverse.csv", ["A", "W"])
     ix = [int(round(v / 4.5)) for v in ts]
-    du = abs(ys[ix, :n] - rust["photon"]).max() / abs(rust["photon"]).max()
+    du = abs(ys[ix, :n] - rust["A"]).max() / abs(rust["A"]).max()
     dw = abs(ys[ix, 2 * n:3 * n] - rust["W"]).max() / abs(rust["W"]).max()
-    rep.add("YP4-W2", "the photon and the W driven by the source to t = 900 (CVODE through the C interface, %s; %.0f s) equal the fields of the Rust program (sum of the largest differences relative to the largest fields)" % (st.describe(), time.time() - t0), du + dw, 1e-6)
-    # the exact Duhamel solution of the photon at the last time, by the Fourier modes (Gauss-Legendre in time)
+    rep.add("YP4-W2", "the zeugon A and the W driven by the source to t = 900 (CVODE through the C interface, %s; %.0f s) equal the fields of the Rust program (sum of the largest differences relative to the largest fields)" % (st.describe(), time.time() - t0), du + dw, 1e-6)
+    # the exact Duhamel solution of the zeugon at the last time, by the Fourier modes (Gauss-Legendre in time)
     sh = np.exp(-1j * np.outer(k, x)) @ s
     xg, wg = np.polynomial.legendre.leggauss(12)
     tq = np.concatenate([a + 0.5 * (xg + 1) for a in np.arange(0, 900, 1.0)])
     wq = np.tile(0.5 * wg, 900)
     fq = np.array([ft(v) for v in tq]) * wq
     exact = {}
-    for name, mass in (("photon", 0.0), ("W", mw)):
+    for name, mass in (("A", 0.0), ("W", mw)):
         wk = np.sqrt(k ** 2 + mass ** 2)
         amp = np.where(wk > 0, (np.sin(np.outer(wk, 900.0 - tq)) / np.where(wk > 0, wk, 1)[:, None]) @ fq, (900.0 - tq) @ fq)
         exact[name] = (np.exp(1j * np.outer(x, k)) @ (sh * amp)).real / n
-    de = abs(ys[-1, :n] - exact["photon"]).max() / abs(exact["photon"]).max() + abs(ys[-1, 2 * n:3 * n] - exact["W"]).max() / abs(exact["W"]).max()
-    rep.add("YP4-W3", "the photon and the W at t = 900 equal the exact solutions of every Fourier mode (sum of the largest relative differences)", de, 1e-6)
+    de = abs(ys[-1, :n] - exact["A"]).max() / abs(exact["A"]).max() + abs(ys[-1, 2 * n:3 * n] - exact["W"]).max() / abs(exact["W"]).max()
+    rep.add("YP4-W3", "the zeugon A and the W at t = 900 equal the exact solutions of every Fourier mode (sum of the largest relative differences)", de, 1e-6)
     # ---- the Goldstone field and the longitudinal Z
     n, length = 255, 1024.0
     x, k = grid1(n, length)

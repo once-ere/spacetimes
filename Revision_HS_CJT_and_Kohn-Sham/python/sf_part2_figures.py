@@ -128,8 +128,8 @@ def fig_gauge():
         ax.text(i, v + (0.15 if v > 0 else -0.15), "%+.2f" % v, ha="center", va="bottom" if v > 0 else "top", fontsize=8, color=INK)
     ax.axhline(0, color=INK2, lw=0.8)
     ax.set_xticks(range(4))
-    # W^3 is the massless gauge boson A_SF of the unbroken charge Q_LL of SU(2)_v (not the photon); B is Z_SF
-    ax.set_xticklabels([r"$W^1$", r"$W^2$", r"$W^3$ (massless $A_{\rm SF}$)", r"$B$ ($Z_{\rm SF}$)"])
+    # W^3 is the zeugon, the massless gauge boson A_SF of the unbroken charge Q_LL of SU(2)_v (not the photon); B is Z_SF
+    ax.set_xticklabels([r"$W^1$", r"$W^2$", r"$W^3$ (the zeugon)", r"$B$ ($Z_{\rm SF}$)"])
     ax.set_ylabel(r"exchange energy per volume ($10^{-5}$)")
     ax.set_title(r"CJT, $V^{(2)}_{\rm SF}$, $g^{\rm v}_{\rm LL}=0.7$, $g^{\rm F}_{\rm LL}=0.45$", fontsize=9, color=INK)
     ax.set_ylim(min(vals) - 1.2, max(vals) + 1.2)

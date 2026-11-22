@@ -9,36 +9,36 @@
 | P4-0e | PASS | 8.433e-9 | 1.0e-6 | IDACalcIC corrects the algebraic initial value y3(0) = 0.3 to 1.000000000000 and y1'(0) to 1.000000000000 (exact 1, 1; largest change 0.700); then the largest error to t = 20 |
 | P4-M0 HS_1_1 | PASS | 2.829e-14 | 1.0e-10 | HS\_1\_1: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -5.186344202260e-4, E0 = -5.186344202260e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 HS_1_1 | PASS | 2.270e-13 | 1.0e-7 | HS\_1\_1: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 9.6e-14) |
-| P4-M2 HS_1_1 | PASS | 2.862e-14 | 1.0e-7 | HS\_1\_1: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (-1.167e-16, relative to M\_Z\^2 = 4.079269e-3) |
-| P4-M3 HS_1_1 | PASS | 0.000e0 | 1.0e-9 | HS\_1\_1: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 HS_1_1 | PASS | 2.862e-14 | 1.0e-7 | HS\_1\_1: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (-1.167e-16, relative to M\_Z\^2 = 4.079269e-3) |
+| P4-M3 HS_1_1 | PASS | 0.000e0 | 1.0e-9 | HS\_1\_1: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 HS_1_1 | PASS | 9.152e-13 | 1.0e-6 | HS\_1\_1: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (2.508126086e-3, 2.508126086e-3, 4.079269192e-3 against 2.508126086e-3, 2.508126086e-3, 4.079269192e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 HS_1_1 | PASS | 4.667e-13 | 1.0e-6 | HS\_1\_1: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 HS_1_1 | PASS | 2.244e-13 | 1.0e-12 | HS\_1\_1: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (0.0e0), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
 | P4-M0 HS_0_1 | PASS | 3.373e-14 | 1.0e-10 | HS\_0\_1: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -3.608029261390e-4, E0 = -3.608029261390e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 HS_0_1 | PASS | 2.085e-13 | 1.0e-7 | HS\_0\_1: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 9.7e-14) |
-| P4-M2 HS_0_1 | PASS | 4.190e-14 | 1.0e-7 | HS\_0\_1: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (1.534e-16, relative to M\_Z\^2 = 3.661461e-3) |
-| P4-M3 HS_0_1 | PASS | 0.000e0 | 1.0e-9 | HS\_0\_1: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 HS_0_1 | PASS | 4.190e-14 | 1.0e-7 | HS\_0\_1: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (1.534e-16, relative to M\_Z\^2 = 3.661461e-3) |
+| P4-M3 HS_0_1 | PASS | 0.000e0 | 1.0e-9 | HS\_0\_1: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 HS_0_1 | PASS | 1.455e-12 | 1.0e-6 | HS\_0\_1: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (2.247467656e-3, 2.247467656e-3, 3.661461137e-3 against 2.247467656e-3, 2.247467656e-3, 3.661461137e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 HS_0_1 | PASS | 6.860e-13 | 1.0e-6 | HS\_0\_1: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 HS_0_1 | PASS | 3.189e-13 | 1.0e-12 | HS\_0\_1: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (-2.6e-20), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
 | P4-M0 HS_0_0 | PASS | 1.290e-13 | 1.0e-10 | HS\_0\_0: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -2.061619080677e-4, E0 = -2.061619080677e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 HS_0_0 | PASS | 1.856e-13 | 1.0e-7 | HS\_0\_0: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 9.6e-14) |
-| P4-M2 HS_0_0 | PASS | 7.656e-14 | 1.0e-7 | HS\_0\_0: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (-2.337e-16, relative to M\_Z\^2 = 3.053067e-3) |
-| P4-M3 HS_0_0 | PASS | 0.000e0 | 1.0e-9 | HS\_0\_0: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 HS_0_0 | PASS | 7.656e-14 | 1.0e-7 | HS\_0\_0: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (-2.337e-16, relative to M\_Z\^2 = 3.053067e-3) |
+| P4-M3 HS_0_0 | PASS | 0.000e0 | 1.0e-9 | HS\_0\_0: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 HS_0_0 | PASS | 2.012e-12 | 1.0e-6 | HS\_0\_0: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (1.846917010e-3, 1.846917010e-3, 3.053066913e-3 against 1.846917010e-3, 1.846917010e-3, 3.053066913e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 HS_0_0 | PASS | 2.008e-12 | 1.0e-6 | HS\_0\_0: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 HS_0_0 | PASS | 7.620e-14 | 1.0e-12 | HS\_0\_0: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (0.0e0), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
 | P4-M0 KS | PASS | 8.156e-14 | 1.0e-10 | KS: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -2.422384965940e-4, E0 = -2.422384965940e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 KS | PASS | 1.340e-13 | 1.0e-7 | KS: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 9.7e-14) |
-| P4-M2 KS | PASS | 7.270e-15 | 1.0e-7 | KS: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (-2.997e-17, relative to M\_Z\^2 = 4.123354e-3) |
-| P4-M3 KS | PASS | 0.000e0 | 1.0e-9 | KS: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 KS | PASS | 7.270e-15 | 1.0e-7 | KS: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (-2.997e-17, relative to M\_Z\^2 = 4.123354e-3) |
+| P4-M3 KS | PASS | 0.000e0 | 1.0e-9 | KS: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 KS | PASS | 2.459e-12 | 1.0e-6 | KS: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (2.115333020e-3, 2.115333020e-3, 4.123354214e-3 against 2.115333020e-3, 2.115333020e-3, 4.123354214e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 KS | PASS | 2.332e-12 | 1.0e-6 | KS: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 KS | PASS | 1.273e-13 | 1.0e-12 | KS: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (-8.9e-20), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
 | P4-M0 CJT | PASS | 7.076e-14 | 1.0e-10 | CJT: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -2.422384965940e-4, E0 = -2.422384965940e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 CJT | PASS | 2.139e-13 | 1.0e-7 | CJT: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 1.0e-13) |
-| P4-M2 CJT | PASS | 3.101e-14 | 1.0e-7 | CJT: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (-1.279e-16, relative to M\_Z\^2 = 4.123354e-3) |
-| P4-M3 CJT | PASS | 0.000e0 | 1.0e-9 | CJT: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 CJT | PASS | 3.101e-14 | 1.0e-7 | CJT: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (-1.279e-16, relative to M\_Z\^2 = 4.123354e-3) |
+| P4-M3 CJT | PASS | 0.000e0 | 1.0e-9 | CJT: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 CJT | PASS | 2.318e-12 | 1.0e-6 | CJT: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (2.243158228e-3, 2.243158228e-3, 4.123354214e-3 against 2.243158228e-3, 2.243158228e-3, 4.123354214e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 CJT | PASS | 2.106e-12 | 1.0e-6 | CJT: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 CJT | PASS | 2.114e-13 | 1.0e-12 | CJT: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (-6.3e-20), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
@@ -46,9 +46,9 @@
 | P4-M8 | PASS | -5.248e-17 | 1.0e-12 | for the field Phi\_0 (e\_3 + i e\_1)/sqrt2 (not a vacuum) the mass matrix (14.3) of L\^CJT has one zero eigenvalue (1.90e-19; next 1.121579e-3), whose eigenvector is cos(th') W\^2 - sin(th') B with tan th' = g\_v/(2 g\_F), th' = 37.874984 degrees (1 minus the overlap, plus the zero eigenvalue relative to the next) |
 | P4-W0 | PASS | 5.619e-14 | 1.0e-10 | the mass of the Z of L\^CJT is M\_Z = 2 g\_F f\_F = 0.064213349187 (f\_F\^2 = 5.090560758e-3); g\_F (chi\_FF)\^(1/2) of Part III = 0.064213349187 (relative) |
 | P4-W1 | PASS | 6.196e-14 | 1.0e-11 | the spectral matrix (15.4) on 511 points differentiates sin(k x), k = 2 pi 37/L, exactly (largest error relative to k) and is antisymmetric (largest /D\_jl + D\_lj/ = 0.0e0) |
-| P4-W2 | PASS | 3.815e-9 | 1.0e-6 | the photon driven by the source (15.2) to t = 900 (1897 steps, 3748 evaluations of the right side, 4 rejected steps, 3745 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-1) equals the exact Duhamel solution of every Fourier mode (largest difference relative to the largest field) |
+| P4-W2 | PASS | 3.815e-9 | 1.0e-6 | the zeugon A driven by the source (15.2) to t = 900 (1897 steps, 3748 evaluations of the right side, 4 rejected steps, 3745 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-1) equals the exact Duhamel solution of every Fourier mode (largest difference relative to the largest field) |
 | P4-W3 | PASS | 4.630e-9 | 1.0e-6 | the W (mass M\_W of L\^CJT) driven by the same source equals its exact solution (largest difference relative to the largest field) |
-| P4-W4 | PASS | 6.147e-6 | 2.0e-2 | the photon radiates: at t = 900 its amplitude for 100 &lt; x &lt; 400 is 2.053903e-2, the outgoing wave J\_0 /s\^(omega\_s)//(2 omega\_s) = 2.053916e-2 (relative) |
+| P4-W4 | PASS | 6.147e-6 | 2.0e-2 | the zeugon radiates: at t = 900 its amplitude for 100 &lt; x &lt; 400 is 2.053903e-2, the outgoing wave J\_0 /s\^(omega\_s)//(2 omega\_s) = 2.053916e-2 (relative) |
 | P4-W5 | PASS | 2.137e-2 | 5.0e-2 | the W stays a bound cloud: its decay length for 30 &lt; x &lt; 100 is 30.1415 against 1/(M\_W\^2 - omega\_s\^2)\^(1/2) = 29.5655, and its amplitude for /x/ &lt; 100 differs from the evanescent steady state by at most 1.88e-3 of its largest value 4.45027e-2 (sum of the relative difference of the lengths and this profile difference) |
 | P4-W6 | PASS | 1.308e-9 | 1.0e-7 | the free Goldstone field (g = 0) by CVODE to t = 350 (932 steps, 1710 evaluations of the right side, 5 rejected steps, 1707 fixed-point iterations (0 convergence failures), last order 6, last step 3.8197e-1) equals its exact solution (largest difference of theta and pi relative to their largest value) |
 | P4-W7 | PASS | 1.151e-14 | 1.0e-8 | temporal gauge, g = g\_F, by CVODE (1028 steps, 1821 evaluations of the right side, 5 rejected steps, 1818 fixed-point iterations (0 convergence failures), last order 6, last step 3.4663e-1): Gauss's law D E + 2 g f\^2 pi = 0 holds at all outputs (largest residual relative to the largest 2 g f\^2 /pi/) |
@@ -134,21 +134,21 @@ VERDICT: ALL PASS (120 of 120)
 | YP4-0c | PASS | 7.442e-09 | 1.0e-06 | IDA (exact matrix) through the C interface: y1' = y3, y2' = -y1, 0 = y3 - y2 to t = 20, largest error; 1150 steps (Rust: 1150) |
 | YP4-0d | PASS | 8.725e-09 | 1.0e-06 | IDA (difference quotients) through the C interface: y1' = y3, y2' = -y1, 0 = y3 - y2 to t = 20, largest error; 1392 steps (Rust: 1392) |
 | YP4-0e | PASS | 7.764e-09 | 1.0e-06 | IDACalcIC corrects y3(0) = 0.3 to 1.000000000000 and y1'(0) to 1.000000000000; largest error to t = 20 |
-| YP4-M1 HS_1_1 | PASS | 9.568e-14 | 1.0e-08 | HS\_1\_1: the mass matrix of the vacuum Phi\_0 e\^(i pi/5) e\_1 (Python engine, largest residual 9.7e-14): eigenvalues ['-4.445635061e-17', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'] = Rust ['-1.167443970e-16', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'], the photon W\^1 (1 minus the overlap 0.0e+00); largest difference relative to M\_Z\^2 (9 s) |
+| YP4-M1 HS_1_1 | PASS | 9.568e-14 | 1.0e-08 | HS\_1\_1: the mass matrix of the vacuum Phi\_0 e\^(i pi/5) e\_1 (Python engine, largest residual 9.7e-14): eigenvalues ['-4.445635061e-17', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'] = Rust ['-1.167443970e-16', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'], the zeugon W\^1 (1 minus the overlap 0.0e+00); largest difference relative to M\_Z\^2 (8 s) |
 | YP4-M2 HS_1_1 | PASS | 8.163e-13 | 1.0e-07 | HS\_1\_1: the mass matrix (14.3) at the vacuum along (1,1,1)/sqrt3: zero eigenvalue 1.1e-19 with the eigenvector n.W (1 minus the overlap), the others equal to those along e\_1 (relative) |
-| YP4-M1 CJT | PASS | 1.548e-13 | 1.0e-08 | CJT: the mass matrix of the vacuum Phi\_0 e\^(i pi/5) e\_1 (Python engine, largest residual 1.0e-13): eigenvalues ['-2.935364260e-17', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'] = Rust ['-1.278819494e-16', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'], the photon W\^1 (1 minus the overlap 0.0e+00); largest difference relative to M\_Z\^2 (13 s) |
+| YP4-M1 CJT | PASS | 1.548e-13 | 1.0e-08 | CJT: the mass matrix of the vacuum Phi\_0 e\^(i pi/5) e\_1 (Python engine, largest residual 1.0e-13): eigenvalues ['-2.935364260e-17', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'] = Rust ['-1.278819494e-16', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'], the zeugon W\^1 (1 minus the overlap 0.0e+00); largest difference relative to M\_Z\^2 (15 s) |
 | YP4-M2 CJT | PASS | 2.215e-12 | 1.0e-07 | CJT: the mass matrix (14.3) at the vacuum along (1,1,1)/sqrt3: zero eigenvalue -4.3e-19 with the eigenvector n.W (1 minus the overlap), the others equal to those along e\_1 (relative) |
 | YP4-M3 | PASS | 1.805e-12 | 1.0e-10 | the field Phi\_0 (e\_3 + i e\_1)/sqrt2 of CJT: one zero eigenvalue (4.3e-19) with the eigenvector cos(th') W\^2 - sin(th') B, th' = 37.874984 degrees = Rust 37.874984 |
-| YP4-W2 | PASS | 2.411e-10 | 1.0e-06 | the photon and the W driven by the source to t = 900 (CVODE through the C interface, 1897 steps, 3749 evaluations of the right side, 4 rejected steps, 3746 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-01; 1 s) equal the fields of the Rust program (sum of the largest differences relative to the largest fields) |
-| YP4-W3 | PASS | 8.406e-09 | 1.0e-06 | the photon and the W at t = 900 equal the exact solutions of every Fourier mode (sum of the largest relative differences) |
-| YP4-W4 | PASS | 2.194e-08 | 1.0e-06 | the free Goldstone field and the temporal gauge (CVODE: 932 steps, 1710 evaluations of the right side, 5 rejected steps, 1707 fixed-point iterations (0 convergence failures), last order 6, last step 3.8197e-01; 1028 steps, 1828 evaluations of the right side, 5 rejected steps, 1825 fixed-point iterations (0 convergence failures), last order 6, last step 3.4660e-01) and the unitary gauge (IDA: 2356 steps, 2398 residual evaluations, 33 matrix evaluations, 33 factorizations, 2 rejected steps, 2398 Newton iterations (0 convergence failures), last order 5, last step 1.5403e-01) through the C interface equal the Rust fields (sum of five largest relative differences; 2 s) |
+| YP4-W2 | PASS | 2.411e-10 | 1.0e-06 | the zeugon A and the W driven by the source to t = 900 (CVODE through the C interface, 1897 steps, 3749 evaluations of the right side, 4 rejected steps, 3746 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-01; 1 s) equal the fields of the Rust program (sum of the largest differences relative to the largest fields) |
+| YP4-W3 | PASS | 8.406e-09 | 1.0e-06 | the zeugon A and the W at t = 900 equal the exact solutions of every Fourier mode (sum of the largest relative differences) |
+| YP4-W4 | PASS | 2.194e-08 | 1.0e-06 | the free Goldstone field and the temporal gauge (CVODE: 932 steps, 1710 evaluations of the right side, 5 rejected steps, 1707 fixed-point iterations (0 convergence failures), last order 6, last step 3.8197e-01; 1028 steps, 1828 evaluations of the right side, 5 rejected steps, 1825 fixed-point iterations (0 convergence failures), last order 6, last step 3.4660e-01) and the unitary gauge (IDA: 2356 steps, 2398 residual evaluations, 33 matrix evaluations, 33 factorizations, 2 rejected steps, 2398 Newton iterations (0 convergence failures), last order 5, last step 1.5403e-01) through the C interface equal the Rust fields (sum of five largest relative differences; 3 s) |
 | YP4-W5 | PASS | 2.011e-08 | 1.0e-06 | a - D theta/(2 g) and E of the temporal gauge equal a\_u and E of the unitary gauge (sum of the largest relative differences) |
 | YP4-W6 | PASS | 1.153e-08 | 1.0e-06 | a\_u of IDA equals the exact solution a\_m(t) = a\_m(0) cos(w\_m t) + a\_m'(0) sin(w\_m t)/w\_m, w\_m = (k\_m\^2 + M\_Z\^2)\^(1/2) (largest difference relative to the largest value) |
 | YP4-W7 | PASS | 2.238e-10 | 1.0e-06 | the energy of the free Goldstone packet moves at the speed of light (slope of its centre 0.999999999776; difference from 1) |
 | YP4-T1 | PASS | 2.229e-08 | 1.0e-06 | CJT on 8 radial nodes, polar sector, from the normal vacuum with the seed 1e-7 (K\^3)\^dag to t = 60 (CVODE through the C interface, 967 steps, 1489 evaluations of the right side, 16 rejected steps, 1486 fixed-point iterations (0 convergence failures), last order 6, last step 4.2705e-02; 2 s): Phi\^3(t) equals the Rust run (largest difference relative to the largest /Phi\^3/ = 0.435614) |
 | YP4-T1e | PASS | 1.057e-08 | 1.0e-06 | the energy of this run is conserved (largest change relative to the depth of the minimum, /E0/ of the 24-node grid) |
 | YP4-T2 | PASS | 1.053e-05 | 1.0e-04 | the growth rate on this grid, 0.416516158 (fit of ln/Phi\^3/ on 22 outputs), equals the rate of the unstable mode of the linear response at imaginary frequency, 0.416520543 (LAPACK; lambda\^P = 1.113373070); relative |
-| YP4-T3 | PASS | 1.073e-06 | 2.0e-04 | after the kick (1 + 1e-3) P\_0 of the ground state on this grid (5263 steps, 10061 evaluations of the right side, 4 rejected steps, 10058 fixed-point iterations (0 convergence failures), last order 6, last step 7.6470e-02; 22 s), /Phi\^3/ oscillates at 0.603477242; the amplitude mode of the linear response of this grid (modes ['0.603478 x1', '0.644007 x2']) is at 0.603477890 (relative) |
+| YP4-T3 | PASS | 1.073e-06 | 2.0e-04 | after the kick (1 + 1e-3) P\_0 of the ground state on this grid (5263 steps, 10061 evaluations of the right side, 4 rejected steps, 10058 fixed-point iterations (0 convergence failures), last order 6, last step 7.6470e-02; 25 s), /Phi\^3/ oscillates at 0.603477242; the amplitude mode of the linear response of this grid (modes ['0.603478 x1', '0.644007 x2']) is at 0.603477890 (relative) |
 <!-- END p4_checks_python -->
 <!-- BEGIN p4_verdict_python -->
 VERDICT: ALL PASS (20 of 20)
@@ -174,9 +174,9 @@ $0.05008119493$
 <!-- BEGIN p4_mass_MZ_HS_1_1 -->
 $0.06386915681$
 <!-- END p4_mass_MZ_HS_1_1 -->
-<!-- BEGIN p4_mass_photon_overlap_defect_HS_1_1 -->
+<!-- BEGIN p4_mass_A_overlap_defect_HS_1_1 -->
 $0$
-<!-- END p4_mass_photon_overlap_defect_HS_1_1 -->
+<!-- END p4_mass_A_overlap_defect_HS_1_1 -->
 <!-- BEGIN p4_mass_chi11_e1_HS_1_1 -->
 $-2.382538713\times10^{-16}$
 <!-- END p4_mass_chi11_e1_HS_1_1 -->
@@ -204,9 +204,9 @@ $0.04740746414$
 <!-- BEGIN p4_mass_MZ_HS_0_1 -->
 $0.06051000857$
 <!-- END p4_mass_MZ_HS_0_1 -->
-<!-- BEGIN p4_mass_photon_overlap_defect_HS_0_1 -->
+<!-- BEGIN p4_mass_A_overlap_defect_HS_0_1 -->
 $0$
-<!-- END p4_mass_photon_overlap_defect_HS_0_1 -->
+<!-- END p4_mass_A_overlap_defect_HS_0_1 -->
 <!-- BEGIN p4_mass_chi11_e1_HS_0_1 -->
 $3.130973868\times10^{-16}$
 <!-- END p4_mass_chi11_e1_HS_0_1 -->
@@ -234,9 +234,9 @@ $0.04297577237$
 <!-- BEGIN p4_mass_MZ_HS_0_0 -->
 $0.05525456464$
 <!-- END p4_mass_MZ_HS_0_0 -->
-<!-- BEGIN p4_mass_photon_overlap_defect_HS_0_0 -->
+<!-- BEGIN p4_mass_A_overlap_defect_HS_0_0 -->
 $0$
-<!-- END p4_mass_photon_overlap_defect_HS_0_0 -->
+<!-- END p4_mass_A_overlap_defect_HS_0_0 -->
 <!-- BEGIN p4_mass_chi11_e1_HS_0_0 -->
 $-4.769961348\times10^{-16}$
 <!-- END p4_mass_chi11_e1_HS_0_0 -->
@@ -264,9 +264,9 @@ $0.04599274964$
 <!-- BEGIN p4_mass_MZ_KS -->
 $0.06421334919$
 <!-- END p4_mass_MZ_KS -->
-<!-- BEGIN p4_mass_photon_overlap_defect_KS -->
+<!-- BEGIN p4_mass_A_overlap_defect_KS -->
 $0$
-<!-- END p4_mass_photon_overlap_defect_KS -->
+<!-- END p4_mass_A_overlap_defect_KS -->
 <!-- BEGIN p4_mass_chi11_e1_KS -->
 $-6.117320777\times10^{-17}$
 <!-- END p4_mass_chi11_e1_KS -->
@@ -294,9 +294,9 @@ $0.04736199138$
 <!-- BEGIN p4_mass_MZ_CJT -->
 $0.06421334919$
 <!-- END p4_mass_MZ_CJT -->
-<!-- BEGIN p4_mass_photon_overlap_defect_CJT -->
+<!-- BEGIN p4_mass_A_overlap_defect_CJT -->
 $0$
-<!-- END p4_mass_photon_overlap_defect_CJT -->
+<!-- END p4_mass_A_overlap_defect_CJT -->
 <!-- BEGIN p4_mass_chi11_e1_CJT -->
 $-2.609835701\times10^{-16}$
 <!-- END p4_mass_chi11_e1_CJT -->
@@ -333,12 +333,12 @@ $0.06421334919$
 <!-- BEGIN p4_waves_omega_s -->
 $0.03315339397$
 <!-- END p4_waves_omega_s -->
-<!-- BEGIN p4_waves_photon_amplitude -->
+<!-- BEGIN p4_waves_A_amplitude -->
 $0.02053902888$
-<!-- END p4_waves_photon_amplitude -->
-<!-- BEGIN p4_waves_photon_amplitude_pred -->
+<!-- END p4_waves_A_amplitude -->
+<!-- BEGIN p4_waves_A_amplitude_pred -->
 $0.02053915514$
-<!-- END p4_waves_photon_amplitude_pred -->
+<!-- END p4_waves_A_amplitude_pred -->
 <!-- BEGIN p4_waves_W_decay_length -->
 $30.14148085$
 <!-- END p4_waves_W_decay_length -->
@@ -667,7 +667,7 @@ $0.0205392$
 | quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
 |:--------------------|-----------:|-----------:|-----------:|-----------:|-----------:|
 | $\Phi^X_{0,{\rm SF}}$ | $0.4030641$ | $0.362009$ | $0.3069888$ | $0.3284861$ | $0.3284861$ |
-| $10^3\lambda_0$ (massless $A_{{\rm SF},p}$) | $-1.2\times10^{-13}$ | $1.5\times10^{-13}$ | $-2.3\times10^{-13}$ | $-3\times10^{-14}$ | $-1.3\times10^{-13}$ |
+| $10^3\lambda_0$ (the zeugon $A_{{\rm SF},p}$) | $-1.2\times10^{-13}$ | $1.5\times10^{-13}$ | $-2.3\times10^{-13}$ | $-3\times10^{-14}$ | $-1.3\times10^{-13}$ |
 | $10^3\lambda_1=10^3\lambda_2$ | $2.5081261$ | $2.2474677$ | $1.846917$ | $2.115333$ | $2.2431582$ |
 | $10^3\lambda_3$ | $4.0792692$ | $3.6614611$ | $3.0530669$ | $4.1233542$ | $4.1233542$ |
 | $M^X_{W,{\rm SF}}=\lambda_1^{1/2}$ | $0.05008119$ | $0.04740746$ | $0.04297577$ | $0.04599275$ | $0.04736199$ |

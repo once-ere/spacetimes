@@ -19,14 +19,14 @@ PASS YP2-7a KS deviation 2.320e-13 (tolerance 1.0e-09): KS: three Goldstone mode
 PASS YP2-7b KS deviation 1.333e-13 (tolerance 1.0e-07): KS: the collective modes below the threshold ['0.60347597', '0.65728473'] = Rust ['0.60347597', '0.65728473']
 PASS YP2-7a CJT deviation 2.329e-13 (tolerance 1.0e-09): CJT: three Goldstone modes (LAPACK eigenvalues of M(0) equal to 1); spectrum of every node +-E (spread 4.4e-15)
 PASS YP2-7b CJT deviation 1.180e-13 (tolerance 1.0e-07): CJT: the collective modes below the threshold ['0.60347597', '0.64400715'] = Rust ['0.60347597', '0.64400715']
-PASS YP2-8a HS_1_1 deviation 3.744e-15 (tolerance 1.0e-08): HS_1_1: chi_11 = 0.0051186247, chi_FF = 0.0201445392 = Rust; chi_33 = 1.1e-15 (massless photon), no mixing
-PASS YP2-8a KS deviation 5.405e-15 (tolerance 1.0e-08): KS: chi_11 = 0.0043170062, chi_FF = 0.0203622430 = Rust; chi_33 = 1.3e-16 (massless photon), no mixing
-PASS YP2-8a CJT deviation 3.879e-15 (tolerance 1.0e-08): CJT: chi_11 = 0.0045778739, chi_FF = 0.0203622430 = Rust; chi_33 = 8.2e-16 (massless photon), no mixing
+PASS YP2-8a HS_1_1 deviation 3.744e-15 (tolerance 1.0e-08): HS_1_1: chi_11 = 0.0051186247, chi_FF = 0.0201445392 = Rust; chi_33 = 1.1e-15 (massless zeugon), no mixing
+PASS YP2-8a KS deviation 5.405e-15 (tolerance 1.0e-08): KS: chi_11 = 0.0043170062, chi_FF = 0.0203622430 = Rust; chi_33 = 1.3e-16 (massless zeugon), no mixing
+PASS YP2-8a CJT deviation 3.879e-15 (tolerance 1.0e-08): CJT: chi_11 = 0.0045778739, chi_FF = 0.0203622430 = Rust; chi_33 = 8.2e-16 (massless zeugon), no mixing
 PASS YP2-8b  deviation 1.443e-14 (tolerance 1.0e-12): angular averages D0, D1 of the Yukawa kernel (closed forms of the Rust program) = 400-point quadrature in the angle
-PASS YP2-8c  deviation 5.918e-12 (tolerance 1.0e-09): Thouless eigenvalues of the exchange per unit coupling^2: photon 0.0357317832, B -0.1429271327 = Rust
+PASS YP2-8c  deviation 5.918e-12 (tolerance 1.0e-09): Thouless eigenvalues of the exchange per unit coupling^2: zeugon (W^3) 0.0357317832, B -0.1429271327 = Rust
 PASS YP2-8d  deviation 1.492e-08 (tolerance 1.0e-07): CJT with exchange at g_v = 0.7, g_F = 0.45: energy -1.3240201973e-04 = Rust (relative; 294 iterations)
 
 Notes:
-  run time 155 s
+  run time 164 s
 
 VERDICT: ALL PASS (23 of 23)

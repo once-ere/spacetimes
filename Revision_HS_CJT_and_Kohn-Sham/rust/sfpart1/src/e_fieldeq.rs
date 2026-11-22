@@ -115,7 +115,7 @@ pub fn run(rep: &mut Report) {
     rep.add("E-4", "[Psi_e, -(G/4) sum Pi^dag Pi] = -(G/2) sum (K^dag Psi^*)_e Pi: the spin-zero pairing term", d4, 1e-10);
 
     // E-5: symmetries of the Hamiltonian of the point without gauge potentials: [H, F] = 0, [H, T^iota] = 0,
-    // [H, J^j] = 0 (rotations), and the charge Q = T^3 with the constant potentials of the photon direction only
+    // [H, J^j] = 0 (rotations), and the charge Q = T^3 with the constant potentials of the direction of the zeugon only (the massless gauge boson of U(1)^Q, not the photon)
     let h_nogauge = fk.bilinear(&d8(&beta()).scale_r(m)).add(&h_s).add(&h_v).add(&h_p);
     let fnum = fk.bilinear(&one8);
     let mut dev = h_nogauge.comm(&fnum).max_abs();

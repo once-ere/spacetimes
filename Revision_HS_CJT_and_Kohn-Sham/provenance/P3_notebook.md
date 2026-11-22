@@ -41,9 +41,11 @@ parameter against the radius of convergence, and the remark that the free energi
 energies, with its importance; the addendum asked for by the author on 21 November 2026), and the third section of
 Part III (Section III.G: the gradient coefficient of the field at the critical temperature from the static pair
 response of a moving pair, the two regularizations, the slope and the quartic coefficient, the Ginzburg number and the
-width of the critical region; the superfluid as a Higgs sector against the Standard Model, the couplings of the
-amplitude field by exact differentiation, and whether the Higgs is a composite particle; the second addendum asked for
-by the author on 21 November 2026, with its three remarks), with 154 checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
+width of the critical region; the superfluid as the Higgs sector of its own gauge group, and why it cannot be the
+Higgs field of the Standard Model (the DiracLike spinor has electric charge 0 and no electroweak quantum numbers), the
+couplings of the amplitude field by exact differentiation, and whether the Higgs is a composite particle; the second
+addendum asked for by the author on 21 November 2026, with its three remarks; and, at the end of Part II, the remark on
+the zeugon, the massless gauge boson of the superfluid), with 154 checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
 in every vacuum, the surviving symmetry and the dynamics with IDA) follow in the next versions. The first section of
 Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
 cell of data with the SHA-256 checksums of its files) and recomputes every number from them; Section III.T computes the
@@ -63,21 +65,21 @@ The files of the notebook, each with its SHA-256 checksum:
 * `superfluid_notebook.pdf`: the evaluated notebook printed by the front end, for readers without Wolfram;\
   `bfb903f3a1ce6e29ca0376add51a3d91c7eb07d55fb462268cfd85e5c6b12327`
 * `wolfram/source/superfluid.source.wl`: the source of the notebook: the title, the introduction, chapter 0 (the register of the checks) and the final list of all checks; it includes the sources of the parts;\
-  `6dc8d7f4677e49db294036068f14c0028413d83537e5b02f958c86493701d48e`
+  `1887f605bd9c13fe5794c878c2fd2142d90d0de0a012ad7392559585e662a26d`
 * `wolfram/source/part1.source.wl`: the source of Part I;\
-  `10bea1f4d47c952b00cf50af5183f2f3da3ee8af325ec485191108aaa789beb1`
+  `82e6e590de5995275a920f1a96ea97c43d49ab364d02a7a01988b81110eb0879`
 * `wolfram/source/part2.source.wl`: the source of Part II;\
-  `94e61da8a3b99b47e079d468e25f7ea1ba072a78089bcb6eb582620e0cfdfc36`
+  `c27a6c74bbce09f66dace6df4c7732bbfde41ab1a1eb0301b231dcca3f0e01d9`
 * `wolfram/source/data_part2.wl`: the values of Part II of the Rust program and its table of pair-channel energies,
   included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py`; its first lines name the
   data files and their SHA-256 checksums);\
-  `5d4643454332a18a6a102f513e16961fe8118d95433757f477a9248e622da57c`
+  `31db4e03444eeb963786e49252e7078316e8fe18914074db910696e938e49c30`
 * `wolfram/source/part3_landau.source.wl`: the source of the first section of Part III (the Landau form);\
   `9cc6176d7163c81c26b7d67057df2e055ad6448aa31781174610e8ddd63d2c9d`
 * `wolfram/source/data_part3.wl`: the values of Part III of the Rust program and its five polar curves, included in a
   closed cell of the notebook (written by `wolfram/tools/make_data_cells.py`; its first lines name the data files and
   their SHA-256 checksums);\
-  `0d309c1ce8f511d31e0e49f3fcc498f5606a60b6d4a34dfb03a146b8adca7e35`
+  `8a124c8a2cf1382aa9189b5c2a8d210735cc3aeb19d22afb0bece0d3e184116a`
 * `wolfram/source/part3_thermal.source.wl`: the source of the second section of Part III (Section III.T, the free energy
   at finite temperature);\
   `673d6b22ba4177fe636a717d664bcef3d7c0f6b612cbe21a868ad726c4835caf`
@@ -88,14 +90,14 @@ The files of the notebook, each with its SHA-256 checksum:
   `5f3fe6ec541cd7e8a13c08517a63ba8b10deff9a5b37eded75aec6bbef2ebfac`
 * `wolfram/source/part3_ginzburg.source.wl`: the source of the third section of Part III (Section III.G, the width of
   the critical region and the superfluid as a Higgs sector);\
-  `a7ca5e15e0856c0fbd80f6aa10beb567725b7df21cf987926226cb52c42562af`
+  `ce3d808ecca2c26e66901435fd14df314dd1c6c308288810e925b627e34b0ad8`
 * `wolfram/source/data_part3_ginzburg.wl`: the results of the modules `ginzburg` and `higgs` of the Rust program (the
-  coefficients of the five methods, the two regularizations and the numbers of the Higgs sector with the row of the
-  Standard Model), included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
+  coefficients of the five methods, the two regularizations and the numbers of the Higgs sector, one row per method),
+  included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
   first lines name the data files and their SHA-256 checksums);\
-  `82e03135f402463a5c0dbc8b380f11ee972667802c618faf1c43e14764ab60c4`
+  `8aabc404d7c5ef67f5670eb73da39446c8289e240d299706d9b409fc6344089c`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
-  `9e370a301699c67481f8e5b43b84aac6fbacb60196de09e790916857945c01c5`
+  `b7f5274c04dd59ad8c1a3c543fcea250a6a940e07b74edbcaa85c572c2de6274`
 * `wolfram/tools/build_notebook.wls`: the builder: turns the source into the notebook (text cells with formulas, input cells parsed by the front end);\
   `dd5e855c6fddcb0a00a6f3e2adecb5ced86c4cf52a8a48d4671eaa23fc63e1b0`
 * `wolfram/tools/sf_formula.wl`: the reader of formulas: turns the TeX of the formulas of the texts into two-dimensional boxes;\
@@ -177,7 +179,7 @@ Every check of the notebook carries the identifier of the same check in the Rust
 its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart2`, program
 `sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III, whose module `thermal` makes the checks
 P3-T1 to P3-T9 of Section III.T and whose modules `ginzburg` and `higgs` make the checks P3-G1 to P3-G12 and P3-H1 to
-P3-H4 of Section III.G) and in the Python program
+P3-H3 of Section III.G) and in the Python program
 (`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
 steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
@@ -398,7 +400,7 @@ repeat itself in the others:
   variable $\Phi^2/\Phi^2_{\max}$ (Gaussian elimination in Rust, `numpy.linalg.solve` in Python); the residuals of the
   Landau forms of the Rust free-energy curves by `LeastSquares` (Householder reflections in Rust, the singular-value
   decomposition in Python);
-* **the width of the critical region and the Higgs sector** (WP3-G1 to WP3-G12, WP3-H1 to WP3-H4): the static pair
+* **the width of the critical region and the Higgs sector** (WP3-G1 to WP3-G12, WP3-H1 to WP3-H3): the static pair
   response by `Eigensystem` of the symmetrized $8\times8$ particle and hole blocks at every node, the matrices
   $\mathsf U_A^\dagger(E_{ab}-E_{ba})\mathsf U_D$ from the components of the eigenvectors by `Outer`, and the system of the
   other 25 pair channels by `LinearSolve` in the notebook; the Rust program's own eigensolver and LU decomposition, and
@@ -549,6 +551,20 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     a new input cell (`gzVV`) computes for every method the larger ratio of the masses, the smaller factor and how much
     the masses of the effective Lagrangian exceed those of the linear response. The cell makes no check: its numbers come
     from the values of the Rust program that the checks WP3-H1 to WP3-H3 have already compared with the notebook's own.
+
+16. *The electric charge (C18 and C19 of the task record).* The notebook, like the manuscript, called the unbroken charge
+    the electric charge and the massless gauge boson the photon, and Section III.G.8 judged the superfluid against the
+    Higgs boson of the Standard Model (its ratios against 0.5085 and 0.1293, the bound $8\pi/3$ of the Higgs doublet, the
+    masses and the critical temperature in GeV on the scale $v=246.22$ GeV, a table with a row of the Standard Model,
+    and the check WP3-H4 of that row). On 21 November 2026 the author stated that the spinor field, the DiracLike spinor,
+    has electric charge 0 and no electroweak quantum numbers, and that $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new gauge
+    group, not the electroweak group. The comparison had no basis and is withdrawn: Section III.G.8 now answers
+    separately whether the superfluid is the Higgs field of its own group and whether it can be that of the Standard
+    Model, its table has no row of the Standard Model and no column in GeV, and the check WP3-H4 was removed with its
+    counterparts P3-H4 and YP3-H4. Section I.1 states that the conventions of the Standard Model give names only; the
+    texts of Part II name the massless gauge boson the zeugon, and a remark at the end of Part II states what the
+    computation establishes about it, including that its charge conjugation is a gauge symmetry (Alice
+    electrodynamics); the spinor field is called the DiracLike field.
 
 # 10. What follows
 

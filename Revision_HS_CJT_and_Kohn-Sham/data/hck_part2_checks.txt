@@ -32,22 +32,22 @@ PASS P2-7a HS_0_1 deviation 1.954e-13 (tolerance 1.0e-9): HS(s_S=0,s_V=1): three
 PASS P2-7a HS_0_0 deviation 2.403e-13 (tolerance 1.0e-9): HS(s_S=0,s_V=0): three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1)
 PASS P2-7a KS deviation 2.502e-13 (tolerance 1.0e-9): KS: three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1)
 PASS P2-7a CJT deviation 2.485e-13 (tolerance 1.0e-9): CJT: three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1)
-PASS P2-8a HS_1_1 deviation 2.278e-15 (tolerance 1.0e-10): HS(s_S=1,s_V=1): the photon (W^3) is massless, chi_33 = -1.47e-15; no mixing (largest off-diagonal chi 2.3e-15)
+PASS P2-8a HS_1_1 deviation 2.278e-15 (tolerance 1.0e-10): HS(s_S=1,s_V=1): the zeugon (W^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi_33 = -1.47e-15; no mixing (largest off-diagonal chi 2.3e-15)
 PASS P2-8b HS_1_1 deviation 8.820e-9 (tolerance 1.0e-7): HS(s_S=1,s_V=1): thermodynamic consistency -d2 Omega/d mu^2 = d<Q>/d mu (relative); chi_11 = chi_22 = 0.0051186247, chi_FF = 0.0201445392
-PASS P2-8a KS deviation 2.159e-15 (tolerance 1.0e-10): KS: the photon (W^3) is massless, chi_33 = -3.69e-16; no mixing (largest off-diagonal chi 2.2e-15)
+PASS P2-8a KS deviation 2.159e-15 (tolerance 1.0e-10): KS: the zeugon (W^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi_33 = -3.69e-16; no mixing (largest off-diagonal chi 2.2e-15)
 PASS P2-8b KS deviation 4.283e-9 (tolerance 1.0e-7): KS: thermodynamic consistency -d2 Omega/d mu^2 = d<Q>/d mu (relative); chi_11 = chi_22 = 0.0043170062, chi_FF = 0.0203622430
-PASS P2-8a CJT deviation 1.879e-15 (tolerance 1.0e-10): CJT: the photon (W^3) is massless, chi_33 = -1.86e-16; no mixing (largest off-diagonal chi 1.9e-15)
+PASS P2-8a CJT deviation 1.879e-15 (tolerance 1.0e-10): CJT: the zeugon (W^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi_33 = -1.86e-16; no mixing (largest off-diagonal chi 1.9e-15)
 PASS P2-8b CJT deviation 3.584e-9 (tolerance 1.0e-7): CJT: thermodynamic consistency -d2 Omega/d mu^2 = d<Q>/d mu (relative); chi_11 = chi_22 = 0.0045778739, chi_FF = 0.0203622430
 PASS P2-8c   deviation 5.102e-12 (tolerance 1.0e-9): Thouless eigenvalues of the exchange: the four bosons together = the sum of the four alone (one radial eigenvector)
 PASS P2-8d   deviation 2.041e-11 (tolerance 1.0e-9): Thouless eigenvalues: W^3 attracts and W^1 repels the pair K^3 equally, B repels four times as strongly
 PASS P2-8j   deviation 0.000e0 (tolerance 1.0e-4): the masses used in the final CJT state are those of its own susceptibilities
-PASS P2-8i   deviation 8.163e-16 (tolerance 1.0e-9): CJT with exchange: the photon stays massless (chi_33 = 8.2e-16) and does not mix with B (chi_3F = 1.7e-16)
+PASS P2-8i   deviation 8.163e-16 (tolerance 1.0e-9): CJT with exchange: the zeugon stays massless (chi_33 = 8.2e-16) and does not mix with B (chi_3F = 1.7e-16)
 PASS P2-8e   deviation 1.355e-20 (tolerance 1.0e-14): CJT with exchange: the energies of the four bosons add up to the exchange energy
-PASS P2-8f   deviation 0.000e0 (tolerance 0.0e0): CJT with exchange at g_v = 0.7, g_F = 0.45: still superfluid (|D| = 0.276176), the photon attracts (E_W3 = -4.835e-5 < 0), W^1, W^2, B repel
+PASS P2-8f   deviation 0.000e0 (tolerance 0.0e0): CJT with exchange at g_v = 0.7, g_F = 0.45: still superfluid (|D| = 0.276176), the zeugon attracts (E_W3 = -4.835e-5 < 0), W^1, W^2, B repel
 PASS P2-8g   deviation 3.223e-14 (tolerance 1.0e-8): KS with local potentials and no exchange reproduces the KS (= CJT) contact solution (energy)
 PASS P2-8h   deviation 0.000e0 (tolerance 0.0e0): variational order: with the same boson masses, the KS energy with local potentials (-1.32250207e-4) lies above the CJT energy (-1.32402018e-4)
 
 Notes:
-  run time 537.8 s
+  run time 498.0 s
 
 VERDICT: ALL PASS (44 of 44)

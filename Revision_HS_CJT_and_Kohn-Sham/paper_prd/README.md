@@ -123,7 +123,7 @@ build_paper.py: the checks of the LaTeX builds (pages; undefined references or c
 than 1 pt).  A document passes when it has no undefined reference and no such box.
 
 higgs_composite_qg: 10 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
-higgs_composite_qg_SM: 37 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
+higgs_composite_qg_SM: 36 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 cover_letter: 2 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
 submission/: the flat source compiles alone to 10 pages (the manuscript has 10); undefined: none -> PASS
 submission_info: 6 pages; undefined: none; overfull boxes wider than 1 pt: none -> PASS
@@ -178,7 +178,7 @@ Material lists the data files, the programs and the templates with their SHA-256
 templates, of the build program and of the files to upload, at the time this README was built:
 
 * `paper_prd/scripts/build_paper.py`:\
-  `101275242a577d8fd71c4dc30953d495e17cdb46e2218cf08f9f516ea2b8bea5`
+  `2d493a0239d7ee629a136db0a271b2fdf067b2864962c422019ee289e23aa57b`
 * `paper_prd/src/higgs_composite_qg.template.tex`:\
   `d7e42f13b65121f4c6b9edbd47fb6789cee86a2dfe88120391630bcba874db99`
 * `paper_prd/src/higgs_composite_qg_SM.template.tex`:\
@@ -196,6 +196,6 @@ templates, of the build program and of the files to upload, at the time this REA
 * `paper_prd/submission/higgs_composite_qg.bbl`:\
   `05cf62568724668752e04505b94c9e766ab1a7046849dbc65adaec0223f1b79d`
 * `paper_prd/submission/higgs_composite_qg_SM.pdf`:\
-  `e27e5434013abd789d01cb2bce09ac06458610c2353a87b86d768ac6e47c736b`
+  `68580df864e4b76359fd0b3f8f0dc61f412021663494ae6a3422932d147c0b8b`
 * `paper_prd/submission/cover_letter.pdf`:\
   `7a7af727c5d82a82015bdb7a00294e8c9ee5624b352655cc63467232286693e9`

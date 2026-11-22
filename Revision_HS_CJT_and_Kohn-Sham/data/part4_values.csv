@@ -5,7 +5,7 @@ p4_mass_ev2_HS_1_1,2.508126085540e-3
 p4_mass_ev3_HS_1_1,4.079269191890e-3
 p4_mass_MW_HS_1_1,5.008119492923e-2
 p4_mass_MZ_HS_1_1,6.386915681211e-2
-p4_mass_photon_overlap_defect_HS_1_1,0.000000000000e0
+p4_mass_A_overlap_defect_HS_1_1,0.000000000000e0
 p4_mass_chi11_e1_HS_1_1,-2.382538713298e-16
 p4_mass_chi22_e1_HS_1_1,5.118624664367e-3
 p4_mass_chiFF_e1_HS_1_1,2.014453921921e-2
@@ -15,7 +15,7 @@ p4_mass_ev2_HS_0_1,2.247467656075e-3
 p4_mass_ev3_HS_0_1,3.661461136960e-3
 p4_mass_MW_HS_0_1,4.740746413884e-2
 p4_mass_MZ_HS_0_1,6.051000856850e-2
-p4_mass_photon_overlap_defect_HS_0_1,0.000000000000e0
+p4_mass_A_overlap_defect_HS_0_1,0.000000000000e0
 p4_mass_chi11_e1_HS_0_1,3.130973868297e-16
 p4_mass_chi22_e1_HS_0_1,4.586668685868e-3
 p4_mass_chiFF_e1_HS_0_1,1.808128956523e-2
@@ -25,7 +25,7 @@ p4_mass_ev2_HS_0_0,1.846917010470e-3
 p4_mass_ev3_HS_0_0,3.053066913125e-3
 p4_mass_MW_HS_0_0,4.297577236618e-2
 p4_mass_MZ_HS_0_0,5.525456463610e-2
-p4_mass_photon_overlap_defect_HS_0_0,0.000000000000e0
+p4_mass_A_overlap_defect_HS_0_0,0.000000000000e0
 p4_mass_chi11_e1_HS_0_0,-4.769961348149e-16
 p4_mass_chi22_e1_HS_0_0,3.769218388715e-3
 p4_mass_chiFF_e1_HS_0_0,1.507687364506e-2
@@ -35,7 +35,7 @@ p4_mass_ev2_KS,2.115333019644e-3
 p4_mass_ev3_KS,4.123354213755e-3
 p4_mass_MW_KS,4.599274964213e-2
 p4_mass_MZ_KS,6.421334918656e-2
-p4_mass_photon_overlap_defect_KS,0.000000000000e0
+p4_mass_A_overlap_defect_KS,0.000000000000e0
 p4_mass_chi11_e1_KS,-6.117320777020e-17
 p4_mass_chi22_e1_KS,4.317006162538e-3
 p4_mass_chiFF_e1_KS,2.036224303089e-2
@@ -45,7 +45,7 @@ p4_mass_ev2_CJT,2.243158227842e-3
 p4_mass_ev3_CJT,4.123354213756e-3
 p4_mass_MW_CJT,4.736199138382e-2
 p4_mass_MZ_CJT,6.421334918657e-2
-p4_mass_photon_overlap_defect_CJT,0.000000000000e0
+p4_mass_A_overlap_defect_CJT,0.000000000000e0
 p4_mass_chi11_e1_CJT,-2.609835701375e-16
 p4_mass_chi22_e1_CJT,4.577873934370e-3
 p4_mass_chiFF_e1_CJT,2.036224303089e-2
@@ -58,8 +58,8 @@ p4_nonpolar_ev3,6.617728985056e-3
 p4_waves_MW,4.736199138387e-2
 p4_waves_MZ,6.421334918663e-2
 p4_waves_omega_s,3.315339396871e-2
-p4_waves_photon_amplitude,2.053902888371e-2
-p4_waves_photon_amplitude_pred,2.053915514029e-2
+p4_waves_A_amplitude,2.053902888371e-2
+p4_waves_A_amplitude_pred,2.053915514029e-2
 p4_waves_W_decay_length,3.014148084540e1
 p4_waves_W_decay_length_pred,2.956548158372e1
 p4_waves_W_amplitude,4.441886878422e-2

@@ -1549,11 +1549,11 @@ vacuum is unstable against pairing when $\lambda^{\rm T}_{\rm SF}>1$.
 |:---|---:|
 | W1 alone, massless, per unit coupling\^2 | $-0.035731783$ |
 | W2 alone, massless, per unit coupling\^2 | $-0.035731783$ |
-| W3 (the photon of the condensate) alone, massless, per unit coupling\^2 | $0.035731783$ |
+| W3 (the zeugon of the condensate) alone, massless, per unit coupling\^2 | $0.035731783$ |
 | B alone, massless, per unit coupling\^2 | $-0.14292713$ |
 | all four massless, couplings 1 | $-0.17865892$ |
 | all four massless, g\_v = 0.7, g\_F = 0.45 | $-0.046451318$ |
-| critical g\_v of the photon alone | $5.2902069$ |
+| critical g\_v of the zeugon alone | $5.2902069$ |
 | V\^(0) by CJT, contact terms alone | $0.056373467$ |
 
 **Table 11.2.** The largest eigenvalues of the linearized gap equation of the normal vacuum, per unit coupling squared
@@ -1582,7 +1582,7 @@ until the masses change by less than $10^{-5}$ (three iterations; *check P2-8j*)
 | eigenvalue 3 of the mass matrix | $0.0018509955$ |
 | eigenvalue 4 of the mass matrix | $0.0033110942$ |
 | M\_W | $0.043023197$ |
-| M\_photon | $1.9999467\times10^{-8}$ |
+| M\_A | $1.9999467\times10^{-8}$ |
 | M\_Z | $0.057542108$ |
 | D | $0.27617557$ |
 | Dirac mass | $0.15696812$ |
@@ -1632,7 +1632,7 @@ pairing term did in $V^{(1)}_{\rm SF}$, make a massive state with the Dirac mass
 ![](figures/fig_part2_p3_gauge.png){width=100%}
 
 **Figure 7.** Left: the exchange energies of the four gauge bosons in the CJT superfluid at the couplings of the project;
-the massless $W^3_{\rm SF}$ attracts, $W^1$, $W^2$ and $B$ repel. Right: the pair amplitude and the gap of the CJT solution as the
+the zeugon $W^3_{\rm SF}$ (massless) attracts, $W^1$, $W^2$ and $B$ repel. Right: the pair amplitude and the gap of the CJT solution as the
 couplings grow. Data: `data/part2_gauge_cjt.csv`, `data/part2_gauge_scan.csv`.
 
 ## 11.5 KS and HS with the gauge bosons
@@ -2622,7 +2622,7 @@ $g_ag_b\chi^{ab}_{\rm SF}$ by the cyclic Jacobi method (plane rotations that ann
 | quantity | HS (1, 1) | HS (0, 1) | HS (0, 0) | KS | CJT |
 |:--------------------|-----------:|-----------:|-----------:|-----------:|-----------:|
 | $\Phi^X_{0,{\rm SF}}$ | $0.4030641$ | $0.362009$ | $0.3069888$ | $0.3284861$ | $0.3284861$ |
-| $10^3\lambda_0$ (massless $A_{{\rm SF},p}$) | $-1.2\times10^{-13}$ | $1.5\times10^{-13}$ | $-2.3\times10^{-13}$ | $-3\times10^{-14}$ | $-1.3\times10^{-13}$ |
+| $10^3\lambda_0$ (the zeugon $A_{{\rm SF},p}$) | $-1.2\times10^{-13}$ | $1.5\times10^{-13}$ | $-2.3\times10^{-13}$ | $-3\times10^{-14}$ | $-1.3\times10^{-13}$ |
 | $10^3\lambda_1=10^3\lambda_2$ | $2.5081261$ | $2.2474677$ | $1.846917$ | $2.115333$ | $2.2431582$ |
 | $10^3\lambda_3$ | $4.0792692$ | $3.6614611$ | $3.0530669$ | $4.1233542$ | $4.1233542$ |
 | $M^X_{W,{\rm SF}}=\lambda_1^{1/2}$ | $0.05008119$ | $0.04740746$ | $0.04297577$ | $0.04599275$ | $0.04736199$ |
@@ -3042,7 +3042,7 @@ massive Z. The Python program repeats both sections through the C interface (*ch
 
 ![](figures/fig_part4_r4_waves.png){width=100%}
 
-**Figure 15.** Top left: the transverse massless $A_{{\rm SF},p}$ and massive $W^1_{{\rm SF},p}$ at $t=900$, driven at
+**Figure 15.** Top left: the transverse zeugon $A_{{\rm SF},p}$ (massless) and the massive $W^1_{{\rm SF},p}$ at $t=900$, driven at
 $0.7M^{\rm CJT}_{W,{\rm SF}}$ by the current sheet at $x=0$. Top right: the amplitude of $W^1_{{\rm SF},p}$ at the source frequency, the
 evanescent steady state and the slope $e^{-x/\ell_{\rm W}}$. Bottom left: the energy density of the free Goldstone packet (up)
 and of the longitudinal $Z_{{\rm SF},p}$ (down) at three times. Bottom right: the centres of
@@ -3051,9 +3051,9 @@ their energies. Data: `data/part4_waves_transverse.csv`, `data/part4_waves_Wclou
 ## 15.5 The videos
 
 * `videos/video_part4_v1_condensate_growth.mp4` -- the growth of the condensate of CJT from the normal vacuum (Section
-  15.1): $\lvert\Phi^3(t)\rvert/\Phi_0$, the pair amplitude $\lVert\mathsf C^{\rm p}(\vec q)\rVert/\sqrt8$ and the number of charges in the upper
-  band at the momenta of the grid along $+\vec e_3$, compared with the ground state, every 0.5 time units to $t=250$.
-* `videos/video_part4_v2_gauge_fields.mp4` -- the massless $A_{{\rm SF},p}$ radiating and the massive $W^1_{{\rm SF},p}$ bound
+  15.1): $\lvert\Phi^3(t)\rvert/\Phi_0$, the pair amplitude $\lVert\mathsf C^{\rm p}(\vec q)\rVert/\sqrt8$ and the occupation of the upper band (the
+  number of quanta of the DiracLike field in its band of positive energy) at the momenta of the grid along $+\vec e_3$, compared with the ground state, every 0.5 time units to $t=250$.
+* `videos/video_part4_v2_gauge_fields.mp4` -- the zeugon $A_{{\rm SF},p}$ (massless) radiating and the massive $W^1_{{\rm SF},p}$ bound
   (Section 15.3), and the free Goldstone packet against the same packet eaten by the gauge field (Section 15.4).
 
 Both are drawn by `python/sf_part4_figures.py` from the data files of `sf_part4` and encoded by the program ffmpeg
@@ -3317,18 +3317,18 @@ VERDICT: ALL PASS (34 of 34)
 | P2-7a HS_0_0 | PASS | 2.403e-13 | 1.0e-9 | HS(s\_S=0,s\_V=0): three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1) |
 | P2-7a KS | PASS | 2.502e-13 | 1.0e-9 | KS: three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1) |
 | P2-7a CJT | PASS | 2.485e-13 | 1.0e-9 | CJT: three Goldstone modes at omega = 0 (eigenvalues of M(0) equal to 1) |
-| P2-8a HS_1_1 | PASS | 2.278e-15 | 1.0e-10 | HS(s\_S=1,s\_V=1): the photon (W\^3) is massless, chi\_33 = -1.47e-15; no mixing (largest off-diagonal chi 2.3e-15) |
+| P2-8a HS_1_1 | PASS | 2.278e-15 | 1.0e-10 | HS(s\_S=1,s\_V=1): the zeugon (W\^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi\_33 = -1.47e-15; no mixing (largest off-diagonal chi 2.3e-15) |
 | P2-8b HS_1_1 | PASS | 8.820e-9 | 1.0e-7 | HS(s\_S=1,s\_V=1): thermodynamic consistency -d2 Omega/d mu\^2 = d&lt;Q>/d mu (relative); chi\_11 = chi\_22 = 0.0051186247, chi\_FF = 0.0201445392 |
-| P2-8a KS | PASS | 2.159e-15 | 1.0e-10 | KS: the photon (W\^3) is massless, chi\_33 = -3.69e-16; no mixing (largest off-diagonal chi 2.2e-15) |
+| P2-8a KS | PASS | 2.159e-15 | 1.0e-10 | KS: the zeugon (W\^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi\_33 = -3.69e-16; no mixing (largest off-diagonal chi 2.2e-15) |
 | P2-8b KS | PASS | 4.283e-9 | 1.0e-7 | KS: thermodynamic consistency -d2 Omega/d mu\^2 = d&lt;Q>/d mu (relative); chi\_11 = chi\_22 = 0.0043170062, chi\_FF = 0.0203622430 |
-| P2-8a CJT | PASS | 1.879e-15 | 1.0e-10 | CJT: the photon (W\^3) is massless, chi\_33 = -1.86e-16; no mixing (largest off-diagonal chi 1.9e-15) |
+| P2-8a CJT | PASS | 1.879e-15 | 1.0e-10 | CJT: the zeugon (W\^3, the massless gauge boson of the unbroken charge, not the photon) is massless, chi\_33 = -1.86e-16; no mixing (largest off-diagonal chi 1.9e-15) |
 | P2-8b CJT | PASS | 3.584e-9 | 1.0e-7 | CJT: thermodynamic consistency -d2 Omega/d mu\^2 = d&lt;Q>/d mu (relative); chi\_11 = chi\_22 = 0.0045778739, chi\_FF = 0.0203622430 |
 | P2-8c | PASS | 5.102e-12 | 1.0e-9 | Thouless eigenvalues of the exchange: the four bosons together = the sum of the four alone (one radial eigenvector) |
 | P2-8d | PASS | 2.041e-11 | 1.0e-9 | Thouless eigenvalues: W\^3 attracts and W\^1 repels the pair K\^3 equally, B repels four times as strongly |
 | P2-8j | PASS | 0.000e0 | 1.0e-4 | the masses used in the final CJT state are those of its own susceptibilities |
-| P2-8i | PASS | 8.163e-16 | 1.0e-9 | CJT with exchange: the photon stays massless (chi\_33 = 8.2e-16) and does not mix with B (chi\_3F = 1.7e-16) |
+| P2-8i | PASS | 8.163e-16 | 1.0e-9 | CJT with exchange: the zeugon stays massless (chi\_33 = 8.2e-16) and does not mix with B (chi\_3F = 1.7e-16) |
 | P2-8e | PASS | 1.355e-20 | 1.0e-14 | CJT with exchange: the energies of the four bosons add up to the exchange energy |
-| P2-8f | PASS | 0.000e0 | 0.0e0 | CJT with exchange at g\_v = 0.7, g\_F = 0.45: still superfluid (/D/ = 0.276176), the photon attracts (E\_W3 = -4.835e-5 &lt; 0), W\^1, W\^2, B repel |
+| P2-8f | PASS | 0.000e0 | 0.0e0 | CJT with exchange at g\_v = 0.7, g\_F = 0.45: still superfluid (/D/ = 0.276176), the zeugon attracts (E\_W3 = -4.835e-5 &lt; 0), W\^1, W\^2, B repel |
 | P2-8g | PASS | 3.223e-14 | 1.0e-8 | KS with local potentials and no exchange reproduces the KS (= CJT) contact solution (energy) |
 | P2-8h | PASS | 0.000e0 | 0.0e0 | variational order: with the same boson masses, the KS energy with local potentials (-1.32250207e-4) lies above the CJT energy (-1.32402018e-4) |
 
@@ -3355,11 +3355,11 @@ VERDICT: ALL PASS (44 of 44)
 | YP2-7b KS | PASS | 1.333e-13 | 1.0e-07 | KS: the collective modes below the threshold ['0.60347597', '0.65728473'] = Rust ['0.60347597', '0.65728473'] |
 | YP2-7a CJT | PASS | 2.329e-13 | 1.0e-09 | CJT: three Goldstone modes (LAPACK eigenvalues of M(0) equal to 1); spectrum of every node +-E (spread 4.4e-15) |
 | YP2-7b CJT | PASS | 1.180e-13 | 1.0e-07 | CJT: the collective modes below the threshold ['0.60347597', '0.64400715'] = Rust ['0.60347597', '0.64400715'] |
-| YP2-8a HS_1_1 | PASS | 3.744e-15 | 1.0e-08 | HS\_1\_1: chi\_11 = 0.0051186247, chi\_FF = 0.0201445392 = Rust; chi\_33 = 1.1e-15 (massless photon), no mixing |
-| YP2-8a KS | PASS | 5.405e-15 | 1.0e-08 | KS: chi\_11 = 0.0043170062, chi\_FF = 0.0203622430 = Rust; chi\_33 = 1.3e-16 (massless photon), no mixing |
-| YP2-8a CJT | PASS | 3.879e-15 | 1.0e-08 | CJT: chi\_11 = 0.0045778739, chi\_FF = 0.0203622430 = Rust; chi\_33 = 8.2e-16 (massless photon), no mixing |
+| YP2-8a HS_1_1 | PASS | 3.744e-15 | 1.0e-08 | HS\_1\_1: chi\_11 = 0.0051186247, chi\_FF = 0.0201445392 = Rust; chi\_33 = 1.1e-15 (massless zeugon), no mixing |
+| YP2-8a KS | PASS | 5.405e-15 | 1.0e-08 | KS: chi\_11 = 0.0043170062, chi\_FF = 0.0203622430 = Rust; chi\_33 = 1.3e-16 (massless zeugon), no mixing |
+| YP2-8a CJT | PASS | 3.879e-15 | 1.0e-08 | CJT: chi\_11 = 0.0045778739, chi\_FF = 0.0203622430 = Rust; chi\_33 = 8.2e-16 (massless zeugon), no mixing |
 | YP2-8b | PASS | 1.443e-14 | 1.0e-12 | angular averages D0, D1 of the Yukawa kernel (closed forms of the Rust program) = 400-point quadrature in the angle |
-| YP2-8c | PASS | 5.918e-12 | 1.0e-09 | Thouless eigenvalues of the exchange per unit coupling\^2: photon 0.0357317832, B -0.1429271327 = Rust |
+| YP2-8c | PASS | 5.918e-12 | 1.0e-09 | Thouless eigenvalues of the exchange per unit coupling\^2: zeugon (W\^3) 0.0357317832, B -0.1429271327 = Rust |
 | YP2-8d | PASS | 1.492e-08 | 1.0e-07 | CJT with exchange at g\_v = 0.7, g\_F = 0.45: energy -1.3240201973e-04 = Rust (relative; 294 iterations) |
 
 VERDICT: ALL PASS (23 of 23)
@@ -3367,11 +3367,11 @@ VERDICT: ALL PASS (23 of 23)
 ## 16.8 Part II: data files and figures (SHA-256 checksums)
 
 * `data/hck_part2_checks.txt` (report of `sf_part2`):\
-  `d9f2f84c5eb6101abd0d081f2d83ee5a14aedd22404a5a49b36bf26a7b4c99be`
+  `0af252aca8349d4fcad4a29a50c56d9fab1dbbb46f586bf5ae8d899a070db855`
 * `data/hck_part2_checks_python.txt` (report of `python/sf_part2.py`):\
-  `8ec9e11d4796b670edb84a96239235795fb01c84732d3714cdb0e8d427b86fc6`
+  `762edbe64fb56153be102cbe89af467630ccf876686f96a65042dac09d48b7ac`
 * `data/part2_values.csv` (the numbers of Part II):\
-  `257a36acc7f9f96c78b31fa5d53141b30ed61b2be7d9ce7303ac8986e2b0977e`
+  `0b75b5e83506ca26fa80f1b26be7a36da6e61c4e955b1fe9797be2c516b3f94a`
 * `data/part2_pair_channels.csv` (Table 8.1):\
   `029d1c2b2644f42e3bbce79769c9fc0154f44fb0459d1c069699fca0dc323da0`
 * `data/part2_effective_couplings.csv` (Table 10.1, Figure 5 (left)):\
@@ -3389,9 +3389,9 @@ VERDICT: ALL PASS (23 of 23)
 * `data/part2_chi.csv` (Table 11.1):\
   `aaed88f55d3ef88d54cb1d2f4149a22fd9c242c8eab4d28462b78247d135d2d4`
 * `data/part2_thouless.csv` (Table 11.2):\
-  `d015e566f57e5baf24aa8f783df42b1f2262268f182b32f94f8d0b7beb48a893`
+  `a9924278268950ee150f24343e5dbf03f2c56890230fbb17874926cc5a30ed7d`
 * `data/part2_gauge_cjt.csv` (Table 11.3, Figure 7 (left)):\
-  `48083a67dc63a65f8a12cea5069ee4f4b3a2904a987c071b5a26466d20999d82`
+  `533c1840af82f7056dc4b08c891c4c7f8123b39f54747df846ea7a15c37ad170`
 * `data/part2_gauge_scan.csv` (Table 11.4, Figure 7 (right)):\
   `9ea878b824ad18f6d93f451b035a4f0ddb39d79928e1446ace09035611e0e81c`
 * `data/part2_gauge_ks.csv` (Table 11.5):\
@@ -3401,7 +3401,7 @@ VERDICT: ALL PASS (23 of 23)
 * `figures/fig_part2_p2_modes.pdf` (Figure 6):\
   `c99bdd393cc64cd80fd39bf4c2008a30cb9bdaff6ae0b5eeea33af628867b0d4`
 * `figures/fig_part2_p3_gauge.pdf` (Figure 7):\
-  `fa198c8cc5cb4e9780dd9c47f24c685bb95b0a18a865f3cd97fdf162b0f2c363`
+  `4ba39faaa1e779dd803d76cfa32f23d4065baecc79d4e44091de87c4edd8edf6`
 
 ## 16.9 Part III: the programs and how to run them
 
@@ -3413,7 +3413,7 @@ VERDICT: ALL PASS (23 of 23)
   pair response (12.14) of a moving pair, the gradient coefficient at the critical temperature, the two regularizations
   of a moving pair, the twisted states, the slope in closed form, the Ginzburg number, Table 12.5, with the checks
   P3-G1 to P3-G12) and `higgs` (Section 14.6: the numbers of Table 14.2, the couplings of the amplitude field to the
-  Goldstone fields and the width (14.10), with the checks P3-H1 to P3-H4)) uses the library `sfcore`, with two functions added for this part in the
+  Goldstone fields and the width (14.10), with the checks P3-H1 to P3-H3)) uses the library `sfcore`, with two functions added for this part in the
   module `uniform` (the state of a fixed pair self-energy, and a column of the susceptibility matrix) and, for
   Section 12.4, the thermal states (`fermi`, `mode_entropy`, `states_t`, `solve_t`, `fixed_pair_state_t`). It reads
   `data/part2_modes.csv` of the program `sf_part2` for Table 13.1, so it is run after it:
@@ -3440,8 +3440,7 @@ VERDICT: ALL PASS (23 of 23)
   the twisted states of HS $(0,0)$, the independence of the quadrature, the two regularizations, the slope in closed
   form, the two forms of the Ginzburg number and the quartic coefficient of CJT (checks YP3-G1 to YP3-G12), and
   repeats the checks of Section 14.6: the amplitude mode below the threshold, the couplings of the amplitude field by
-  differentiating (12.4), the numbers of Table 14.2 recomputed from the data files and the row of the Standard Model
-  (checks YP3-H1 to YP3-H4); each check has the identifier of the Rust check of the same statement with the prefix Y,
+  differentiating (12.4), and the numbers of Table 14.2 recomputed from the data files (checks YP3-H1 to YP3-H3); each check has the identifier of the Rust check of the same statement with the prefix Y,
   and the program compares its values with those of the Rust program;
   `python/sf_part3_figures.py` draws Figures 8, 9, 10 and 11; it writes each PDF file without its creation date, so
   that a rerun gives the same bytes and the same SHA-256 checksums as those of Section 16.12:
@@ -3487,7 +3486,7 @@ VERDICT: ALL PASS (23 of 23)
 | P3-6 HS_1_1 | PASS | 2.471e-16 | 1.0e-10 | HS\_1\_1: the unbroken T\^3 has no temporal stiffness in the effective Lagrangian (chi\_33 = 2.5e-16) |
 | P3-H1 HS_1_1 | PASS | 0.000e0 | 0.0e0 | HS\_1\_1: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.813693 &lt; 2 E\_gap = 0.905935 (M\_H / 2 E\_gap = 0.8982) |
 | P3-H2 HS_1_1 | PASS | 2.098e-14 | 1.0e-8 | HS\_1\_1: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.07096573 and f\_I\^2/f\_F = 0.07212812 (largest relative difference) |
-| P3-H3 HS_1_1 | PASS | 1.624e-16 | 1.0e-12 | HS\_1\_1: the numbers of Table 14.2 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module higgs (largest relative difference) |
+| P3-H3 HS_1_1 | PASS | 0.000e0 | 1.0e-12 | HS\_1\_1: the numbers of Table 14.2 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module higgs (largest relative difference) |
 | P3-1 HS_0_1 | PASS | 3.606e-14 | 1.0e-9 | HS\_0\_1: the applied field Phi0 = 0.3620090014 gives back Phi\^3 = Phi0 and the ground-state energy -3.6080292614e-4 of part II |
 | P3-2 HS_0_1 | PASS | 3.451e-8 | 1.0e-6 | HS\_0\_1: the effective potential is stationary at its minimum (slope dV/dPhi, relative to Phi0 V'') |
 | P3-3 HS_0_1 | PASS | 1.082e-14 | 1.0e-10 | HS\_0\_1: the effective potential depends only on /Phi/ (a phase of U(1)F and the isospin direction 1 give the same energy) |
@@ -3611,10 +3610,9 @@ VERDICT: ALL PASS (23 of 23)
 | P3-H1 CJT | PASS | 0.000e0 | 0.0e0 | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235) |
 | P3-H2 CJT | PASS | 7.683e-14 | 1.0e-8 | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2 from finite differences of (12.4) are f\_F = 0.07134817 and f\_I\^2/f\_F = 0.06416246 (largest relative difference) |
 | P3-H3 CJT | PASS | 3.573e-16 | 1.0e-12 | CJT: the numbers of Table 14.2 recomputed from chi\_11, chi\_FF, M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = the module higgs (largest relative difference) |
-| P3-H4 | PASS | 1.531e-4 | 1.0e-3 | the Standard-Model row: M\_H/v = 0.50849, lambda = M\_H\^2/(2 v\^2) = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 from m\_H = 125.20, v = 246.22, M\_W = 80.3692, M\_Z = 91.1880 GeV (Particle Data Group 2024) agree with the rounded values 0.5085, 0.1293, 1.558, 0.8814 typed independently (largest relative difference; the rounding allows 1e-3) |
 | P3-7 | PASS | 4.002e-7 | 2.0e-6 | the six directions are exact for the twisted states at second order: phase twist of HS (1, 1), six vs 72 directions (1.3746345987e-2, 1.3746351488e-2; relative) |
 
-VERDICT: ALL PASS (156 of 156)
+VERDICT: ALL PASS (155 of 155)
 
 ## 16.11 Part III: the report of the Python program
 
@@ -3718,7 +3716,6 @@ VERDICT: ALL PASS (156 of 156)
 | YP3-H1 CJT | PASS | -- | -- | CJT: the amplitude mode lies below the threshold of two quasi-particles, M\_H = 0.603476 &lt; 2 E\_gap = 0.732781 (M\_H / 2 E\_gap = 0.8235; data/part3\_values.csv, data/part3\_thermal.csv) (2 E\_gap - M\_H = 0.129305) |
 | YP3-H2 CJT | PASS | 3.334e-11 | 1.0e-06 | CJT: the couplings of h to (d theta\_0)\^2 and (d theta\_1)\^2, 0.07134817 and 0.06416246, by differentiating the field = f\_F and f\_I\^2/f\_F (largest relative difference) |
 | YP3-H3 CJT | PASS | 3.085e-13 | 1.0e-09 | CJT: the numbers of Table 14.2 recomputed from data/part3\_values.csv and data/part3\_thermal.csv (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv (largest relative difference) |
-| YP3-H4 | PASS | 0.000e+00 | 1.0e-10 | the Standard Model row: M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z = 0.88136 (Particle Data Group 2024; largest relative difference) |
 | YP3-1 HS_1_1 | PASS | 5.519e-14 | 1.0e-09 | HS\_1\_1: the applied field Phi0 gives back Phi0 and the ground-state energy (= Rust Phi0 0.4030641406) |
 | YP3-2 HS_1_1 | PASS | 2.068e-10 | 1.0e-06 | HS\_1\_1: the curvature of the effective potential along the amplitude V'' = 2.8059266387e-02 = Rust (relative) |
 | YP3-4 HS_1_1 | PASS | 4.316e-10 | 1.0e-05 | HS\_1\_1: the curvature along the non-unitary direction 2.7592871094e-02 = Rust (relative) |
@@ -3734,16 +3731,16 @@ VERDICT: ALL PASS (156 of 156)
 | YP3-10 CJT | PASS | 2.872e-12 | 1.0e-08 | CJT: the coefficient of Phi\^2 of the Taylor series of the effective potential at the origin a\^Tay = -4.2966587554e-03 = Rust (relative; the Richardson values from 0.004, 0.008 and from 0.008, 0.016 differ by 7.4e-08) |
 | YP3-7 CJT | PASS | 1.972e-11 | 1.0e-07 | CJT: the stiffness of the phase from the twisted states f\^2 = 2.2552881119e-03 = Rust (relative) |
 
-VERDICT: ALL PASS (113 of 113)
+VERDICT: ALL PASS (112 of 112)
 
 ## 16.12 Part III: data files and figures (SHA-256 checksums)
 
 * `data/hck_part3_checks.txt` (report of `sf_part3`):\
-  `d48878bdeab73e2111111783db4b0fe23e901b8036d7c99a588592f2673dc920`
+  `5b46688b9e601c0afd52fb609c6157754b29def63464de6742e0d0742f03b606`
 * `data/hck_part3_checks_python.txt` (report of `python/sf_part3.py`):\
-  `bc3f8083ce9754b74438953b32a8d23ff49b61eff389afa7255a535c7d669376`
+  `344367a0a0fbfa332a3dbe83e888713f55d619bdf7506a43008c60dbd116e8b8`
 * `data/part3_values.csv` (the numbers of Part III):\
-  `a71ca8cdadaf08e64e9ca5556e83c7ded16d4d1337ae9f32479ffd5dd071e0ba`
+  `ddd902b2a676351f6903cd034bd788d9d1183377e829b51c84bcfe847a4e2752`
 * `data/part3_sfbsv.csv` (Tables 12.3 and 13.1, Figure 11):\
   `7553ebd5ec2cd946f5b3e634d1bcf5d68eb8426474dfb02c123669fa6aad4214`
 * `data/part3_landau.csv` (Table 12.2, Figure 9, right):\
@@ -3766,8 +3763,8 @@ VERDICT: ALL PASS (113 of 113)
 * `data/part3_ginzburg_regions.csv` (Table 12.5, rows 16 and 17: $a^{X,{\rm Tay}}_{\rm SF}(q^{\rm pair}_{\rm SF};T^{X,{\rm c}}_{\rm SF})-a^{X,{\rm Tay}}_{\rm SF}(0;T^{X,{\rm c}}_{\rm SF})$
   for the two regularizations at $q^{\rm pair}_{\rm SF}=0.005$, $0.01$, $0.02$, $0.04$):\
   `8838a87b0a15124b283f32962b18148fbf6b08b0e4101a355689e2abeaf63b0c`
-* `data/part3_higgs.csv` (Table 14.2; the last row: the Standard Model):\
-  `b660c129254e86955c47f5acfb92388fd63329a23030e2fe38ebdbbaa149ab7e`
+* `data/part3_higgs.csv` (Table 14.2; one row per method):\
+  `fc2b3fb56517fb1557ca9c355371472e761ab852189deff8fcb4860feba9ed7b`
 * `data/part3_effpot_HS_1_1.csv`, `data/part3_effpot_HS_0_1.csv`, `data/part3_effpot_HS_0_0.csv`, `data/part3_effpot_KS.csv`,
   `data/part3_effpot_CJT.csv` (Figure 8):\
   `adec9b41732d6e022c680889612a4f56a4610a52765d36d44a1ae76de2e2dc5c`\
@@ -3833,36 +3830,36 @@ VERDICT: ALL PASS (113 of 113)
 | P4-0e | PASS | 8.433e-9 | 1.0e-6 | IDACalcIC corrects the algebraic initial value y3(0) = 0.3 to 1.000000000000 and y1'(0) to 1.000000000000 (exact 1, 1; largest change 0.700); then the largest error to t = 20 |
 | P4-M0 HS_1_1 | PASS | 2.829e-14 | 1.0e-10 | HS\_1\_1: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -5.186344202260e-4, E0 = -5.186344202260e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 HS_1_1 | PASS | 2.270e-13 | 1.0e-7 | HS\_1\_1: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 9.6e-14) |
-| P4-M2 HS_1_1 | PASS | 2.862e-14 | 1.0e-7 | HS\_1\_1: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (-1.167e-16, relative to M\_Z\^2 = 4.079269e-3) |
-| P4-M3 HS_1_1 | PASS | 0.000e0 | 1.0e-9 | HS\_1\_1: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 HS_1_1 | PASS | 2.862e-14 | 1.0e-7 | HS\_1\_1: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (-1.167e-16, relative to M\_Z\^2 = 4.079269e-3) |
+| P4-M3 HS_1_1 | PASS | 0.000e0 | 1.0e-9 | HS\_1\_1: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 HS_1_1 | PASS | 9.152e-13 | 1.0e-6 | HS\_1\_1: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (2.508126086e-3, 2.508126086e-3, 4.079269192e-3 against 2.508126086e-3, 2.508126086e-3, 4.079269192e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 HS_1_1 | PASS | 4.667e-13 | 1.0e-6 | HS\_1\_1: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 HS_1_1 | PASS | 2.244e-13 | 1.0e-12 | HS\_1\_1: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (0.0e0), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
 | P4-M0 HS_0_1 | PASS | 3.373e-14 | 1.0e-10 | HS\_0\_1: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -3.608029261390e-4, E0 = -3.608029261390e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 HS_0_1 | PASS | 2.085e-13 | 1.0e-7 | HS\_0\_1: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 9.7e-14) |
-| P4-M2 HS_0_1 | PASS | 4.190e-14 | 1.0e-7 | HS\_0\_1: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (1.534e-16, relative to M\_Z\^2 = 3.661461e-3) |
-| P4-M3 HS_0_1 | PASS | 0.000e0 | 1.0e-9 | HS\_0\_1: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 HS_0_1 | PASS | 4.190e-14 | 1.0e-7 | HS\_0\_1: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (1.534e-16, relative to M\_Z\^2 = 3.661461e-3) |
+| P4-M3 HS_0_1 | PASS | 0.000e0 | 1.0e-9 | HS\_0\_1: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 HS_0_1 | PASS | 1.455e-12 | 1.0e-6 | HS\_0\_1: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (2.247467656e-3, 2.247467656e-3, 3.661461137e-3 against 2.247467656e-3, 2.247467656e-3, 3.661461137e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 HS_0_1 | PASS | 6.860e-13 | 1.0e-6 | HS\_0\_1: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 HS_0_1 | PASS | 3.189e-13 | 1.0e-12 | HS\_0\_1: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (-2.6e-20), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
 | P4-M0 HS_0_0 | PASS | 1.290e-13 | 1.0e-10 | HS\_0\_0: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -2.061619080677e-4, E0 = -2.061619080677e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 HS_0_0 | PASS | 1.856e-13 | 1.0e-7 | HS\_0\_0: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 9.6e-14) |
-| P4-M2 HS_0_0 | PASS | 7.656e-14 | 1.0e-7 | HS\_0\_0: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (-2.337e-16, relative to M\_Z\^2 = 3.053067e-3) |
-| P4-M3 HS_0_0 | PASS | 0.000e0 | 1.0e-9 | HS\_0\_0: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 HS_0_0 | PASS | 7.656e-14 | 1.0e-7 | HS\_0\_0: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (-2.337e-16, relative to M\_Z\^2 = 3.053067e-3) |
+| P4-M3 HS_0_0 | PASS | 0.000e0 | 1.0e-9 | HS\_0\_0: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 HS_0_0 | PASS | 2.012e-12 | 1.0e-6 | HS\_0\_0: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (1.846917010e-3, 1.846917010e-3, 3.053066913e-3 against 1.846917010e-3, 1.846917010e-3, 3.053066913e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 HS_0_0 | PASS | 2.008e-12 | 1.0e-6 | HS\_0\_0: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 HS_0_0 | PASS | 7.620e-14 | 1.0e-12 | HS\_0\_0: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (0.0e0), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
 | P4-M0 KS | PASS | 8.156e-14 | 1.0e-10 | KS: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -2.422384965940e-4, E0 = -2.422384965940e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 KS | PASS | 1.340e-13 | 1.0e-7 | KS: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 9.7e-14) |
-| P4-M2 KS | PASS | 7.270e-15 | 1.0e-7 | KS: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (-2.997e-17, relative to M\_Z\^2 = 4.123354e-3) |
-| P4-M3 KS | PASS | 0.000e0 | 1.0e-9 | KS: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 KS | PASS | 7.270e-15 | 1.0e-7 | KS: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (-2.997e-17, relative to M\_Z\^2 = 4.123354e-3) |
+| P4-M3 KS | PASS | 0.000e0 | 1.0e-9 | KS: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 KS | PASS | 2.459e-12 | 1.0e-6 | KS: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (2.115333020e-3, 2.115333020e-3, 4.123354214e-3 against 2.115333020e-3, 2.115333020e-3, 4.123354214e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 KS | PASS | 2.332e-12 | 1.0e-6 | KS: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 KS | PASS | 1.273e-13 | 1.0e-12 | KS: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (-8.9e-20), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
 | P4-M0 CJT | PASS | 7.076e-14 | 1.0e-10 | CJT: the vacuum Phi\_0 e\^(i pi/5) e\_1 is a self-consistent state with the ground-state energy (E = -2.422384965940e-4, E0 = -2.422384965940e-4; relative difference, plus the change of its field relative to Phi\_0) |
 | P4-M1 CJT | PASS | 2.139e-13 | 1.0e-7 | CJT: the susceptibility matrix of the vacuum along e\_1 is symmetric (largest asymmetry relative to chi\_FF; largest residual of the self-consistency 1.0e-13) |
-| P4-M2 CJT | PASS | 3.101e-14 | 1.0e-7 | CJT: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the photon is massless (-1.279e-16, relative to M\_Z\^2 = 4.123354e-3) |
-| P4-M3 CJT | PASS | 0.000e0 | 1.0e-9 | CJT: its eigenvector is (1, 0, 0, 0): the photon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
+| P4-M2 CJT | PASS | 3.101e-14 | 1.0e-7 | CJT: the smallest eigenvalue of the mass matrix g\_a g\_b chi\^ab of this vacuum vanishes: the zeugon is massless (-1.279e-16, relative to M\_Z\^2 = 4.123354e-3) |
+| P4-M3 CJT | PASS | 0.000e0 | 1.0e-9 | CJT: its eigenvector is (1, 0, 0, 0): the zeugon is W\^1, the gauge field of the generator T\^1 that leaves the condensate along e\_1 unchanged (1 minus the overlap) |
 | P4-M4 CJT | PASS | 2.318e-12 | 1.0e-6 | CJT: the other eigenvalues are M\_W\^2, M\_W\^2, M\_Z\^2 of the vacuum along e\_3 (2.243158228e-3, 2.243158228e-3, 4.123354214e-3 against 2.243158228e-3, 2.243158228e-3, 4.123354214e-3; relative) and the Z is B (1 minus overlap 0.0e0) |
 | P4-M5 CJT | PASS | 2.106e-12 | 1.0e-6 | CJT: the mass matrix (14.3) of the effective Lagrangian L\^X at this vacuum equals the microscopic one (largest difference relative to M\_Z\^2) |
 | P4-M6 CJT | PASS | 2.114e-13 | 1.0e-12 | CJT: the mass matrix (14.3) of L\^X at the vacuum Phi\_0 e\^(i pi/5) (1,1,1)/sqrt3 has the eigenvalues 0 (-6.3e-20), M\_W\^2, M\_W\^2, M\_Z\^2, and the massless field is n.W = (W\^1 + W\^2 + W\^3)/sqrt3 (sum of 1 minus the overlap, the zero eigenvalue relative to M\_Z\^2 and the relative deviations) |
@@ -3870,9 +3867,9 @@ VERDICT: ALL PASS (113 of 113)
 | P4-M8 | PASS | -5.248e-17 | 1.0e-12 | for the field Phi\_0 (e\_3 + i e\_1)/sqrt2 (not a vacuum) the mass matrix (14.3) of L\^CJT has one zero eigenvalue (1.90e-19; next 1.121579e-3), whose eigenvector is cos(th') W\^2 - sin(th') B with tan th' = g\_v/(2 g\_F), th' = 37.874984 degrees (1 minus the overlap, plus the zero eigenvalue relative to the next) |
 | P4-W0 | PASS | 5.619e-14 | 1.0e-10 | the mass of the Z of L\^CJT is M\_Z = 2 g\_F f\_F = 0.064213349187 (f\_F\^2 = 5.090560758e-3); g\_F (chi\_FF)\^(1/2) of Part III = 0.064213349187 (relative) |
 | P4-W1 | PASS | 6.196e-14 | 1.0e-11 | the spectral matrix (15.4) on 511 points differentiates sin(k x), k = 2 pi 37/L, exactly (largest error relative to k) and is antisymmetric (largest /D\_jl + D\_lj/ = 0.0e0) |
-| P4-W2 | PASS | 3.815e-9 | 1.0e-6 | the photon driven by the source (15.2) to t = 900 (1897 steps, 3748 evaluations of the right side, 4 rejected steps, 3745 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-1) equals the exact Duhamel solution of every Fourier mode (largest difference relative to the largest field) |
+| P4-W2 | PASS | 3.815e-9 | 1.0e-6 | the zeugon A driven by the source (15.2) to t = 900 (1897 steps, 3748 evaluations of the right side, 4 rejected steps, 3745 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-1) equals the exact Duhamel solution of every Fourier mode (largest difference relative to the largest field) |
 | P4-W3 | PASS | 4.630e-9 | 1.0e-6 | the W (mass M\_W of L\^CJT) driven by the same source equals its exact solution (largest difference relative to the largest field) |
-| P4-W4 | PASS | 6.147e-6 | 2.0e-2 | the photon radiates: at t = 900 its amplitude for 100 &lt; x &lt; 400 is 2.053903e-2, the outgoing wave J\_0 /s\^(omega\_s)//(2 omega\_s) = 2.053916e-2 (relative) |
+| P4-W4 | PASS | 6.147e-6 | 2.0e-2 | the zeugon radiates: at t = 900 its amplitude for 100 &lt; x &lt; 400 is 2.053903e-2, the outgoing wave J\_0 /s\^(omega\_s)//(2 omega\_s) = 2.053916e-2 (relative) |
 | P4-W5 | PASS | 2.137e-2 | 5.0e-2 | the W stays a bound cloud: its decay length for 30 &lt; x &lt; 100 is 30.1415 against 1/(M\_W\^2 - omega\_s\^2)\^(1/2) = 29.5655, and its amplitude for /x/ &lt; 100 differs from the evanescent steady state by at most 1.88e-3 of its largest value 4.45027e-2 (sum of the relative difference of the lengths and this profile difference) |
 | P4-W6 | PASS | 1.308e-9 | 1.0e-7 | the free Goldstone field (g = 0) by CVODE to t = 350 (932 steps, 1710 evaluations of the right side, 5 rejected steps, 1707 fixed-point iterations (0 convergence failures), last order 6, last step 3.8197e-1) equals its exact solution (largest difference of theta and pi relative to their largest value) |
 | P4-W7 | PASS | 1.151e-14 | 1.0e-8 | temporal gauge, g = g\_F, by CVODE (1028 steps, 1821 evaluations of the right side, 5 rejected steps, 1818 fixed-point iterations (0 convergence failures), last order 6, last step 3.4663e-1): Gauss's law D E + 2 g f\^2 pi = 0 holds at all outputs (largest residual relative to the largest 2 g f\^2 /pi/) |
@@ -3958,34 +3955,34 @@ VERDICT: ALL PASS (120 of 120)
 | YP4-0c | PASS | 7.442e-09 | 1.0e-06 | IDA (exact matrix) through the C interface: y1' = y3, y2' = -y1, 0 = y3 - y2 to t = 20, largest error; 1150 steps (Rust: 1150) |
 | YP4-0d | PASS | 8.725e-09 | 1.0e-06 | IDA (difference quotients) through the C interface: y1' = y3, y2' = -y1, 0 = y3 - y2 to t = 20, largest error; 1392 steps (Rust: 1392) |
 | YP4-0e | PASS | 7.764e-09 | 1.0e-06 | IDACalcIC corrects y3(0) = 0.3 to 1.000000000000 and y1'(0) to 1.000000000000; largest error to t = 20 |
-| YP4-M1 HS_1_1 | PASS | 9.568e-14 | 1.0e-08 | HS\_1\_1: the mass matrix of the vacuum Phi\_0 e\^(i pi/5) e\_1 (Python engine, largest residual 9.7e-14): eigenvalues ['-4.445635061e-17', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'] = Rust ['-1.167443970e-16', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'], the photon W\^1 (1 minus the overlap 0.0e+00); largest difference relative to M\_Z\^2 (9 s) |
+| YP4-M1 HS_1_1 | PASS | 9.568e-14 | 1.0e-08 | HS\_1\_1: the mass matrix of the vacuum Phi\_0 e\^(i pi/5) e\_1 (Python engine, largest residual 9.7e-14): eigenvalues ['-4.445635061e-17', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'] = Rust ['-1.167443970e-16', '2.508126086e-03', '2.508126086e-03', '4.079269192e-03'], the zeugon W\^1 (1 minus the overlap 0.0e+00); largest difference relative to M\_Z\^2 (8 s) |
 | YP4-M2 HS_1_1 | PASS | 8.163e-13 | 1.0e-07 | HS\_1\_1: the mass matrix (14.3) at the vacuum along (1,1,1)/sqrt3: zero eigenvalue 1.1e-19 with the eigenvector n.W (1 minus the overlap), the others equal to those along e\_1 (relative) |
-| YP4-M1 CJT | PASS | 1.548e-13 | 1.0e-08 | CJT: the mass matrix of the vacuum Phi\_0 e\^(i pi/5) e\_1 (Python engine, largest residual 1.0e-13): eigenvalues ['-2.935364260e-17', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'] = Rust ['-1.278819494e-16', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'], the photon W\^1 (1 minus the overlap 0.0e+00); largest difference relative to M\_Z\^2 (13 s) |
+| YP4-M1 CJT | PASS | 1.548e-13 | 1.0e-08 | CJT: the mass matrix of the vacuum Phi\_0 e\^(i pi/5) e\_1 (Python engine, largest residual 1.0e-13): eigenvalues ['-2.935364260e-17', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'] = Rust ['-1.278819494e-16', '2.243158228e-03', '2.243158228e-03', '4.123354214e-03'], the zeugon W\^1 (1 minus the overlap 0.0e+00); largest difference relative to M\_Z\^2 (15 s) |
 | YP4-M2 CJT | PASS | 2.215e-12 | 1.0e-07 | CJT: the mass matrix (14.3) at the vacuum along (1,1,1)/sqrt3: zero eigenvalue -4.3e-19 with the eigenvector n.W (1 minus the overlap), the others equal to those along e\_1 (relative) |
 | YP4-M3 | PASS | 1.805e-12 | 1.0e-10 | the field Phi\_0 (e\_3 + i e\_1)/sqrt2 of CJT: one zero eigenvalue (4.3e-19) with the eigenvector cos(th') W\^2 - sin(th') B, th' = 37.874984 degrees = Rust 37.874984 |
-| YP4-W2 | PASS | 2.411e-10 | 1.0e-06 | the photon and the W driven by the source to t = 900 (CVODE through the C interface, 1897 steps, 3749 evaluations of the right side, 4 rejected steps, 3746 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-01; 1 s) equal the fields of the Rust program (sum of the largest differences relative to the largest fields) |
-| YP4-W3 | PASS | 8.406e-09 | 1.0e-06 | the photon and the W at t = 900 equal the exact solutions of every Fourier mode (sum of the largest relative differences) |
-| YP4-W4 | PASS | 2.194e-08 | 1.0e-06 | the free Goldstone field and the temporal gauge (CVODE: 932 steps, 1710 evaluations of the right side, 5 rejected steps, 1707 fixed-point iterations (0 convergence failures), last order 6, last step 3.8197e-01; 1028 steps, 1828 evaluations of the right side, 5 rejected steps, 1825 fixed-point iterations (0 convergence failures), last order 6, last step 3.4660e-01) and the unitary gauge (IDA: 2356 steps, 2398 residual evaluations, 33 matrix evaluations, 33 factorizations, 2 rejected steps, 2398 Newton iterations (0 convergence failures), last order 5, last step 1.5403e-01) through the C interface equal the Rust fields (sum of five largest relative differences; 2 s) |
+| YP4-W2 | PASS | 2.411e-10 | 1.0e-06 | the zeugon A and the W driven by the source to t = 900 (CVODE through the C interface, 1897 steps, 3749 evaluations of the right side, 4 rejected steps, 3746 fixed-point iterations (1 convergence failures), last order 5, last step 4.7045e-01; 1 s) equal the fields of the Rust program (sum of the largest differences relative to the largest fields) |
+| YP4-W3 | PASS | 8.406e-09 | 1.0e-06 | the zeugon A and the W at t = 900 equal the exact solutions of every Fourier mode (sum of the largest relative differences) |
+| YP4-W4 | PASS | 2.194e-08 | 1.0e-06 | the free Goldstone field and the temporal gauge (CVODE: 932 steps, 1710 evaluations of the right side, 5 rejected steps, 1707 fixed-point iterations (0 convergence failures), last order 6, last step 3.8197e-01; 1028 steps, 1828 evaluations of the right side, 5 rejected steps, 1825 fixed-point iterations (0 convergence failures), last order 6, last step 3.4660e-01) and the unitary gauge (IDA: 2356 steps, 2398 residual evaluations, 33 matrix evaluations, 33 factorizations, 2 rejected steps, 2398 Newton iterations (0 convergence failures), last order 5, last step 1.5403e-01) through the C interface equal the Rust fields (sum of five largest relative differences; 3 s) |
 | YP4-W5 | PASS | 2.011e-08 | 1.0e-06 | a - D theta/(2 g) and E of the temporal gauge equal a\_u and E of the unitary gauge (sum of the largest relative differences) |
 | YP4-W6 | PASS | 1.153e-08 | 1.0e-06 | a\_u of IDA equals the exact solution a\_m(t) = a\_m(0) cos(w\_m t) + a\_m'(0) sin(w\_m t)/w\_m, w\_m = (k\_m\^2 + M\_Z\^2)\^(1/2) (largest difference relative to the largest value) |
 | YP4-W7 | PASS | 2.238e-10 | 1.0e-06 | the energy of the free Goldstone packet moves at the speed of light (slope of its centre 0.999999999776; difference from 1) |
 | YP4-T1 | PASS | 2.229e-08 | 1.0e-06 | CJT on 8 radial nodes, polar sector, from the normal vacuum with the seed 1e-7 (K\^3)\^dag to t = 60 (CVODE through the C interface, 967 steps, 1489 evaluations of the right side, 16 rejected steps, 1486 fixed-point iterations (0 convergence failures), last order 6, last step 4.2705e-02; 2 s): Phi\^3(t) equals the Rust run (largest difference relative to the largest /Phi\^3/ = 0.435614) |
 | YP4-T1e | PASS | 1.057e-08 | 1.0e-06 | the energy of this run is conserved (largest change relative to the depth of the minimum, /E0/ of the 24-node grid) |
 | YP4-T2 | PASS | 1.053e-05 | 1.0e-04 | the growth rate on this grid, 0.416516158 (fit of ln/Phi\^3/ on 22 outputs), equals the rate of the unstable mode of the linear response at imaginary frequency, 0.416520543 (LAPACK; lambda\^P = 1.113373070); relative |
-| YP4-T3 | PASS | 1.073e-06 | 2.0e-04 | after the kick (1 + 1e-3) P\_0 of the ground state on this grid (5263 steps, 10061 evaluations of the right side, 4 rejected steps, 10058 fixed-point iterations (0 convergence failures), last order 6, last step 7.6470e-02; 22 s), /Phi\^3/ oscillates at 0.603477242; the amplitude mode of the linear response of this grid (modes ['0.603478 x1', '0.644007 x2']) is at 0.603477890 (relative) |
+| YP4-T3 | PASS | 1.073e-06 | 2.0e-04 | after the kick (1 + 1e-3) P\_0 of the ground state on this grid (5263 steps, 10061 evaluations of the right side, 4 rejected steps, 10058 fixed-point iterations (0 convergence failures), last order 6, last step 7.6470e-02; 25 s), /Phi\^3/ oscillates at 0.603477242; the amplitude mode of the linear response of this grid (modes ['0.603478 x1', '0.644007 x2']) is at 0.603477890 (relative) |
 
 VERDICT: ALL PASS (20 of 20)
 
 ## 16.16 Part IV: data files, figures and videos (SHA-256 checksums)
 
 * `data/hck_part4_checks.txt` (report of `sf_part4`):\
-  `ea3168c17f2cc59e11d300e29063c490107130fce49d33af00c26854b1a6945a`
+  `6cc8ba37d8787ea1cb0a31438079f8348d2a2273fa847b446524f9ca8f36443a`
 * `data/hck_part4_checks_python.txt` (report of `python/sf_part4.py`):\
-  `2893d02232a255f2f2e9cd12e27d6a1e12bb1ed9d40b565db773629b97a3e498`
+  `0f0fb9a12812008f66200f6a14f2fc633f4c70e7f06be29651d55e3645d4d487`
 * `data/part4_values.csv` (the numbers of Part IV):\
-  `fbdbb66940feb24446f363627508195d4ce9faf12ed01f5f5a436abb50d7c824`
+  `9fcf41519e8438002668778734a44f79176f228dc29efe1c77b2a80f8b5b3aa5`
 * `data/part4_massmatrix.csv` (Table 14.1):\
-  `d7bbffc2dbfadc6fe46f214c9bb92f9ca559bf2fa8dfde9abf17233fd2e03fd5`
+  `3ea98ff1b722e2f15ac95985a38820a8cfba90dcf0e14a10e0437e76450d51f5`
 * `data/part4_td_summary.csv` (Tables 15.1 and 15.2):\
   `024c04abcdabc12484921f19de63cbf4f2fb20b002b60735ac6bdbd89142283d`
 * `data/part4_td_growth_HS_1_1.csv`, `data/part4_td_growth_HS_0_1.csv`, `data/part4_td_growth_HS_0_0.csv`,
@@ -4009,7 +4006,7 @@ VERDICT: ALL PASS (20 of 20)
   `af01b17d961e4283f8b66e2bb97c79b024ddf2b4a7cd64f5843795d80bfbec80`
 * `data/part4_waves_transverse.csv`, `data/part4_waves_Wcloud.csv`, `data/part4_waves_longitudinal.csv` (Figure 15, the
   second video):\
-  `e714fc85a788d1dfadcddb323b833c3ce65722af9a62267f5a1fa0d8c7c5bf00`\
+  `afcbf67a220a0a6ce9c367c783ca763dd91dd63f1f3b6991e5ed2f3a43790904`\
   `94e3bec519f3a739f4862f33814fc749a3a85710e67e859c5925a91887ad99cc`\
   `3d773b42e6ef09b3ef4047bfcd470db74b420e803e2b22f01a6e96b1263ee09e`
 * `figures/fig_part4_r1_massmatrix.pdf` (Figure 12):\
@@ -4019,11 +4016,11 @@ VERDICT: ALL PASS (20 of 20)
 * `figures/fig_part4_r3_modes.pdf` (Figure 14):\
   `d7cc1802f966287a371b23c0099d38dcec18f794cd5815c962722adabc8418ec`
 * `figures/fig_part4_r4_waves.pdf` (Figure 15):\
-  `dbd553ce7e53a575e8b3cf013bcbbbcf0160a42d959023e51234abafbd21f6b1`
+  `33d2891a6d9bc882164c2361f2fdc526fa162ec5fd9427a995ae96ab507d1bd9`
 * `videos/video_part4_v1_condensate_growth.mp4`:\
-  `272e4b213c6825ba45694137abdeff9965d8272951ddb89eee00c49ddbaabefd`
+  `365c9e3b01d6225f0785a02cafa6509abb3ab17050603035bbbf22b5ecc0ccd2`
 * `videos/video_part4_v2_gauge_fields.mp4`:\
-  `9c77d266642892d9c0c984a5c540a3f9562fa91f5360e46ec70a69bdec8e2a3b`
+  `e52a8112c4d24c1a12b583979e605729bc511ff63e4c7ecc48187407faf50d57`
 
 # 17. Corrections made during the work
 
@@ -4135,7 +4132,10 @@ Each of the following was found before part II was committed.
     of Table 14.2 recomputed from the data files, the row of the Standard Model) received Rust checks of the same
     statements, P3-G10 to P3-G12, P3-H3 and P3-H4, whose identifiers they now carry; the earlier YP3-G1 (the gradient
     coefficient on 64 directions) is now YP3-G8, the counterpart of P3-G8 (the gradient coefficient does not depend on
-    the quadrature). The Rust program makes 156 checks (all pass, 899 s), the Python program 113 (all pass, 99 s).
+    the quadrature). The Rust program then made 156 checks (all pass, 899 s), the Python program 113 (all pass, 99 s).
+    The check P3-H4 of the row of the Standard Model and its counterparts YP3-H4 and WP3-H4 were removed on
+    21 November 2026 together with that row (Section 17.6, item 2); the present numbers of checks are those of the
+    verdicts in Sections 16.10 and 16.11.
 11. Section 14.6 said that the masses of $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$ "are at most about a fifth of
     $M^{X,{\rm H}}_{\rm SF}/2$ (the phase-space factor $(1-4M^2/(M^{X,{\rm H}}_{\rm SF})^2)^{1/2}$ is above $0.97$)". No program had computed
     the ratio: the bound holds for the three HS methods but not for KS and CJT, where the larger mass is
@@ -4251,7 +4251,9 @@ the spontaneous breaking of the new group. The earlier versions were wrong in th
    separately whether the superfluid is the Higgs field of its own gauge group (yes, in every method, with an amplitude
    mode that is a resonance broader than its mass) and whether it can be the Higgs field of the Standard Model (no, by
    its quantum numbers, in every method). Table 14.2 no longer contains the values in GeV and the values of the Standard
-   Model.
+   Model, and the programs no longer compute them: the Rust module `higgs` and its Python counterpart write no row of
+   the Standard Model and no values in GeV into `data/part3_higgs.csv`, and the checks P3-H4, YP3-H4 and WP3-H4 of that
+   row were removed.
 3. **The name of the spinor field.** The manuscript now calls the spinor field the DiracLike field (the DiracLike
    isodoublet $\Psi_{\rm LL}$, an isodoublet of DiracLike fields) and keeps the word Dirac only in the names of the Lorentz
    structure: the Dirac matrices, the Dirac adjoint, the Dirac mass, the Dirac sea.

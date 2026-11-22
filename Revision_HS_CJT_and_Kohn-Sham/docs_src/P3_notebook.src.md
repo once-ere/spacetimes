@@ -42,9 +42,11 @@ parameter against the radius of convergence, and the remark that the free energi
 energies, with its importance; the addendum asked for by the author on 21 November 2026), and the third section of
 Part III (Section III.G: the gradient coefficient of the field at the critical temperature from the static pair
 response of a moving pair, the two regularizations, the slope and the quartic coefficient, the Ginzburg number and the
-width of the critical region; the superfluid as a Higgs sector against the Standard Model, the couplings of the
-amplitude field by exact differentiation, and whether the Higgs is a composite particle; the second addendum asked for
-by the author on 21 November 2026, with its three remarks), with {{GEN:nb_ntests}} checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
+width of the critical region; the superfluid as the Higgs sector of its own gauge group, and why it cannot be the
+Higgs field of the Standard Model (the DiracLike spinor has electric charge 0 and no electroweak quantum numbers), the
+couplings of the amplitude field by exact differentiation, and whether the Higgs is a composite particle; the second
+addendum asked for by the author on 21 November 2026, with its three remarks; and, at the end of Part II, the remark on
+the zeugon, the massless gauge boson of the superfluid), with {{GEN:nb_ntests}} checks. The rest of Part III and Part IV (the effective Lagrangians and the Mexican hat, the masses of the gauge bosons
 in every vacuum, the surviving symmetry and the dynamics with IDA) follow in the next versions. The first section of
 Part III takes the five computed polar curves of the effective potential from the Rust program `sf_part3` (a closed
 cell of data with the SHA-256 checksums of its files) and recomputes every number from them; Section III.T computes the
@@ -91,8 +93,8 @@ The files of the notebook, each with its SHA-256 checksum:
   the critical region and the superfluid as a Higgs sector);\
   `{{SHA256:wolfram/source/part3_ginzburg.source.wl}}`
 * `wolfram/source/data_part3_ginzburg.wl`: the results of the modules `ginzburg` and `higgs` of the Rust program (the
-  coefficients of the five methods, the two regularizations and the numbers of the Higgs sector with the row of the
-  Standard Model), included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
+  coefficients of the five methods, the two regularizations and the numbers of the Higgs sector, one row per method),
+  included in a closed cell of the notebook (written by `wolfram/tools/make_data_cells.py 3G`; its
   first lines name the data files and their SHA-256 checksums);\
   `{{SHA256:wolfram/source/data_part3_ginzburg.wl}}`
 * `wolfram/tools/make_data_cells.py`: writes the data cells of the notebook from the data files of the Rust programs;\
@@ -178,7 +180,7 @@ Every check of the notebook carries the identifier of the same check in the Rust
 its counterparts in the Rust program (`rust/sfpart1`, program `sf_part1`, for Part I; `rust/sfpart2`, program
 `sf_part2`, for Part II; `rust/sfpart3`, program `sf_part3`, for Part III, whose module `thermal` makes the checks
 P3-T1 to P3-T9 of Section III.T and whose modules `ginzburg` and `higgs` make the checks P3-G1 to P3-G12 and P3-H1 to
-P3-H4 of Section III.G) and in the Python program
+P3-H3 of Section III.G) and in the Python program
 (`python/sf_part1.py`, `python/sf_part2.py`, `python/sf_part3.py`). Where the Rust program checks a statement in two
 steps, the notebook names both checks ("P2-6b, P2-6c"); each must have passed. The table gives, for each check, the deviation measured by the notebook and by each counterpart
 (as their reports state it; "--" for a check that is decided by facts, such as a count or an exact identity). The
@@ -244,7 +246,7 @@ repeat itself in the others:
   variable $\Phi^2/\Phi^2_{\max}$ (Gaussian elimination in Rust, `numpy.linalg.solve` in Python); the residuals of the
   Landau forms of the Rust free-energy curves by `LeastSquares` (Householder reflections in Rust, the singular-value
   decomposition in Python);
-* **the width of the critical region and the Higgs sector** (WP3-G1 to WP3-G12, WP3-H1 to WP3-H4): the static pair
+* **the width of the critical region and the Higgs sector** (WP3-G1 to WP3-G12, WP3-H1 to WP3-H3): the static pair
   response by `Eigensystem` of the symmetrized $8\times8$ particle and hole blocks at every node, the matrices
   $\mathsf U_A^\dagger(E_{ab}-E_{ba})\mathsf U_D$ from the components of the eigenvectors by `Outer`, and the system of the
   other 25 pair channels by `LinearSolve` in the notebook; the Rust program's own eigensolver and LU decomposition, and
@@ -395,6 +397,20 @@ end in `T`, such as `uT` or `psiT`, are the random test fields of Section I.4.)
     a new input cell (`gzVV`) computes for every method the larger ratio of the masses, the smaller factor and how much
     the masses of the effective Lagrangian exceed those of the linear response. The cell makes no check: its numbers come
     from the values of the Rust program that the checks WP3-H1 to WP3-H3 have already compared with the notebook's own.
+
+16. *The electric charge (C18 and C19 of the task record).* The notebook, like the manuscript, called the unbroken charge
+    the electric charge and the massless gauge boson the photon, and Section III.G.8 judged the superfluid against the
+    Higgs boson of the Standard Model (its ratios against 0.5085 and 0.1293, the bound $8\pi/3$ of the Higgs doublet, the
+    masses and the critical temperature in GeV on the scale $v=246.22$ GeV, a table with a row of the Standard Model,
+    and the check WP3-H4 of that row). On 21 November 2026 the author stated that the spinor field, the DiracLike spinor,
+    has electric charge 0 and no electroweak quantum numbers, and that $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ is a new gauge
+    group, not the electroweak group. The comparison had no basis and is withdrawn: Section III.G.8 now answers
+    separately whether the superfluid is the Higgs field of its own group and whether it can be that of the Standard
+    Model, its table has no row of the Standard Model and no column in GeV, and the check WP3-H4 was removed with its
+    counterparts P3-H4 and YP3-H4. Section I.1 states that the conventions of the Standard Model give names only; the
+    texts of Part II name the massless gauge boson the zeugon, and a remark at the end of Part II states what the
+    computation establishes about it, including that its charge conjugation is a gauge symmetry (Alice
+    electrodynamics); the spinor field is called the DiracLike field.
 
 # 10. What follows
 

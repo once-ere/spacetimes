@@ -350,7 +350,6 @@ def main():
     with open(os.path.join(D, "part3_higgs.csv")) as f:
         for r in csv.DictReader(f):
             hg[r["method"]] = {k: float(v) for k, v in r.items() if k != "method"}
-    sm = hg["SM"]  # the row of the Standard Model in the data file; Table 14.2 and Section 14.6 no longer use it
     # Table 14.2: the superfluid as the Higgs sector of SU(2)_v x U(1)^F_LL, in units of Lambda_LL and as dimensionless
     # numbers.  It has no column of the Standard Model and no values in GeV: the DiracLike spinor carries no electroweak
     # quantum numbers, so the superfluid is not the Higgs sector of the electroweak group, and no observation fixes the
@@ -398,16 +397,8 @@ def main():
     frags["p3_h_mnu"] = hspan("M_NU_over_M_H", 3)
     frags["p3_h_ffi"] = hspan("f_F_over_f_I", 3)
     frags["p3_h_mwmz"] = hspan("M_W_over_M_Z", 3)
-    frags["p3_h_gev_mh"] = hspan("M_H_GeV", 4, " GeV")
-    frags["p3_h_gev_lambda"] = hspan("Lambda_GeV", 3, " GeV")
-    frags["p3_h_gev_tc"] = hspan("T_c_GeV", 3, " GeV")
     frags["p3_h_tcv"] = hspan("T_c_over_v_SF", 3)
-    frags["p3_h_times_sm"] = "%s to %s" % (sig(min(hg[t]["M_H_over_v_SF"] for t in htags) / sm["M_H_over_v_SF"], 2), sig(max(hg[t]["M_H_over_v_SF"] for t in htags) / sm["M_H_over_v_SF"], 2))
     frags["p3_h_fi_gap"] = span2(lambda t: hg[t]["f_I"] / g(t, 0.0, "gap"), 2)
-    frags["p3_h_sm_mhv"] = sig(sm["M_H_over_v_SF"], 4)
-    frags["p3_h_sm_lambda"] = sig(sm["lambda_SF"], 4)
-    frags["p3_h_sm_mhmw"] = sig(sm["M_H_over_M_W"], 4)
-    frags["p3_h_sm_mwmz"] = sig(sm["M_W_over_M_Z"], 4)
     # the decay of the amplitude mode into W+W- and ZZ (Section 14.6): the width (14.10) into pairs of Goldstone quanta is
     # that into pairs of gauge bosons up to corrections of relative order (M_V/M_H)^2; at tree level the width into a pair
     # of bosons of the mass M_V carries the factor (1 - 4r)^(1/2) (1 - 4r + 12r^2), r = (M_V/M_H)^2 (phase space and the

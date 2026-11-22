@@ -1,13 +1,13 @@
 //! Sections 15.3 and 15.4 of superfluid.md (the numbers in parentheses are those of its equations): the gauge fields of the effective theory in one space direction (fields of the time t
 //! and of x = x^1), integrated with CVODE and IDA on the periodic spectral grid of `spectral`.
 //!
-//! (a) TRANSVERSE FIELDS (CVODE).  A transverse component (along x^2) of the photon A (mass 0) and of a W (mass M_W)
+//! (a) TRANSVERSE FIELDS (CVODE).  A transverse component (along x^2) of the zeugon A (mass 0; the massless gauge boson of U(1)^Q, not the photon) and of a W (mass M_W)
 //! obeys in the unitary gauge, to first order in the fields, the Klein-Gordon equation with a source,
 //!     u_tt = u_xx + J(x, t),    w_tt = w_xx - M_W^2 w + J(x, t),                                      (15.2)
 //! J(x, t) = J_0 s(x) f(t) a transverse current sheet of the spinor charges with the profile s(x) = (1 - x^2/sigma^2)
 //! e^{-x^2/(2 sigma^2)} and f(t) = r(t) sin(omega_s t) (r(t) = sin^2(pi t/(2 tau)) for t < tau, then 1).  Unknowns
 //! (u, u_t, w, w_t).  For every Fourier mode k_m the solution from rest is the Duhamel integral
-//!     u^_m(t) = J^_m int_0^t sin(omega_m (t - t'))/omega_m f(t') dt',  omega_m = |k_m| (photon), (k_m^2 + M_W^2)^(1/2) (W),
+//!     u^_m(t) = J^_m int_0^t sin(omega_m (t - t'))/omega_m f(t') dt',  omega_m = |k_m| (zeugon), (k_m^2 + M_W^2)^(1/2) (W),
 //! computed by Gauss-Legendre quadrature; it is the exact solution of the semi-discrete equations.
 //!
 //! (b) THE LONGITUDINAL FIELD AND THE GOLDSTONE FIELD.  The phase field theta of the condensate, Phi = Phi_0 e^{i theta}
@@ -26,7 +26,7 @@
 //!   * UNITARY GAUGE theta = 0 (IDA): unknowns (a_u, E, phi_u), the last algebraic,
 //!         F_1 = a_u' + E + D phi_u = 0,   F_2 = E' - M_Z^2 a_u = 0,   F_3 = D E + M_Z^2 phi_u = 0;
 //!     a semi-explicit differential-algebraic system of index one (dF_3/dphi_u = M_Z^2 1 is invertible); for M_Z = 0
-//!     (the photon) Gauss's law no longer determines phi_u: the gauge freedom, and no longitudinal mode.
+//!     (the zeugon) Gauss's law no longer determines phi_u: the gauge freedom, and no longitudinal mode.
 //!   The two gauges are related by lambda = theta/(2 g): a_u = a - D theta/(2 g), phi_u = pi/(2 g), E unchanged.  Every
 //!   Fourier mode of the unitary gauge obeys a_m'' = -(k_m^2 + M_Z^2) a_m, E_m = -M_Z^2 a_m'/(k_m^2 + M_Z^2),
 //!   phi_m = -i k_m E_m / M_Z^2: the exact solution.

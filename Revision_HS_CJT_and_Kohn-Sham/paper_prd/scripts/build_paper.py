@@ -176,7 +176,7 @@ def main():
     num["EX_W1"] = tex_sci(p2["p2_cjtex_exchange_energy_W1"], 3)
     num["EX_B"] = tex_sci(p2["p2_cjtex_exchange_energy_B"], 3)
     num["EX_TOT"] = tex_sci(p2["p2_cjtex_exchange_energy"], 3)
-    num["M_A_CJT"] = tex_sci(p2["p2_cjtex_M_photon"], 2)  # the data name is that of the first version (the zeugon)
+    num["M_A_CJT"] = tex_sci(p2["p2_cjtex_M_A"], 2)  # the zeugon
     num["M_W_CJT"] = sig(p2["p2_cjtex_M_W"], 3)
     # ---- the vacuum energy of the condensate (CJT), in units of Lambda_LL and of its own scale of breaking, and the scale
     # of breaking at which it would equal the observed dark-energy density (2.5e-47 GeV^4, Particle Data Group 2024)

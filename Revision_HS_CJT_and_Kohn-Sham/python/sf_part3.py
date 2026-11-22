@@ -41,11 +41,13 @@ does not depend on the quadrature: 64 directions here, six in the Rust program),
 the charges makes a(k) - a(0) linear in |k|, the cutoff on the relative momentum quadratic), YP3-G10 (alpha in closed
 form, with the Dirac mass of the normal state from its scalar self-consistency, no BdG engine), YP3-G11 (the Ginzburg
 number by both forms of (12.13)), YP3-G12 (the quartic coefficient b of CJT at T_c with the nonlinear thermal states of
-this engine).  The superfluid as a Higgs sector (Section 14.6; module higgs): YP3-H1 (the amplitude mode lies below the
-threshold of two quasi-particles), YP3-H2 (the couplings of the amplitude field to the Goldstone fields by
-differentiating the kinetic part (12.4) along a line of the field), YP3-H3 (the numbers of Table 14.2 recomputed from
-the data files), YP3-H4 (the Standard Model row).  Each identifier is that of the Rust check of the same statement with
-the prefix Y.
+this engine).  The superfluid as the Higgs sector of SU(2)_v x U(1)^F_LL (Section 14.6; module higgs): YP3-H1 (the
+amplitude mode lies below the threshold of two quasi-particles), YP3-H2 (the couplings of the amplitude field to the
+Goldstone fields by differentiating the kinetic part (12.4) along a line of the field), YP3-H3 (the numbers of Table 14.2
+recomputed from the data files).  (The check YP3-H4 of a row of the Standard Model was removed on 21 November 2026 with
+its Rust counterpart: the DiracLike spinor carries no electroweak quantum numbers, so the superfluid is not compared with
+the Higgs boson of the Standard Model.)  Each identifier is that of the Rust check of the same statement with the prefix
+Y.
 
 Run (from the folder python/, after the Rust program sf_part3):   python3 sf_part3.py
 Requires: Python 3, numpy.  Output: data/hck_part3_checks_python.txt.  Run time: about 100 seconds.
@@ -723,9 +725,9 @@ def ginzburg(rep, vals):
 
 
 def higgs(rep, vals):
-    """YP3-H1 to YP3-H4, the Python counterparts of the Rust checks P3-H1 to P3-H4 (Section 14.6): the amplitude mode
+    """YP3-H1 to YP3-H3, the Python counterparts of the Rust checks P3-H1 to P3-H3 (Section 14.6): the amplitude mode
     below the threshold, the couplings of the amplitude field to the Goldstone fields by an independent differentiation
-    of (12.4), the numbers of Table 14.2 recomputed from the data files, and the Standard Model row"""
+    of (12.4), and the numbers of Table 14.2 recomputed from the data files"""
     with open(os.path.join(DATA, "part3_higgs.csv")) as f:
         rust = {r["method"]: r for r in csv.DictReader(f)}
     gap0 = {r["method"]: float(r["gap"]) for r in read_thermal() if abs(float(r["tau"])) < 1e-12}
@@ -759,13 +761,9 @@ def higgs(rep, vals):
                 max(abs(g0 / f_f - 1), abs(g1 / (f_i * f_i / f_f) - 1)), 1e-6)
         mine = {"v_SF": v, "f_F": f_f, "f_I": f_i, "M_H_over_v_SF": mh / v, "lambda_SF": mh * mh / (2 * v * v), "M_H_over_M_W": mh / mw,
                 "M_H_over_2E_gap": mh / (2 * gap0[key]), "M_NU_over_M_H": mnu / mh, "f_F_over_f_I": f_f / f_i, "M_W_over_M_Z": mw / mz,
-                "Gamma_over_M_H": 3 * mh * mh / (32 * np.pi * f_f * f_f), "T_c_over_v_SF": vals["p3_th_Tc_" + key] / v, "M_H_GeV": mh * 246.22 / v}
+                "Gamma_over_M_H": 3 * mh * mh / (32 * np.pi * f_f * f_f), "T_c_over_v_SF": vals["p3_th_Tc_" + key] / v}
         dev = max(abs(mine[k] - float(rust[key][k])) / abs(float(rust[key][k])) for k in mine)
         rep.add("YP3-H3 %s" % key, "%s: the numbers of Table 14.2 recomputed from data/part3_values.csv and data/part3_thermal.csv (v_SF = %.8f, M_H/v_SF = %.6f, lambda_SF = %.5f, Gamma/M_H = %.5f) = data/part3_higgs.csv (largest relative difference)" % (key, v, mh / v, mh * mh / (2 * v * v), mine["Gamma_over_M_H"]), dev, 1e-9)
-    sm = rust["SM"]
-    ref = {"M_H_over_v_SF": 125.20 / 246.22, "lambda_SF": 125.20 ** 2 / (2 * 246.22 ** 2), "M_H_over_M_W": 125.20 / 80.3692, "M_W_over_M_Z": 80.3692 / 91.1880}
-    rep.add("YP3-H4", "the Standard Model row: M_H/v = %.5f, lambda = %.5f, M_H/M_W = %.5f, M_W/M_Z = %.5f (Particle Data Group 2024; largest relative difference)" % tuple(ref.values()),
-            max(abs(float(sm[k]) - ref[k]) / ref[k] for k in ref), 1e-10)
 
 
 def main():

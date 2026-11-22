@@ -1,6 +1,6 @@
 (* The values of the Rust programs that Part 2 of the notebook uses or compares with its own results, written by
    wolfram/tools/make_data_cells.py from the data files of the folder data/ (do not edit):
-     data/part2_values.csv   SHA-256 257a36acc7f9f96c78b31fa5d53141b30ed61b2be7d9ce7303ac8986e2b0977e
+     data/part2_values.csv   SHA-256 0b75b5e83506ca26fa80f1b26be7a36da6e61c4e955b1fe9797be2c516b3f94a
      data/part2_pair_channels.csv   SHA-256 029d1c2b2644f42e3bbce79769c9fc0154f44fb0459d1c069699fca0dc323da0
 *)
 rustPart2 = <|
@@ -210,7 +210,7 @@ rustPart2 = <|
    "p2_cjtex_eigenvalue_3_of_the_mass_matrix" -> 1.850995473839*^-3,
    "p2_cjtex_eigenvalue_4_of_the_mass_matrix" -> 3.311094202513*^-3,
    "p2_cjtex_M_W" -> 4.302319692723*^-2,
-   "p2_cjtex_M_photon" -> 1.999946729051*^-8,
+   "p2_cjtex_M_A" -> 1.999946729051*^-8,
    "p2_cjtex_M_Z" -> 5.754210808193*^-2,
    "p2_cjtex_D" -> 2.761755673043*^-1,
    "p2_cjtex_Dirac_mass" -> 1.569681211980*^-1,

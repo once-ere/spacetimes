@@ -897,7 +897,7 @@ reproduces these checksums):
 \item
   \texttt{data/part3\_values.csv} (all numbers of Part III, among them
   those of Table R1):\\
-  \texttt{a71ca8cdadaf08e64e9ca5556e83c7ded16d4d1337ae9f32479ffd5dd071e0ba}
+  \texttt{ddd902b2a676351f6903cd034bd788d9d1183377e829b51c84bcfe847a4e2752}
 \item
   \texttt{data/part3\_landau.csv} (Table R1, Figure R1 right):\\
   \texttt{f2b56e0925e8494c23b4365ab6b91747ccc34bd3c7f3774d8a3817d4685be089}
@@ -1851,7 +1851,7 @@ reproduces these checksums):
 \item
   \texttt{data/part3\_values.csv} (the critical temperatures, the
   couplings and the eigenvalues of rows 1 to 4):\\
-  \texttt{a71ca8cdadaf08e64e9ca5556e83c7ded16d4d1337ae9f32479ffd5dd071e0ba}
+  \texttt{ddd902b2a676351f6903cd034bd788d9d1183377e829b51c84bcfe847a4e2752}
 \item
   \texttt{figures/fig\_p4\_a1\_thermal.pdf} (Figure A1):\\
   \texttt{3f2786a08c6a0ea71ff872fd8f06ebec38de9b8f21b3d30e3b54378e17b3c339}
@@ -2801,7 +2801,7 @@ python3 python/sf_part3_figures.py
 python3 code/scripts/write_part3_fragments.py
 \end{verbatim}
 
-\textbf{The checks.} The 132 checks of this addendum (the Rust
+\textbf{The checks.} The 130 checks of this addendum (the Rust
 identifiers P3-G and P3-H; the Python identifiers YP3-G and YP3-H;
 deviation and tolerance as in the reports, a check of a fact shown with
 ``--''):
@@ -2872,11 +2872,11 @@ P3-H2 HS\_1\_1 & PASS & \(2.1\times10^{-14}\) & \(1\times10^{-8}\) &
 HS\_1\_1: the couplings of h to (d theta\_0)\^{}2 and (d theta\_1)\^{}2
 from finite differences of (A2.8) are f\_F = 0.07096573 and
 f\_I\^{}2/f\_F = 0.07212812 (largest relative difference) \\
-P3-H3 HS\_1\_1 & PASS & \(1.62\times10^{-16}\) & \(1\times10^{-12}\) &
-HS\_1\_1: the numbers of Table A3 recomputed from chi\_11, chi\_FF,
-M\_H, M\_NU, E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913,
-M\_H/v\_SF = 5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) =
-the module higgs (largest relative difference) \\
+P3-H3 HS\_1\_1 & PASS & \(0\) & \(1\times10^{-12}\) & HS\_1\_1: the
+numbers of Table A3 recomputed from chi\_11, chi\_FF, M\_H, M\_NU,
+E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.14308913, M\_H/v\_SF =
+5.686617, lambda\_SF = 16.16881, Gamma/M\_H = 3.92324) = the module
+higgs (largest relative difference) \\
 P3-G1 HS\_0\_1 & PASS & \(1.75\times10^{-10}\) & \(1\times10^{-7}\) &
 HS\_0\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^{}2 from the linear
 response (-1.2087983988e-3) equals the Taylor coefficient a\^{}Tay of
@@ -3088,12 +3088,6 @@ the numbers of Table A3 recomputed from chi\_11, chi\_FF, M\_H, M\_NU,
 E\_gap and T\_c by (14.9), (14.10) (v\_SF = 0.13531998, M\_H/v\_SF =
 4.459622, lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = the module higgs
 (largest relative difference) \\
-P3-H4 & PASS & \(0.000153\) & \(0.001\) & the Standard-Model row: M\_H/v
-= 0.50849, lambda = M\_H\^{}2/(2 v\^{}2) = 0.12928, M\_H/M\_W = 1.55781,
-M\_W/M\_Z = 0.88136 from m\_H = 125.20, v = 246.22, M\_W = 80.3692, M\_Z
-= 91.1880 GeV (Particle Data Group 2024) agree with the rounded values
-0.5085, 0.1293, 1.558, 0.8814 typed independently (largest relative
-difference; the rounding allows 1e-3) \\
 YP3-G1 HS\_1\_1 & PASS & \(7.98\times10^{-10}\) & \(1\times10^{-7}\) &
 HS\_1\_1: at 0.9 T\_c the coefficient a(0) of /Phi/\^{}2 from the linear
 response of this engine (-1.3427965859e-03) equals the Taylor
@@ -3394,9 +3388,6 @@ the numbers of Table A3 recomputed from data/part3\_values.csv and
 data/part3\_thermal.csv (v\_SF = 0.13531998, M\_H/v\_SF = 4.459622,
 lambda\_SF = 9.94412, Gamma/M\_H = 2.13489) = data/part3\_higgs.csv
 (largest relative difference) \\
-YP3-H4 & PASS & \(0\) & \(1\times10^{-10}\) & the Standard Model row:
-M\_H/v = 0.50849, lambda = 0.12928, M\_H/M\_W = 1.55781, M\_W/M\_Z =
-0.88136 (Particle Data Group 2024; largest relative difference) \\
 \end{longtable}
 
 \textbf{Data files and figures} (SHA-256 checksums; the figure program
@@ -3428,10 +3419,8 @@ reproduces these checksums):
   \texttt{data/part3\_higgs.csv} (Table A3, Figure A3; one row per
   method: the scale v, the decay constants f\_F and f\_I, the masses
   M\_H, M\_NU, M\_W and M\_Z, the ratios of Table A3 and the width
-  ratio; the file also has a row and columns written for the withdrawn
-  comparison with the Standard Model (Section 5.10, item 2), which Table
-  A3 and Figure A3 do not use):\\
-  \texttt{b660c129254e86955c47f5acfb92388fd63329a23030e2fe38ebdbbaa149ab7e}
+  ratio):\\
+  \texttt{fc2b3fb56517fb1557ca9c355371472e761ab852189deff8fcb4860feba9ed7b}
 \item
   \texttt{figures/fig\_p4\_a2\_ginzburg.pdf} (Figure A2):\\
   \texttt{0fbfb389653d65574d1a72e7f0ca9c2775863b9b74b4a3c26ee4101dd8110bb7}
