@@ -642,21 +642,45 @@ ENTRIES = [
     (G13, "$\\hat\\theta_W$, $\\hat\\alpha(M_Z)$", "SM_s2w SM_alpha", "the weak mixing angle and the fine-structure constant "
      "in the $\\overline{\\rm MS}$ scheme at the scale $M_Z$; $\\sin^2\\hat\\theta_W$ is measured independently of the ratio "
      "$M_W/M_Z$ and is therefore the angle with which the parameter $\\rho$ can be tested", "SM"),
+    (G13, "$SU(2)_{\\rm R}$, $SU(2)_{\\rm V}$", "", "the custodial symmetry: the global group under which the Higgs field, "
+     "written as a $2\\times2$ matrix (a bidoublet), transforms from the right, and the diagonal subgroup of "
+     "$SU(2)_L\\times SU(2)_{\\rm R}$ that the vacuum keeps; it makes $\\rho$ equal to 1 when the coupling $g'$ is neglected", "SM"),
     (G13, "$\\rho$", "rho_with_s2_hat", "the ratio $M_W^2/(M_Z^2\\cos^2\\theta_W)$ of the masses of the weak bosons; equal to 1 "
      "at tree level when the field that breaks the symmetry is a doublet whose kinetic term has one coefficient", "SM"),
     # ------------------------------------------------------------------ group 14 (Revision_SM_Higgs)
-    (G14, "$\\chi_{\\rm SH}$", "chi_SH", "the singlet field of the revised hypotheses: a four-component Dirac field of "
-     "$SL(2,\\mathbb C)$, a singlet of $SU(2)_L$ and of colour, with the hypercharge $Y^{\\rm SM}=1/4$, the fermion number 1 and "
+    (G14, "$\\chi_{\\rm SH}$", "chi_SH", "the first singlet field of the revised hypotheses: a four-component Dirac field "
+     "of $SL(2,\\mathbb C)$, a singlet of $SU(2)_L$ and of colour, with the hypercharge $Y^{\\rm SM}=1/4$, the particle number 1 and "
      "the electric charge $1/4$; four complex Grassmann (anticommuting) operator components", "new-SH"),
     (G14, "$m^\\chi_{\\rm SH}$", "m_chi", "the mass of the singlet field $\\chi_{\\rm SH}$", "new-SH"),
+    (G14, "$\\chi'_{\\rm SH}$", "chi2_SH", "the second singlet field of the revised hypotheses (their second version, added "
+     "at the author's instruction): a four-component Dirac field of $SL(2,\\mathbb C)$, a singlet of $SU(2)_L$ and of colour, with "
+     "the hypercharge $Y^{\\rm SM}=-3/4$, the particle number 1 and the electric charge $-3/4$", "new-SH"),
+    (G14, "$m^{\\chi'}_{\\rm SH}$", "m_chi2", "the mass of the second singlet field $\\chi'_{\\rm SH}$, equal to $m^\\chi_{\\rm SH}$", "new-SH"),
+    (G14, "$\\Pi'^{\\rm u}_{\\rm SH}$, $\\Pi'^{\\rm d}_{\\rm SH}$", "Pi2_u Pi2_d", "the pair operators of $\\Psi_{\\rm LL}$ and the second "
+     "singlet field: $\\Pi'^s_{\\rm SH}$ annihilates a particle of the isospin component $s$ of $\\Psi_{\\rm LL}$ and a particle of "
+     "$\\chi'_{\\rm SH}$ in the spin-zero state built with $C_{\\rm LL}\\gamma^{\\rm ch}_{\\rm LL}$; together an $SU(2)_L$ doublet with "
+     "$Y^{\\rm SM}=-1/2$", "new-SH"),
+    (G14, "$\\Phi'_{\\rm SH}$; $\\Phi'^{\\rm u}_{\\rm SH}$, $\\Phi'^{\\rm d}_{\\rm SH}$", "Phi2_SH Phi2_u Phi2_d", "the second pair field of "
+     "the superfluid and its components, the expectation values of $\\Pi'^{\\rm u}_{\\rm SH}$, $\\Pi'^{\\rm d}_{\\rm SH}$: an $SU(2)_L$ "
+     "doublet with $Y^{\\rm SM}=-1/2$, whose components have the electric charges 0 and $-1$; its conjugate $i\\tau^2$ times its "
+     "complex conjugate is a second doublet with the quantum numbers of the Higgs doublet", "new-SH"),
+    (G14, "$\\mathcal M_{\\rm SH}$", "M_bidoublet", "the $2\\times2$ matrix of the pair fields, with the columns $\\Phi_{\\rm SH}$ and "
+     "$\\Phi'_{\\rm SH}$ (rows: the isospin components of $\\Psi_{\\rm LL}$; columns: the two singlets): a bidoublet of "
+     "$SU(2)_L\\times SU(2)_{\\rm R}$", "new-SH"),
+    (G14, "$T^{a,{\\rm R}}_{\\rm SH}$", "T_R", "the generators of the custodial group $SU(2)_{\\rm R}$ of the revised hypotheses: "
+     "$\\tfrac12\\tau^a$ on the pair of singlet fields $(\\chi_{\\rm SH},\\chi'_{\\rm SH})$ and zero on $\\Psi_{\\rm LL}$; the hypercharge is "
+     "$Y^{\\rm SM}=T^{3,{\\rm R}}_{\\rm SH}+R_{\\rm SH}/4$", "new-SH"),
+    (G14, "$F^{\\rm tot}_{\\rm SH}$", "F_tot", "the particle number of the revised hypotheses: every particle of $\\Psi_{\\rm LL}$, "
+     "$\\chi_{\\rm SH}$ and $\\chi'_{\\rm SH}$ counts 1 and every antiparticle $-1$; a global symmetry, not gauged in the second "
+     "version, broken by the pair condensate (every pair has 2)", "new-SH"),
     (G14, "$\\Pi^{\\rm u}_{\\rm SH}$, $\\Pi^{\\rm d}_{\\rm SH}$", "Pi_u Pi_d", "the pair operators of the doublet-singlet channel: "
      "$\\Pi^{\\rm u}_{\\rm SH}$ annihilates an isospin-up particle of $\\Psi_{\\rm LL}$ and a particle of $\\chi_{\\rm SH}$ in the "
      "spin-zero state built with the matrix $C_{\\rm LL}\\gamma^{\\rm ch}_{\\rm LL}$ (a Lorentz scalar of positive parity), "
      "$\\Pi^{\\rm d}_{\\rm SH}$ the same with an isospin-down particle; together an $SU(2)_L$ doublet with $Y^{\\rm SM}=1/2$",
      "new-SH"),
     (G14, "$G_{\\rm SH}$", "G_SH", "the coupling of the attractive pairing term "
-     "$-G_{\\rm SH}[(\\Pi^{\\rm u}_{\\rm SH})^\\dagger\\Pi^{\\rm u}_{\\rm SH}+(\\Pi^{\\rm d}_{\\rm SH})^\\dagger\\Pi^{\\rm d}_{\\rm SH}]$ "
-     "of the revised hypotheses, the only pairing term of the interaction", "new-SH"),
+     "$-G_{\\rm SH}\\sum_s[(\\Pi^s_{\\rm SH})^\\dagger\\Pi^s_{\\rm SH}+(\\Pi'^s_{\\rm SH})^\\dagger\\Pi'^s_{\\rm SH}]$ ($s$ = u, d) of the "
+     "revised hypotheses, the only pairing term of the interaction; in their first version without the primed terms", "new-SH"),
     (G14, "$\\Phi_{\\rm SH}$; $\\Phi^{\\rm u}_{\\rm SH}$, $\\Phi^{\\rm d}_{\\rm SH}$", "Phi_SH Phi_u Phi_d", "the pair field of the "
      "superfluid of the revised hypotheses and its two components, the expectation values of the pair operators "
      "$\\Pi^{\\rm u}_{\\rm SH}$, $\\Pi^{\\rm d}_{\\rm SH}$ in the state: a Lorentz scalar, a colour singlet, an $SU(2)_L$ doublet with "
@@ -752,7 +776,8 @@ ENTRIES = [
      "state in which only the pairing term acts (equal masses $m_{\\rm LL}$ of the two fields): "
      "$(m_{\\rm LL}^2+\\lvert D^{\\rm d}_{\\rm SH}\\rvert^2/4)^{1/2}$", "new-SH"),
     (G14, "$R_{\\rm SH}$", "R_SH", "the relative number: the number of particles of $\\Psi_{\\rm LL}$ minus the number of particles of "
-     "$\\chi_{\\rm SH}$, a global symmetry of the whole Lagrangian of the revised hypotheses", "new-SH"),
+     "$\\chi_{\\rm SH}$ and $\\chi'_{\\rm SH}$ (in the first version of the revised hypotheses, of $\\chi_{\\rm SH}$), a global symmetry of "
+     "the whole Lagrangian", "new-SH"),
     (G14, "$v_{\\rm SH}$", "v_SH", "the scale of the breaking of $SU(2)_L\\times U(1)_Y$ by the superfluid, defined by the mass "
      "$M_W=g\\,v_{\\rm SH}/2$ that the superfluid gives the $W$ boson (the definition that the Standard Model gives $v$); identified with "
      "$v$ to fix the scale of the model in GeV", "new-SH"),

@@ -20,6 +20,17 @@ computed by the programs of this folder from these hypotheses and is not stated 
 programs that check the consequences of group theory, in Rust, in Python and in exact arithmetic in the Wolfram
 Language, and what they found.
 
+**The second version (21 November 2026, 19:38 PST).** The first version of these hypotheses had one singlet field,
+$\chi_{\rm SH}$. Its superfluid had the quantum numbers of the Higgs doublet, but it paired only the down component of
+$\Psi_{\rm LL}$ with $\chi_{\rm SH}$ and left the up component unpaired. That breaks the custodial symmetry, the approximate
+symmetry that makes the parameter $\rho$ of Section 5 equal to 1 in the Standard Model; an exploratory computation of
+the susceptibilities found $\rho\approx1.2$, against the measured value near 1. I proposed to add a second singlet field
+with the hypercharge $-\tfrac34$, and the author instructed at 19:38 PST: "Add a second singlet $\chi'$ with hypercharge
+$-\tfrac34$". This is the second version, stated in Sections 4 and 5. The first version is kept in the history of the
+repository under the git tag `backup/SM-Higgs-one-singlet-2026-11-21` (commit `0624025`), and the programs of the later
+stages compute both versions side by side. Section 6 still reports the checks of the first version, made before the
+second version existed; stage 2 of the second version repeats them for the three fields.
+
 "I" in this document is the assistant that does the work.
 
 # 2. The quantum numbers of the Higgs doublet
@@ -69,91 +80,157 @@ The pair channels were the triplets $\mathsf K^\iota_{\rm LL}$, and the condensa
 Moreover the pairs carried the fermion number 2 and no hypercharge. No choice of couplings changes this: the
 quantum numbers of a condensate are fixed by the fields that pair, not by the strength of the attraction.
 
-# 4. The revised hypotheses
+# 4. The revised hypotheses (second version)
 
-**H1. The fields.** There are two spinor fields, both four-component Dirac fields of $SL(2,\mathbb C)$ and both singlets of
-colour:
+**H1. The fields.** There are three spinor fields, all four-component Dirac fields of $SL(2,\mathbb C)$ and all singlets
+of colour:
 
-| field | $SU(2)_L$ | hypercharge $Y^{\rm SM}$ | fermion number | electric charge $Q^{\rm SM}$ | mass |
-|:---|:---|:---|:---|:---|:---|
-| $\Psi_{\rm LL}$, isospin up | doublet | $1/4$ | 1 | $3/4$ | $m_{\rm LL}$ |
-| $\Psi_{\rm LL}$, isospin down | doublet | $1/4$ | 1 | $-1/4$ | $m_{\rm LL}$ |
-| $\chi_{\rm SH}$ | singlet | $1/4$ | 1 | $1/4$ | $m^\chi_{\rm SH}$ |
+| field | $SU(2)_L$ | hypercharge $Y^{\rm SM}$ | electric charge $Q^{\rm SM}$ | particle number $F^{\rm tot}_{\rm SH}$ | relative number $R_{\rm SH}$ | mass |
+|:---|:---|:---|:---|:---|:---|:---|
+| $\Psi_{\rm LL}$, isospin up | doublet | $\tfrac14$ | $\tfrac34$ | 1 | $+1$ | $m_{\rm LL}$ |
+| $\Psi_{\rm LL}$, isospin down | doublet | $\tfrac14$ | $-\tfrac14$ | 1 | $+1$ | $m_{\rm LL}$ |
+| $\chi_{\rm SH}$ | singlet | $\tfrac14$ | $\tfrac14$ | 1 | $-1$ | $m^\chi_{\rm SH}$ |
+| $\chi'_{\rm SH}$ | singlet | $-\tfrac34$ | $-\tfrac34$ | 1 | $-1$ | $m^{\chi'}_{\rm SH}$ |
 
-$\Psi_{\rm LL}$ is the isodoublet of the earlier hypotheses, with its mass $m_{\rm LL}$; $\chi_{\rm SH}$ is new. Both fields are
-vector-like (the two chiralities of each field have the same quantum numbers), so the gauge group has no anomaly: every
-anomaly of a left-handed component is cancelled by the opposite one of its right-handed partner.
+$\Psi_{\rm LL}$ is the isodoublet of the earlier hypotheses, with its mass $m_{\rm LL}$. $\chi_{\rm SH}$ was added in the first
+version, $\chi'_{\rm SH}$ in the second. The particle number $F^{\rm tot}_{\rm SH}$ counts every particle of every field as 1 and
+every antiparticle as $-1$. The relative number $R_{\rm SH}$ counts the particles of $\Psi_{\rm LL}$ minus those of the two singlets.
+All three fields are vector-like: the two chiralities of each field have the same quantum numbers. So the gauge group has
+no anomaly, since every anomaly of a left-handed component is cancelled by the opposite one of its right-handed
+partner. The masses of the two singlets are equal, $m^{\chi'}_{\rm SH}=m^\chi_{\rm SH}$. This is my decision of interpretation,
+because the custodial symmetry of H4 needs it. The programs take all three masses equal.
 
-**H2. The gauge group.** The group of the problem is $SL(2,\mathbb C)\times SU(2)_L\times U(1)_Y$. The isospin group
-$SU(2)_{\rm v}$ of the earlier hypotheses is $SU(2)_L$: its generators $T^\iota_{\rm LL}$ on $\Psi_{\rm LL}$ are the generators
-$T^{a,{\rm SM}}$, its coupling $g^{\rm v}_{\rm LL}$ is $g$, and its gauge field is $W^a_\mu$. The group $U(1)^{\rm F}_{\rm LL}$ of the
-fermion number $F_{\rm LL}$ of the earlier hypotheses is the hypercharge group $U(1)_Y$, with
-$$Y^{\rm SM}=\tfrac14F_{\rm LL}\tag{4.1}$$
-on both fields; its gauge field is $B_\mu$, and the coupling of the earlier hypotheses is $g^{\rm F}_{\rm LL}=g'/4$, because
-$g'Y^{\rm SM}=g^{\rm F}_{\rm LL}F_{\rm LL}$. The couplings are the measured ones of Section 2, no longer free numbers.
+**H2. The gauge group.** The group of the problem is $SL(2,\mathbb C)\times SU(2)_L\times U(1)_Y$.
 
-**H3. The interaction.** The pairing term of the earlier hypotheses, which attracted two particles of $\Psi_{\rm LL}$ in the
-triplet channels $\mathsf K^\iota_{\rm LL}$, is removed: it would compete with the doublet and could make a triplet condensate,
-which does not have the quantum numbers of the Higgs. In its place the attraction acts between a particle of
-$\Psi_{\rm LL}$ and a particle of $\chi_{\rm SH}$ in the spin-zero state built with $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$ (a Lorentz
-scalar of positive parity, the channel of the s-wave Cooper pair):
-$$\mathcal V^{\rm pair}=-G_{\rm SH}\big[(\Pi^{\rm u}_{\rm SH})^\dagger\Pi^{\rm u}_{\rm SH}+(\Pi^{\rm d}_{\rm SH})^\dagger\Pi^{\rm d}_{\rm SH}\big],\tag{4.2}$$
-where $\Pi^{\rm u}_{\rm SH}$ annihilates an isospin-up particle of $\Psi_{\rm LL}$ and a particle of $\chi_{\rm SH}$ in that state and
-$\Pi^{\rm d}_{\rm SH}$ the same with an isospin-down particle. The sum is invariant under $SU(2)_L\times U(1)_Y$ (it is the
-squared length of a doublet) and under $SL(2,\mathbb C)$. The scalar and vector contact terms of the author's ansatz,
-with the couplings $G^{\rm S}_{\rm SF}$ and $G^{\rm V}_{\rm SF}$, are kept for $\Psi_{\rm LL}$. The singlet field interacts only through
-(4.2) and the gauge field $B_\mu$. These are my decisions of interpretation; the author can change them.
+* The isospin group $SU(2)_{\rm v}$ of the earlier hypotheses is $SU(2)_L$: its generators $T^\iota_{\rm LL}$ on $\Psi_{\rm LL}$ are the
+  generators $T^{a,{\rm SM}}$, its coupling $g^{\rm v}_{\rm LL}$ is $g$, and its gauge field is $W^a_\mu$.
+* The hypercharges are those of the table. On $\Psi_{\rm LL}$ and $\chi_{\rm SH}$ the hypercharge is a quarter of the fermion number
+  $F_{\rm LL}$ of the earlier hypotheses,
+  $$Y^{\rm SM}=\tfrac14F_{\rm LL}\qquad(\text{on }\Psi_{\rm LL}\text{ and }\chi_{\rm SH}),\tag{4.1}$$
+  as in the first version. The group $U(1)^{\rm F}_{\rm LL}$ of the earlier hypotheses is therefore the hypercharge group $U(1)_Y$,
+  with its gauge field $B_\mu$ and the coupling $g^{\rm F}_{\rm LL}=g'/4$ (because $g'Y^{\rm SM}=g^{\rm F}_{\rm LL}F_{\rm LL}$).
+* Its generator $F_{\rm LL}=4Y^{\rm SM}$ equals the particle number on $\Psi_{\rm LL}$ and $\chi_{\rm SH}$, and $-3$ on $\chi'_{\rm SH}$. The particle
+  number $F^{\rm tot}_{\rm SH}$ is no longer gauged.
+* The couplings are the measured ones of Section 2, no longer free numbers.
 
-**H4. The superfluid.** The superfluid is the condensate of the doublet-singlet pairs. Its pair field is the doublet
-$$\Phi_{\rm SH}=\big(\Phi^{\rm u}_{\rm SH},\Phi^{\rm d}_{\rm SH}\big),\qquad\Phi^{\rm u}_{\rm SH}\propto\langle\Pi^{\rm u}_{\rm SH}\rangle,\quad\Phi^{\rm d}_{\rm SH}\propto\langle\Pi^{\rm d}_{\rm SH}\rangle.\tag{4.3}$$
-Its quantum numbers follow from H1 and H2 alone:
+**H3. The interaction.** The attraction acts between a particle of $\Psi_{\rm LL}$ and a particle of either singlet, in the
+spin-zero state built with $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$ (a Lorentz scalar of positive parity, the channel of the s-wave Cooper
+pair):
+$$\mathcal V^{\rm pair}=-G_{\rm SH}\sum_{s={\rm u},{\rm d}}\big[(\Pi^s_{\rm SH})^\dagger\Pi^s_{\rm SH}+(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}\big].\tag{4.2}$$
+Here
+$$\Pi^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\big)\chi_{\rm SH},\qquad
+\Pi'^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}\big(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH}\big)\chi'_{\rm SH},$$
+with the isospin columns $\mathbf e^{\rm u}_{\rm SH}=(1,0)^T$ and $\mathbf e^{\rm d}_{\rm SH}=(0,1)^T$. $\Pi^s_{\rm SH}$ annihilates a particle
+of the isospin component $s$ of $\Psi_{\rm LL}$ and a particle of $\chi_{\rm SH}$ in that state, and $\Pi'^s_{\rm SH}$ does the same with a
+particle of $\chi'_{\rm SH}$. The pairing term of
+the earlier hypotheses, in the triplet channels of two particles of $\Psi_{\rm LL}$, is removed: it could make a triplet
+condensate, which does not have the quantum numbers of the Higgs. One coupling $G_{\rm SH}$ serves both singlets; this is
+my decision of interpretation, because the custodial symmetry of H4 needs it. The sum (4.2) is invariant under
+$SU(2)_L\times U(1)_Y$ (it is the sum of the squared lengths of two doublets) and under $SL(2,\mathbb C)$. The scalar and vector
+contact terms of the author's ansatz, with the couplings $G^{\rm S}_{\rm SF}$ and $G^{\rm V}_{\rm SF}$, are kept for $\Psi_{\rm LL}$. The
+singlets interact only through (4.2) and the gauge field $B_\mu$. These are my decisions of interpretation; the author
+can change them.
 
-* spin 0 and positive parity, from the matrix $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$, when the intrinsic parities of the two
-  fields are both taken to be $+1$. This is a convention: to change the sign of their product is to compose the parity
-  with the rotation $e^{i\pi F_{\rm LL}/2}$ by the fermion number, which is a symmetry of the Lagrangian; with the other
-  sign the pairs built with $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$ are odd and those built with $C_{\rm LL}$ even;
-* a colour singlet, because both fields are;
-* an $SU(2)_L$ doublet, because $\Psi_{\rm LL}$ is a doublet and $\chi_{\rm SH}$ a singlet ($\mathbf 2\otimes\mathbf 1=\mathbf 2$);
-* the hypercharge $Y^{\rm SM}=\tfrac14+\tfrac14=\tfrac12$: under a hypercharge rotation by the angle $\alpha$ the fields gain
-  the phases $e^{i\alpha/4}$ each, and the pair the phase $e^{i\alpha/2}$, the phase of a field of hypercharge $\tfrac12$;
-* the electric charges $\tfrac34+\tfrac14=+1$ of $\Phi^{\rm u}_{\rm SH}$ and $-\tfrac14+\tfrac14=0$ of $\Phi^{\rm d}_{\rm SH}$;
-* no baryon and no lepton number, because the fields carry neither; its fermion number 2 is not a further quantum
-  number, because by (4.1) it is the hypercharge.
+**H4. The custodial symmetry.** Without the gauge field $B_\mu$, the Lagrangian has a larger global symmetry. Its
+generators are:
 
-These are the quantum numbers of $\Phi^{\rm SM}$, component by component. The relative number of the two fields (the
-number of $\Psi_{\rm LL}$ particles minus that of $\chi_{\rm SH}$ particles) is conserved by the whole Lagrangian and is zero on
-every pair, so the condensate leaves it unbroken. When the pair field is not zero it breaks
-$SU(2)_L\times U(1)_Y$ to the $U(1)$ of $Q^{\rm SM}$: a rotation of $SU(2)_L\times U(1)_Y$ brings it to the form $(0,\varphi)$ with
-a real $\varphi>0$, the form of $\langle\Phi^{\rm SM}\rangle$, and the generator that leaves this form unchanged is
-$T^{3,{\rm SM}}+Y^{\rm SM}=Q^{\rm SM}$. The scale of the breaking, $v_{\rm SH}$, is defined by the mass of the $W$ boson,
-$M_W=\tfrac12g\,v_{\rm SH}$, as $v$ is in the Standard Model.
+* the generators of $SU(2)_L$, on $\Psi_{\rm LL}$;
+* the generators $T^{a,{\rm R}}_{\rm SH}$ of a group $SU(2)_{\rm R}$, which act on the pair $(\chi_{\rm SH},\chi'_{\rm SH})$ as on a doublet,
+  $T^{a,{\rm R}}_{\rm SH}=\tfrac12\tau^a$ in that pair, and are zero on $\Psi_{\rm LL}$;
+* the relative number $R_{\rm SH}$;
+* the particle number $F^{\rm tot}_{\rm SH}$.
 
-**H5. The scale.** The model has one scale, its momentum cutoff $\Lambda_{\rm LL}$; the programs compute $v_{\rm SH}$ in units
-of $\Lambda_{\rm LL}$. The hypothesis that the superfluid is the Higgs field of the Standard Model fixes the cutoff in GeV by
+The Lagrangian is invariant under $SU(2)_{\rm R}$ because the two singlets have equal masses and (4.2) treats them alike.
+The hypercharge is a combination of these generators,
+$$Y^{\rm SM}=T^{3,{\rm R}}_{\rm SH}+\tfrac14R_{\rm SH},\tag{4.3}$$
+as the table shows: $0+\tfrac14$ on $\Psi_{\rm LL}$, $\tfrac12-\tfrac14$ on $\chi_{\rm SH}$, $-\tfrac12-\tfrac14$ on $\chi'_{\rm SH}$. The coupling $g'$ of
+$B_\mu$ to $Y^{\rm SM}$ breaks $SU(2)_{\rm R}$ to the $U(1)$ of $T^{3,{\rm R}}_{\rm SH}$, as it does in the Standard Model, where
+$SU(2)_{\rm R}$ is the custodial symmetry of the Higgs field.
+
+**H5. The superfluid.** The superfluid is the condensate of the pairs of (4.2). Its pair fields form the $2\times2$ matrix
+$$\mathcal M_{\rm SH}=\big(\Phi_{\rm SH},\Phi'_{\rm SH}\big)=\begin{pmatrix}\Phi^{\rm u}_{\rm SH}&\Phi'^{\rm u}_{\rm SH}\\\Phi^{\rm d}_{\rm SH}&\Phi'^{\rm d}_{\rm SH}\end{pmatrix},\qquad
+\Phi^s_{\rm SH}\propto\langle\Pi^s_{\rm SH}\rangle,\quad\Phi'^s_{\rm SH}\propto\langle\Pi'^s_{\rm SH}\rangle.\tag{4.4}$$
+Its quantum numbers follow from H1, H2 and H4 alone:
+
+* spin 0 and positive parity, from the matrix $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}$, when the intrinsic parities of the three fields are
+  all taken to be $+1$ (a convention: a change of sign of their products is the composition of the parity with a
+  rotation by $F^{\rm tot}_{\rm SH}$, a symmetry of the Lagrangian);
+* a colour singlet;
+* the first column, $\Phi_{\rm SH}$, is the doublet of the first version: hypercharge $\tfrac14+\tfrac14=\tfrac12$ and the electric
+  charges $+1$ ($\Phi^{\rm u}_{\rm SH}$) and 0 ($\Phi^{\rm d}_{\rm SH}$), the quantum numbers of the Higgs doublet $\Phi^{\rm SM}$;
+* the second column, $\Phi'_{\rm SH}$, is a doublet with the hypercharge $\tfrac14-\tfrac34=-\tfrac12$ and the charges 0
+  ($\Phi'^{\rm u}_{\rm SH}$) and $-1$ ($\Phi'^{\rm d}_{\rm SH}$). Its conjugate $i\tau^2(\Phi'_{\rm SH})^*$ is a doublet with the hypercharge
+  $+\tfrac12$: a second field with the quantum numbers of the Higgs doublet;
+* under $SU(2)_L\times SU(2)_{\rm R}$ the matrix transforms as $\mathcal M_{\rm SH}\to\mathsf L\,\mathcal M_{\rm SH}\mathsf R^T$
+  ($\mathsf L\in SU(2)_L$, $\mathsf R\in SU(2)_{\rm R}$): it is a bidoublet;
+* the relative number 0, and the particle number 2.
+
+The Higgs field of the Standard Model, written as the matrix $\big(i\tau^2(\Phi^{\rm SM})^*,\Phi^{\rm SM}\big)$, is also a
+bidoublet of $SU(2)_L\times SU(2)_{\rm R}$, but its two columns are one field and its conjugate. Here the two columns are
+independent fields. The superfluid is therefore a composite with the quantum numbers of two Higgs doublets, $\Phi_{\rm SH}$
+and $i\tau^2(\Phi'_{\rm SH})^*$.
+
+The vacuum that keeps the electric charge has only the neutral components, $\Phi^{\rm d}_{\rm SH}$ (a down particle paired with
+$\chi_{\rm SH}$) and $\Phi'^{\rm u}_{\rm SH}$ (an up particle paired with $\chi'_{\rm SH}$). When these two components have equal lengths,
+a rotation of $SU(2)_L\times U(1)_Y$ and of the particle number brings the vacuum to a form proportional to $i\tau^2$,
+which is unchanged when $\mathsf L=\mathsf R$ (because $\mathsf L\,i\tau^2\mathsf L^T=i\tau^2\det\mathsf L$). The vacuum then keeps:
+
+* the diagonal subgroup $SU(2)_{\rm V}$ of $SU(2)_L\times SU(2)_{\rm R}$, the custodial symmetry;
+* the electric charge, $Q^{\rm SM}=T^{3,{\rm SM}}+T^{3,{\rm R}}_{\rm SH}+\tfrac14R_{\rm SH}$, whose first two terms belong to $SU(2)_{\rm V}$;
+* the relative number.
+
+It breaks three generators of $SU(2)_L\times U(1)_Y$ and the particle number $F^{\rm tot}_{\rm SH}$. The scale of the breaking,
+$v_{\rm SH}$, is defined by the mass of the $W$ boson, $M_W=\tfrac12g\,v_{\rm SH}$, as $v$ is in the Standard Model.
+
+**H6. The scale.** The model has one scale, its momentum cutoff $\Lambda_{\rm LL}$; the programs compute $v_{\rm SH}$ in units of
+$\Lambda_{\rm LL}$. The hypothesis that the superfluid is the Higgs field of the Standard Model fixes the cutoff in GeV by
 $v_{\rm SH}=v=246.22$ GeV. All other masses in GeV, among them the mass of the amplitude mode of the superfluid, are then
 predictions, and the amplitude mode must be compared with $m_H$.
 
 # 5. Consequences that follow at once
 
-1. **The photon and the weak bosons.** If the effective Lagrangian of the pair field at second order in the
-   derivatives is the kinetic term $(D^{\rm SM}_\mu\Phi_{\rm SH})^\dagger D^{{\rm SM},\mu}\Phi_{\rm SH}$ with one coefficient, the
-   superfluid gives exactly the masses (2.2), with $v_{\rm SH}$ in place of $v$, and the massless photon. Whether it is of
-   this form is decided by the dynamics: a single singlet field, unlike a pair of singlets with equal couplings, does
-   not respect the custodial symmetry that makes $\rho=M_W^2/(M_Z^2\cos^2\theta_W)$ equal to 1. In the condensate along
-   $\Phi^{\rm d}_{\rm SH}$ the isospin-down particles of $\Psi_{\rm LL}$ and the particles of $\chi_{\rm SH}$ are paired, the isospin-up
-   particles are not, and this asymmetry contributes to $\rho-1$, as the mass difference of the top and the bottom quark
-   does in the Standard Model. The programs compute $\rho$ from the susceptibilities of the superfluid.
-2. **Fractional charges.** The constituents carry the electric charges $3/4$, $-1/4$ and $1/4$. No particle with such a
-   charge has been observed. In this model they are bound in the condensate, but its quasi-particles are fermions with
-   these charges and with masses of the order of the gap; whether the model is compatible with the searches for
-   fractionally charged particles depends on these masses, which the dynamics fixes.
-3. **No mixing beyond the Standard Model.** Because the fermion number is the hypercharge (4.1), the condensate breaks
-   no fourth gauge symmetry: the only massive vector fields are $W^\pm_\mu$ and $Z_\mu$, and there is no extra Goldstone
-   field. The relative number of Section 4 (H4) stays a global symmetry.
-4. **What does not change.** The bi-octonions, the super-loop, the manifold M31 and the Lorentz structure of the
-   spinor fields are those of the earlier hypotheses.
+1. **The photon, the weak bosons and $\rho$.** The three broken generators of $SU(2)_L\times U(1)_Y$ give masses to $W^\pm_\mu$
+   and $Z_\mu$, and the photon stays massless. In a vacuum that keeps $SU(2)_{\rm V}$, the susceptibilities of the superfluid
+   to the three generators of $SU(2)_L$ are equal, because $SU(2)_{\rm V}$ rotates them into one another. Hence
+   $\rho=M_W^2/(M_Z^2\cos^2\theta_W)=1$, up to the effects that break $SU(2)_{\rm R}$: the coupling $g'$ (through the exchange
+   of $B_\mu$ in the dynamics) and any difference of the masses or of the couplings of the two singlets. In the first
+   version the single singlet broke this symmetry at the level of the constituents.
+2. **No unpaired constituent.** In the vacuum of H5 every constituent is paired: the down particles with $\chi_{\rm SH}$, the
+   up particles with $\chi'_{\rm SH}$. In the first version the up component of $\Psi_{\rm LL}$ was unpaired; it carried the electric
+   charge $\tfrac34$ and was the lightest excitation of the superfluid. The constituents still carry fractional charges,
+   $\pm\tfrac34$ and $\pm\tfrac14$. Their quasi-particles now have masses of the order of the gap. Whether the model is
+   compatible with the searches for fractionally charged particles depends on these masses, which the dynamics fixes.
+3. **An extra Goldstone boson.** The particle number $F^{\rm tot}_{\rm SH}$ is an exact global symmetry of the Lagrangian,
+   and every pair carries $F^{\rm tot}_{\rm SH}=2$, so the condensate breaks it. Since $F^{\rm tot}_{\rm SH}$ is not gauged, its
+   Goldstone mode is a physical, massless, neutral particle of spin 0, besides the three Goldstone modes that $W^\pm_\mu$ and
+   $Z_\mu$ absorb. In the first version the particle number was four times the hypercharge, which is gauged, so there
+   was no such particle. The amplitude mode could then decay into pairs of these particles, which experiments on the
+   invisible decays of the Higgs boson constrain. Three choices are possible:
+   * (a) accept the particle as a prediction;
+   * (b) gauge $F^{\rm tot}_{\rm SH}$: a further gauge boson absorbs the Goldstone mode and becomes massive;
+   * (c) break $F^{\rm tot}_{\rm SH}$ explicitly with the determinant interaction
+     $\epsilon_{st}\Pi^s_{\rm SH}\Pi'^t_{\rm SH}+{\rm h.c.}$ ($\epsilon_{\rm ud}=-\epsilon_{\rm du}=1$). It is invariant under
+     $SU(2)_L\times U(1)_Y$ and under the custodial symmetry, and its coupling would give the Goldstone mode a mass.
+
+   These are put to the author. Until he decides, the stages compute (a), the hypotheses as stated.
+4. **The modes of the superfluid.** The matrix (4.4) has eight real components. In a vacuum that keeps $SU(2)_{\rm V}$,
+   they are:
+   * three Goldstone modes, absorbed by the weak bosons;
+   * the Goldstone mode of $F^{\rm tot}_{\rm SH}$;
+   * the amplitude mode of the common length of the two condensates, a singlet of $SU(2)_{\rm V}$: the candidate for the
+     Higgs boson;
+   * a triplet of $SU(2)_{\rm V}$ of massive scalars, one neutral and two charged, as in models with two Higgs doublets.
+
+   Their masses are computed with the dynamics.
+5. **What does not change.** The bi-octonions, the super-loop, the manifold M31 and the Lorentz structure of the spinor
+   fields are those of the earlier hypotheses.
 
 # 6. The checks of the quantum numbers and of the breaking
+
+**This section reports the checks of the first version** (one singlet field), made on 21 November 2026 from 17:30 to
+18:15 PST, before the second version existed. Everything in it holds for the fields $\Psi_{\rm LL}$ and $\chi_{\rm SH}$ and their
+pairs. Stage 2 of the second version repeats the checks for the three fields and adds those of $\chi'_{\rm SH}$, of the
+bidoublet and of the custodial symmetry.
 
 ## 6.1 What was computed
 
@@ -371,8 +448,9 @@ The Wolfram script `wolfram/source/sh_quantum.wls`, in exact arithmetic (ALL PAS
 | symbol | meaning |
 |:---|:---|
 | $\Psi_{\rm LL}$ | the doublet field: an isodoublet of Dirac fields, with $Y^{\rm SM}=1/4$ under these hypotheses |
-| $\chi_{\rm SH}$ | the singlet field: a Dirac field, a singlet of $SU(2)_L$, with $Y^{\rm SM}=1/4$ |
-| $m_{\rm LL}$, $m^\chi_{\rm SH}$ | the masses of $\Psi_{\rm LL}$ and of $\chi_{\rm SH}$ |
+| $\chi_{\rm SH}$, $\chi'_{\rm SH}$ | the two singlet fields: Dirac fields, singlets of $SU(2)_L$, with $Y^{\rm SM}=1/4$ and $Y^{\rm SM}=-3/4$ ($\chi'_{\rm SH}$ only in the second version) |
+| $m_{\rm LL}$, $m^\chi_{\rm SH}$, $m^{\chi'}_{\rm SH}$ | the masses of $\Psi_{\rm LL}$, $\chi_{\rm SH}$ and $\chi'_{\rm SH}$ |
+| $F^{\rm tot}_{\rm SH}$, $R_{\rm SH}$ | the particle number (every particle 1, every antiparticle $-1$) and the relative number (the particles of $\Psi_{\rm LL}$ minus those of the singlets) |
 | $\Lambda_{\rm LL}$ | the momentum cutoff, the unit of the programs |
 | $C_{\rm LL}$, $\gamma^{\rm ch}_{\rm LL}$ | the charge-conjugation matrix and the chirality matrix of the Dirac spinors |
 | $SL(2,\mathbb C)$ | the double cover of the Lorentz group |
@@ -380,9 +458,15 @@ The Wolfram script `wolfram/source/sh_quantum.wls`, in exact arithmetic (ALL PAS
 | $T^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$ | the generators of $SU(2)_{\rm v}$ on $\Psi_{\rm LL}$, and the triplet pair matrices of the earlier hypotheses |
 | $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$ | the gauge couplings of $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$ |
 | $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$ | the couplings of the scalar and the vector contact terms of the author's ansatz |
-| $\Pi^{\rm u}_{\rm SH}$, $\Pi^{\rm d}_{\rm SH}$ | the pair operators of the doublet-singlet channel |
+| $\Pi^{\rm u}_{\rm SH}$, $\Pi^{\rm d}_{\rm SH}$; $\Pi'^{\rm u}_{\rm SH}$, $\Pi'^{\rm d}_{\rm SH}$ | the pair operators of $\Psi_{\rm LL}$ with $\chi_{\rm SH}$ and with $\chi'_{\rm SH}$ |
 | $G_{\rm SH}$ | the coupling of the pairing term (4.2) |
-| $\Phi_{\rm SH}$; $\Phi^{\rm u}_{\rm SH}$, $\Phi^{\rm d}_{\rm SH}$ | the pair field of the superfluid and its components |
+| $\Phi_{\rm SH}$; $\Phi^{\rm u}_{\rm SH}$, $\Phi^{\rm d}_{\rm SH}$ | the first pair field of the superfluid ($Y^{\rm SM}=1/2$) and its components |
+| $\Phi'_{\rm SH}$; $\Phi'^{\rm u}_{\rm SH}$, $\Phi'^{\rm d}_{\rm SH}$ | the second pair field ($Y^{\rm SM}=-1/2$) and its components |
+| $\mathcal M_{\rm SH}$ | the bidoublet matrix (4.4) of the pair fields |
+| $SU(2)_{\rm R}$, $T^{a,{\rm R}}_{\rm SH}$; $SU(2)_{\rm V}$ | the custodial group, which acts on $(\chi_{\rm SH},\chi'_{\rm SH})$ as on a doublet, and its generators; the diagonal subgroup of $SU(2)_L\times SU(2)_{\rm R}$ |
+| $\mathsf L$, $\mathsf R$ | elements of $SU(2)_L$ and of $SU(2)_{\rm R}$ |
+| $\epsilon_{st}$ | the antisymmetric symbol of two isospin indices, $\epsilon_{\rm ud}=-\epsilon_{\rm du}=1$ |
+| ${\rm h.c.}$ | the Hermitian conjugate of the preceding terms |
 | $v_{\rm SH}$ | the scale of the breaking by the superfluid, $M_W=g\,v_{\rm SH}/2$ |
 | $SU(2)_L$, $U(1)_Y$ | the electroweak gauge group of the Standard Model |
 | $W^a_\mu$, $B_\mu$; $g$, $g'$; $\tau^a$, $T^{a,{\rm SM}}$; $Y^{\rm SM}$, $Q^{\rm SM}$ | the gauge fields, couplings, Pauli matrices, generators, hypercharge and electric charge of the Standard Model |

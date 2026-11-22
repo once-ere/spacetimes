@@ -15,7 +15,7 @@ the folder `Revision_HS_CJT_and_Kohn-Sham` at the commit `19db425` (entry E34 of
 17:09 PST, to make backups and then to modify the hypotheses so that the superfluid can be the Higgs field of the
 Standard Model; "the superfluid must have the same quantum numbers as the Higgs" (entry C21). Sections 1 to 8 below
 describe the task as it stood under the earlier hypotheses, in the folder where that work was done; the decisions
-D19 to D29 of Section 6, the objects O10 to O15 of Section 7 and the entries from C20 on in Section 9 belong to the
+D19 to D32 of Section 6, the objects O10 to O18 of Section 7 and the entries from C20 on in Section 9 belong to the
 revision. Under the revised hypotheses $SU(2)_{\rm v}$ is $SU(2)_L$, the fermion number is the hypercharge
 ($Y^{\rm SM}=F_{\rm LL}/4$), the singlet field $\chi_{\rm SH}$ is added to $\Psi_{\rm LL}$, and the superfluid is the condensate of
 the doublet-singlet pairs, whose pair field $\Phi_{\rm SH}$ has the quantum numbers of $\Phi^{\rm SM}$.
@@ -598,6 +598,44 @@ spinor field of the earlier hypotheses (the DiracLike spinor, of electric charge
 * The folders `Revision_HS_CJT_and_Kohn-Sham` and `Revision_SM_Higgs` stay as they are.
 * The order of the work is unchanged: the stages of the revision come first.
 
+**D30. The second version of the revised hypotheses (the author's instruction and my decision of interpretation, 21
+November 2026, 19:38 PST).** The author instructed to add a second singlet field $\chi'_{\rm SH}$ with the hypercharge
+$-\tfrac34$ (C25). I make this the second version of the revised hypotheses in the same folder. The first version (one
+singlet field) is kept under the git tag `backup/SM-Higgs-one-singlet-2026-11-21` on the commit `0624025`, in the
+working copy and in the author's repository.
+
+*Reasons.*
+
+* The second version continues the same revision (the superfluid as the Higgs field of the Standard Model), so it
+  belongs in the same folder.
+* Stages 1 to 3 are redone for the three fields: the document of the hypotheses, the quantum numbers, and the
+  superfluid.
+* The programs of the later stages compute both versions side by side. In the first version the second singlet is
+  decoupled, so the comparison that motivated the change stays computed and documented.
+
+**D31. The second singlet field (my decisions of interpretation, 21 November 2026).** $\chi'_{\rm SH}$ has:
+
+* the mass of $\chi_{\rm SH}$;
+* the same coupling $G_{\rm SH}$ in the pairing term, $-G_{\rm SH}\sum_s(\Pi'^s_{\rm SH})^\dagger\Pi'^s_{\rm SH}$, with
+  $\Pi'^s_{\rm SH}=\tfrac12\Psi^T_{\rm LL}(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathbf e^s_{\rm SH})\chi'_{\rm SH}$;
+* no other interaction than this and the hypercharge.
+
+*Reason.* With equal masses and couplings the Lagrangian has the custodial symmetry $SU(2)_L\times SU(2)_{\rm R}$, with
+$SU(2)_{\rm R}$ acting on $(\chi_{\rm SH},\chi'_{\rm SH})$. This makes $\rho=1$ when $g'$ is neglected, which is the purpose of
+the field.
+
+**D32. The extra Goldstone boson (pending the author's choice, 21 November 2026).** In the second version the particle
+number $F^{\rm tot}_{\rm SH}$ is no longer four times the hypercharge, so it is an exact global symmetry. Every pair carries
+2 of it, so the condensate breaks it and leaves a massless, neutral Goldstone boson of spin 0, besides the three
+absorbed by $W^\pm_\mu$ and $Z_\mu$. I put three choices to the author in my answer to C25:
+
+* (a) accept the particle as a prediction;
+* (b) gauge $F^{\rm tot}_{\rm SH}$, so that a further gauge boson absorbs it;
+* (c) add the determinant interaction $\epsilon_{st}\Pi^s_{\rm SH}\Pi'^t_{\rm SH}+{\rm h.c.}$, which breaks $F^{\rm tot}_{\rm SH}$ and gives
+  the boson a mass.
+
+Until he decides, the stages compute (a), the hypotheses as he stated them.
+
 **D11. Documents.** The manuscript `superfluid.md` (with `.tex` and `.pdf`); this record; the MASTER provenance of
 the symbols; a provenance of the code, the computed values and the checks; a provenance of the notebook; and the
 README of the folder. Each document is complete in itself (Rules 4 and 10).
@@ -623,6 +661,13 @@ The work is done as a sequence of objects; each is committed and pushed as soon 
 | O13 | stage 4: the effective potential of the pair field and the mass of its amplitude mode against $m_H$ |
 | O14 | stage 5: the masses of $W^\pm_\mu$ and $Z_\mu$, the massless photon and the parameter $\rho$ from the susceptibilities |
 | O15 | stage 6: the dynamics in time, the notebook and the article |
+| O16 | the second version (D30), stage 1: the document of the hypotheses for the three fields, this record, the README and the registry |
+| O17 | the second version, stage 2: the quantum numbers of the three fields, of their pairs and of the bidoublet, the custodial symmetry and the breaking, checked in Rust, Python and the Wolfram Language |
+| O18 | the second version, stage 3: the mean-field superfluid of the three fields by HS, KS and CJT, with the first version as the comparison |
+
+The objects O13 and O14 are carried out for the second version, with the first version as the comparison, and as one
+stage. The susceptibilities that give the scale $v_{\rm SH}$ also give $M_Z$ and $\rho$ (decided on 21 November 2026, at the start of the
+second version).
 
 The plan is changed only with a record in Section 9.
 
@@ -770,3 +815,5 @@ introduced by the revision of the hypotheses.
 | E39 | 21 Nov 2026, 18:15 to 19:22 | the results of stage 3 (E38). In the normal vacuum only the doublet-singlet pairs are unstable: their eigenvalue is $G_{\rm SH}/G^{\rm crit}_{\rm SH}$ with $G^{\rm crit}_{\rm SH}=4\pi^2/I^{(1)}_{\rm SF}(m_{\rm LL})$, derived in closed form. With $V^{(1)}_{\rm SH}$ the ground state of all five methods is the Higgs superfluid, with no pair of two particles of one field and no mixing; with $V^{(0)}_{\rm SH}$ it is the normal vacuum. The Higgs superfluid keeps exactly $R_{\rm SH}$ and the electric charge, has three Goldstone modes, and is stable also against charged condensates. Its lightest quasi-particle is the unpaired up component of $\Psi_{\rm LL}$, with the electric charge $\tfrac34$. The up and the down components have different scalar densities (and, in KS and CJT, different masses): the custodial symmetry is broken. KS and CJT coincide on these states, by a theorem. |
 | E40 | 21 Nov 2026, 18:15 to 19:22 | the corrections of stage 3, first part, each found before the commit: (1) the general eigenvalue routine (QR) did not converge on the response matrices; the eigenvalues are now those of the symmetric matrix $-\mathsf B_{\rm SH}\mathsf F^X_{\rm SH}\mathsf B_{\rm SH}$; (2) the first Kohn-Sham projection, onto the densities of each species, did not commute with $SU(2)_L$ (D28); (3) the threshold below which a combination of generators counted as unbroken was below the rounding of the eigensolver; it is now $10^{-9}$ times the scale of the matrix; (4) the table of the ground states first took the stationary state of lowest energy, which was the state from the generic start, a rotated state whose up and down densities are mixed; it now takes the state from the start along $\Phi^{\rm d}_{\rm SH}$, with a check that its energy is the lowest; (5) check SF-11 first required the momentum of the minimum of the quasi-particle energy below $10^{-9}$, finer than the resolution of the search near a quadratic minimum (about $10^{-8}$); it is now SF-11a (the energy, $10^{-9}$) and SF-11b (the momentum, $10^{-6}$) |
 | E41 | 21 Nov 2026, 18:15 to 19:22 | the corrections of stage 3, second part: (6) the data files first contained run times and changed with every run; the times are now only in the report; (7) in the Wolfram script, the simplification of the integral identity did not finish, and the numerical value of an exact zero exceeded the extra precision; the two sides are now compared numerically at ten masses to 40 digits; (8) the table of the stationary states listed the starts in the order of their energies, which agree to rounding and can change between runs; it now gives the numbers of the starts in a fixed order; (9) an inherited error: Section 1 of `provenance/P4_remarks.md` named the remarks of its addendum A2 as R3 to R5, but the addendum contains R3 to R7 (R6 and R7 were added later and the sentence was not updated); corrected in this folder, while the frozen folder `Revision_HS_CJT_and_Kohn-Sham` keeps the old sentence; (10) an omission of stage 2: the manuscript `superfluid.md` prints the table of the registry of the symbols, and it was not assembled again after the registry gained the entries of stage 2, so its committed version lacked them; it is now assembled and built again with the entries of stages 2 and 3 |
+| C25 | 21 Nov 2026, 19:38 | the author's instruction: "Add a second singlet $\chi'$ with hypercharge $-\tfrac34$". It answered my report, sent between 19:29 and 19:38 PST, on exploratory results of stage 4 in the first version: $M_H/v_{\rm SH}\approx10$ and $\rho\approx1.2$, against $m_H/v=0.508$ and $\rho\approx1$. In that report I proposed this field as the remedy for $\rho$ and for the unpaired, fractionally charged up component, and said that it would not lower $M_H/v_{\rm SH}$. My answer, after an exploratory computation of the second version, reported three results and one decision for him. The ground state pairs d with $\chi_{\rm SH}$ and u with $\chi'_{\rm SH}$, with twice the energy of one pair. $\rho=1$ to $10^{-9}$, and the photon stays massless. $M_H/v_{\rm SH}\approx8$. The decision: the extra Goldstone boson of D32, with the three choices |
+| E42 | 21 Nov 2026, 19:40 to 19:50 | object O16, stage 1 of the second version. The tag `backup/SM-Higgs-one-singlet-2026-11-21` on `0624025` (working copy and the author's repository). In the document of the hypotheses: a paragraph on the second version in Section 1; Sections 4 and 5 rewritten for the three fields (H1 to H6: the fields, the gauge group, the interaction, the custodial symmetry, the superfluid as a bidoublet, the scale; the consequences: $\rho$, no unpaired constituent, the extra Goldstone boson, the modes of the superfluid); a note that Section 6 still reports the checks of the first version; the new symbols in Section 7. The decisions D30 to D32, the objects O16 to O18. The registry gains 8 entries: $\chi'_{\rm SH}$, its mass, its pair operators, the second pair field, the bidoublet, the generators of $SU(2)_{\rm R}$, the particle number and the custodial groups (now 241 entries). The meanings of $\chi_{\rm SH}$, $G_{\rm SH}$ and $R_{\rm SH}$ now cover both versions |

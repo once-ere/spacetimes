@@ -40,6 +40,15 @@ mean-field superfluid of the two fields is computed in the manuscript `higgs_sup
 methods the ground state is the Higgs superfluid, which keeps the electric charge and is stable (Rust:
 {{GEN:sf_verdict_rust}}; Python: {{GEN:sf_verdict_python}}; Wolfram: {{GEN:sf_verdict_wolfram}}).
 
+**The second version of the revised hypotheses** (21 November 2026, from 19:38 PST). Exploratory computations of
+stage 4 found that the superfluid of the first version, with one singlet field, gives $\rho\approx1.2$: it pairs only
+the down component of $\Psi_{\rm LL}$ and breaks the custodial symmetry. The author then instructed to add a second
+singlet field $\chi'_{\rm SH}$ with the hypercharge $-\tfrac34$. With it the pairs form a bidoublet of
+$SU(2)_L\times SU(2)_{\rm R}$ and the vacuum pairs every constituent. The document of the hypotheses states the second
+version (stage 1 of the second version is complete). The manuscript `higgs_superfluid.md` and Section 6 of the document of
+the hypotheses still report the first version until stages 2 and 3 of the second version replace them. The first version
+is kept under the git tag `backup/SM-Higgs-one-singlet-2026-11-21`.
+
 # 1. What this folder is
 
 This folder of PROJECT spacetimes (repository `https://github.com/once-ere/spacetimes.git`) contains the solution of
