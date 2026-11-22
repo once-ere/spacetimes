@@ -278,8 +278,8 @@ gauge bosons and the amplitude mode are computed in the manuscript
 \texttt{higgs\_masses.md} (\texttt{.tex}, \texttt{.pdf}): the photon is
 massless and \(\rho_{\rm SH}=1\) in the second version, but the
 amplitude mode is \(16\) to \(19\) times too heavy relative to the scale
-(Rust: ALL PASS (27 of 27); Python: ALL PASS (9 of 9); Wolfram: ALL PASS
-(5 of 5)).
+(Rust: ALL PASS (30 of 30); Python: ALL PASS (10 of 10); Wolfram: ALL
+PASS (5 of 5)).
 
 \textbf{The second version of the revised hypotheses} (21 November 2026,
 from 19:38 PST). Exploratory computations of stage 4 found that the
@@ -486,21 +486,26 @@ superfluid to the chemical potentials of the eight generators, the scale
 \(\rho_{\rm SH}\), and the amplitude mode by the effective Lagrangian
 and by the linear response at a frequency, with a scan of the coupling
 and the mass. The programs: \texttt{sh\_higgs} of the crate
-\texttt{rust/shhiggs} (ALL PASS (27 of 27)), built on the module
+\texttt{rust/shhiggs} (ALL PASS (30 of 30)), built on the module
 \texttt{rpa\_n} of the library \texttt{sfcore};
-\texttt{python/sh\_higgs.py} (ALL PASS (9 of 9)); and
+\texttt{python/sh\_higgs.py} (ALL PASS (10 of 10)); and
 \texttt{wolfram/source/sh\_higgs.wls} (ALL PASS (5 of 5)). The
 superfluid is a minimum of its effective potential; the photon is
 massless; in the second version \(\rho_{\rm SH}=1\) and four generators
-are broken. With \(v_{\rm SH}=246.22\) GeV the cutoff is \(2207\) to
-\(2413\) GeV, and the amplitude mode is \(16\) to \(19\) times heavier
-relative to the scale than the Higgs boson of the Standard Model. In the
-pairing-only methods the linear response has the closed form of the
-theory of Bardeen, Cooper and Schrieffer, which puts the amplitude mode
-exactly at the pair self-energy \(d^0_{\rm SH}\). In the second version
-the amplitude mode comes with a custodial triplet of massive scalars at
-the same frequency: the second version has the scalars of two Higgs
-doublets.
+are broken. The top of the effective potential is the normal vacuum,
+except in KS and CJT of the second version, where it is the scalar
+condensate of stage 3, below zero; the first version of the manuscript
+had said that the top is the normal vacuum in every method, and the
+correction is recorded in the task record (Section 4.4, entry E60) and
+in Section 2.3 of the manuscript. With \(v_{\rm SH}=246.22\) GeV the
+cutoff is \(2207\) to \(2413\) GeV, and the amplitude mode is \(16\) to
+\(19\) times heavier relative to the scale than the Higgs boson of the
+Standard Model. In the pairing-only methods the linear response has the
+closed form of the theory of Bardeen, Cooper and Schrieffer, which puts
+the amplitude mode exactly at the pair self-energy \(d^0_{\rm SH}\). In
+the second version the amplitude mode comes with a custodial triplet of
+massive scalars at the same frequency: the second version has the
+scalars of two Higgs doublets.
 
 \textbf{Stage 6 of the revision of the hypotheses, part one} (22
 November 2026): the dynamics in time. The manuscript
@@ -682,9 +687,10 @@ response); \texttt{sh\_higgs.py} (the second computation of
 and the amplitude mode of the pairing-only method);
 \texttt{sh\_dynamics.py} (the second computation of
 \texttt{sh\_dynamics}, with its own right side of the equations of
-motion) and \texttt{sh\_dynamics\_figures.py} (its figures) & parts I to
-IV written; stages 2 to 4 and the first part of stage 6 of the revision
-written \\
+motion) and \texttt{sh\_dynamics\_figures.py} (its figures);
+\texttt{sh\_higgs\_figures.py} (the figure of the effective potential of
+stage 4) & parts I to IV written; stages 2 to 4 and the first part of
+stage 6 of the revision written \\
 \texttt{wolfram/} & the Wolfram-language parts of the notebook: the
 sources \texttt{wolfram/source/superfluid.source.wl},
 \texttt{part1.source.wl}, \texttt{part2.source.wl},
@@ -736,10 +742,12 @@ stage 3 the reports \texttt{hck\_sh\_superfluid\_checks.txt},
 reports \texttt{hck\_sh\_higgs\_checks.txt},
 \texttt{hck\_sh\_higgs\_checks\_python.txt},
 \texttt{hck\_sh\_higgs\_checks\_wolfram.txt} and the data
-\texttt{sh\_hg\_potential.csv}, \texttt{sh\_hg\_minimum.csv},
-\texttt{sh\_hg\_susceptibility.csv}, \texttt{sh\_hg\_masses.csv},
-\texttt{sh\_hg\_scan.csv}, \texttt{sh\_hg\_values.csv}; of stage 6, part
-one, the reports \texttt{hck\_sh\_dynamics\_checks.txt},
+\texttt{sh\_hg\_potential.csv},
+\texttt{sh\_hg\_potential\_second\_branch.csv},
+\texttt{sh\_hg\_minimum.csv}, \texttt{sh\_hg\_susceptibility.csv},
+\texttt{sh\_hg\_masses.csv}, \texttt{sh\_hg\_scan.csv},
+\texttt{sh\_hg\_values.csv}; of stage 6, part one, the reports
+\texttt{hck\_sh\_dynamics\_checks.txt},
 \texttt{hck\_sh\_dynamics\_checks\_python.txt},
 \texttt{hck\_sh\_dynamics\_checks\_wolfram.txt} and the data
 \texttt{sh\_dyn\_runs.csv}, \texttt{sh\_dyn\_signals.csv},
@@ -748,8 +756,9 @@ IV written; stages 2 to 4 and the first part of stage 6 of the revision
 written \\
 \texttt{figures/}, \texttt{videos/} & the figures
 (\texttt{fig\_part1\_*}, \texttt{fig\_part2\_*}, \texttt{fig\_part3\_*},
-\texttt{fig\_part4\_*}, and of the revision \texttt{fig\_sh\_dyn\_*},
-each \texttt{.pdf} and \texttt{.png}) and the videos
+\texttt{fig\_part4\_*}, and of the revision
+\texttt{fig\_sh\_hg\_potential}, \texttt{fig\_sh\_dyn\_*}, each
+\texttt{.pdf} and \texttt{.png}) and the videos
 (\texttt{video\_part4\_v1\_condensate\_growth.mp4},
 \texttt{video\_part4\_v2\_gauge\_fields.mp4}) & written \\
 \texttt{code/scripts/write\_part1\_fragments.py},
@@ -829,10 +838,11 @@ folder \texttt{Revision\_SM\_Higgs}:
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_superfluid.wls data/sh\_sf\_normal\_vacuum.csv data/sh\_sf\_ground.csv }\DataTypeTok{\textbackslash{}}
 \NormalTok{    data/hck\_sh\_superfluid\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_superfluid\_fragments.py }\CommentTok{\# the tables and numbers of stage 3}
-\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_higgs}\KeywordTok{)}        \CommentTok{\# revision, stage 4: the masses (about 35 minutes on two threads)}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_higgs}\KeywordTok{)}        \CommentTok{\# revision, stage 4: the masses (about an hour on two threads)}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ python }\KeywordTok{\&\&} \ExtensionTok{python3}\NormalTok{ sh\_higgs.py}\KeywordTok{)}            \CommentTok{\# revision, stage 4: the Python computation (after sh\_higgs)}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_higgs.wls data/sh\_hg\_minimum.csv data/sh\_hg\_masses.csv data/sh\_hg\_values.csv }\DataTypeTok{\textbackslash{}}
 \NormalTok{    data/hck\_sh\_higgs\_checks\_wolfram.txt}
+\ExtensionTok{python3}\NormalTok{ python/sh\_higgs\_figures.py            }\CommentTok{\# the figure of stage 4 (the effective potential)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_higgs\_fragments.py }\CommentTok{\# the tables and numbers of stage 4}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_dynamics}\KeywordTok{)}     \CommentTok{\# revision, stage 6, part one: the dynamics (about forty minutes)}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ python }\KeywordTok{\&\&} \ExtensionTok{python3}\NormalTok{ sh\_dynamics.py}\KeywordTok{)}         \CommentTok{\# revision, stage 6, part one: the Python computation}

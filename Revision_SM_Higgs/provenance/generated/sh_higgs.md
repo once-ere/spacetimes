@@ -17,6 +17,7 @@
 | YH-7 | PASS | 9.853e-16 | 1.0e-12 | HS (0, 0), both versions: the amplitude and phase eigenvalues of the reduced linear response equal the closed forms lambda\_amp(omega) = (G/2) sum\_n w\_n (k\_n\^2 + m\^2) / (E\_n (E\_n\^2 - omega\^2/4)) and lambda\_phase(omega) = (G/2) sum\_n w\_n E\_n / (E\_n\^2 - omega\^2/4), E\_n\^2 = k\_n\^2 + m\^2 + d\_0\^2/4, and lambda\_amp(omega) - lambda\_phase(0) = ((omega\^2 - d\_0\^2)/4) S(omega) with S(omega) = (G/2) sum\_n w\_n / (E\_n (E\_n\^2 - omega\^2/4)) > 0, at five frequencies below 2 M\_eff (absolute); lambda\_phase(0) = 1 is the gap equation [second omega 0.000000: lambda\_amp 0.7377040607282 (closed 0.7377040607282), lambda\_phase 1.0000000000016 (closed 1.0000000000016); second omega 0.300000: lambda\_amp 0.7627744954223 (closed 0.7627744954223), lambda\_phase 1.0374095434543 (closed 1.0374095434543); second omega 0.600000: lambda\_amp 0.8529756584284 (closed 0.8529756584284), lambda\_phase 1.1760080331297 (closed 1.1760080331297); second omega 0.812846: lambda\_amp 1.0000000000016 (closed 1.0000000000016), lambda\_phase 1.4232626846379 (closed 1.4232626846379); second omega 0.878757: lambda\_amp 1.0858625854677 (closed 1.0858625854677), lambda\_phase 1.5946805054664 (closed 1.5946805054664); second: lambda\_phase(0) - 1 = 1.6e-12 (the gap equation, to the tolerance of the solution); first omega 0.000000: lambda\_amp 0.7377040607282 (closed 0.7377040607282), lambda\_phase 1.0000000000016 (closed 1.0000000000016); first omega 0.300000: lambda\_amp 0.7627744954223 (closed 0.7627744954223), lambda\_phase 1.0374095434543 (closed 1.0374095434543); first omega 0.600000: lambda\_amp 0.8529756584284 (closed 0.8529756584284), lambda\_phase 1.1760080331297 (closed 1.1760080331297); first omega 0.812846: lambda\_amp 1.0000000000016 (closed 1.0000000000016), lambda\_phase 1.4232626846379 (closed 1.4232626846379); first omega 0.878757: lambda\_amp 1.0858625854677 (closed 1.0858625854677), lambda\_phase 1.5946805054664 (closed 1.5946805054664); first: lambda\_phase(0) - 1 = 1.6e-12 (the gap equation, to the tolerance of the solution)] |
 | YH-8 | PASS | 2.442e-15 | 1.0e-09 | HS (0, 0): the number of eigenvalues equal to 1 of the reduced linear response on the pair fields (four in the second version at omega = 0 and at omega = d\_0; three at omega = 0 and one at omega = d\_0 in the first, on the doublet of chi); in the second version the custodial generators T\^a + T\^a\_R commute with the response, and the Casimir sum\_a (T\^a + T\^a\_R)\^2 has the eigenvalues 0, 2, 2, 2 on the four modes at either frequency (a singlet and a triplet; largest deviation) [second omega 0.000000: 4 eigenvalues equal 1, Casimir of T\^a + T\^a\_R on them -0.0000000000, 2.0000000000, 2.0000000000, 2.0000000000; second omega 0.812846: 4 eigenvalues equal 1, Casimir of T\^a + T\^a\_R on them -0.0000000000, 2.0000000000, 2.0000000000, 2.0000000000; first omega 0.000000: 3 eigenvalues equal 1; first omega 0.812846: 1 eigenvalues equal 1] |
 | YH-9 | PASS | 2.384e-15 | 1.0e-12 | the normal vacuum (no pair self-energy) of HS (0, 0) and CJT, both versions: the ground state of H - mu Q\_b for the eight generators and mu = +-0.005, +-0.01 has zero charge densities and no pairs, so its susceptibilities vanish and the gauge bosons get no mass without the condensate (largest /&lt;Q\_a>/ / /mu/ and largest element of the pair self-energy) [second HS (0, 0): largest /&lt;Q\_a>/ / /mu/ 2.4e-15; second CJT: largest /&lt;Q\_a>/ / /mu/ 2.0e-15; first HS (0, 0): largest /&lt;Q\_a>/ / /mu/ 2.4e-15; first CJT: largest /&lt;Q\_a>/ / /mu/ 1.9e-15] |
+| YH-10 | PASS | 1.841e-11 | 1.0e-09 | CJT, second version, the states with a fixed pair self-energy d P\_dir: at d = 0 the start N = -beta reaches the scalar condensate (E = -4.050234675814e-04, masses -0.3297568683, -0.3297568683, -0.0981685824, -0.0981685824), equal to the point d = 0 of the effective potential of the Rust program (data/sh\_hg\_potential.csv) and to the scalar condensate of stage 3 (data/sh\_sf\_states.csv); at d = 0.1 d\_0 the start from the normal self-energy of the scalar condensate gives the branch of the ground state (E = -4.2735649938e-04, phi = 9.9502069357e-04, M\_up = -0.325786) and the start N = 0 the second branch (E = -3.4414864460e-05, phi = 1.0471619891e-03, M\_up = 0.191416), equal to the Rust data files (sh\_hg\_potential.csv, sh\_hg\_potential\_second\_branch.csv); the second branch has the higher energy and the larger pair amplitude at the same d, so that, V decreasing from phi = 0 to phi\_0, it lies above V at its own phi (largest relative difference from the Rust values; 221, 193 and 485 iterations) |
 <!-- END hg_checks_python -->
 <!-- BEGIN hg_checks_rust -->
 | check | result | deviation | tolerance | statement |
@@ -25,8 +26,11 @@
 | H-2a | PASS | 9.588e-5 | 1.0e-3 | phi\_0 is a stationary point of V: V'(phi\_0) phi\_0 / /E\_0/ from central differences with the step 0.01 in d (zero up to the error of the differences, of the order of the step squared), five methods, both versions |
 | H-2b | PASS | -- | -- | V''(phi\_0) > 0 in every method and both versions: phi\_0 is a minimum of the effective potential (second HS (1, 1): 149.1883; second HS (0, 1): 143.3606; second HS (0, 0): 143.3606; second KS: 181.6833; second CJT: 181.6833; first HS (1, 1): 73.1480; first HS (0, 1): 71.6803; first HS (0, 0): 71.6803; first KS: 80.0121; first CJT: 80.0121) |
 | H-2c | PASS | 2.302e-4 | 2.0e-3 | V''(phi\_0) from the steps 0.02 and 0.01 in d agree to the order of the steps (relative difference; the stated value is their Richardson combination) |
-| H-2d | PASS | 6.298e-16 | 1.0e-9 | second version: along the whole curve the two pair amplitudes are equal, /&lt;Pi\^d\_SH>/ = /&lt;Pi'\^u\_SH>/ (difference relative to phi\_0): the curve moves both pair fields together, along the custodial direction |
-| H-3 | PASS | -- | -- | the Mexican hat along the vacuum direction: V = 0 at phi = 0 (the normal vacuum), phi grows with d, V decreases from phi = 0 to the minimum, which is at d = d\_0 among the 33 points, and increases beyond it, five methods, both versions (second HS (1, 1): V(0) = 5.2e-17, minimum at d = 1.00 d\_0; second HS (0, 1): V(0) = 5.2e-17, minimum at d = 1.00 d\_0; second HS (0, 0): V(0) = 5.2e-17, minimum at d = 1.00 d\_0; second KS: V(0) = 5.2e-17, minimum at d = 1.00 d\_0; second CJT: V(0) = 5.2e-17, minimum at d = 1.00 d\_0; first HS (1, 1): V(0) = 5.2e-17, minimum at d = 1.00 d\_0; first HS (0, 1): V(0) = 5.2e-17, minimum at d = 1.00 d\_0; first HS (0, 0): V(0) = 5.2e-17, minimum at d = 1.00 d\_0; first KS: V(0) = 5.2e-17, minimum at d = 1.00 d\_0; first CJT: V(0) = 5.2e-17, minimum at d = 1.00 d\_0) |
+| H-2d | PASS | 6.298e-16 | 1.0e-9 | second version: at every computed state of both continuations (and of the second branch) the two pair amplitudes are equal, /&lt;Pi\^d\_SH>/ = /&lt;Pi'\^u\_SH>/ (difference relative to phi\_0): the states move both pair fields together, along the custodial direction |
+| H-3a | PASS | -- | -- | the Mexican hat along the vacuum direction, on the branch of the ground state (the effective potential): phi = 0 at d = 0, phi grows with d, V decreases from phi = 0 to the minimum, which is at d = d\_0 among the 33 points, and increases beyond it, five methods, both versions (second HS (1, 1): V(0) = 5.505867e-17, minimum at d = 1.00 d\_0; second HS (0, 1): V(0) = 5.914361e-17, minimum at d = 1.00 d\_0; second HS (0, 0): V(0) = 5.218329e-17, minimum at d = 1.00 d\_0; second KS: V(0) = -4.050235e-4, minimum at d = 1.00 d\_0; second CJT: V(0) = -4.050235e-4, minimum at d = 1.00 d\_0; first HS (1, 1): V(0) = 3.547059e-17, minimum at d = 1.00 d\_0; first HS (0, 1): V(0) = 5.265242e-17, minimum at d = 1.00 d\_0; first HS (0, 0): V(0) = 5.218329e-17, minimum at d = 1.00 d\_0; first KS: V(0) = 2.871952e-17, minimum at d = 1.00 d\_0; first CJT: V(0) = 3.725649e-17, minimum at d = 1.00 d\_0) |
+| H-3b | PASS | 2.255e-11 | 1.0e-8 | the top of the hat: at d = 0 the branch of the ground state is the normal vacuum (V = 0 relative to /E\_0/, the bare masses 0.2) in HS (1, 1), HS (0, 1), HS (0, 0) of both versions and in KS and CJT of the first version, and the scalar condensate of stage 3 in KS and CJT of the second version (its energy and its four masses in data/sh\_sf\_states.csv; relative difference): the largest difference |
+| H-3c | PASS | 3.243e-13 | 1.0e-9 | the continuation from the normal vacuum (from d = 0 with N = 0) coincides with the branch of the ground state at all 33 points (energy at the same d, relative to /E\_0/) in the eight computations other than KS and CJT of the second version: the largest difference |
+| H-3d | PASS | -- | -- | the second branch: exactly KS and CJT of the second version have one; there the continuation from the normal vacuum differs from the branch of the ground state at the grid points from d = 0 up to its last one on the second branch and coincides beyond; the masses of Psi\_LL are negative at every state of the branch of the ground state and positive at every state of the second branch; the second branch lies above V at the same phi; the continuation with the step 0.005 d\_0 ends on it where it falls onto the branch of the ground state (the state found there equals that of the branch of the ground state at the same d, relative difference below 1e-9) (computations with a second branch: second KS, second CJT; second KS: differing grid points d = 0 to 0.20 d\_0, coinciding beyond; M\_up &lt; 0 on the branch of the ground state: true; M\_up > 0 on the second branch: true; above V at the same phi by 0.2097 to 0.2467 /E\_0/; the last state on it at d = 0.240 d\_0 (phi = 0.2877 phi\_0, E = -2.068892e-4, 3856 iterations), at d = 0.245 d\_0 the continuation falls onto the branch of the ground state (difference 1.5e-14 /E\_0/); second CJT: differing grid points d = 0 to 0.20 d\_0, coinciding beyond; M\_up &lt; 0 on the branch of the ground state: true; M\_up > 0 on the second branch: true; above V at the same phi by 0.2097 to 0.2467 /E\_0/; the last state on it at d = 0.240 d\_0 (phi = 0.2877 phi\_0, E = -2.068892e-4, 3856 iterations), at d = 0.245 d\_0 the continuation falls onto the branch of the ground state (difference 4.2e-15 /E\_0/)) |
 | H-4a | PASS | 2.562e-7 | 1.0e-6 | the susceptibilities chi\^{ab} = d&lt;Q\_a>/d mu\_b are symmetric (largest /chi\^{ab} - chi\^{ba}/ relative to chi\^{11}), as the theorem of Hellmann and Feynman requires (chi\^{ab} = -d\^2 E / d mu\_a d mu\_b), eight generators, five methods, both versions |
 | H-4b | PASS | 3.845e-4 | 1.0e-3 | the steps 0.005 and 0.01 of the chemical potentials give the same susceptibilities to the order of the steps squared (largest difference relative to the largest element; the stated values are their Richardson combination) |
 | H-4c | PASS | 3.941e-12 | 1.0e-6 | KS and CJT give the same susceptibilities (relative to chi\^{11}; the perturbed states keep their local normal matrix in the span of the Kohn-Sham densities), both versions |
@@ -58,6 +62,12 @@
 | WH-4 | PASS | -- | -- | m\_H / v = 125.13 / v = 0.5082047224 (the inputs of stage 2); for every row of the masses, Lambda\_LL = v / v\_SH, M\_H = omega\_H Lambda\_LL and M\_H / v = omega\_H / v\_SH (relative); the amplitude modes of the linear response give M\_H / v from 7.96732 to 10.1624, 15.68 to 20.00 times the value of the Standard Model (deviation 0.e-16) |
 | WH-5 | PASS | -- | -- | HS (0, 0): the identity (k\^2 + m\^2) / (E (E\^2 - w\^2/4)) - 1/E = (w\^2 - d\^2) / (4 E (E\^2 - w\^2/4)) with E\^2 = k\^2 + m\^2 + d\^2/4 holds for every momentum (symbolic) and E\^2 - w\^2/4 > 0 for w &lt; 2 M\_eff (symbolic), so that lambda\_amp(w) = 1 only at w = d\_0; the continuum integrals give /lambda\_amp(d\_0) - 1/ = 0.e-30 and /lambda\_phase(0) - 1/ = 0.e-30 (the gap equation), the root of lambda\_amp = 1 is 0.81284554632043386736 against d\_0 = 0.81284554632043386736, below 2 M\_eff = 0.9059348112159973 (binding 0.0930893); the amplitude modes of the Rust program (HS (0, 1) and HS (0, 0), both versions) equal d\_0 (relative) (identity True, positivity True; Rust deviation 8.4e-13) |
 <!-- END hg_checks_wolfram -->
+<!-- BEGIN hg_chi_sign_hi -->
+0.65
+<!-- END hg_chi_sign_hi -->
+<!-- BEGIN hg_chi_sign_lo -->
+0.6
+<!-- END hg_chi_sign_lo -->
 <!-- BEGIN hg_curv_ratio_other -->
 $2.04$ to $2.27$
 <!-- END hg_curv_ratio_other -->
@@ -85,12 +95,21 @@ $848$ to $1.09\times10^{3}$
 <!-- BEGIN hg_gp -->
 0.350046
 <!-- END hg_gp -->
+<!-- BEGIN hg_h3b_dev -->
+$3\times10^{-11}$
+<!-- END hg_h3b_dev -->
+<!-- BEGIN hg_h3c_dev -->
+$4\times10^{-13}$
+<!-- END hg_h3c_dev -->
 <!-- BEGIN hg_h8d_dev -->
 $2\times10^{-12}$
 <!-- END hg_h8d_dev -->
 <!-- BEGIN hg_job_s -->
-411
+933
 <!-- END hg_job_s -->
+<!-- BEGIN hg_jump_ratio -->
+0.246
+<!-- END hg_jump_ratio -->
 <!-- BEGIN hg_lam2_range -->
 $2207$ to $2413$
 <!-- END hg_lam2_range -->
@@ -118,11 +137,17 @@ $2\times10^{3}$ to $2.4\times10^{3}$
 <!-- BEGIN hg_mh_over_v_sm -->
 0.5082
 <!-- END hg_mh_over_v_sm -->
+<!-- BEGIN hg_min_Mchi -->
+0.06011
+<!-- END hg_min_Mchi -->
+<!-- BEGIN hg_min_Mpsi -->
+-0.06228
+<!-- END hg_min_Mpsi -->
 <!-- BEGIN hg_mw_gev -->
 80.3625
 <!-- END hg_mw_gev -->
 <!-- BEGIN hg_nchecks -->
-27
+30
 <!-- END hg_nchecks -->
 <!-- BEGIN hg_omega_d0_dev -->
 $2\times10^{-13}$
@@ -140,8 +165,41 @@ $1$
 1.0103
 <!-- END hg_rho_measured -->
 <!-- BEGIN hg_run_s -->
-2174
+2639
 <!-- END hg_run_s -->
+<!-- BEGIN hg_sb_beyond -->
+0.245
+<!-- END hg_sb_beyond -->
+<!-- BEGIN hg_sb_first_it -->
+419
+<!-- END hg_sb_first_it -->
+<!-- BEGIN hg_sb_gap_range -->
+$0.21$ to $0.247$
+<!-- END hg_sb_gap_range -->
+<!-- BEGIN hg_sb_grid_last -->
+0.2
+<!-- END hg_sb_grid_last -->
+<!-- BEGIN hg_sb_last -->
+0.24
+<!-- END hg_sb_last -->
+<!-- BEGIN hg_sb_last_Mpsi -->
+0.1225
+<!-- END hg_sb_last_Mpsi -->
+<!-- BEGIN hg_sb_last_it -->
+3856
+<!-- END hg_sb_last_it -->
+<!-- BEGIN hg_sb_last_phi -->
+0.2877
+<!-- END hg_sb_last_phi -->
+<!-- BEGIN hg_scal_E -->
+-4.05023
+<!-- END hg_scal_E -->
+<!-- BEGIN hg_scal_Mchi -->
+-0.0981686
+<!-- END hg_scal_Mchi -->
+<!-- BEGIN hg_scal_Mpsi -->
+-0.329757
+<!-- END hg_scal_Mpsi -->
 <!-- BEGIN hg_scan_max1 -->
 $32.74$
 <!-- END hg_scan_max1 -->
@@ -271,12 +329,35 @@ $2\times10^{-15}$
 | first | $0.2$ | $2$ | $2.411$ | $0.12187$ | $1.77559$ | $2.41104$ | $2.444$ | $19.78$ |
 | first | $0.2$ | $3$ | $4.0115$ | $0.12254$ | $2.21203$ | $4.01146$ | $4.03136$ | $32.74$ |
 <!-- END hg_table_scan -->
+<!-- BEGIN hg_table_top -->
+| version | method | the state at $\varphi_{\rm SH}=0$ | $10^4\,V^{\rm eff}_{\rm SH}(0)$ | $V^{\rm eff}_{\rm SH}(0)$ / depth | $M^{\rm u}_{\rm SH}=M^{\rm d}_{\rm SH}$ | $M^\chi_{\rm SH}$ | $M^{\chi'}_{\rm SH}$ |
+|:-------|:---------|:-------------|:-------------|:---------------|:-------------|:-------------|:-------------|
+| second | HS (1, 1) | the normal vacuum | $0$ | $0$ | $0.2$ | $0.2$ | $0.2$ |
+| second | HS (0, 1) | the normal vacuum | $0$ | $0$ | $0.2$ | $0.2$ | $0.2$ |
+| second | HS (0, 0) | the normal vacuum | $0$ | $0$ | $0.2$ | $0.2$ | $0.2$ |
+| second | KS | the scalar condensate | $-4.05023$ | $-0.2467$ | $-0.329757$ | $-0.0981686$ | $-0.0981686$ |
+| second | CJT | the scalar condensate | $-4.05023$ | $-0.2467$ | $-0.329757$ | $-0.0981686$ | $-0.0981686$ |
+| first | HS (1, 1) | the normal vacuum | $0$ | $0$ | $0.2$ | $0.2$ | $0.2$ |
+| first | HS (0, 1) | the normal vacuum | $0$ | $0$ | $0.2$ | $0.2$ | $0.2$ |
+| first | HS (0, 0) | the normal vacuum | $0$ | $0$ | $0.2$ | $0.2$ | $0.2$ |
+| first | KS | the normal vacuum | $0$ | $0$ | $0.2$ | $0.2$ | $0.2$ |
+| first | CJT | the normal vacuum | $0$ | $0$ | $0.2$ | $0.2$ | $0.2$ |
+<!-- END hg_table_top -->
 <!-- BEGIN hg_thr_sector1 -->
 $0.400029$
 <!-- END hg_thr_sector1 -->
 <!-- BEGIN hg_threshold2 -->
 0.905935
 <!-- END hg_threshold2 -->
+<!-- BEGIN hg_top_Mchi -->
+-0.09817
+<!-- END hg_top_Mchi -->
+<!-- BEGIN hg_top_Mpsi -->
+-0.3298
+<!-- END hg_top_Mpsi -->
+<!-- BEGIN hg_top_ratio -->
+-0.247
+<!-- END hg_top_ratio -->
 <!-- BEGIN hg_v_gev -->
 246.22
 <!-- END hg_v_gev -->
@@ -284,10 +365,10 @@ $0.400029$
 $1.276$
 <!-- END hg_v_ratio -->
 <!-- BEGIN hg_verdict_python -->
-ALL PASS (9 of 9)
+ALL PASS (10 of 10)
 <!-- END hg_verdict_python -->
 <!-- BEGIN hg_verdict_rust -->
-ALL PASS (27 of 27)
+ALL PASS (30 of 30)
 <!-- END hg_verdict_rust -->
 <!-- BEGIN hg_verdict_wolfram -->
 ALL PASS (5 of 5)

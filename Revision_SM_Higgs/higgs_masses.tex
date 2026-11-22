@@ -91,6 +91,19 @@
 % Allow footnotes in longtable head/foot
 \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 \makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -243,9 +256,19 @@ The findings:
 \item
   \textbf{The superfluid is a minimum of its effective potential.} Along
   the direction of the vacuum, the energy of the lowest state with a
-  given pair amplitude is a Mexican hat. It is zero in the normal
-  vacuum, it falls to the ground state of stage 3 and rises beyond it,
-  in every method and both versions (Section 2).
+  given pair amplitude is a Mexican hat. It falls from its top, at zero
+  pair amplitude, to the ground state of stage 3 and rises beyond it, in
+  every method and both versions (Section 2). The top is the normal
+  vacuum, of zero energy, except in KS and CJT of the second version.
+  There the top is the scalar condensate of stage 3, a state without
+  pairs in which the Dirac masses of all four species are negative, at
+  \(V^{\rm eff}_{\rm SH}(0)=-0.247\,\lvert V^{\rm eff}_{\rm SH}(\varphi^0_{\rm SH})\rvert\).
+  In these two methods the states continued from the normal vacuum form
+  a second branch, which lies above the effective potential and which
+  the continuation follows up to \(d_{\rm SH}=0.24\,d^0_{\rm SH}\). The
+  first version of this document said that the hat is zero in the normal
+  vacuum in every method; for these two methods that was false (Section
+  2.3).
 \item
   \textbf{The photon is massless, and in the second version \(\rho=1\)
   exactly.} The susceptibilities of the superfluid to the chemical
@@ -546,6 +569,17 @@ first version the ground state is the condensate of \(\Phi_{\rm SH}\)
 alone: the down particles are paired with \(\chi_{\rm SH}\) and the up
 particles are unpaired.
 
+Stage 3 found one more stationary state without pairs, in KS and CJT of
+the second version only: the \textbf{scalar condensate}. Its normal
+self-energy shifts the Dirac masses of all four species (defined in
+Section 2.1) to negative values,
+\(M^{\rm u}_{\rm SH}=M^{\rm d}_{\rm SH}=-0.329757\) and
+\(M^\chi_{\rm SH}=M^{\chi'}_{\rm SH}=-0.0981686\), at the energy
+\(10^4\,\mathcal E^X_{\rm SH}=-4.05023\), below the normal vacuum and
+above the ground state. It occurs only where the exchange contractions
+couple the scalar density of \(\Psi_{\rm LL}\) with those of both
+singlets, and it is unstable towards the pairs.
+
 The \textbf{pair amplitude} of a state is
 \[\varphi_{\rm SH}=\lvert\langle\Pi^{\rm d}_{\rm SH}\rangle\rvert=\tfrac12\big\lvert\mathrm{tr}\big(\mathsf K^{\rm d}_{\rm SH}\kappa_{\rm SH}^T\big)\big\rvert,\tag{1.5}\]
 the length of the neutral component of \(\Phi_{\rm SH}\). In the states
@@ -578,23 +612,57 @@ that its own local matrices produce. So the program:
 \tightlist
 \item
   fixes \(d_{\rm SH}\) and iterates \(\mathsf N_{\rm SH}\) to
-  self-consistency;
+  self-consistency from a given start;
 \item
-  records the energy \(\mathcal E^X_{\rm SH}\) and the pair amplitude
-  \(\varphi_{\rm SH}\) of the state;
+  records the energy \(\mathcal E^X_{\rm SH}\), the pair amplitude
+  \(\varphi_{\rm SH}\) and the Dirac masses of the state;
 \item
   does this for 33 values
-  \(d_{\rm SH}=0,0.05\,d^0_{\rm SH},\dots,1.6\,d^0_{\rm SH}\).
+  \(d_{\rm SH}=0,0.05\,d^0_{\rm SH},\dots,1.6\,d^0_{\rm SH}\), by
+  continuation: each state is started from the normal self-energy of its
+  neighbour.
 \end{itemize}
 
-The curve
-\((\varphi_{\rm SH}(d_{\rm SH}),\mathcal E^X_{\rm SH}(d_{\rm SH}))\) is
-\(V^{\rm eff}_{\rm SH}\) in parametric form. At
-\(d_{\rm SH}=d^0_{\rm SH}\) the pair self-energy that the local matrices
-produce equals the fixed one: the state is the ground state (check H-1).
-The derivatives at the minimum
-\(\varphi^0_{\rm SH}=\varphi_{\rm SH}(d^0_{\rm SH})\) follow from
-central differences in \(d_{\rm SH}\) with the steps 0.01 and 0.02,
+The Dirac mass of a species is its bare mass plus a quarter of the trace
+of the normal self-energy with the matrix \(\beta_{\rm LL}\) of that
+species:
+\(M^{\rm u}_{\rm SH}=m_{\rm LL}+\tfrac14\mathrm{tr}(\beta^{\rm u}_{\rm SH}\mathsf N_{\rm SH})\),
+with \(\beta^{\rm u}_{\rm SH}\) equal to \(\beta_{\rm LL}\) on the up
+component of \(\Psi_{\rm LL}\) and zero on the other components, and
+likewise \(M^{\rm d}_{\rm SH}\), \(M^\chi_{\rm SH}\) and
+\(M^{\chi'}_{\rm SH}\) (with the bare masses \(m^\chi_{\rm SH}\) and
+\(m^{\chi'}_{\rm SH}\) of the singlets).
+
+At a fixed \(d_{\rm SH}\) the self-consistent \(\mathsf N_{\rm SH}\)
+need not be unique: at \(d_{\rm SH}=0\), KS and CJT of the second
+version have two stationary states, the normal vacuum and the scalar
+condensate (Section 1.4). The continuation is therefore made from both
+ends of the curve:
+
+\begin{itemize}
+\tightlist
+\item
+  from the ground state, downward to \(d_{\rm SH}=0\) and upward to
+  \(1.6\,d^0_{\rm SH}\): the \emph{branch of the ground state};
+\item
+  from the normal vacuum, \(\mathsf N_{\rm SH}=0\) at \(d_{\rm SH}=0\),
+  upward.
+\end{itemize}
+
+Where the two continuations reach different states at the same
+\(d_{\rm SH}\), \(V^{\rm eff}_{\rm SH}\) is the lower of the two
+branches at the same pair amplitude. Where the continuation from the
+normal vacuum follows a branch of its own, it is also followed with the
+step \(0.005\,d^0_{\rm SH}\) from its last point of the grid, to its
+end.
+
+A branch, the curve
+\((\varphi_{\rm SH}(d_{\rm SH}),\mathcal E^X_{\rm SH}(d_{\rm SH}))\), is
+a curve of states in parametric form. At \(d_{\rm SH}=d^0_{\rm SH}\) the
+pair self-energy that the local matrices produce equals the fixed one:
+the state is the ground state (check H-1). The derivatives at the
+minimum \(\varphi^0_{\rm SH}=\varphi_{\rm SH}(d^0_{\rm SH})\) follow
+from central differences in \(d_{\rm SH}\) with the steps 0.01 and 0.02,
 combined by Richardson extrapolation:
 \[V^{\rm eff\,\prime}_{\rm SH}=\frac{\mathcal E'}{\varphi'},\qquad V^{\rm eff\,\prime\prime}_{\rm SH}=\frac{\mathcal E''-V^{\rm eff\,\prime}_{\rm SH}\varphi''}{\varphi'^2},\tag{2.1}\]
 where the primes on \(\mathcal E\) and \(\varphi\) are derivatives with
@@ -688,16 +756,142 @@ first & CJT & \(0.867286\) & \(0.00860402\) & \(-6.2857\) &
 \(80.0121\) \\
 \end{longtable}
 
-In every method and both versions the curve is a Mexican hat (check
-H-3): \(V^{\rm eff}_{\rm SH}=0\) at \(\varphi_{\rm SH}=0\), it decreases
-to its minimum at \(d_{\rm SH}=d^0_{\rm SH}\) and increases beyond it,
-and \(\varphi_{\rm SH}\) grows monotonically with \(d_{\rm SH}\). The
-curvature is positive and the first derivative vanishes at
-\(\varphi^0_{\rm SH}\) to the accuracy of the differences (checks H-2a
-and H-2b). In HS (0, 1) and HS (0, 0) the curvature of the second
-version is twice that of the first, because two equal pairs move
-together (Section 2.2); in the other methods the ratio is \(2.04\) to
-\(2.27\).
+In every method and both versions the effective potential, the branch of
+the ground state, is a Mexican hat (check H-3a): it decreases from
+\(\varphi_{\rm SH}=0\) to its minimum at \(d_{\rm SH}=d^0_{\rm SH}\) and
+increases beyond it, and \(\varphi_{\rm SH}\) grows monotonically with
+\(d_{\rm SH}\) (Figure 1). The curvature is positive and the first
+derivative vanishes at \(\varphi^0_{\rm SH}\) to the accuracy of the
+differences (checks H-2a and H-2b). In HS (0, 1) and HS (0, 0) the
+curvature of the second version is twice that of the first, because two
+equal pairs move together (Section 2.2); in the other methods the ratio
+is \(2.04\) to \(2.27\).
+
+\includegraphics[width=1\textwidth,height=\textheight]{figures/fig_sh_hg_potential.png}
+
+\textbf{Figure 1.} The effective potential \(V^{\rm eff}_{\rm SH}\),
+divided by the depth
+\(\lvert V^{\rm eff}_{\rm SH}(\varphi^0_{\rm SH})\rvert\) of its
+minimum, against \(\varphi_{\rm SH}/\varphi^0_{\rm SH}\), for the five
+methods: the second version (left) and the first (right). KS and CJT
+coincide; the dotted line of KS lies on the solid line of CJT. The
+dashed line with circles is the second branch of KS and CJT of the
+second version, the states continued from the normal vacuum; the circles
+are its computed states.
+
+\textbf{The top of the hat.} Table 2.2 gives the state of the branch of
+the ground state at \(\varphi_{\rm SH}=0\). In HS (1, 1), HS (0, 1) and
+HS (0, 0) of both versions and in KS and CJT of the first version it is
+the normal vacuum, with \(V^{\rm eff}_{\rm SH}(0)=0\) and the bare
+masses. In these eight computations the continuation from the normal
+vacuum gives the same state at every point of the grid, to
+\(4\times10^{-13}\) of the depth (checks H-3b and H-3c). In KS and CJT
+of the second version the branch of the ground state ends at
+\(d_{\rm SH}=0\) in the scalar condensate of stage 3: its energy and its
+four masses agree with those of stage 3 to \(3\times10^{-11}\) (check
+H-3b). The top of the hat therefore lies below zero, at \(-0.247\) times
+the depth of the minimum. Along this branch the masses of
+\(\Psi_{\rm LL}\) stay negative, from \(-0.3298\) at the top to
+\(-0.06228\) at the minimum. Those of the singlets rise from
+\(-0.09817\) to \(0.06011\) and change sign between
+\(d_{\rm SH}=0.6\,d^0_{\rm SH}\) and \(0.65\,d^0_{\rm SH}\). In these
+two methods the ground state is thus connected, along the direction of
+the vacuum, to the scalar condensate, not to the normal vacuum.
+
+Table 2.2. The top of the hat: the state of the branch of the ground
+state at \(\varphi_{\rm SH}=0\), its energy, the ratio of that energy to
+the depth of the minimum,
+\(\lvert V^{\rm eff}_{\rm SH}(\varphi^0_{\rm SH})\rvert\) (the column
+``depth''), and its Dirac masses.
+
+\sptkeptpenalty=10000
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0769}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.0962}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1346}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1346}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1538}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1346}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1346}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 14\tabcolsep) * \real{0.1346}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+version
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+the state at \(\varphi_{\rm SH}=0\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(10^4\,V^{\rm eff}_{\rm SH}(0)\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(V^{\rm eff}_{\rm SH}(0)\) / depth
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M^{\rm u}_{\rm SH}=M^{\rm d}_{\rm SH}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M^\chi_{\rm SH}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M^{\chi'}_{\rm SH}\)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+second & HS (1, 1) & the normal vacuum & \(0\) & \(0\) & \(0.2\) &
+\(0.2\) & \(0.2\) \\*
+second & HS (0, 1) & the normal vacuum & \(0\) & \(0\) & \(0.2\) &
+\(0.2\) & \(0.2\) \\*
+second & HS (0, 0) & the normal vacuum & \(0\) & \(0\) & \(0.2\) &
+\(0.2\) & \(0.2\) \\*
+second & KS & the scalar condensate & \(-4.05023\) & \(-0.2467\) &
+\(-0.329757\) & \(-0.0981686\) & \(-0.0981686\) \\*
+second & CJT & the scalar condensate & \(-4.05023\) & \(-0.2467\) &
+\(-0.329757\) & \(-0.0981686\) & \(-0.0981686\) \\*
+first & HS (1, 1) & the normal vacuum & \(0\) & \(0\) & \(0.2\) &
+\(0.2\) & \(0.2\) \\*
+first & HS (0, 1) & the normal vacuum & \(0\) & \(0\) & \(0.2\) &
+\(0.2\) & \(0.2\) \\*
+first & HS (0, 0) & the normal vacuum & \(0\) & \(0\) & \(0.2\) &
+\(0.2\) & \(0.2\) \\*
+first & KS & the normal vacuum & \(0\) & \(0\) & \(0.2\) & \(0.2\) &
+\(0.2\) \\*
+first & CJT & the normal vacuum & \(0\) & \(0\) & \(0.2\) & \(0.2\) &
+\(0.2\) \\
+\end{longtable}
+
+\textbf{The second branch.} In KS and CJT of the second version the
+continuation from the normal vacuum follows a branch of its own. Its
+masses of \(\Psi_{\rm LL}\) stay positive and fall slowly from the bare
+mass \(0.2\), to \(0.1225\) at its last computed state. At the same pair
+amplitude its energy lies above the effective potential, by \(0.21\) to
+\(0.247\) times the depth of the minimum (check H-3d). With the step
+\(0.05\,d^0_{\rm SH}\) the continuation stays on this branch up to
+\(d_{\rm SH}=0.2\,d^0_{\rm SH}\) and is on the branch of the ground
+state from the next point on. With the step \(0.005\,d^0_{\rm SH}\) it
+stays on it up to \(d_{\rm SH}=0.24\,d^0_{\rm SH}\), where
+\(\varphi_{\rm SH}=0.2877\,\varphi^0_{\rm SH}\) and the iteration needs
+3856 steps, against 419 at \(d_{\rm SH}=0.05\,d^0_{\rm SH}\). At
+\(d_{\rm SH}=0.245\,d^0_{\rm SH}\) it reaches the state of the branch of
+the ground state at the same \(d_{\rm SH}\). The steep rise of the
+number of steps is what an iteration shows when it approaches a fold,
+where two branches of stationary states meet and end together; the
+program does not follow the branch beyond its last state, so these two
+values of \(d_{\rm SH}\) bracket the end of the branch as the
+continuation finds it, which is not computed more precisely. The second
+branch is not the effective potential: wherever it was computed, the
+branch of the ground state has a state of lower energy with the same
+pair amplitude.
+
+\textbf{A correction.} The first version of this document (21 November
+2026) took the continuation from the normal vacuum as the effective
+potential and stated that \(V^{\rm eff}_{\rm SH}=0\) at
+\(\varphi_{\rm SH}=0\) in every method and both versions (its check
+H-3). In KS and CJT of the second version that curve followed the second
+branch up to \(d_{\rm SH}=0.2\,d^0_{\rm SH}\) and then fell onto the
+branch of the ground state, so that its energy dropped by \(0.246\)
+times the depth between two neighbouring points. Its check tested the
+curve as computed and did not compare its top with the scalar condensate
+of stage 3. The minimum and its curvature, and every result of Sections
+3 to 6, are computed at the ground state and did not change.
 
 \hypertarget{the-susceptibilities-and-the-masses-of-the-gauge-bosons}{%
 \section{3. The susceptibilities and the masses of the gauge
@@ -1542,17 +1736,22 @@ stage:
   \texttt{rust/shhiggs}), built on the engine \texttt{uniform\_n} and
   the module \texttt{rpa\_n} of the library \texttt{sfcore} (the linear
   response at a frequency of the states of several Dirac fields). It
-  includes the model of stage 3 unchanged. It ran its 27 checks in 2174
-  s on two parallel threads; the longest of the ten computations (five
-  methods, two versions) took 411 s. Its verdict: ALL PASS (27 of 27).
+  includes the model of stage 3 unchanged, and reads the scalar
+  condensate of stage 3 from \texttt{data/sh\_sf\_states.csv} for check
+  H-3b. It ran its 30 checks in 2639 s on two parallel threads; the
+  longest of the ten computations (five methods, two versions) took 933
+  s. Its verdict: ALL PASS (30 of 30).
 \item
   \textbf{Python.} The program \texttt{python/sh\_higgs.py} uses the
   engine of the Python program of stage 3. It computes the
   susceptibilities from the energy, the curvature of HS (0, 0) and the
   amplitude mode by the reduced linear response, compares that response
   with the closed forms (5.3), counts the modes on all the pair fields
-  with their custodial content, and compares its numbers with the data
-  of the Rust program: ALL PASS (9 of 9).
+  with their custodial content, computes the scalar condensate and the
+  two branches of CJT of the second version at
+  \(d_{\rm SH}=0.1\,d^0_{\rm SH}\) by starting each state directly, and
+  compares its numbers with the data of the Rust program: ALL PASS (10
+  of 10).
 \item
   \textbf{Wolfram.} The script \texttt{wolfram/source/sh\_higgs.wls},
   run on the author's computer, derives the custodial algebra, the
@@ -1569,10 +1768,13 @@ The reports are \texttt{data/hck\_sh\_higgs\_checks.txt},
 \begin{itemize}
 \tightlist
 \item
-  \texttt{data/sh\_hg\_potential.csv}: the curves of the effective
-  potential;
+  \texttt{data/sh\_hg\_potential.csv}: the effective potential, the
+  branch of the ground state, with the Dirac masses of every state;
 \item
-  \texttt{data/sh\_hg\_minimum.csv}: their minima;
+  \texttt{data/sh\_hg\_potential\_second\_branch.csv}: the second branch
+  of KS and CJT of the second version;
+\item
+  \texttt{data/sh\_hg\_minimum.csv}: the minima;
 \item
   \texttt{data/sh\_hg\_susceptibility.csv}: the \(8\times8\)
   susceptibilities;
@@ -1586,20 +1788,22 @@ The reports are \texttt{data/hck\_sh\_higgs\_checks.txt},
 \end{itemize}
 
 The tables and numbers of this document are written from them by
-\texttt{code/scripts/write\_sh\_higgs\_fragments.py}. The commands, from
-the folder \texttt{Revision\_SM\_Higgs}:
+\texttt{code/scripts/write\_sh\_higgs\_fragments.py}, and Figure 1 by
+\texttt{python/sh\_higgs\_figures.py}. The commands, from the folder
+\texttt{Revision\_SM\_Higgs}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# the Rust program (after sh\_quantum, whose data/sh\_couplings.csv it reads)}
+\CommentTok{\# the Rust program (after sh\_quantum and sh\_superfluid, whose data/sh\_couplings.csv and data/sh\_sf\_states.csv it reads)}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \KeywordTok{\&\&} \ExtensionTok{./target/release/sh\_higgs}\KeywordTok{)}
 \CommentTok{\# the Python program (after the Rust program)}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ python }\KeywordTok{\&\&} \ExtensionTok{python3}\NormalTok{ sh\_higgs.py}\KeywordTok{)}
 \CommentTok{\# the Wolfram script (on a computer with Wolfram)}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/sh\_higgs.wls data/sh\_hg\_minimum.csv data/sh\_hg\_masses.csv data/sh\_hg\_values.csv }\DataTypeTok{\textbackslash{}}
 \NormalTok{    data/hck\_sh\_higgs\_checks\_wolfram.txt}
-\CommentTok{\# the tables and numbers of this document}
+\CommentTok{\# the tables and numbers of this document, and Figure 1}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_sh\_higgs\_fragments.py}
+\ExtensionTok{python3}\NormalTok{ python/sh\_higgs\_figures.py}
 \end{Highlighting}
 \end{Shaded}
 
@@ -1645,23 +1849,61 @@ KS: 80.0121; first CJT: 80.0121) \\
 H-2c & PASS & 2.302e-4 & 2.0e-3 & V'\,'(phi\_0) from the steps 0.02 and
 0.01 in d agree to the order of the steps (relative difference; the
 stated value is their Richardson combination) \\
-H-2d & PASS & 6.298e-16 & 1.0e-9 & second version: along the whole curve
-the two pair amplitudes are equal, /\textless Pi\^{}d\_SH\textgreater/ =
+H-2d & PASS & 6.298e-16 & 1.0e-9 & second version: at every computed
+state of both continuations (and of the second branch) the two pair
+amplitudes are equal, /\textless Pi\^{}d\_SH\textgreater/ =
 /\textless Pi'\^{}u\_SH\textgreater/ (difference relative to phi\_0):
-the curve moves both pair fields together, along the custodial
+the states move both pair fields together, along the custodial
 direction \\
-H-3 & PASS & -- & -- & the Mexican hat along the vacuum direction: V = 0
-at phi = 0 (the normal vacuum), phi grows with d, V decreases from phi =
-0 to the minimum, which is at d = d\_0 among the 33 points, and
-increases beyond it, five methods, both versions (second HS (1, 1): V(0)
-= 5.2e-17, minimum at d = 1.00 d\_0; second HS (0, 1): V(0) = 5.2e-17,
-minimum at d = 1.00 d\_0; second HS (0, 0): V(0) = 5.2e-17, minimum at d
-= 1.00 d\_0; second KS: V(0) = 5.2e-17, minimum at d = 1.00 d\_0; second
-CJT: V(0) = 5.2e-17, minimum at d = 1.00 d\_0; first HS (1, 1): V(0) =
-5.2e-17, minimum at d = 1.00 d\_0; first HS (0, 1): V(0) = 5.2e-17,
-minimum at d = 1.00 d\_0; first HS (0, 0): V(0) = 5.2e-17, minimum at d
-= 1.00 d\_0; first KS: V(0) = 5.2e-17, minimum at d = 1.00 d\_0; first
-CJT: V(0) = 5.2e-17, minimum at d = 1.00 d\_0) \\
+H-3a & PASS & -- & -- & the Mexican hat along the vacuum direction, on
+the branch of the ground state (the effective potential): phi = 0 at d =
+0, phi grows with d, V decreases from phi = 0 to the minimum, which is
+at d = d\_0 among the 33 points, and increases beyond it, five methods,
+both versions (second HS (1, 1): V(0) = 5.505867e-17, minimum at d =
+1.00 d\_0; second HS (0, 1): V(0) = 5.914361e-17, minimum at d = 1.00
+d\_0; second HS (0, 0): V(0) = 5.218329e-17, minimum at d = 1.00 d\_0;
+second KS: V(0) = -4.050235e-4, minimum at d = 1.00 d\_0; second CJT:
+V(0) = -4.050235e-4, minimum at d = 1.00 d\_0; first HS (1, 1): V(0) =
+3.547059e-17, minimum at d = 1.00 d\_0; first HS (0, 1): V(0) =
+5.265242e-17, minimum at d = 1.00 d\_0; first HS (0, 0): V(0) =
+5.218329e-17, minimum at d = 1.00 d\_0; first KS: V(0) = 2.871952e-17,
+minimum at d = 1.00 d\_0; first CJT: V(0) = 3.725649e-17, minimum at d =
+1.00 d\_0) \\
+H-3b & PASS & 2.255e-11 & 1.0e-8 & the top of the hat: at d = 0 the
+branch of the ground state is the normal vacuum (V = 0 relative to
+/E\_0/, the bare masses 0.2) in HS (1, 1), HS (0, 1), HS (0, 0) of both
+versions and in KS and CJT of the first version, and the scalar
+condensate of stage 3 in KS and CJT of the second version (its energy
+and its four masses in data/sh\_sf\_states.csv; relative difference):
+the largest difference \\
+H-3c & PASS & 3.243e-13 & 1.0e-9 & the continuation from the normal
+vacuum (from d = 0 with N = 0) coincides with the branch of the ground
+state at all 33 points (energy at the same d, relative to /E\_0/) in the
+eight computations other than KS and CJT of the second version: the
+largest difference \\
+H-3d & PASS & -- & -- & the second branch: exactly KS and CJT of the
+second version have one; there the continuation from the normal vacuum
+differs from the branch of the ground state at the grid points from d =
+0 up to its last one on the second branch and coincides beyond; the
+masses of Psi\_LL are negative at every state of the branch of the
+ground state and positive at every state of the second branch; the
+second branch lies above V at the same phi; the continuation with the
+step 0.005 d\_0 ends on it where it falls onto the branch of the ground
+state (the state found there equals that of the branch of the ground
+state at the same d, relative difference below 1e-9) (computations with
+a second branch: second KS, second CJT; second KS: differing grid points
+d = 0 to 0.20 d\_0, coinciding beyond; M\_up \textless{} 0 on the branch
+of the ground state: true; M\_up \textgreater{} 0 on the second branch:
+true; above V at the same phi by 0.2097 to 0.2467 /E\_0/; the last state
+on it at d = 0.240 d\_0 (phi = 0.2877 phi\_0, E = -2.068892e-4, 3856
+iterations), at d = 0.245 d\_0 the continuation falls onto the branch of
+the ground state (difference 1.5e-14 /E\_0/); second CJT: differing grid
+points d = 0 to 0.20 d\_0, coinciding beyond; M\_up \textless{} 0 on the
+branch of the ground state: true; M\_up \textgreater{} 0 on the second
+branch: true; above V at the same phi by 0.2097 to 0.2467 /E\_0/; the
+last state on it at d = 0.240 d\_0 (phi = 0.2877 phi\_0, E =
+-2.068892e-4, 3856 iterations), at d = 0.245 d\_0 the continuation falls
+onto the branch of the ground state (difference 4.2e-15 /E\_0/)) \\
 H-4a & PASS & 2.562e-7 & 1.0e-6 & the susceptibilities chi\^{}\{ab\} =
 d\textless Q\_a\textgreater/d mu\_b are symmetric (largest
 /chi\^{}\{ab\} - chi\^{}\{ba\}/ relative to chi\^{}\{11\}), as the
@@ -1893,6 +2135,22 @@ self-energy) {[}second HS (0, 0): largest /\textless Q\_a\textgreater/ /
 2.0e-15; first HS (0, 0): largest /\textless Q\_a\textgreater/ / /mu/
 2.4e-15; first CJT: largest /\textless Q\_a\textgreater/ / /mu/
 1.9e-15{]} \\
+YH-10 & PASS & 1.841e-11 & 1.0e-09 & CJT, second version, the states
+with a fixed pair self-energy d P\_dir: at d = 0 the start N = -beta
+reaches the scalar condensate (E = -4.050234675814e-04, masses
+-0.3297568683, -0.3297568683, -0.0981685824, -0.0981685824), equal to
+the point d = 0 of the effective potential of the Rust program
+(data/sh\_hg\_potential.csv) and to the scalar condensate of stage 3
+(data/sh\_sf\_states.csv); at d = 0.1 d\_0 the start from the normal
+self-energy of the scalar condensate gives the branch of the ground
+state (E = -4.2735649938e-04, phi = 9.9502069357e-04, M\_up = -0.325786)
+and the start N = 0 the second branch (E = -3.4414864460e-05, phi =
+1.0471619891e-03, M\_up = 0.191416), equal to the Rust data files
+(sh\_hg\_potential.csv, sh\_hg\_potential\_second\_branch.csv); the
+second branch has the higher energy and the larger pair amplitude at the
+same d, so that, V decreasing from phi = 0 to phi\_0, it lies above V at
+its own phi (largest relative difference from the Rust values; 221, 193
+and 485 iterations) \\
 \end{longtable}
 
 The Wolfram script \texttt{wolfram/source/sh\_higgs.wls}:
@@ -2041,6 +2299,13 @@ self-energies of a uniform state; its BdG matrix (1.3) \\
 measured from the normal vacuum, and the local pair matrix \\
 \(\mathcal E^X_{\rm SH}\) & the energy per volume of a uniform state in
 method \(X\), measured from the normal vacuum \\
+\(\beta^{\rm u}_{\rm SH}\) & the matrix \(\beta_{\rm LL}\) on the up
+component of \(\Psi_{\rm LL}\) and zero elsewhere \\
+\(M^{\rm u}_{\rm SH}\), \(M^{\rm d}_{\rm SH}\), \(M^\chi_{\rm SH}\),
+\(M^{\chi'}_{\rm SH}\) & the Dirac masses of the four species up, down,
+\(\chi_{\rm SH}\), \(\chi'_{\rm SH}\) in a state: the bare mass plus a
+quarter of the trace of \(\mathsf N_{\rm SH}\) with the matrix
+\(\beta_{\rm LL}\) of the species (Section 2.1) \\
 \(X\); \(s^{\rm HS,S}_{\rm SF}\), \(s^{\rm HS,V}_{\rm SF}\) & a method
 (HS (1, 1), HS (0, 1), HS (0, 0), KS or CJT); the HS parameters \\
 \(\mathsf P^{\rm vac}_{\rm SH}\); \(d_{\rm SH}\), \(d^0_{\rm SH}\) & the

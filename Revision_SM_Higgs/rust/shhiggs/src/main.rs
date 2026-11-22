@@ -15,9 +15,18 @@
 //!   * the effective potential V(phi) along the direction of the vacuum: the energy of the lowest state with the pair
 //!     amplitude phi = |<Pi^d_SH>| (in the second version also = |<Pi'^u_SH>|).  By a Lagrange multiplier such a state is
 //!     the ground state of the BdG matrix with the pair self-energy d P_dir, P_dir = K'_u^dag - K_d^dag (second version)
-//!     or K_d^dag (first version), for some d, with the normal self-energy made self-consistent.  The curve is computed
-//!     for 33 values of d from 0 to 1.6 d_0 (d_0: the ground state), and V'(phi_0), V''(phi_0) by central differences in
-//!     d (parametric formula; two steps and their Richardson combination);
+//!     or K_d^dag (first version), for some d, with the normal self-energy made self-consistent.  The states are computed
+//!     for 33 values of d from 0 to 1.6 d_0 (d_0: the ground state) by continuation (each state is started from the
+//!     normal self-energy of its neighbour) from two ends: from the ground state, downward to d = 0 and upward to
+//!     1.6 d_0 (the branch of the ground state), and from the normal vacuum, upward from d = 0 with the start N = 0.
+//!     Where the self-consistent normal self-energy at a fixed d is unique, the two coincide.  In KS and CJT of the
+//!     second version they do not: the normal vacuum and the scalar condensate of stage 3 are both stationary at d = 0,
+//!     the branch of the ground state ends in the scalar condensate, and the continuation from the normal vacuum
+//!     follows a second branch, which lies above the first at the same phi, up to d = 0.20 d_0; it is then followed
+//!     with the step 0.005 d_0 until the continuation falls onto the branch of the ground state.  V is the lower
+//!     branch, the branch of the ground state (entry E60 of the task record: the first run of this stage took the
+//!     continuation from the normal vacuum as V).  V'(phi_0), V''(phi_0) by central differences in d (parametric
+//!     formula; two steps and their Richardson combination);
 //!   * the susceptibilities chi^{ab} = d<Q_a>/d mu_b of the ground state to the chemical potentials mu_b of the eight
 //!     generators T^1, T^2, T^3, T^1_R, T^2_R, T^3_R, R, F_tot: the ground states of H - mu_b Q_b are computed for
 //!     mu_b = +-h, +-2h (h = 0.005) and the charge densities <Q_a> = tr(Q_a rho) are differentiated (central differences,
@@ -43,8 +52,15 @@
 //!   H-1   the state with the fixed pair self-energy d_0 P_dir is the ground state: its energy, and the pair self-energy
 //!         that its pair amplitude produces equals d_0 P_dir (self-consistency), ten computations;
 //!   H-2   phi_0 is a minimum of V: V'(phi_0) vanishes to the order of the steps, V''(phi_0) > 0, the two steps agree;
-//!         in the second version |<Pi^d_SH>| = |<Pi'^u_SH>| along the whole curve;
-//!   H-3   the Mexican hat: V(0) = 0 (the normal vacuum), V decreases from phi = 0 to phi_0 and increases beyond it;
+//!         in the second version |<Pi^d_SH>| = |<Pi'^u_SH>| at every computed state of both continuations;
+//!   H-3   the Mexican hat and its top: (a) on the branch of the ground state phi grows with d, and V decreases from
+//!         phi = 0 to phi_0 and increases beyond it; (b) at d = 0 that branch is the normal vacuum (V = 0, the bare
+//!         masses), or, in KS and CJT of the second version, the scalar condensate of stage 3 (its energy and its four
+//!         masses in data/sh_sf_states.csv); (c) in the other eight computations the continuation from the normal
+//!         vacuum coincides with the branch of the ground state at every point; (d) in KS and CJT of the second version
+//!         it follows a second branch, with a positive mass of Psi_LL where the branch of the ground state has a
+//!         negative one, which lies above V at the same phi, and which ends where the continuation with the step
+//!         0.005 d_0 falls onto the branch of the ground state;
 //!   H-4   the susceptibilities: symmetric (Hellmann-Feynman), the two steps agree, KS equals CJT; the number of broken
 //!         generators (4 in the second version among the eight generators, 3 in the first among T^1, T^2, T^3, R, F_tot);
 //!         the unbroken generators of stage 3 (T^a + T^a_R and R in the second version) have zero susceptibility;
@@ -63,7 +79,11 @@
 //! Build and run (from the folder rust/):
 //!     cargo build --release
 //!     ./target/release/sh_higgs
-//! Output in data/: hck_sh_higgs_checks.txt and the data files sh_hg_*.csv.  Run time about half an hour on two threads.
+//! Input in data/: sh_couplings.csv (the program sh_quantum) and sh_sf_states.csv (the program sh_superfluid, for the
+//! scalar condensate of check H-3b).
+//! Output in data/: hck_sh_higgs_checks.txt and the data files sh_hg_*.csv (sh_hg_potential.csv: the effective potential,
+//! the branch of the ground state; sh_hg_potential_second_branch.csv: the second branch).  Run time about an hour on two
+//! threads.
 #[allow(dead_code)]
 #[path = "../../shsuperfluid/src/model.rs"]
 mod model;
@@ -595,6 +615,80 @@ fn read_couplings(p: &Path) -> HashMap<String, f64> {
     m
 }
 
+/// the fields of one line of a CSV file, with the fields in double quotes (which may hold commas) unquoted
+fn csv_fields(line: &str) -> Vec<String> {
+    let mut out = vec![];
+    let mut cur = String::new();
+    let mut quoted = false;
+    for ch in line.chars() {
+        match ch {
+            '"' => quoted = !quoted,
+            ',' if !quoted => out.push(std::mem::take(&mut cur)),
+            _ => cur.push(ch),
+        }
+    }
+    out.push(cur);
+    out
+}
+
+/// a scalar condensate of stage 3: the version, the method, its energy per volume and the Dirac masses of up, down,
+/// chi, chi'
+struct ScalarCondensate {
+    ver: Ver,
+    method: String,
+    e: f64,
+    mass: [f64; 4],
+}
+
+/// the scalar condensates of data/sh_sf_states.csv (the program sh_superfluid of stage 3): the rows of the kind
+/// "massive (scalar condensate)" of the potential V1_SH (second version) and "V1_SH first version"
+fn read_scalar_condensates(p: &Path) -> Vec<ScalarCondensate> {
+    let s = std::fs::read_to_string(p).unwrap_or_else(|_| panic!("missing {} (run sh_superfluid first)", p.display()));
+    let mut lines = s.lines();
+    let hdr = csv_fields(lines.next().unwrap());
+    let col = |n: &str| hdr.iter().position(|h| h == n).unwrap_or_else(|| panic!("column {} missing in {}", n, p.display()));
+    let (cp, cm, ck, ce) = (col("potential"), col("method"), col("kind"), col("energy"));
+    let cmass = [col("M_up"), col("M_down"), col("M_chi"), col("M_chi2")];
+    let mut out = vec![];
+    for line in lines {
+        let v = csv_fields(line);
+        if v.len() < hdr.len() || v[ck] != "massive (scalar condensate)" {
+            continue;
+        }
+        let ver = match v[cp].as_str() {
+            "V1_SH" => Ver::Second,
+            "V1_SH first version" => Ver::First,
+            _ => continue,
+        };
+        let num = |i: usize| v[i].parse::<f64>().unwrap();
+        out.push(ScalarCondensate { ver, method: v[cm].clone(), e: num(ce), mass: [num(cmass[0]), num(cmass[1]), num(cmass[2]), num(cmass[3])] });
+    }
+    out
+}
+
+/// one state with a fixed pair self-energy d P_dir: s = d / d_0, d, the pair amplitude phi of the vacuum direction, the
+/// energy per volume, the iterations of the normal self-energy, and the Dirac masses of the four species up, down, chi,
+/// chi' (the bare mass plus the scalar part of the normal self-energy, as in stage 3)
+#[derive(Clone)]
+struct CurvePt {
+    s: f64,
+    d: f64,
+    phi: f64,
+    e: f64,
+    it: usize,
+    mass: [f64; 4],
+}
+
+/// the end of a second branch: the last s = d / d_0 at which the continuation with the fine step stayed on it, the
+/// first s beyond, at which it fell onto the branch of the ground state, and the difference of the energies of the
+/// state found there and of the state of the branch of the ground state at the same d (relative to |E_0|)
+#[derive(Clone)]
+struct BranchEnd {
+    s_last: f64,
+    s_beyond: f64,
+    dev_beyond: f64,
+}
+
 /// the results of one method in one version
 struct MethodRes {
     method: Method,
@@ -605,7 +699,17 @@ struct MethodRes {
     phi_pair_dev: f64,
     masses: [f64; 4],
     h1: (f64, f64),
-    curve: Vec<(f64, f64, f64, f64, usize)>,
+    /// the branch of the ground state on the 33 points (the effective potential)
+    curve_g: Vec<CurvePt>,
+    /// the points of the continuation from the normal vacuum that differ from the branch of the ground state at the same
+    /// d (energy, relative to |E_0|, above 1e-9), and the largest relative difference at the points that do not
+    differ: Vec<usize>,
+    same_dev: f64,
+    /// the second branch: the differing points of curve_n from d = 0 on (the grid points 0 to second_kl), then the
+    /// continuation with the step 0.005 d_0
+    second: Vec<CurvePt>,
+    second_kl: Option<usize>,
+    second_end: Option<BranchEnd>,
     v1: f64,
     v2: f64,
     v2_dev: f64,
@@ -635,20 +739,88 @@ fn run_method(method: Method, ver: Ver) -> MethodRes {
     let dint = vac_coef(&p_int, ver).abs();
     let h1 = ((sf.energy - sol.energy).abs() / sol.energy.abs(), (dint - d0).abs() / d0);
     let phif = phi_of(&sf.kap, ver);
-    // the curve, and in the second version the equality of the two pair amplitudes along it
-    let mut curve = vec![];
-    let mut n_prev = CMat::zeros(N);
+    // the effective potential.  One state with the fixed pair self-energy s d_0 P_dir, started from the normal
+    // self-energy n0; it returns the point and the self-consistent normal self-energy (the start of the next point).
+    // In the second version the largest difference of the two pair amplitudes (relative to phi_0) over all computed
+    // states is kept (check H-2d).
     let mut phi_pair_dev = 0.0f64;
-    for k in 0..=32 {
-        let s = 0.05 * k as f64;
-        let st = fixed_d(&mo, ver, s * d0, &n_prev);
-        n_prev = st.n_self.clone();
+    let mut point = |s: f64, n0: &CMat| -> (CurvePt, CMat) {
+        let st = fixed_d(&mo, ver, s * d0, n0);
         let (pa, pb) = phis(&st.kap);
         if ver == Ver::Second {
             phi_pair_dev = phi_pair_dev.max((pa - pb).abs() / phif);
         }
-        curve.push((s, s * d0, phi_of(&st.kap, ver), st.energy, st.iterations));
+        let ds = describe(&st.n_self, &p_dir(ver).scale_r(s * d0), &st.drho);
+        let pt = CurvePt { s, d: s * d0, phi: phi_of(&st.kap, ver), e: st.energy, it: st.iterations, mass: ds.mass };
+        (pt, st.n_self)
+    };
+    let grid_s = |k: usize| 0.05 * k as f64;
+    // (a) the branch of the ground state: from the ground state (k = 20, d = d_0) downward to d = 0 and upward to
+    // 1.6 d_0, each point started from its neighbour nearer to d_0; the normal self-energies are kept as starts
+    let mut g_pts: Vec<Option<(CurvePt, CMat)>> = vec![None; 33];
+    let mut n_prev = sf.n_self.clone();
+    for k in (0..=20).rev() {
+        let (pt, n) = point(grid_s(k), &n_prev);
+        n_prev = n.clone();
+        g_pts[k] = Some((pt, n));
     }
+    let mut n_prev = sf.n_self.clone();
+    for k in 21..=32 {
+        let (pt, n) = point(grid_s(k), &n_prev);
+        n_prev = n.clone();
+        g_pts[k] = Some((pt, n));
+    }
+    let g_pts: Vec<(CurvePt, CMat)> = g_pts.into_iter().map(|p| p.unwrap()).collect();
+    // (b) the continuation from the normal vacuum: upward from d = 0 with the start N = 0 (the curve of the first run
+    // of this stage, which took it as the effective potential)
+    let mut n_pts: Vec<(CurvePt, CMat)> = vec![];
+    let mut n_prev = CMat::zeros(N);
+    for k in 0..=32 {
+        let (pt, n) = point(grid_s(k), &n_prev);
+        n_prev = n.clone();
+        n_pts.push((pt, n));
+    }
+    // the points at which (b) differs from (a) at the same d
+    let e_scale = sol.energy.abs();
+    let dev: Vec<f64> = (0..33).map(|k| (n_pts[k].0.e - g_pts[k].0.e).abs() / e_scale).collect();
+    let differ: Vec<usize> = (0..33).filter(|&k| dev[k] > 1e-9).collect();
+    let same_dev = (0..33).filter(|k| !differ.contains(k)).map(|k| dev[k]).fold(0.0f64, f64::max);
+    // the second branch: the run of differing points from d = 0, then the continuation from its last point with the
+    // step 0.005 d_0 while the mass of Psi_LL (up) keeps the sign that it has on the second branch at d = 0 (positive,
+    // the bare mass) and the next point of the grid is not reached; the first state with the other sign is compared
+    // with the state of the branch of the ground state at the same d, started from the grid point above it
+    let mut second: Vec<CurvePt> = vec![];
+    let mut second_end: Option<BranchEnd> = None;
+    let mut second_kl: Option<usize> = None;
+    if differ.first() == Some(&0) {
+        let mut kl = 0;
+        while kl + 1 < 33 && differ.contains(&(kl + 1)) {
+            kl += 1;
+        }
+        second_kl = Some(kl);
+        for k in 0..=kl {
+            second.push(n_pts[k].0.clone());
+        }
+        let sign0 = n_pts[0].0.mass[0].signum();
+        let mut n_prev = n_pts[kl].1.clone();
+        let mut j = 1;
+        loop {
+            let s = grid_s(kl) + 0.005 * j as f64;
+            if kl + 1 > 32 || s > grid_s(kl + 1) - 1e-12 {
+                break;
+            }
+            let (pt, n) = point(s, &n_prev);
+            if pt.mass[0].signum() != sign0 {
+                let (pg, _) = point(s, &g_pts[kl + 1].1);
+                second_end = Some(BranchEnd { s_last: second.last().unwrap().s, s_beyond: s, dev_beyond: (pt.e - pg.e).abs() / e_scale });
+                break;
+            }
+            second.push(pt);
+            n_prev = n;
+            j += 1;
+        }
+    }
+    let curve_g: Vec<CurvePt> = g_pts.into_iter().map(|p| p.0).collect();
     // the curvature at the minimum
     let (_, v2a) = curvature(&mo, ver, d0, &sol.n_self, 0.02);
     let (v1b, v2b) = curvature(&mo, ver, d0, &sol.n_self, 0.01);
@@ -673,7 +845,12 @@ fn run_method(method: Method, ver: Ver) -> MethodRes {
         phi_pair_dev,
         masses: desc.mass,
         h1,
-        curve,
+        curve_g,
+        differ,
+        same_dev,
+        second,
+        second_kl,
+        second_end,
         v1: v1b,
         v2,
         v2_dev,
@@ -748,6 +925,7 @@ fn main() {
     let cpl = read_couplings(&data.join("sh_couplings.csv"));
     let (g, gp, v_gev, mh_over_v) = (cpl["g"], cpl["g_prime"], cpl["v"], cpl["m_H_over_v"]);
     let cos2 = g * g / (g * g + gp * gp);
+    let scalars = read_scalar_condensates(&data.join("sh_sf_states.csv"));
 
     // ------------------------------------------------------------------ the five methods in both versions, two at a time
     let mut jobs = vec![];
@@ -756,16 +934,23 @@ fn main() {
             jobs.push((m, ver));
         }
     }
-    let mut results: Vec<MethodRes> = vec![];
-    for chunk in jobs.chunks(2) {
+    // the pairs of jobs that run together (indices into jobs): KS and CJT of the second version, the two longest
+    // computations (they follow the second branch), run side by side; the results are stored in the order of jobs, so
+    // that the data files keep the order of the methods and versions
+    let schedule: [(usize, usize); 5] = [(3, 4), (0, 1), (2, 5), (6, 7), (8, 9)];
+    let mut slots: Vec<Option<MethodRes>> = (0..jobs.len()).map(|_| None).collect();
+    for &(ja, jb) in &schedule {
         let part: Vec<MethodRes> = std::thread::scope(|sc| {
-            let hs: Vec<_> = chunk
+            let hs: Vec<_> = [ja, jb]
                 .iter()
-                .map(|&(m, ver)| sc.spawn(move || run_method(m, ver)))
+                .map(|&j| {
+                    let (m, ver) = jobs[j];
+                    sc.spawn(move || run_method(m, ver))
+                })
                 .collect();
             hs.into_iter().map(|h| h.join().unwrap()).collect()
         });
-        for r in part {
+        for (j, r) in [ja, jb].into_iter().zip(part) {
             println!(
                 "{} {}: d0 {:.6} V'' {:.6} chi11 {:.6e} chi33 {:.6e} ({:.0} s)",
                 r.ver.name(),
@@ -776,9 +961,10 @@ fn main() {
                 r.chi[2][2],
                 r.seconds
             );
-            results.push(r);
+            slots[j] = Some(r);
         }
     }
+    let results: Vec<MethodRes> = slots.into_iter().map(|r| r.unwrap()).collect();
     let longest = results.iter().map(|r| r.seconds).fold(0.0f64, f64::max);
     let find = |ver: Ver, m: Method| results.iter().find(|r| r.ver == ver && mname(&r.method) == mname(&m)).unwrap();
 
@@ -818,31 +1004,143 @@ fn main() {
     let ppd = results.iter().filter(|r| r.ver == Ver::Second).map(|r| r.phi_pair_dev).fold(0.0f64, f64::max);
     rep.add(
         "H-2d",
-        "second version: along the whole curve the two pair amplitudes are equal, |<Pi^d_SH>| = |<Pi'^u_SH>| (difference \
-         relative to phi_0): the curve moves both pair fields together, along the custodial direction",
+        "second version: at every computed state of both continuations (and of the second branch) the two pair \
+         amplitudes are equal, |<Pi^d_SH>| = |<Pi'^u_SH>| (difference relative to phi_0): the states move both pair \
+         fields together, along the custodial direction",
         ppd,
         1e-9,
     );
+    // H-3a: the Mexican hat on the branch of the ground state (the effective potential)
     let mut hat_ok = true;
     let mut hat_detail = vec![];
     for r in &results {
-        let cv = &r.curve;
-        let ok0 = cv[0].3.abs() < 1e-14 && cv[0].2.abs() < 1e-14;
-        let kmin = (0..cv.len()).fold(0, |b, i| if cv[i].3 < cv[b].3 { i } else { b });
-        let dec = (1..=kmin).all(|i| cv[i].3 < cv[i - 1].3);
-        let inc = (kmin + 1..cv.len()).all(|i| cv[i].3 > cv[i - 1].3);
-        let at_one = (cv[kmin].0 - 1.0).abs() < 1e-12;
-        let phi_mono = (1..cv.len()).all(|i| cv[i].2 > cv[i - 1].2);
+        let cv = &r.curve_g;
+        let ok0 = cv[0].phi.abs() < 1e-14;
+        let kmin = (0..cv.len()).fold(0, |b, i| if cv[i].e < cv[b].e { i } else { b });
+        let dec = (1..=kmin).all(|i| cv[i].e < cv[i - 1].e);
+        let inc = (kmin + 1..cv.len()).all(|i| cv[i].e > cv[i - 1].e);
+        let at_one = (cv[kmin].s - 1.0).abs() < 1e-12;
+        let phi_mono = (1..cv.len()).all(|i| cv[i].phi > cv[i - 1].phi);
         hat_ok &= ok0 && dec && inc && at_one && phi_mono;
-        hat_detail.push(format!("{} {}: V(0) = {:.1e}, minimum at d = {:.2} d_0", r.ver.name(), mname(&r.method), cv[0].3, cv[kmin].0));
+        hat_detail.push(format!("{} {}: V(0) = {:.6e}, minimum at d = {:.2} d_0", r.ver.name(), mname(&r.method), cv[0].e, cv[kmin].s));
     }
     rep.add_bool(
-        "H-3",
-        "the Mexican hat along the vacuum direction: V = 0 at phi = 0 (the normal vacuum), phi grows with d, V decreases \
-         from phi = 0 to the minimum, which is at d = d_0 among the 33 points, and increases beyond it, five methods, both \
-         versions",
+        "H-3a",
+        "the Mexican hat along the vacuum direction, on the branch of the ground state (the effective potential): phi = 0 \
+         at d = 0, phi grows with d, V decreases from phi = 0 to the minimum, which is at d = d_0 among the 33 points, \
+         and increases beyond it, five methods, both versions",
         hat_ok,
         &hat_detail.join("; "),
+    );
+    // H-3b: the top of the hat, the state of the branch of the ground state at d = 0
+    let bare = [M_LL, M_LL, M_CHI, M_CHI];
+    let mut top_dev = 0.0f64;
+    let mut top_detail = vec![];
+    for r in &results {
+        let p0 = &r.curve_g[0];
+        let scalar_expected = r.ver == Ver::Second && matches!(r.method, Method::Ks | Method::Cjt);
+        let dv = if scalar_expected {
+            match scalars.iter().find(|c| c.ver == r.ver && c.method == mname(&r.method)) {
+                Some(c) => ((p0.e - c.e).abs() / c.e.abs())
+                    .max((0..4).map(|i| (p0.mass[i] - c.mass[i]).abs() / c.mass[i].abs()).fold(0.0f64, f64::max)),
+                None => 1.0,
+            }
+        } else {
+            (p0.e.abs() / r.e0.abs()).max((0..4).map(|i| (p0.mass[i] - bare[i]).abs()).fold(0.0f64, f64::max))
+        };
+        top_dev = top_dev.max(dv);
+        top_detail.push(format!(
+            "{} {}: {} ({:.1e}), V(0) = {:.10e}, masses {:.8} {:.8} {:.8} {:.8}",
+            r.ver.name(),
+            mname(&r.method),
+            if scalar_expected { "the scalar condensate" } else { "the normal vacuum" },
+            dv,
+            p0.e,
+            p0.mass[0],
+            p0.mass[1],
+            p0.mass[2],
+            p0.mass[3]
+        ));
+    }
+    rep.add(
+        "H-3b",
+        "the top of the hat: at d = 0 the branch of the ground state is the normal vacuum (V = 0 relative to |E_0|, the \
+         bare masses 0.2) in HS (1, 1), HS (0, 1), HS (0, 0) of both versions and in KS and CJT of the first version, and \
+         the scalar condensate of stage 3 in KS and CJT of the second version (its energy and its four masses in \
+         data/sh_sf_states.csv; relative difference): the largest difference",
+        top_dev,
+        1e-8,
+    );
+    rep.note(&format!("  H-3b: {}", top_detail.join("; ")));
+    // H-3c: where the continuation from the normal vacuum coincides with the branch of the ground state
+    let with_second: Vec<String> =
+        results.iter().filter(|r| !r.differ.is_empty()).map(|r| format!("{} {}", r.ver.name(), mname(&r.method))).collect();
+    let same_max = results.iter().filter(|r| r.differ.is_empty()).map(|r| r.same_dev).fold(0.0f64, f64::max);
+    rep.add(
+        "H-3c",
+        "the continuation from the normal vacuum (from d = 0 with N = 0) coincides with the branch of the ground state at \
+         all 33 points (energy at the same d, relative to |E_0|) in the eight computations other than KS and CJT of the \
+         second version: the largest difference",
+        same_max,
+        1e-9,
+    );
+    // H-3d: the second branch of KS and CJT of the second version
+    let mut sb_ok = with_second == vec!["second KS".to_string(), "second CJT".to_string()];
+    let mut sb_detail = vec![format!("computations with a second branch: {}", with_second.join(", "))];
+    for r in results.iter().filter(|r| !r.differ.is_empty()) {
+        // the run of differing points from d = 0, and coincidence beyond it
+        let kl = r.second_kl.unwrap();
+        let run_ok = r.differ == (0..=kl).collect::<Vec<_>>();
+        // the masses of Psi_LL: negative on the branch of the ground state, positive on the second branch
+        let g_neg = r.curve_g.iter().all(|p| p.mass[0] < 0.0 && p.mass[1] < 0.0);
+        let s_pos = r.second.iter().all(|p| p.mass[0] > 0.0 && p.mass[1] > 0.0);
+        // above the effective potential at the same phi: V(phi) by linear interpolation of the branch of the ground
+        // state in phi (phi grows with d there, H-3a), at the phi of every state of the second branch
+        let cv = &r.curve_g;
+        let v_at = |phi: f64| -> f64 {
+            let i = (1..cv.len()).find(|&i| cv[i].phi >= phi).unwrap_or(cv.len() - 1);
+            let t = (phi - cv[i - 1].phi) / (cv[i].phi - cv[i - 1].phi);
+            cv[i - 1].e + t * (cv[i].e - cv[i - 1].e)
+        };
+        let gaps: Vec<f64> = r.second.iter().map(|p| (p.e - v_at(p.phi)) / r.e0.abs()).collect();
+        let gap_min = gaps.iter().cloned().fold(f64::INFINITY, f64::min);
+        let gap_max = gaps.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+        let end_ok = match &r.second_end {
+            Some(b) => b.dev_beyond < 1e-9,
+            None => false,
+        };
+        sb_ok &= run_ok && g_neg && s_pos && gap_min > 0.0 && end_ok;
+        let last = r.second.last().unwrap();
+        sb_detail.push(format!(
+            "{} {}: differing grid points d = 0 to {:.2} d_0, coinciding beyond; M_up < 0 on the branch of the ground \
+             state: {}; M_up > 0 on the second branch: {}; above V at the same phi by {:.4} to {:.4} |E_0|; the last state \
+             on it at d = {:.3} d_0 (phi = {:.4} phi_0, E = {:.6e}, {} iterations), at d = {} the continuation falls onto \
+             the branch of the ground state ({})",
+            r.ver.name(),
+            mname(&r.method),
+            r.second[kl].s,
+            g_neg,
+            s_pos,
+            gap_min,
+            gap_max,
+            r.second_end.as_ref().map(|b| b.s_last).unwrap_or(last.s),
+            last.phi / r.phi0,
+            last.e,
+            last.it,
+            r.second_end.as_ref().map(|b| format!("{:.3} d_0", b.s_beyond)).unwrap_or("none".into()),
+            r.second_end.as_ref().map(|b| format!("difference {:.1e} |E_0|", b.dev_beyond)).unwrap_or("not reached".into())
+        ));
+    }
+    rep.add_bool(
+        "H-3d",
+        "the second branch: exactly KS and CJT of the second version have one; there the continuation from the normal \
+         vacuum differs from the branch of the ground state at the grid points from d = 0 up to its last one on the \
+         second branch and coincides beyond; the masses of Psi_LL are negative at every state of the branch of the ground \
+         state and positive at every state of the second branch; the second branch lies above V at the same phi; the \
+         continuation with the step 0.005 d_0 ends on it where it falls onto the branch of the ground state (the state \
+         found there equals that of the branch of the ground state at the same d, relative difference below 1e-9)",
+        sb_ok,
+        &sb_detail.join("; "),
     );
 
     // ------------------------------------------------------------------ H-4: the susceptibilities
@@ -1242,13 +1540,27 @@ fn main() {
     );
 
     // ------------------------------------------------------------------ the data files
-    let mut rows = vec![];
-    for r in &results {
-        for (s, d, phi, e, it) in &r.curve {
-            rows.push(vec![r.ver.name().into(), mname(&r.method), f(*s), f(*d), f(*phi), f(*e), it.to_string()]);
-        }
-    }
-    write_csv(&data.join("sh_hg_potential.csv"), &["version", "method", "d_over_d0", "d", "phi", "energy", "iterations"], &rows);
+    // the effective potential (the branch of the ground state) and the second branch, with the Dirac masses
+    let pt_row = |r: &MethodRes, p: &CurvePt| -> Vec<String> {
+        vec![
+            r.ver.name().into(),
+            mname(&r.method),
+            f(p.s),
+            f(p.d),
+            f(p.phi),
+            f(p.e),
+            f(p.mass[0]),
+            f(p.mass[1]),
+            f(p.mass[2]),
+            f(p.mass[3]),
+            p.it.to_string(),
+        ]
+    };
+    let pt_hdr = ["version", "method", "d_over_d0", "d", "phi", "energy", "M_up", "M_down", "M_chi", "M_chi2", "iterations"];
+    let rows: Vec<Vec<String>> = results.iter().flat_map(|r| r.curve_g.iter().map(move |p| pt_row(r, p))).collect();
+    write_csv(&data.join("sh_hg_potential.csv"), &pt_hdr, &rows);
+    let rows: Vec<Vec<String>> = results.iter().flat_map(|r| r.second.iter().map(move |p| pt_row(r, p))).collect();
+    write_csv(&data.join("sh_hg_potential_second_branch.csv"), &pt_hdr, &rows);
     let mut rows = vec![];
     for r in &results {
         rows.push(vec![

@@ -691,6 +691,76 @@ compared with the report of the Rust program before its first commit
 \textbf{The pause.} As in Section 4.2: the work continues after the
 corrected part has been documented and pushed.
 
+\hypertarget{the-top-of-the-effective-potential-of-ks-and-cjt-in-the-second-version-22-november-2026}{%
+\subsection{4.4 The top of the effective potential of KS and CJT in the
+second version (22 November
+2026)}\label{the-top-of-the-effective-potential-of-ks-and-cjt-in-the-second-version-22-november-2026}}
+
+\textbf{What I stated.} The manuscript of stage 4,
+\texttt{higgs\_masses.md} (21 November 2026), said in its findings that
+along the direction of the vacuum the energy of the lowest state with a
+given pair amplitude ``is zero in the normal vacuum, it falls to the
+ground state of stage 3 and rises beyond it, in every method and both
+versions'', and in its Section 2.3 that \(V^{\rm eff}_{\rm SH}=0\) at
+\(\varphi_{\rm SH}=0\) in every method and both versions. Check H-3 of
+the program \texttt{sh\_higgs} stated the same (``V = 0 at phi = 0 (the
+normal vacuum)'') and passed.
+
+\textbf{What was true.} In KS and CJT of the second version the lowest
+stationary state without pairs that the programs know is not the normal
+vacuum but the scalar condensate of stage 3, a state in which the Dirac
+masses of all four species are negative, at the energy
+\(10^4\mathcal E^X_{\rm SH}=-4.05023\). The curve that the program
+computed was the continuation from the normal vacuum. Up to
+\(d_{\rm SH}=0.2\,d^0_{\rm SH}\) it followed a second branch of states,
+which lies above the branch of the ground state at the same pair
+amplitude, and at the next point it fell onto the branch of the ground
+state, whose top at \(d_{\rm SH}=0\) is the scalar condensate. In these
+two methods the top of the hat is therefore at
+\(V^{\rm eff}_{\rm SH}(0)=-0.247\,\lvert V^{\rm eff}_{\rm SH}(\varphi^0_{\rm SH})\rvert\),
+not at zero, and the points of the curve up to \(0.2\,d^0_{\rm SH}\)
+were not the effective potential. In the other eight computations the
+statement was true. The minimum, its curvature and every later result of
+stage 4 are computed at the ground state and were not affected.
+
+\textbf{How it was found.} While drawing the figure of the effective
+potential for the article (stage 6, part three), the curves of KS and
+CJT showed a step near \(\varphi_{\rm SH}=0.26\,\varphi^0_{\rm SH}\).
+The data file showed the energy falling by \(0.246\) times the depth of
+the minimum between two neighbouring points, and a test program that
+followed the curve downward from the ground state reached the scalar
+condensate of stage 3 at \(d_{\rm SH}=0\).
+
+\textbf{Why I made it.} I assumed that the self-consistent normal
+self-energy at a fixed pair self-energy is unique, and followed the
+curve from one end only, the normal vacuum. Stage 3 had found, a few
+hours earlier, that KS and CJT of the second version have a second
+stationary state without pairs; I did not carry that result into the
+computation of the curve. Check H-3 compared the top of the computed
+curve with the normal vacuum, from which the curve started, so it could
+not detect the error.
+
+\textbf{The correction.} The program follows the states from both ends,
+from the ground state downward and upward and from the normal vacuum
+upward, and takes the lower branch at the same pair amplitude as the
+effective potential; in every method and version that is the branch of
+the ground state. Checks H-3a to H-3d replace H-3; H-3b compares the top
+of the hat with the scalar condensate of stage 3, read from its data
+file. The Python check YH-10 computes the scalar condensate and the two
+branches of CJT at \(d_{\rm SH}=0.1\,d^0_{\rm SH}\) by starting each
+state directly. The manuscript (its findings, Sections 1.4, 2.1 and 2.3
+with Figure 1 and Table 2.2, and Section 8) and the README state the
+corrected result, and the manuscript records the correction in Section
+2.3 (E60).
+
+\textbf{What changes.} Where a method has more than one stationary state
+of a kind, a curve of constrained states is followed from both ends, and
+a check compares its end points with the stationary states that the
+earlier stages found.
+
+\textbf{The pause.} As in Section 4.2: the work continues after the
+corrected part has been documented and pushed.
+
 \hypertarget{the-state-of-the-work-when-this-record-was-written}{%
 \section{5. The state of the work when this record was
 written}\label{the-state-of-the-work-when-this-record-was-written}}
@@ -1407,6 +1477,25 @@ counterparts in the header of its program and in the notebook (Section
 no Rust check, or one identifier to several checks; naming the
 counterparts keeps every correspondence visible.
 
+\textbf{D35. The article under the revised hypotheses (my decision of
+interpretation, 22 November 2026; told to the author at 02:35 PST).} The
+article ``Higgs as a Composite, and Quantum Gravity'' of the folder
+\texttt{paper\_prd/} is rewritten for the second version of the revised
+hypotheses, with the first version as the comparison, and answers the
+questions of the request C14 under them: whether the superfluid can play
+the role of the Higgs particle in each method, and whether the Higgs is
+then a composite particle. The first question of C14, the width of the
+critical region, needs the superfluid at finite temperature; the
+revision has no such stage, so the article does not recompute it and
+says so. The gravitational sector stays a program, as in the earlier
+article, until the task C23.
+
+\emph{Reason.} The revised hypotheses replace the ones on which the
+earlier article rested (the spinor field now carries the quantum numbers
+of \(SU(2)_L\times U(1)_Y\)), so the earlier answers do not carry over.
+A thermal stage of the revision would be a new stage of work, which the
+author can ask for; the article states what it does not compute.
+
 \textbf{D11. Documents.} The manuscript \texttt{superfluid.md} (with
 \texttt{.tex} and \texttt{.pdf}); this record; the MASTER provenance of
 the symbols; a provenance of the code, the computed values and the
@@ -1483,7 +1572,9 @@ The objects O13 and O14 are carried out for the second version, with the
 first version as the comparison, and as one stage. The susceptibilities
 that give the scale \(v_{\rm SH}\) also give \(M_Z\) and \(\rho\)
 (decided on 21 November 2026, at the start of the second version). They
-were completed on 21 November 2026 (entries E50 to E53 of Section 9).
+were completed on 21 November 2026 (entries E50 to E53 of Section 9),
+and the top of the effective potential of KS and CJT of the second
+version was corrected on 22 November 2026 (Section 4.4, entry E60).
 Object O15 is carried out in three parts: the dynamics in time (entries
 E54 to E57), the notebook (entries E58 and E59), and the article.
 
@@ -2825,11 +2916,12 @@ second version; the author is told of (1) in my next message \\
 E50 & 21 Nov 2026, 21:50 to 23:50 & objects O13 and O14 as one stage,
 stage 4 of the second version, with the first version as the comparison.
 The program \texttt{sh\_higgs} (crate \texttt{rust/shhiggs}), ALL PASS
-(27 of 27) in 2174 s on two threads, built on the new module
-\texttt{rpa\_n} of the library \texttt{sfcore} (the linear response at a
-frequency of the uniform states of several Dirac fields; an addition, no
-existing function changed); the Python program
-\texttt{python/sh\_higgs.py} (ALL PASS (9 of 9)); the Wolfram script
+(27 of 27) in 2174 s on two threads (the first run; E60 ran it again
+with the checks of Section 4.4), built on the new module \texttt{rpa\_n}
+of the library \texttt{sfcore} (the linear response at a frequency of
+the uniform states of several Dirac fields; an addition, no existing
+function changed); the Python program \texttt{python/sh\_higgs.py} (ALL
+PASS (9 of 9); E60 added a tenth check); the Wolfram script
 \texttt{wolfram/source/sh\_higgs.wls} (ALL PASS (5 of 5), exact and with
 30 to 40 digits, on the author's computer through the watcher, request
 299). The new manuscript \texttt{higgs\_masses.md}, the README, and
@@ -3057,6 +3149,30 @@ pairing terms with the pair operators (Section R.0) and the two
 eigenvalues of remark R11 (Section R.3.5); each is now two display
 formulas, and the notebook was built and evaluated again (commit
 \texttt{9e3c04d}) \\
+E60 & 22 Nov 2026, 02:40 to 04:10 & the correction of Section 4.4. The
+program \texttt{sh\_higgs} follows the states with a fixed pair
+self-energy from the ground state (downward to \(d_{\rm SH}=0\) and
+upward to \(1.6\,d^0_{\rm SH}\)) and from the normal vacuum (upward),
+and, where the continuation from the normal vacuum follows a branch of
+its own, with the step \(0.005\,d^0_{\rm SH}\) until the continuation
+falls onto the branch of the ground state. The data file
+\texttt{data/sh\_hg\_potential.csv} holds the branch of the ground state
+with the four Dirac masses of every state, and the new file
+\texttt{data/sh\_hg\_potential\_second\_branch.csv} the second branch.
+The checks H-3a to H-3d replace H-3 and read the scalar condensate of
+stage 3 from \texttt{data/sh\_sf\_states.csv} (ALL PASS (30 of 30) in
+2639 s on two threads). The other data files of the program
+(\texttt{sh\_hg\_minimum.csv}, \texttt{sh\_hg\_susceptibility.csv},
+\texttt{sh\_hg\_masses.csv}, \texttt{sh\_hg\_scan.csv},
+\texttt{sh\_hg\_values.csv}) came out byte for byte as before.
+\texttt{python/sh\_higgs.py} gains YH-10 (ALL PASS (10 of 10)); the
+Wolfram script tests none of these statements and was not run again. The
+new figure program \texttt{python/sh\_higgs\_figures.py} draws Figure 1
+of \texttt{higgs\_masses.md}, which gains Table 2.2 and the record of
+the correction in its Section 2.3; the fragments program stops if a
+number that the text writes once for KS and CJT differs between the two.
+Part R of the notebook reads only the minimum, the masses and the values
+of stage 4 and did not change \\
 \end{longtable}
 
 \end{document}

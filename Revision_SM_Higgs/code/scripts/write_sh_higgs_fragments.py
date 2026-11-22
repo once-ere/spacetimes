@@ -7,11 +7,16 @@ the amplitude mode; the first version as the comparison), for the manuscript hig
 Reads the reports and data of the three programs of stage 4
     data/hck_sh_higgs_checks.txt (Rust, sh_higgs), data/hck_sh_higgs_checks_python.txt (python/sh_higgs.py),
     data/hck_sh_higgs_checks_wolfram.txt (wolfram/source/sh_higgs.wls), data/sh_hg_minimum.csv,
+    data/sh_hg_potential.csv, data/sh_hg_potential_second_branch.csv,
     data/sh_hg_susceptibility.csv, data/sh_hg_masses.csv, data/sh_hg_scan.csv, data/sh_hg_values.csv,
-the couplings of stage 2 (data/sh_couplings.csv) and the gaps of stage 3 (data/sh_sf_ground.csv), and writes
-provenance/generated/sh_higgs.md with the fragments
+the couplings of stage 2 (data/sh_couplings.csv) and the gaps and the scalar condensate of stage 3 (data/sh_sf_ground.csv,
+data/sh_sf_states.csv), and writes provenance/generated/sh_higgs.md with the fragments
     hg_checks_rust, hg_checks_python, hg_checks_wolfram, hg_verdict_*   the lists of the checks and the verdicts;
     hg_table_minimum    the minimum of the effective potential (Table 2.1);
+    hg_table_top        the top of the hat, the state of the branch of the ground state at phi = 0 (Table 2.2);
+    hg_scal_*, hg_top_*, hg_min_M*, hg_chi_sign_*, hg_sb_*, hg_jump_ratio, hg_h3b_dev, hg_h3c_dev   the numbers of the
+                        scalar condensate (Section 1.4), the top of the hat, the second branch and the correction of
+                        Section 2.3; each number that the text writes once for KS and CJT is checked to agree in both;
     hg_table_chi        the susceptibilities and rho (Table 3.1);
     hg_table_scale      the scale and the masses of the gauge bosons in GeV (Table 4.1);
     hg_table_gap        the gaps of stage 3 in GeV (Table 4.2);
@@ -85,6 +90,14 @@ def rng(xs, digits=4):
     return "$%s$" % a if a == b else "$%s$ to $%s$" % (a, b)
 
 
+def one(xs, digits=4):
+    """the inside of a formula for numbers that agree to the digits (KS and CJT, for example); stops otherwise"""
+    v = set(fmt(x, digits) for x in xs)
+    if len(v) != 1:
+        sys.exit("the text writes one number for values that differ at %d digits: %s" % (digits, sorted(v)))
+    return v.pop()
+
+
 def main():
     fr = {}
     for who, fn in (("rust", "hck_sh_higgs_checks.txt"), ("python", "hck_sh_higgs_checks_python.txt"),
@@ -116,6 +129,99 @@ def main():
             sys.exit("the text says that the curvature of the second version is twice that of the first in %s" % x)
     fr["hg_curv_ratio_other"] = rng([num(mins[("second", x)]["V2_at_phi0"]) / num(mins[("first", x)]["V2_at_phi0"])
                                      for x in ("HS (1, 1)", "KS", "CJT")], 3)
+
+    # Section 1.4: the scalar condensate of stage 3 (KS and CJT of the second version)
+    scal = [r for r in rows("sh_sf_states.csv") if r["potential"] == "V1_SH" and r["kind"] == "massive (scalar condensate)"]
+    if sorted(r["method"] for r in scal) != ["CJT", "KS"]:
+        sys.exit("the text says that stage 3 found the scalar condensate in KS and CJT of the second version only")
+    fr["hg_scal_E"] = one([num(r["energy"]) * 1e4 for r in scal], 6)
+    fr["hg_scal_Mpsi"] = one([num(r[c]) for r in scal for c in ("M_up", "M_down")], 6)
+    fr["hg_scal_Mchi"] = one([num(r[c]) for r in scal for c in ("M_chi", "M_chi2")], 6)
+
+    # Section 2.3: the top of the hat (Table 2.2), the masses along the branch of the ground state, the second branch
+    pot = rows("sh_hg_potential.csv")
+    sec = rows("sh_hg_potential_second_branch.csv")
+
+    def branch(tab, ver, meth):
+        return sorted([r for r in tab if r["version"] == ver and r["method"] == meth], key=lambda r: num(r["d_over_d0"]))
+
+    out = [r"| version | method | the state at $\varphi_{\rm SH}=0$ | $10^4\,V^{\rm eff}_{\rm SH}(0)$ | $V^{\rm eff}_{\rm SH}(0)$ / depth | $M^{\rm u}_{\rm SH}=M^{\rm d}_{\rm SH}$ | $M^\chi_{\rm SH}$ | $M^{\chi'}_{\rm SH}$ |",
+           "|:-------|:---------|:-------------|:-------------|:---------------|:-------------|:-------------|:-------------|"]
+    scalar_methods = [("second", "KS"), ("second", "CJT")]
+    for ver in VERS:
+        for meth in METHODS:
+            top = branch(pot, ver, meth)[0]
+            if num(top["d_over_d0"]) != 0.0:
+                sys.exit("the first point of the branch of the ground state of %s %s is not d = 0" % (ver, meth))
+            if abs(num(top["M_up"]) - num(top["M_down"])) > 1e-12 * max(1.0, abs(num(top["M_up"]))):
+                sys.exit("Table 2.2 writes M^u = M^d, which fails for %s %s" % (ver, meth))
+            state = "the scalar condensate" if (ver, meth) in scalar_methods else "the normal vacuum"
+            e0 = num(mins[(ver, meth)]["energy"])
+            out.append("| %s | %s | %s | %s | %s | %s | %s | %s |" % (
+                ver, meth, state, m(num(top["energy"]) * 1e4), m(num(top["energy"]) / abs(e0), 4), m(top["M_up"]),
+                m(top["M_chi"]), m(top["M_chi2"])))
+    fr["hg_table_top"] = "\n".join(out)
+    tops = [branch(pot, v, x)[0] for v, x in scalar_methods]
+    fr["hg_top_ratio"] = one([num(t["energy"]) / abs(num(mins[k]["energy"])) for t, k in zip(tops, scalar_methods)], 3)
+    fr["hg_top_Mpsi"] = one([num(t["M_up"]) for t in tops], 4)
+    fr["hg_top_Mchi"] = one([num(t["M_chi"]) for t in tops], 4)
+    fr["hg_min_Mpsi"] = one([num(mins[k]["M_up"]) for k in scalar_methods], 4)
+    fr["hg_min_Mchi"] = one([num(mins[k]["M_chi"]) for k in scalar_methods], 4)
+    # where the masses of the singlets change sign along the branch of the ground state (one change, in both methods)
+    lo_hi = []
+    for v, x in scalar_methods:
+        br = branch(pot, v, x)
+        ch = [(num(br[i - 1]["d_over_d0"]), num(br[i]["d_over_d0"])) for i in range(1, len(br))
+              if (num(br[i - 1]["M_chi"]) < 0) != (num(br[i]["M_chi"]) < 0)]
+        if len(ch) != 1:
+            sys.exit("the text says that the masses of the singlets change sign once along the branch (%s %s)" % (v, x))
+        lo_hi.append(ch[0])
+    if lo_hi[0] != lo_hi[1]:
+        sys.exit("KS and CJT change the sign of the singlet masses between different points")
+    fr["hg_chi_sign_lo"] = fmt(lo_hi[0][0], 3)
+    fr["hg_chi_sign_hi"] = fmt(lo_hi[0][1], 3)
+    # the second branch: its grid points, its last state, the step at which it ends, its height above the potential
+    gaps, lasts, firsts, grid_last, jumps = [], [], [], [], []
+    for v, x in scalar_methods:
+        sb = branch(sec, v, x)
+        br = branch(pot, v, x)
+        e0 = abs(num(mins[(v, x)]["energy"]))
+        phi0 = num(mins[(v, x)]["phi0"])
+        if any(num(r["M_up"]) <= 0 for r in sb):
+            sys.exit("the text says that the masses of Psi_LL stay positive on the second branch")
+        # V at the pair amplitude of every state of the second branch, by linear interpolation of the branch of the
+        # ground state in phi (the interpolation of check H-3d of the Rust program)
+        ph = [num(r["phi"]) for r in br]
+        en = [num(r["energy"]) for r in br]
+        for r in sb:
+            p = num(r["phi"])
+            i = next(i for i in range(1, len(ph)) if ph[i] >= p)
+            t = (p - ph[i - 1]) / (ph[i] - ph[i - 1])
+            gaps.append((num(r["energy"]) - (en[i - 1] + t * (en[i] - en[i - 1]))) / e0)
+        lasts.append(sb[-1])
+        firsts.append(next(r for r in sb if abs(num(r["d_over_d0"]) - 0.05) < 1e-9))
+        gl = max(num(r["d_over_d0"]) for r in sb if abs(num(r["d_over_d0"]) / 0.05 - round(num(r["d_over_d0"]) / 0.05)) < 1e-9)
+        grid_last.append(gl)
+        nxt = next(r for r in br if abs(num(r["d_over_d0"]) - (gl + 0.05)) < 1e-9)
+        last_grid = next(r for r in sb if abs(num(r["d_over_d0"]) - gl) < 1e-9)
+        jumps.append((num(last_grid["energy"]) - num(nxt["energy"])) / e0)
+        lasts[-1] = dict(sb[-1], phi_ratio=num(sb[-1]["phi"]) / phi0)
+    if min(gaps) <= 0:
+        sys.exit("the text says that the second branch lies above the effective potential")
+    fr["hg_sb_gap_range"] = "$%s$ to $%s$" % (fmt(min(gaps), 3), fmt(max(gaps), 3))
+    if len(set(r["d_over_d0"] for r in lasts)) != 1 or len(set(grid_last)) != 1:
+        sys.exit("KS and CJT end their second branches at different points")
+    s_last = num(lasts[0]["d_over_d0"])
+    fr["hg_sb_last"] = fmt(s_last, 4)
+    fr["hg_sb_beyond"] = fmt(round(s_last + 0.005, 6), 4)
+    fr["hg_sb_grid_last"] = fmt(grid_last[0], 3)
+    fr["hg_sb_last_phi"] = one([r["phi_ratio"] for r in lasts], 4)
+    fr["hg_sb_last_Mpsi"] = one([num(r["M_up"]) for r in lasts], 4)
+    its = sorted(set(int(r["iterations"]) for r in lasts))
+    fr["hg_sb_last_it"] = " and ".join(str(i) for i in its)
+    its1 = sorted(set(int(r["iterations"]) for r in firsts))
+    fr["hg_sb_first_it"] = " and ".join(str(i) for i in its1)
+    fr["hg_jump_ratio"] = one(jumps, 3)
 
     # Table 3.1: the susceptibilities and rho
     out = [r"| version | method | $\chi^{11}_{\rm SH}$ | $\chi^{33}_{\rm SH}$ | $\chi^{YY}_{\rm SH}$ | $\chi^{3Y}_{\rm SH}$ | $\chi^{FF}_{\rm SH}$ | $\rho_{\rm SH}$ |",
@@ -257,6 +363,12 @@ def main():
     fr["hg_run_s"] = "%d" % round(float(mt.group(1)))
     fr["hg_job_s"] = "%d" % round(float(mt.group(2)))
     fr["hg_nchecks"] = "%d" % len(re.findall(r"^(PASS|FAIL) ", rep, re.M))
+    fr["hg_h3b_dev"] = bound(report_dev("hck_sh_higgs_checks.txt", "H-3b"))
+    fr["hg_h3c_dev"] = bound(report_dev("hck_sh_higgs_checks.txt", "H-3c"))
+    # the point beyond the second branch as the Rust program states it in check H-3d
+    ends = re.findall(r"at d = ([0-9.]+) d_0 the continuation falls onto the branch of the ground state", rep)
+    if len(ends) != 2 or any(abs(float(e) - (s_last + 0.005)) > 1e-9 for e in ends):
+        sys.exit("check H-3d of the Rust report does not state the end of the second branch as the data file gives it")
 
     out = ["<!-- generated by code/scripts/write_sh_higgs_fragments.py from data/hck_sh_higgs_checks*.txt and data/sh_hg_*.csv; do not edit -->"]
     for k in sorted(fr):

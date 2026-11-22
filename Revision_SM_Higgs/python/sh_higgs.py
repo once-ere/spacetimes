@@ -36,7 +36,13 @@ are the checks of the Rust program sh_higgs that test the same statements):
         frequency into a singlet and a triplet (the Casimir has the eigenvalues 0, 2, 2, 2);
   YH-9  (no Rust check) the normal vacuum of HS (0, 0) and CJT, both versions, does not respond to the chemical potentials of the eight
         generators (zero charge densities and no pairs at mu = +-0.005, +-0.01): without the condensate the gauge
-        bosons get no mass, which is why the program uses the time components of the gauge fields.
+        bosons get no mass, which is why the program uses the time components of the gauge fields;
+  YH-10 (H-3b, H-3d) CJT, second version: the states with a fixed pair self-energy d P_dir, each started directly (the
+        Rust program reaches them by continuation along d): at d = 0 the start N = -beta reaches the scalar condensate,
+        equal to the point d = 0 of the effective potential (data/sh_hg_potential.csv) and to the scalar condensate of
+        stage 3 (data/sh_sf_states.csv); at d = 0.1 d_0 the start from the normal self-energy of the scalar condensate
+        gives the branch of the ground state and the start N = 0 the second branch (data/sh_hg_potential.csv,
+        sh_hg_potential_second_branch.csv), the second with the higher energy and the larger pair amplitude.
 
 Run (from the folder python/, after the Rust program sh_higgs):   python3 sh_higgs.py
 Requires: Python 3, numpy.  Run time: some minutes.
@@ -46,8 +52,8 @@ import os
 
 import numpy as np
 
-from sfcommon import DATA, Report
-from sh_superfluid import (N, NP, NX, POTS, SIG, Model, h4, i1, interaction, k_ds, mname, pair, psi)
+from sfcommon import BETA, DATA, Report
+from sh_superfluid import (N, NP, NX, POTS, SIG, Model, blk, describe, h4, i1, interaction, k_ds, mname, pair, psi)
 
 M_LL = 0.2
 VERS = {"second": "V1_SH", "first": "V1_SH first version"}
@@ -114,6 +120,22 @@ def solve_ext(mo, x, n0, p0, mix=0.6, tol=1e-12, maxit=40000):
         p_s = 0.5 * (p_s - p_s.T)
         n_s[abs(n_s) < 1e-30] = 0.0
         p_s[abs(p_s) < 1e-30] = 0.0
+
+
+def solve_fixed_p(mo, n0, p_fixed, mix=0.6, tol=1e-13, maxit=40000):
+    """the state with the fixed pair self-energy p_fixed and the normal self-energy made self-consistent from the start
+    n0 (the iteration of the Rust function solve_clean with fixed_p: linear mixing of N with the weight mix, N made
+    Hermitian after each step, elements below 1e-30 set to zero; the residual is that of N alone)"""
+    n_s = n0.copy()
+    for it in range(maxit + 1):
+        rho, kap, ek = mo.local(*mo.states(n_s, p_fixed))
+        ei, n2, _ = interaction(mo.ts, mo.ks, rho, kap)
+        res = abs(n2 - n_s).max()
+        if res < tol or it == maxit:
+            return dict(n=n2, p=p_fixed, rho=rho, kap=kap, e=ek + ei, it=it, res=res)
+        n_s = mix * n2 + (1 - mix) * n_s
+        n_s = 0.5 * (n_s + n_s.conj().T)
+        n_s[abs(n_s) < 1e-30] = 0.0
 
 
 def ground(mo, ver):
@@ -487,6 +509,56 @@ def main():
             "for the eight generators and mu = +-0.005, +-0.01 has zero charge densities and no pairs, so its "
             "susceptibilities vanish and the gauge bosons get no mass without the condensate (largest |<Q_a>| / |mu| and "
             "largest element of the pair self-energy) [" + "; ".join(det9) + "]", d9, 1e-12)
+
+    # YH-10: the two branches of the states with a fixed pair self-energy in CJT of the second version (entry E60 of the
+    # task record).  The iteration of the normal self-energy at a fixed pair self-energy d P_dir (solve_fixed_p) is
+    # started directly, not by continuation: at d = 0 from N = -beta (the start 14 of stage 3, which shifts every mass
+    # by -1), which reaches the scalar condensate; at d = 0.1 d_0 from N = 0 (the second branch, continued from the
+    # normal vacuum) and from the normal self-energy of that scalar condensate (the branch of the ground state).  The
+    # Rust program reached the same states by continuation along d.
+    mo = Model(("CJT",), POTS[VERS["second"]])
+    # beta on the sixteen components: beta (x) 1_2 on Psi_LL (Dirac index times isospin), beta on each singlet
+    bb = blk(np.kron(BETA, np.eye(2)), BETA, BETA)
+    z = np.zeros((N, N), complex)
+    pot = {(r["version"], r["method"], round(float(r["d_over_d0"]), 6)): r for r in read_csv("sh_hg_potential.csv")}
+    sec = {(r["version"], r["method"], round(float(r["d_over_d0"]), 6)): r
+           for r in read_csv("sh_hg_potential_second_branch.csv")}
+    scal = [r for r in read_csv("sh_sf_states.csv")
+            if r["potential"] == "V1_SH" and r["method"] == "CJT" and r["kind"] == "massive (scalar condensate)"][0]
+    d0c = float(mins[("second", "CJT")]["d0"])
+    sc0 = solve_fixed_p(mo, -bb, z)
+    _, _, ms0, _ = describe(sc0)
+    g0 = pot[("second", "CJT", 0.0)]
+    dev10 = max(abs(sc0["e"] - float(g0["energy"])) / abs(float(g0["energy"])),
+                abs(sc0["e"] - float(scal["energy"])) / abs(float(scal["energy"])),
+                max(abs(ms0[i] - float(g0[c])) / abs(float(g0[c]))
+                    for i, c in enumerate(("M_up", "M_down", "M_chi", "M_chi2"))),
+                max(abs(ms0[i] - float(scal[c])) / abs(float(scal[c]))
+                    for i, c in enumerate(("M_up", "M_down", "M_chi", "M_chi2"))))
+    pd = p_dir("second")
+    sg = solve_fixed_p(mo, sc0["n"], 0.1 * d0c * pd)
+    sn = solve_fixed_p(mo, z, 0.1 * d0c * pd)
+    phi_g, phi_n = phi_of(sg["kap"], "second"), phi_of(sn["kap"], "second")
+    rg, rn = pot[("second", "CJT", 0.1)], sec[("second", "CJT", 0.1)]
+    for e, phi, r in ((sg["e"], phi_g, rg), (sn["e"], phi_n, rn)):
+        dev10 = max(dev10, abs(e - float(r["energy"])) / abs(float(r["energy"])),
+                    abs(phi - float(r["phi"])) / abs(float(r["phi"])))
+    order_ok = sn["e"] > sg["e"] and phi_n > phi_g
+    if not order_ok:
+        dev10 = 1.0
+    _, _, ms_g, _ = describe(sg)
+    _, _, ms_n, _ = describe(sn)
+    rep.add("YH-10", "CJT, second version, the states with a fixed pair self-energy d P_dir: at d = 0 the start N = -beta "
+            "reaches the scalar condensate (E = %.12e, masses %.10f, %.10f, %.10f, %.10f), equal to the point d = 0 of "
+            "the effective potential of the Rust program (data/sh_hg_potential.csv) and to the scalar condensate of "
+            "stage 3 (data/sh_sf_states.csv); at d = 0.1 d_0 the start from the normal self-energy of the scalar "
+            "condensate gives the branch of the ground state (E = %.10e, phi = %.10e, M_up = %.6f) and the start N = 0 "
+            "the second branch (E = %.10e, phi = %.10e, M_up = %.6f), equal to the Rust data files "
+            "(sh_hg_potential.csv, sh_hg_potential_second_branch.csv); the second branch has the higher energy and the "
+            "larger pair amplitude at the same d, so that, V decreasing from phi = 0 to phi_0, it lies above V at its "
+            "own phi (largest relative difference from the Rust values; %d, %d and %d iterations)"
+            % (sc0["e"], ms0[0], ms0[1], ms0[2], ms0[3], sg["e"], phi_g, ms_g[0], sn["e"], phi_n, ms_n[0],
+               sc0["it"], sg["it"], sn["it"]), dev10, 1e-9)
 
     rep.write("hck_sh_higgs_checks_python.txt")
     print("%d of %d checks passed" % (rep.npass, rep.n))
