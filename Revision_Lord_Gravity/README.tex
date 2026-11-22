@@ -242,15 +242,30 @@ plan, and logs the work.
 \section{2. The state of the work}\label{the-state-of-the-work}}
 
 \textbf{Stage 1} (22 November 2026): the folder, its document pipeline,
-the task record and this README. Lord's paper has been read completely.
-The next stage restates it, section by section, in Part I of the
-manuscript \texttt{lord\_gravity.md}, with programs that check its
-conventions and equations.
+the task record and this README.
+
+\textbf{Stage 2} (22 November 2026): Part I of the manuscript
+\texttt{lord\_gravity.md} (\texttt{.tex}, \texttt{.pdf}): Lord's paper
+read and restated section by section, with every equation that the task
+uses re-derived and checked by three programs: the Rust program
+\texttt{lg\_lord} (ALL PASS (45 of 45)), the Python program
+\texttt{python/lg\_lord.py} (ALL PASS (16 of 16)) and the Wolfram script
+\texttt{wolfram/source/lg\_lord.wls} (ALL PASS (7 of 7), exact
+arithmetic). Several equations of Lord's Section 4, as printed, do not
+follow from his definitions: the sign of the inhomogeneous term of the
+transformation of the auxiliary fields, a factor 2 in the connection of
+the vectors, and the coefficient of the curvature of the spinor
+connection, which is \(\tfrac14R_{\mu\nu ab}\gamma^{ab}\), not
+\(\tfrac12R_{\mu\nu ab}\gamma^{ab}\); the manuscript gives the corrected
+forms, and the two factors compensate each other only to first order in
+the fields.
+
+The next stage is Part II: the association of the group
+\(SL(2,\mathbb C)\) of the project with Lord's gauge group.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
 
-\sptkeptpenalty=10000
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
   >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
@@ -268,13 +283,13 @@ state
 \bottomrule\noalign{}
 \endlastfoot
 \texttt{README.md}, \texttt{.tex}, \texttt{.pdf} & this list of contents
-& written \\*
+& written \\
 \texttt{provenance/P0\_task\_record.md}, \texttt{.tex}, \texttt{.pdf} &
 the task (in my words), the rules, the starting point, the decisions,
-the plan, the log & written; grows with the work \\*
+the plan, the log & written; grows with the work \\
 \texttt{provenance/inputs\_sha256.txt} & the SHA-256 checksum of the
 copy of Lord's paper that is read (the paper is not in the repository) &
-written \\*
+written \\
 \texttt{code/scripts/} & the document pipeline:
 \texttt{assemble\_docs.py} (writes a document from its source in
 \texttt{docs\_src/} and the generated fragments),
@@ -283,15 +298,30 @@ every document, with a check of the layout of every page),
 \texttt{doc\_header.tex}, \texttt{keep\_tables.py},
 \texttt{check\_layout.py}, \texttt{check\_pages.py}, and
 \texttt{check\_self\_contained.py} (does a document send its reader
-elsewhere?) & written \\*
+elsewhere?) & written \\
 \texttt{docs\_src/} & the hand-edited sources of the documents &
-written \\*
+written \\
+\texttt{lord\_gravity.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript
+of the task: Part I (Lord's paper read and checked) & Part I written \\
 \texttt{provenance/generated/} & the fragments that the programs write
-for the documents & planned \\*
-\texttt{rust/}, \texttt{python/}, \texttt{wolfram/} & the programs: Rust
-computes, Python and the Wolfram Language check & planned \\*
-\texttt{data/} & the data files and the reports of the checks &
-planned \\*
+for the documents (\texttt{lg\_lord.md}, written by
+\texttt{code/scripts/write\_lg\_lord\_fragments.py}) & written for Part
+I \\
+\texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
+(complex matrices, bi-quaternions, Dirac matrices, automatic
+differentiation, and \texttt{lord.rs}, Lord's matrices from his
+definitions) and the program \texttt{lg\_lord} (the checks of Parts I
+and II) & written for Parts I and II \\
+\texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
+differences, the report) and \texttt{lg\_lord.py} (the independent check
+of \texttt{lg\_lord}) & written for Parts I and II \\
+\texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
+Lord's identities, signs and factors & written \\
+\texttt{data/} & the reports of the checks
+(\texttt{hck\_lg\_lord\_checks.txt}, \texttt{\_python.txt},
+\texttt{\_wolfram.txt}), the numbers of the findings
+(\texttt{lg\_lord\_findings.csv}), and the report of the check that no
+document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures & planned \\
 \end{longtable}
 
@@ -304,13 +334,19 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \begin{Shaded}
 \begin{Highlighting}[]
 \BuiltInTok{cd} \StringTok{"/Users/nsh/Developer/github/spacetimes/Revision\_Lord\_Gravity"}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{cargo}\NormalTok{ build }\AttributeTok{{-}{-}release} \KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_lord}\KeywordTok{)}   \CommentTok{\# the checks of Parts I and II}
+\ExtensionTok{python3}\NormalTok{ python/lg\_lord.py                      }\CommentTok{\# their independent check}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_lord\_fragments.py   }\CommentTok{\# the numbers of the documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# no document sends its reader elsewhere}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}
 \end{Highlighting}
 \end{Shaded}
 
-The pipeline needs pandoc (2.11 or later), XeLaTeX and latexmk (TeX
-Live), the DejaVu fonts and the Latin Modern Math font, and Python 3.
+The programs need Rust (cargo), Python 3 with numpy, and the Wolfram
+Language (wolframscript); the pipeline needs pandoc (2.11 or later),
+XeLaTeX and latexmk (TeX Live), the DejaVu fonts and the Latin Modern
+Math font.
 
 \end{document}

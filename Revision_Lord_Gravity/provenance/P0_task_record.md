@@ -148,6 +148,13 @@ manuscript in my words, with its equations re-derived where the manuscript uses 
 as printed, does not follow from its definitions, the manuscript says so, shows the corrected form, and a program
 verifies both; such findings are recorded in the manuscript as remarks, not silently repaired.
 
+**D5. Lord's symbols and his trace.** Where an object of Lord's paper is the same as an object of the project (his
+$\sigma^\mu$, $\epsilon$, $\gamma^\mu$, $C$ and $\eta$ are the project's $\sigma^{\rm LL}_\mu$, $\mathsf E_{\rm LL}$, $\gamma^\mu_{\rm LL}$, $C_{\rm LL}$,
+$\eta^{\rm LL}$; his $\gamma^5$ is $-\gamma^{\rm ch}_{\rm LL}$), the manuscript writes the project's symbol, and a program proves the identity;
+his other objects carry the suffix Lord. His "tr" in his Section 4 is read as the trace normalized to 1 on the unit
+matrix, because only this reading makes his equations (4.15), (4.16), (4.31) and (4.32) consistent with each other.
+*Reason:* Rule 8, and the checks of the manuscript (Part I, Section 5.3).
+
 # 6. The plan
 
 The task is carried out in stages; each is pushed when it is complete.
@@ -179,6 +186,7 @@ Entries C are the author's messages that concern this folder; entries E are the 
 | C1 | 21 Nov 2026, 18:02 | the task C23 (Section 2.2), to follow the stages of the revision of the hypotheses |
 | C2 | 21 Nov 2026, 18:45 | the path of the task: the brochon pair bound by the exchange of the zeugon; binding by photons "extremely unlikely" and "not worth studying"; the name brochon |
 | E1 | 22 Nov 2026, 04:35 to 04:45 | stage 1: the folder `Revision_Lord_Gravity` with its document pipeline (`code/scripts/`: `assemble_docs.py`, `build_docs.sh`, `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, `check_self_contained.py`, adapted from the folder of the revision of the hypotheses with the folder name and the running head changed), this record, the README, and the checksum of Lord's paper in `provenance/inputs_sha256.txt`. The paper was read completely (all twenty pages, the journal pages 423 to 442) |
+| E2 | 22 Nov 2026, 04:45 to 05:05 | stage 2: Part I of the manuscript `lord_gravity.md` (Lord's five sections restated with the equations that the task uses; Section 7, the equations whose printed form does not follow from his definitions: the sign of the inhomogeneous term of (4.14), (4.31), (4.16), (4.32), the factor 2 of the connection (4.20), (5.2), the coefficient of the curvature (4.47), (4.48), and the reading of "any linearly independent set" of Hermitian matrices). The Rust workspace `rust/` (library `lgcore`, with modules copied from the earlier folder and the new module `lord.rs`; program `lg_lord`), the Python programs `python/lgcommon.py` and `python/lg_lord.py`, the Wolfram script `wolfram/source/lg_lord.wls` (run on the author's computer by the watcher, request 325), and `code/scripts/write_lg_lord_fragments.py`. Results: Rust ALL PASS (45 of 45), Python ALL PASS (16 of 16), Wolfram ALL PASS (7 of 7). The same programs already check the dictionary of Part II (checks P-1 to P-8) |
 
 # 8. The symbols of this document
 

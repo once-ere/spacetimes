@@ -1,0 +1,12 @@
+# lgcore: the library of the common calculations of the folder Revision_Lord_Gravity (PROJECT spacetimes).
+# Pure Rust, standard library only.
+[package]
+name = "lgcore"
+version = "0.1.0"
+edition = "2021"
+description = "Complex matrices, bi-quaternions, Dirac matrices, automatic differentiation, and the conventions of Lord (1971)"
+
+[lib]
+path = "src/lib.rs"
+# the comments of the modules contain indented formulas, which are not code examples
+doctest = false

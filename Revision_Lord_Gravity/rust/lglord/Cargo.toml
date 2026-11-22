@@ -1,0 +1,15 @@
+# lglord: the program lg_lord of the folder Revision_Lord_Gravity (PROJECT spacetimes): the checks of the conventions
+# and equations of E. A. Lord, "General relativity from gauge invariance" (1971), Part I of lord_gravity.md, and of the
+# association of the SL(2,C) of the project with his gauge group, Part II.
+[package]
+name = "lglord"
+version = "0.1.0"
+edition = "2021"
+description = "Checks of the equations of Lord (1971) and of their association with the SL(2,C) of the super-loop"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+
+[[bin]]
+name = "lg_lord"
+path = "src/main.rs"

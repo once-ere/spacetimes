@@ -1,0 +1,16 @@
+lg_lord.wls: the exact identities and factors of Lord (1971), Sections 1 and 4 (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WL and a number), the statement and, in brackets, the
+facts that decide it.  Exact arithmetic: symbolic matrices, every identity simplified to zero.
+
+PASS WL-1     (Rust L1-1 to L1-4, L1-7 to L1-10; Python YL-1) Lord's identities (1.2), (1.3), (1.5) (256 index combinations), (1.7), (1.10), (1.11), (1.12), (1.13) (both forms), (1.14), (1.15) and (1.17) hold exactly for his matrices [(1.2) True, (1.3) True, (1.5) True, (1.7) True, (1.10)-(1.14) True, (1.15) True, (1.17) True]
+PASS WL-2     (Rust L1-11a, L1-11b; Python YL-3) for S of determinant 1 (symbolic entries): epsilon S = (S^T)^{-1} epsilon; and for any matrix sigma and a second S' of determinant 1, bar(S sigma S') = S'^{-1} bar(sigma) S^{-1}; with S' = S^dag this is (1.23) [epsilon True, (1.23) True]
+PASS WL-3     (Rust L1-13, L1-14; Python YL-3, YL-3b) for any two 2x2 matrices A, B (symbolic entries): 1/2 (A bar(B) + B bar(A)) = N(A, B) 1 with N(A, B) = (det(A + B) - det A - det B)/2, and N(sigma^mu, sigma^nu) = eta^{mu nu}; so (1.3) holds for a set of four matrices exactly when their products N are eta^{ab} [identity True, N of the standard set True]
+PASS WL-4     (Rust L1-5; Python YL-2) (1.8) to first order: with Lambda_mu^nu = delta_mu^nu + eta^{nu rho} lambda_{rho mu} and L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu} (six real symbols), eta^{mu rho} lambda_{rho nu} sigma^nu + X sigma^mu + sigma^mu X^dag = 0 for every mu [True]
+PASS WL-5     (Rust L4-2, L4-3; Python YL-4, YL-4b) for S(t) = ((1 + t^3, t), (t^2, 1)) (determinant 1), a constant Gamma = diag(Y, -Y^dag) of the Lorentz algebra and a spinor of four symbolic functions: D = d - Gamma is covariant with Gamma' = S Gamma S^{-1} + (dS) S^{-1}, and not with the printed inhomogeneous term S (d S^{-1}) [corrected law covariant True, printed law not covariant True]
+PASS WL-6     (Rust L4-6b, L4-6c; Python YL-6, YL-6b) in Lord's special gauge (constant gamma, (5.2)): for Gamma = 1/2 g a_bc gamma^{bc} with six symbolic a_bc, [Gamma, gamma_b] = -2 g a_b^e gamma_e, so (4.19) gives C_b^e = 2 g a_b^e: twice the printed (4.20) and (5.2), C = g a [C = 2 g a: True, in the span of gamma_e: True]
+PASS WL-7     (Rust L4-10a, L4-10b, L4-10c; Python YL-7b, YL-7c) lambda(W) = 1/4 W_{ab} gamma^{ab} (W antisymmetric, symbolic) satisfies [lambda(W), gamma_b] = -W_b^e gamma_e and [lambda(W1), lambda(W2)] = lambda([W1, W2]): a homomorphism of Lie algebras, so the curvature of the spinor connection lambda(W_mu) is lambda(R_{mu nu}) = 1/4 R_{mu nu ab} gamma^{ab} exactly, and Lord's printed 1/2 R gamma is twice it [action on gamma True, homomorphism True]
+
+Notes:
+  Wolfram Language 15.0.1; run time 0.0 s
+
+VERDICT: ALL PASS (7 of 7)

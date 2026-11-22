@@ -1,0 +1,54 @@
+PROJECT spacetimes, Revision_Lord_Gravity: lg_lord -- the checks of the equations of E. A. Lord, General relativity from gauge invariance (1971), Part I of lord_gravity.md, and of the association of the SL(2,C) of the project with his gauge group, Part II
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS L1-1    deviation 0.000e0 (tolerance 1.0e-15): (1.2): sigma-bar^mu = -epsilon (sigma^mu)^T epsilon is (1, -sigma_1, -sigma_2, -sigma_3) for the standard set (1.1)
+PASS L1-2    deviation 0.000e0 (tolerance 1.0e-15): (1.3): 1/2 (sigma^mu sigma-bar^nu + sigma^nu sigma-bar^mu) = eta^{mu nu} 1 (16 pairs)
+PASS L1-3    deviation 0.000e0 (tolerance 1.0e-14): (1.5): [sigma^{mu nu}, sigma^{rho sigma}] = 2 (eta^{nu rho} sigma^{mu sigma} - eta^{mu rho} sigma^{nu sigma} + eta^{mu sigma} sigma^{nu rho} - eta^{nu sigma} sigma^{mu rho}) (256 index combinations)
+PASS L1-4    deviation 0.000e0 (tolerance 1.0e-15): (1.6), (1.7): sigma_{mu nu} is self-dual, sigma_{mu nu} = 1/2 i eps_{mu nu rho sigma} sigma^{rho sigma} with eps_0123 = +1
+PASS L1-5    deviation 2.220e-16 (tolerance 1.0e-15): (1.8), infinitesimal: with Lambda_mu^nu = delta_mu^nu + eta^{nu rho} lambda_{rho mu}, L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu} satisfies (1.8) to first order (20 random lambda): eta^{mu rho} lambda_{rho nu} sigma^nu + X sigma^mu + sigma^mu X^dag = 0
+PASS L1-6a   deviation 9.770e-15 (tolerance 1.0e-12): (1.8): for 50 random L of SL(2,C), the Lambda defined by Lambda_nu^mu L sigma^nu L^dag = sigma^mu satisfies Lambda eta Lambda^T = eta
+PASS L1-6b   (1.8): ... and has det Lambda = 1 and Lambda_0^0 >= 1 (proper orthochronous): L -> Lambda is the covering map of the proper orthochronous Lorentz group [50 random L]
+PASS L1-6c   deviation 9.115e-15 (tolerance 1.0e-12): (1.16): Lambda_nu^mu L4 gamma^nu L4^{-1} = gamma^mu with L4 = diag(L, (L^dag)^{-1}), the same Lambda (50 random L)
+PASS L1-7a   deviation 0.000e0 (tolerance 1.0e-15): (1.10): 1/2 (gamma^mu gamma^nu + gamma^nu gamma^mu) = eta^{mu nu} for the Weyl representation (1.9)
+PASS L1-7b   deviation 0.000e0 (tolerance 1.0e-15): (1.11): gamma^mu gamma^5 + gamma^5 gamma^mu = 0
+PASS L1-7c   deviation 0.000e0 (tolerance 1.0e-15): (1.12): (gamma^5)^2 = 1
+PASS L1-7d   deviation 0.000e0 (tolerance 1.0e-14): (1.13): gamma^5 = -i gamma^0 gamma^1 gamma^2 gamma^3 = -(1/24) i eps_{mu nu rho sigma} gamma^mu gamma^nu gamma^rho gamma^sigma (both forms)
+PASS L1-8    deviation 0.000e0 (tolerance 1.0e-15): (1.14): C gamma^mu C^{-1} = -(gamma^mu)^T with C = diag(epsilon, -epsilon)
+PASS L1-9    deviation 0.000e0 (tolerance 1.0e-15): (1.15): gamma^{mu nu} = diag(sigma^{mu nu}, -(sigma^{mu nu})^dag) in the Weyl representation
+PASS L1-10   deviation 0.000e0 (tolerance 1.0e-15): (1.17): gamma_5 gamma_{mu nu} = gamma_{mu nu} gamma_5 = gamma_{mu-bar nu-bar} (the dual (1.6))
+PASS L1-11a  deviation 8.113e-15 (tolerance 1.0e-13): property of epsilon used for (1.23): epsilon S = (S^T)^{-1} epsilon for every unimodular S (50 random S)
+PASS L1-11b  deviation 5.329e-14 (tolerance 1.0e-12): (1.22), (1.23): for sigma^mu -> S sigma^mu S^dag, the sigma-bar defined by (1.2) becomes (S^dag)^{-1} sigma-bar^mu S^{-1} (50 random S)
+PASS L1-12   deviation 5.440e-15 (tolerance 1.0e-12): Section 1, 'all the properties ... are unaltered': every set S sigma^mu S^dag (S unimodular) satisfies (1.3), (1.7) and (1.10) (20 random S)
+PASS L1-13   deviation 5.551e-16 (tolerance 1.0e-14): for ANY four Hermitian matrices, 1/2 (sigma^a sigma-bar^b + sigma^b sigma-bar^a) = N(sigma^a, sigma^b) 1, with N the polarized determinant (the Minkowski product of the matrices read as points of space-time) (20 random sets)
+PASS L1-14   hence (1.3) and (1.10) hold for a set exactly when N(sigma^a, sigma^b) = eta^{ab}: a generic linearly independent Hermitian set violates them, and Lord's 'any linearly independent set' must be read as 'any set S sigma^mu S^dag' [smallest deviation from eta over 20 random sets: 1.073]
+PASS L4-1    deviation 6.661e-15 (tolerance 1.0e-12): (4.2) to (4.5): for a field S(x) of SL(2,C), the Dirac matrices gamma^a(x) built by (4.3), (4.5) from sigma^a(x) = S sigma^a S^dag equal S4 gamma^a S4^{-1}, S4 = diag(S, (S^dag)^{-1}) (4.1): values and first derivatives at 12 random points
+PASS L4-2    deviation 7.183e-16 (tolerance 1.0e-13): (4.13), (4.31) corrected: D_a = d_a - Gamma_a is covariant, D'_a (T psi) = T D_a psi, when Gamma'_a = T Gamma_a T^{-1} + (d_a T) T^{-1} (relative deviation, 12 points, 4 directions)
+PASS L4-3    (4.14), (4.31) as printed: with the inhomogeneous term T d_a T^{-1} read as the product T (d_a T^{-1}) = -(d_a T) T^{-1}, D_a = d_a - Gamma_a is NOT covariant; the printed sign belongs to the derivative d_a + Gamma_a [smallest relative deviation of the printed law: 0.156]
+PASS L4-4    deviation 7.427e-15 (tolerance 1.0e-11): (4.15), (4.16), (4.32) corrected: Gamma_a = 1/2 g a_abc gamma^{bc} with a_abc = -(1/(4g)) tr(gamma_bc Gamma_a) (reconstruction), and under the gauge transformation delta a_abc = -(1/g) tr_N[gamma'_bc (d_a T) T^{-1}], with tr_N the trace normalized to tr_N 1 = 1 and gamma' the transformed matrices
+PASS L4-5    (4.16), (4.32) as printed, with tr = tr_N: the inhomogeneous term -(1/g) tr[gamma_bc T d_a T^{-1}] has the opposite sign of the correct one (it is the law of the derivative d_a + Gamma_a) [smallest |printed - true| / |true| over all coefficients: 2.0000 (2 for an opposite sign)]
+PASS L4-6a   deviation 1.427e-14 (tolerance 1.0e-12): (4.19): d_a gamma_b - [Gamma_a, gamma_b] is a linear combination of the gamma_e with real coefficients C_ba^e, as Lord states (residual and imaginary parts)
+PASS L4-6b   deviation 3.997e-15 (tolerance 1.0e-12): (4.19) solved: C_ba^e = 2 g a_ab^e + tr_N[(d_a gamma_b) gamma^e] (tr_N = 1/4 tr), for Gamma_a = 1/2 g a_abc gamma^{bc} (4.15)
+PASS L4-6c   deviation 1.998e-15 (tolerance 1.0e-12): (4.20) as printed, read with tr = tr_N, g a_ab^e + 1/2 tr_N[(d_a gamma_b) gamma^e], is exactly HALF of the C_ba^e that (4.19) requires
+PASS L4-6d   (4.20) as printed, read with tr the full trace, is not C_ba^e either; since its term g a_ab^e carries half the coefficient 2 g that (4.19) requires, no normalization of tr makes (4.20) equal to C, and only tr_N makes it proportional (L4-6c) [smallest, over the 12 points, of the largest deviation of a coefficient relative to the largest coefficient: 0.5649]
+PASS L4-7    deviation 8.438e-15 (tolerance 1.0e-12): (4.24): C_bae = -C_eab, for the C that solves (4.19)
+PASS L4-8    deviation 3.580e-15 (tolerance 1.0e-11): (4.25): D_e eps_abcd = C_ae^f eps_fbcd + C_be^f eps_afcd + C_ce^f eps_abfd + C_de^f eps_abcf = 0
+PASS L4-9    deviation 9.486e-16 (tolerance 1.0e-12): (4.47), (4.48): for D_mu = d_mu - Gamma_mu (coordinate derivatives, no torsion), [D_mu, D_nu] psi = (d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu]) psi (12 points, exact second derivatives)
+PASS L4-10a  deviation 2.220e-16 (tolerance 1.0e-13): the spinor image of a vector connection: Gamma_mu = 1/4 omega_{mu ab} gamma^{ab} satisfies [Gamma_mu, gamma_b] = -(W_mu)_b^e gamma_e, that is D_mu gamma_b = 0 with constant gamma (Lord's special gauge (5.2))
+PASS L4-10b  deviation 1.144e-16 (tolerance 1.0e-12): then the spinor curvature is d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu] = 1/4 R_{mu nu alpha beta} gamma^{alpha beta}, with R the curvature (4.46) of the vector connection: exactly, to all orders
+PASS L4-10c  (4.47), (4.48) as printed, 1/2 R_{mu nu alpha beta} gamma^{alpha beta}, with R the curvature of the same (compatible) vector connection: twice the spinor curvature [smallest relative deviation of the printed 1/2: 1.0000 (1 for a factor 2)]
+PASS L4-10d  with Lord's printed factors together, C = W/2 from (4.20) and 1/2 R(C) gamma^{ab} in (4.48), the spinor curvature is reproduced only to first order in the connection: the deviation is of second order (it falls by 100 when the connection falls by 10) [deviation at amplitude 0.4: 1.442e-1; at 0.04: 1.502e-3; ratio 96.00]
+PASS P-1     deviation 0.000e0 (tolerance 0.0e0): Lord's sigma^mu (1.1) and sigma-bar^mu (1.2) are the project's sigma^LL_p and sigma-bar_p (the Pauli matrices of the chiral basis)
+PASS P-2     deviation 0.000e0 (tolerance 0.0e0): Lord's epsilon (1.1) is the project's E_LL
+PASS P-3     deviation 0.000e0 (tolerance 0.0e0): Lord's gamma^mu of the Weyl representation (1.9) are the project's gamma^p_LL of the chiral basis, and his C (1.14) is C_LL
+PASS P-4     deviation 0.000e0 (tolerance 1.0e-15): Lord's gamma^5 (1.9) is minus the project's chirality matrix gamma^ch_LL = i gamma^0 gamma^1 gamma^2 gamma^3
+PASS P-5     deviation 5.551e-16 (tolerance 1.0e-13): Lord's 4x4 change of representation (4.1), diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) = (M_LL(g)^dag)^{-1}, is the project's spinor matrix S_LL(g) = diag(M_LL(g-tilde), M_LL(g)) of the unit bi-quaternion g (50 random g)
+PASS P-6a    deviation 0.000e0 (tolerance 1.0e-14): the project's conjugation of bi-quaternions is Lord's sigma-bar: M_LL(b-bar) = -epsilon M_LL(b)^T epsilon for every bi-quaternion b (50 random b)
+PASS P-6b    deviation 3.997e-15 (tolerance 1.0e-12): the frame f'_p = g-tilde f_p g-tilde^dag of the project is Lord's change of representation (1.22): its Dirac matrices (3.6) are Lord's gamma (4.5) of sigma'^p = S sigma^p S^dag and equal S_LL(g) gamma^p S_LL(g)^{-1}
+PASS P-7     deviation 1.554e-15 (tolerance 1.0e-12): Lord's Lorentz matrix (1.8) of L = M_LL(g-tilde) is the transpose of the project's L_LL(g) (2.10): Lambda_nu^mu = (L_LL(g))_{mu nu}
+PASS P-8     deviation 1.162e-15 (tolerance 1.0e-13): the Lorentz part of the GEE derivative of the earlier hypotheses, nabla_p = d_p + Gamma^LL_p with Gamma'^LL = S_LL Gamma^LL S_LL^{-1} - (d_p S_LL) S_LL^{-1}, is covariant, and it is Lord's derivative (4.13) with Gamma_a = -Gamma^LL_a and his inhomogeneous term corrected (L4-2) (relative deviation, 12 points)
+
+Notes:
+  tolerances: exact identities of the matrices 0 or 1e-15; products of random matrices 1e-12 to 1e-14 (rounding); findings about an equation as printed pass when the printed form fails by the stated amount
+
+VERDICT: ALL PASS (45 of 45)

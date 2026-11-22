@@ -1,7 +1,7 @@
 PROJECT spacetimes, Revision_Lord_Gravity: does any document send its reader to another document? (Hard Rules 4 and 10)
 1 of 1 checks passed
 
-[PASS] HCK-H1  none of the 4 documents and document sources of Revision_Lord_Gravity refers its reader to another document for an equation, a symbol or a definition
+[PASS] HCK-H1  none of the 6 documents and document sources of Revision_Lord_Gravity refers its reader to another document for an equation, a symbol or a definition
 
 Allowed exceptions:
   README: a provenance document named as a place to read (the README is the list of contents of the folder: naming its documents is its purpose)

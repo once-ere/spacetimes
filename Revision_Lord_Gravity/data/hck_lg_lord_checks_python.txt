@@ -1,0 +1,25 @@
+PROJECT spacetimes, Revision_Lord_Gravity: lg_lord.py -- the independent check, in Python, of the Rust program lg_lord (the equations of E. A. Lord (1971) and their association with the SL(2,C) of the project)
+Each line: PASS or FAIL, the identifier of the check (YL-n; the counterparts in the Rust report are named in the text),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YL-1    deviation 0.000e+00 (tolerance 1.0e-13): Section 1: (1.2), (1.3), (1.5), (1.7), (1.10) to (1.15) and (1.17) of Lord hold for his matrices [L1-1 to L1-4, L1-7 to L1-10]
+PASS YL-2    deviation 5.330e-15 (tolerance 1.0e-12): (1.8) to first order with L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu}; for 50 random L the Lambda of (1.8) is a Lorentz matrix and satisfies (1.16) [L1-5, L1-6a, L1-6c]
+PASS YL-2b   the Lambda of (1.8) is proper orthochronous [L1-6b] [50 random L]
+PASS YL-3    deviation 2.665e-14 (tolerance 1.0e-12): (1.22), (1.23): epsilon S = (S^T)^{-1} epsilon; sigma-bar of S sigma S^dag is (S^dag)^{-1} sigma-bar S^{-1}; the transformed sets satisfy (1.3); for any Hermitian set (1.3) holds with N(sigma^a, sigma^b) [L1-11a to L1-13]
+PASS YL-3b   a generic Hermitian set violates (1.3): Lord's 'any linearly independent set' means 'any set S sigma^mu S^dag' [L1-14] [smallest deviation from eta over 20 sets: 1.192]
+PASS YL-4    deviation 7.776e-14 (tolerance 1.0e-09): (4.2) to (4.5): gamma^a(x) = S4 gamma^a S4^{-1}; (4.13), (4.31) corrected: D'_a(T psi) = T D_a psi with Gamma'_a = T Gamma_a T^{-1} + (d_a T) T^{-1} (relative, finite differences) [L4-1, L4-2]
+PASS YL-4b   (4.31) as printed (T d_a T^{-1} read as a product) violates the covariance of d_a - Gamma_a [L4-3] [smallest relative violation: 0.202]
+PASS YL-5    deviation 4.926e-15 (tolerance 1.0e-09): (4.32) corrected: delta a_abc = -(1/g) tr_N[gamma'_bc (d_a T) T^{-1}] [L4-4]
+PASS YL-5b   (4.32) as printed (with tr_N) has the opposite sign of the inhomogeneous term [L4-5] [smallest |printed - true| / |true|: 2.00000000]
+PASS YL-6    deviation 8.619e-13 (tolerance 1.0e-09): (4.19) solved: C_ba^e = 2 g a_ab^e + tr_N[(d_a gamma_b) gamma^e] (real); (4.24) C_bae = -C_eab [L4-6a, L4-6b, L4-7]
+PASS YL-6b   deviation 1.610e-15 (tolerance 1.0e-09): (4.20) as printed with tr = tr_N is exactly half of that C [L4-6c]
+PASS YL-6c   (4.20) as printed with the full trace is not C [L4-6d] [smallest relative deviation of the whole array: 0.5926]
+PASS YL-7    deviation 3.852e-14 (tolerance 1.0e-08): (4.48): [D_mu, D_nu] psi = (d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu]) psi (nested finite differences) [L4-9]
+PASS YL-7b   deviation 7.006e-15 (tolerance 1.0e-09): the spinor image Gamma_mu = 1/4 omega_{mu ab} gamma^{ab} of a vector connection keeps gamma_b constant, and its curvature is 1/4 R_{mu nu alpha beta} gamma^{alpha beta} [L4-10a, L4-10b]
+PASS YL-7c   the printed coefficient 1/2 of (4.47), (4.48) gives twice the spinor curvature [L4-10c] [smallest relative deviation: 1.00000000]
+PASS YL-8    deviation 4.761e-13 (tolerance 1.0e-11): the dictionary: Lord's sigma, sigma-bar, gamma, C equal the project's; his gamma^5 = -gamma^ch_LL; his diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) is S_LL(g); M_LL(b-bar) = -epsilon M_LL(b)^T epsilon; the frame g-tilde f g-tilde^dag has Lord's Dirac matrices; his Lambda of M_LL(g-tilde) is L_LL(g)^T [P-1 to P-7]
+
+Notes:
+  derivatives by central finite differences of eighth order (step 0.01), nested for second derivatives; tolerances 1e-12 for exact matrix identities, 1e-8 to 1e-9 where finite differences enter
+
+VERDICT: ALL PASS (16 of 16)

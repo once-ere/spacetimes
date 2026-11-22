@@ -1,0 +1,7 @@
+check,quantity,value
+L1-14,(1.3) for a generic Hermitian set: smallest deviation from eta over 20 sets,1.07341874455193875e0
+L4-3,(4.31) as printed: smallest relative violation of covariance,1.55861011091299795e-1
+L4-5,(4.32) as printed with tr_N: smallest |printed - true|/|true|,1.99999999999952371e0
+L4-6d,(4.20) as printed with the full trace: smallest relative deviation from (4.19),5.64939699122410932e-1
+L4-10c,(4.48) with 1/2 and the compatible C: smallest relative deviation,1.00000000000000022e0
+L4-10d,"printed factors (4.20), (4.48): ratio of the deviations for amplitudes 0.4 and 0.04",9.60049505514627981e1

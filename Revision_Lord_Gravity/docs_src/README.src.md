@@ -29,9 +29,18 @@ plan, and logs the work.
 
 # 2. The state of the work
 
-**Stage 1** (22 November 2026): the folder, its document pipeline, the task record and this README. Lord's paper has
-been read completely. The next stage restates it, section by section, in Part I of the manuscript `lord_gravity.md`,
-with programs that check its conventions and equations.
+**Stage 1** (22 November 2026): the folder, its document pipeline, the task record and this README.
+
+**Stage 2** (22 November 2026): Part I of the manuscript `lord_gravity.md` (`.tex`, `.pdf`): Lord's paper read and
+restated section by section, with every equation that the task uses re-derived and checked by three programs: the
+Rust program `lg_lord` ({{GEN:lgl_verdict_rust}}), the Python program `python/lg_lord.py` ({{GEN:lgl_verdict_python}}) and the
+Wolfram script `wolfram/source/lg_lord.wls` ({{GEN:lgl_verdict_wolfram}}, exact arithmetic). Several equations of Lord's
+Section 4, as printed, do not follow from his definitions: the sign of the inhomogeneous term of the transformation of
+the auxiliary fields, a factor 2 in the connection of the vectors, and the coefficient of the curvature of the spinor
+connection, which is $\tfrac14R_{\mu\nu ab}\gamma^{ab}$, not $\tfrac12R_{\mu\nu ab}\gamma^{ab}$; the manuscript gives the corrected forms, and
+the two factors compensate each other only to first order in the fields.
+
+The next stage is Part II: the association of the group $SL(2,\mathbb C)$ of the project with Lord's gauge group.
 
 # 3. Contents
 
@@ -42,9 +51,12 @@ with programs that check its conventions and equations.
 | `provenance/inputs_sha256.txt` | the SHA-256 checksum of the copy of Lord's paper that is read (the paper is not in the repository) | written |
 | `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?) | written |
 | `docs_src/` | the hand-edited sources of the documents | written |
-| `provenance/generated/` | the fragments that the programs write for the documents | planned |
-| `rust/`, `python/`, `wolfram/` | the programs: Rust computes, Python and the Wolfram Language check | planned |
-| `data/` | the data files and the reports of the checks | planned |
+| `lord_gravity.md`, `.tex`, `.pdf` | the manuscript of the task: Part I (Lord's paper read and checked) | Part I written |
+| `provenance/generated/` | the fragments that the programs write for the documents (`lg_lord.md`, written by `code/scripts/write_lg_lord_fragments.py`) | written for Part I |
+| `rust/` | the Cargo workspace: the library `lgcore` (complex matrices, bi-quaternions, Dirac matrices, automatic differentiation, and `lord.rs`, Lord's matrices from his definitions) and the program `lg_lord` (the checks of Parts I and II) | written for Parts I and II |
+| `python/` | `lgcommon.py` (common definitions, finite differences, the report) and `lg_lord.py` (the independent check of `lg_lord`) | written for Parts I and II |
+| `wolfram/source/` | `lg_lord.wls`: the exact checks of Lord's identities, signs and factors | written |
+| `data/` | the reports of the checks (`hck_lg_lord_checks.txt`, `_python.txt`, `_wolfram.txt`), the numbers of the findings (`lg_lord_findings.csv`), and the report of the check that no document sends its reader elsewhere | written |
 | `figures/` | the figures | planned |
 
 # 4. How to build the documents
@@ -53,10 +65,14 @@ From the folder `Revision_Lord_Gravity`:
 
 ```bash
 cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+(cd rust && cargo build --release && ./target/release/lg_lord)   # the checks of Parts I and II
+python3 python/lg_lord.py                      # their independent check
+wolframscript -file wolfram/source/lg_lord.wls data/hck_lg_lord_checks_wolfram.txt
+python3 code/scripts/write_lg_lord_fragments.py   # the numbers of the documents
 python3 code/scripts/assemble_docs.py          # docs_src/*.src.md -> the .md documents
 python3 code/scripts/check_self_contained.py   # no document sends its reader elsewhere
 bash code/scripts/build_docs.sh                # the .tex and .pdf of every document, with the layout check
 ```
 
-The pipeline needs pandoc (2.11 or later), XeLaTeX and latexmk (TeX Live), the DejaVu fonts and the Latin Modern Math
-font, and Python 3.
+The programs need Rust (cargo), Python 3 with numpy, and the Wolfram Language (wolframscript); the pipeline needs pandoc
+(2.11 or later), XeLaTeX and latexmk (TeX Live), the DejaVu fonts and the Latin Modern Math font.
