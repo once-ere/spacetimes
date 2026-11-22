@@ -1,0 +1,37 @@
+lg_worked.py: the worked examples of the manuscript lord_gravity, a second computation (exact where rational; Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YW-1a   deviation 0.000e+00 (tolerance 0.0e+00): S = M_LL(gtilde) = diag(1/2, 2) = (M_LL(g)^dag)^{-1}, sigma'_mu = S sigma_mu S^dag = diag(1/4, 4), sigma_1, sigma_2, diag(1/4, -4) (exact)
+PASS YW-1b   deviation 0.000e+00 (tolerance 0.0e+00): the sigma'_mu are Hermitian (exact)
+PASS YW-1c   deviation 0.000e+00 (tolerance 0.0e+00): their bars are (S^dag)^{-1} bar(sigma_mu) S^{-1} (exact)
+PASS YW-1d   deviation 0.000e+00 (tolerance 0.0e+00): N_LG(sigma'_a, sigma'_b) = eta_ab (exact)
+PASS YW-2a   deviation 0.000e+00 (tolerance 0.0e+00): S4 = diag(S, (S^dag)^{-1}) = diag(1/2, 2, 2, 1/2) = S_LL(g) (exact)
+PASS YW-2b   deviation 0.000e+00 (tolerance 0.0e+00): gamma'^a = ((0, sigma'_a), (bar sigma'_a, 0)) = S4 gamma^a S4^{-1} (exact)
+PASS YW-2c   deviation 0.000e+00 (tolerance 0.0e+00): the Clifford relation (1/2){gamma'^a, gamma'^b} = eta^{ab} 1_4 (exact)
+PASS YW-2d   deviation 0.000e+00 (tolerance 0.0e+00): the Lorentz matrix of the boost is ((17/8, 0, 0, 15/8), (0, 1, 0, 0), (0, 0, 1, 0), (15/8, 0, 0, 17/8)), and its inverse has -15/8 in place of 15/8 (exact)
+PASS YW-2e   deviation 0.000e+00 (tolerance 0.0e+00): gamma'^a = sum_b (L^{-1})_{ab} gamma^b (exact)
+PASS YW-2f   deviation 0.000e+00 (tolerance 0.0e+00): (9.3): S_LL(g)^{-1} gamma^p S_LL(g) = sum_q L_pq gamma^q (exact)
+PASS YW-3a   deviation 0.000e+00 (tolerance 0.0e+00): the points f'_a of M31 with M_LL(f'_a) = sigma'_a are (17/8, 0, 0, -15/8), (0, 1, 0, 0), (0, 0, 1, 0), (-15/8, 0, 0, 17/8) (exact)
+PASS YW-3b   deviation 0.000e+00 (tolerance 0.0e+00): they are orthonormal: their Minkowski products are eta_ab (exact)
+PASS YW-3c   deviation 0.000e+00 (tolerance 0.0e+00): the velocity x^3/x^0 of f'_0 is -15/17 (exact)
+PASS YW-4a   deviation 0.000e+00 (tolerance 0.0e+00): the set (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2) is Hermitian with real coefficients (exact)
+PASS YW-4b   deviation 0.000e+00 (tolerance 0.0e+00): the determinant of the matrix of their coefficients is 1: they are linearly independent (exact)
+PASS YW-4c   deviation 0.000e+00 (tolerance 0.0e+00): N_LG(sigma''_0, sigma''_3) = 1/2 (exact)
+PASS YW-4d   deviation 0.000e+00 (tolerance 0.0e+00): (1/2){gamma''^0, gamma''^3} = (1/2) 1_4: the Clifford relation fails (exact)
+PASS YW-5a   deviation 0.000e+00 (tolerance 0.0e+00): u = S_LL(g)(1, 0, 1, 0) = (1/2, 0, 2, 0) (exact)
+PASS YW-5b   deviation 0.000e+00 (tolerance 0.0e+00): Psi = (u (x) (1, 0)) e^{-i p.x} solves i gamma^mu d_mu Psi = m Psi (symbolic coordinates)
+PASS YW-5c   deviation 0.000e+00 (tolerance 0.0e+00): the current j^mu = Psi-bar gamma^mu Psi = (17/4, 0, 0, 15/4) = 2 p^mu (exact)
+PASS YW-5d   deviation 0.000e+00 (tolerance 0.0e+00): the Lagrangian density (15.3) of the plane wave vanishes (exact)
+PASS YW-5e   deviation 0.000e+00 (tolerance 0.0e+00): its energy-momentum tensor (16.2), with lower indices, is T_{mu nu} = 2 p_mu p_nu (T_00 = 289/32, T_03 = -255/32, T_33 = 225/32; exact)
+PASS YW-5f   deviation 0.000e+00 (tolerance 0.0e+00): its trace eta^{mu nu} T_{mu nu} = m Psi-bar Psi = 2 (exact)
+PASS YW-6a   deviation 9.992e-16 (tolerance 1.0e-13): the eigenvalues of the 16 x 16 Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy |D| (K^3)^dag are -E(q) and +E(q) eight times each, E(q) = (|q|^2 + M^2 + |D|^2)^{1/2} (five momenta, numpy.linalg.eigvalsh)
+PASS YW-6b   deviation 9.446e-11 (tolerance 2.0e-10): E(0) = (M^2 + |D|^2)^{1/2} is the printed gap (relative)
+PASS YW-7a   deviation 4.930e-32 (tolerance 1.0e-25): the closed form (A.19) of I^(1) equals mpmath.quad (30 digits) at M = E_gap and at M = 0.2
+PASS YW-7b   deviation 4.334e-12 (tolerance 1.0e-08): the gap equation 23.7 I^(1)(E_gap)/pi^2 = 1 with the printed gap
+PASS YW-7c   deviation 2.091e-10 (tolerance 1.0e-09): pi^2/I^(1)(0.2) equals the printed critical coupling G^crit_LL (relative)
+
+Notes:
+  pi^2/I^(1)(0.2) = 21.2866097555497; E(0.3) = 0.473542098816
+
+VERDICT: ALL PASS (28 of 28)

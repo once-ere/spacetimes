@@ -44,8 +44,8 @@ the two factors compensate each other only to first order in the fields.
 algebra in the Weyl form are the orthonormal frames of the space-time M31 of the project; his change of representation
 is the action of a unit bi-quaternion of the Lorentz super-loop on frames, and the unit bi-quaternions are all the
 continuous changes that keep the Weyl form (Theorem L1); his gauge group is the $SL(2,\mathbb C)$ factor of the gauge group
-GEE of the earlier hypotheses, and his auxiliary fields are minus its spin connection. What the gauging adds is the
-dynamics of that connection, which the earlier hypotheses, on their flat space-time, leave out.
+GEE of the brochon model (the earlier hypotheses of the project), and his auxiliary fields are minus its spin connection.
+What the gauging adds is the dynamics of that connection, which the brochon model, on its flat space-time, leaves out.
 
 **Stage 4** (22 November 2026): Part III of the manuscript: the gravitational coupling of the brochon. Lord's reference
 vectors are the tetrad of a curved space-time (in the project's language, four Hermitian bi-quaternions at every point
@@ -54,19 +54,29 @@ tetrad, whose spinor image is the spin connection of GEE; the curvature of the s
 the metric. The brochon's field equation in a curved space-time follows, with its conserved currents, the square of its
 Dirac operator (the coupling $-\tfrac14R$ to the scalar curvature), the conformal invariance of the massless brochon, and
 Volkov's solution in a plane wave of the zeugon. In the condensed vacuum, where the zeugon exists, the quasi-particle of
-the brochon is a particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}=0.3664\,\Lambda_{\rm LL}$ in every gravitational field (Theorem L2).
+the brochon is a particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}=$ {{GEN:p2_gap_V2_CJT}} $\Lambda_{\rm LL}$ in every gravitational field (Theorem L2).
 The energy-momentum tensor of the brochon follows from the variation of the tetrad, and with that of the gauge fields
 (the zeugon's among them) it is the conserved source of Einstein's equations. Three programs check Part III: the Rust
 program `lg_curved` ({{GEN:lgc_verdict_rust}}), the Python program `python/lg_curved.py` ({{GEN:lgc_verdict_python}}) and the Wolfram
 script `wolfram/source/lg_curved.wls` ({{GEN:lgc_verdict_wolfram}}, exact arithmetic, including the Schwarzschild,
 Painlevé-Gullstrand and Vaidya space-times that stages 5 and 6 use).
 
-**The manuscript is not complete in itself.** Parts I to III use objects of the earlier hypotheses of the project and of
-the author's unpublished manuscript of 16 November 2026 on the Lorentz super-loop without stating them, and terms that
-they do not define. The task record states this, with its provenance, in its Section 4.1; the check HCK-H2 of
-`code/scripts/check_self_contained.py` fails until the manuscript is rewritten. On 22 November 2026 the author
-instructed to continue the calculations and the analysis and to stop writing manuscripts; the rewriting waits for his
-request.
+**Parts I to III rewritten, complete in themselves** (22 November 2026, after the author asked for the manuscripts again
+and for a friendlier style). Until then Parts I to III used objects of the earlier hypotheses of the project and of the
+author's unpublished manuscript of 16 November 2026 on the Lorentz super-loop without stating them, and terms that they did
+not define (the task record, Section 4.1). The manuscript now states everything that it uses: a word list (its Section
+0.1), the results in brief (0.2), a paragraph *In words* at the head of most sections, Appendix A (the algebra of the
+Lorentz super-loop with an example of every object: the octonions and a Moufang loop, the bi-octonions and the Lorentz
+super-loop, M31 and the Lorentz group, the eight spinor charges, a Dirac spinor, an isodoublet, an isovector, an isodoublet
+of Dirac spinors, and an explicit spin-zero superfluid of the spinor charges) and Appendix B (the brochon model: the field,
+the gauge group GEE, the Lagrangian and the field equations, the mean field and the methods HS, KS and CJT, the recursion of
+the interaction, the polar ground state with its quasi-particles, the masses of the gauge bosons and the zeugon). New
+worked examples (Lord's change of representation by a boost and its frame, a set of Hermitian matrices that is not a
+representation, a plane wave of the brochon with its energy-momentum tensor, the quasi-particles and the gap equation) are
+computed by the Rust program `lg_worked` ({{GEN:lgw_verdict_rust}}) and checked by `python/lg_worked.py`
+({{GEN:lgw_verdict_python}}, exact) and `wolfram/source/lg_worked.wls` ({{GEN:lgw_verdict_wolfram}}). The check HCK-H2 of
+`code/scripts/check_self_contained.py` passes: no line of the manuscript relies on the earlier hypotheses or the earlier
+work without stating them.
 
 **Stage 5** (22 November 2026), computed and checked, not written up: the brochon in the Schwarzschild field. In the
 freely falling tetrad of Painlevé and Gullstrand (the frame of observers who fall freely from rest at infinity), which
@@ -117,8 +127,8 @@ program `lg_pair` ({{GEN:lgp_verdict_rust}}) and `wolfram/source/lg_pair.wls` ({
 decision D11 and entries E20 and E21; the data in `data/lg_pair_*.csv`. Which gravitational predictions the author means,
 and the value of $\Lambda_{\rm LL}$ in physical units, are questions put to him.
 
-The manuscript, the provenance of the remarks, the registry of the symbols and the notebook wait for the author's request
-(the task record, Section 6).
+Next (the task record, Section 6): Parts IV to VI of the manuscript, written from stages 5 to 7 in the same style; then
+the provenance of the remarks, the registry of the symbols and the notebook.
 
 # 3. Contents
 
@@ -128,13 +138,13 @@ The manuscript, the provenance of the remarks, the registry of the symbols and t
 | `provenance/P0_task_record.md`, `.tex`, `.pdf` | the task (in my words), the rules, the starting point, the decisions, the plan, the log | written; grows with the work |
 | `provenance/inputs_sha256.txt` | the SHA-256 checksum of the copy of Lord's paper that is read (the paper is not in the repository) | written |
 | `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?) | written |
-| `docs_src/` | the hand-edited sources of the documents | written |
-| `lord_gravity.md`, `.tex`, `.pdf` | the manuscript of the task: Part I (Lord's paper read and checked), Part II (the association of the project's $SL(2,\mathbb C)$ with Lord's gauge group), Part III (the gravitational coupling of the brochon) | Parts I to III written, not complete in themselves (Section 2); Parts IV to VI not written (the author's instruction of 22 November 2026) |
-| `provenance/generated/` | the fragments that the programs write for the documents (`lg_lord.md`, `lg_curved.md`, `lg_schw.md`, `lg_vaidya.md` and `lg_pair.md`, written by `code/scripts/write_lg_lord_fragments.py`, `write_lg_curved_fragments.py`, `write_lg_schw_fragments.py`, `write_lg_vaidya_fragments.py` and `write_lg_pair_fragments.py`) | written for Parts I to III and stages 5 to 7a |
-| `rust/` | the Cargo workspace: the library `lgcore` (complex matrices, bi-quaternions, Dirac matrices, automatic differentiation, `lord.rs`, Lord's matrices from his definitions, and `curved.rs`, the geometry of a tetrad and the brochon in it); the program `lg_lord` (the checks of Parts I and II) and the program `lg_curved` (the checks of Part III); the crate `lgsundials` (the integrator CVODE of SUNDIALS 7.8.0 in pure Rust) with its C interface `lgsundials_c` for the Python programs; the program `lg_schw` (stage 5: the brochon in the Schwarzschild field) the program `lg_vaidya` (stage 6: the brochon in the Vaidya space-time, crate `lgvaidya`) and the program `lg_pair` (stage 7a: the pair bound by the zeugon, crate `lgpair`) | written for Parts I to III and stages 5 to 7a |
-| `python/` | `lgcommon.py` (common definitions, finite differences, the report), `lg_lord.py` and `lg_curved.py` (the independent checks of `lg_lord` and `lg_curved`), `lgsundials.py` (CVODE through `lgsundials_c`), `lg_schw.py` and `lg_vaidya.py` (the independent checks of `lg_schw` and `lg_vaidya`), and `lg_pair.py` (the exact levels of the pair of stage 7a) | written for Parts I to III and stages 5 to 7a |
-| `wolfram/source/` | `lg_lord.wls`: the exact checks of Lord's identities, signs and factors; `lg_curved.wls`: the exact checks of Part III; `lg_schw.wls`: the exact checks of stage 5 and some of its numbers in arithmetic of 32 digits; `lg_vaidya.wls`: the exact checks of stage 6; `lg_pair.wls`: the exact checks of stage 7a | written |
-| `data/` | the reports of the checks (`hck_lg_lord_checks.txt`, `hck_lg_curved_checks.txt`, `hck_lg_schw_checks.txt`, each with `_python.txt` and `_wolfram.txt`), the numbers of the findings (`lg_lord_findings.csv`), of Part III (`lg_curved_values.csv`) and of stage 5 (`lg_schw_qbs.csv`, the quasi-bound states; `lg_schw_grey.csv`, the greybody factors; `lg_schw_interior.csv`, a solution on both sides of the horizon; `lg_schw_small.csv`, the states at small masses and their comparison with the small-mass formulas; `lg_schw_values.csv`, single values), of stage 6 (`lg_vaidya_runs.csv`, the four runs with a changing mass at every output time; `lg_vaidya_values.csv`, single values; reports `hck_lg_vaidya_checks*.txt`), of stage 7a (`lg_pair_levels.csv`, the exact coefficients of the levels; `lg_pair_values.csv`, the numbers of the pair; reports `hck_lg_pair_checks*.txt`), and the report of the check whether a document sends its reader elsewhere | written |
+| `docs_src/` | the hand-edited sources of the documents; `docs_src/parts/` holds the parts that the manuscript includes in full (`glossary_lg.part.md`, the word list; `algebra_lg.part.md`, Appendix A; `brochon_lg.part.md`, Appendix B) | written |
+| `lord_gravity.md`, `.tex`, `.pdf` | the manuscript of the task: Part I (Lord's paper read and checked), Part II (the association of the project's $SL(2,\mathbb C)$ with Lord's gauge group), Part III (the gravitational coupling of the brochon) | Parts I to III written and, since 22 November 2026, complete in themselves, with the word list and Appendices A and B; Parts IV to VI next |
+| `provenance/generated/` | the fragments that the programs write for the documents (`lg_lord.md`, `lg_curved.md`, `lg_schw.md`, `lg_vaidya.md`, `lg_pair.md` and `lg_worked.md`, written by `code/scripts/write_lg_lord_fragments.py`, `write_lg_curved_fragments.py`, `write_lg_schw_fragments.py`, `write_lg_vaidya_fragments.py`, `write_lg_pair_fragments.py` and `write_lg_worked_fragments.py`), and `lg_examples.md`, the numbers of the appendices copied by `write_lg_examples_fragments.py` from the fragment files of the folder `Revision_SM_Higgs` (with the SHA-256 checksums of the files that it reads) | written for Parts I to III, the appendices and stages 5 to 7a |
+| `rust/` | the Cargo workspace: the library `lgcore` (complex matrices, bi-quaternions, Dirac matrices, automatic differentiation, `lord.rs`, Lord's matrices from his definitions, and `curved.rs`, the geometry of a tetrad and the brochon in it); the program `lg_lord` (the checks of Parts I and II) and the program `lg_curved` (the checks of Part III); the crate `lgsundials` (the integrator CVODE of SUNDIALS 7.8.0 in pure Rust) with its C interface `lgsundials_c` for the Python programs; the program `lg_schw` (stage 5: the brochon in the Schwarzschild field) the program `lg_vaidya` (stage 6: the brochon in the Vaidya space-time, crate `lgvaidya`) and the program `lg_pair` (stage 7a: the pair bound by the zeugon, crate `lgpair`); and the program `lg_worked` (the worked examples of the manuscript, crate `lgworked`) | written for Parts I to III and stages 5 to 7a |
+| `python/` | `lgcommon.py` (common definitions, finite differences, the report), `lg_lord.py` and `lg_curved.py` (the independent checks of `lg_lord` and `lg_curved`), `lgsundials.py` (CVODE through `lgsundials_c`), `lg_schw.py` and `lg_vaidya.py` (the independent checks of `lg_schw` and `lg_vaidya`), `lg_pair.py` (the exact levels of the pair of stage 7a), and `lg_worked.py` (the worked examples, exact where they are rational) | written for Parts I to III and stages 5 to 7a |
+| `wolfram/source/` | `lg_lord.wls`: the exact checks of Lord's identities, signs and factors; `lg_curved.wls`: the exact checks of Part III; `lg_schw.wls`: the exact checks of stage 5 and some of its numbers in arithmetic of 32 digits; `lg_vaidya.wls`: the exact checks of stage 6; `lg_pair.wls`: the exact checks of stage 7a; `lg_worked.wls`: the symbolic checks of the worked examples | written |
+| `data/` | the reports of the checks (`hck_lg_lord_checks.txt`, `hck_lg_curved_checks.txt`, `hck_lg_schw_checks.txt`, each with `_python.txt` and `_wolfram.txt`), the numbers of the findings (`lg_lord_findings.csv`), of Part III (`lg_curved_values.csv`) and of stage 5 (`lg_schw_qbs.csv`, the quasi-bound states; `lg_schw_grey.csv`, the greybody factors; `lg_schw_interior.csv`, a solution on both sides of the horizon; `lg_schw_small.csv`, the states at small masses and their comparison with the small-mass formulas; `lg_schw_values.csv`, single values), of stage 6 (`lg_vaidya_runs.csv`, the four runs with a changing mass at every output time; `lg_vaidya_values.csv`, single values; reports `hck_lg_vaidya_checks*.txt`), of stage 7a (`lg_pair_levels.csv`, the exact coefficients of the levels; `lg_pair_values.csv`, the numbers of the pair; reports `hck_lg_pair_checks*.txt`), of the worked examples (`lg_worked_values.csv`; reports `hck_lg_worked_checks*.txt`), and the report of the check whether a document sends its reader elsewhere | written |
 | `figures/` | the figures | planned |
 
 # 4. How to build the documents

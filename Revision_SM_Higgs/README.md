@@ -90,7 +90,9 @@ check `check_self_contained.py` now reads the LaTeX sources of the article and o
 hypotheses document and the manuscripts of the stages 3, 4 and 6 have been made complete in themselves as well (E78):
 each explains the words that it uses before its findings and contains, as its Appendix A, the algebra from which its
 fields come, with an example of every object. The manuscript `superfluid.md` of the earlier hypotheses has not yet been
-written again (decision D38). This README is the list of contents of the folder.
+written again; it follows the rewriting of the manuscript of the folder `Revision_Lord_Gravity`, which states the model of
+the earlier hypotheses, the brochon model, in full (decisions D38 and D39). This README is the list of contents of the
+folder.
 
 # 2. State
 

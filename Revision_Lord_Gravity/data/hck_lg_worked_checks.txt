@@ -1,0 +1,36 @@
+lg_worked: the worked examples of the manuscript lord_gravity (Revision_Lord_Gravity, PROJECT spacetimes); hbar = c = 1
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS LW-1a   deviation 0.000e0 (tolerance 0.0e0): Lord's change of representation by S = M_LL(gtilde) of the boost g = (5/4) e_0 + (3/4) i e_3: S = diag(1/2, 2) = (M_LL(g)^dag)^{-1}, and the four matrices sigma'_mu = S sigma_mu S^dag are diag(1/4, 4), sigma_1, sigma_2, diag(1/4, -4) (largest deviation of an entry)
+PASS LW-1b   deviation 0.000e0 (tolerance 0.0e0): the four matrices sigma'_mu are Hermitian
+PASS LW-1c   deviation 0.000e0 (tolerance 0.0e0): their bars (the adjugates (1.1), Lord's definition -eps X^T eps) are (S^dag)^{-1} bar(sigma_mu) S^{-1}
+PASS LW-1d   deviation 0.000e0 (tolerance 0.0e0): their polarized determinants (2.7) are N_LG(sigma'_a, sigma'_b) = eta_ab
+PASS LW-2a   deviation 0.000e0 (tolerance 0.0e0): its 4 x 4 form S4 = diag(S, (S^dag)^{-1}) = diag(1/2, 2, 2, 1/2) is the spinor matrix S_LL(g) of (9.3), and diag(S^{-1}, S^dag) is its inverse
+PASS LW-2b   deviation 0.000e0 (tolerance 0.0e0): Lord's Dirac matrices of the new set, gamma'^a = ((0, sigma'_a), (bar sigma'_a, 0)) (his (4.5)), equal S4 gamma^a S4^{-1}
+PASS LW-2c   deviation 0.000e0 (tolerance 0.0e0): they obey the Clifford relation (1/2){gamma'^a, gamma'^b} = eta^{ab} 1_4
+PASS LW-2d   deviation 0.000e0 (tolerance 0.0e0): the Lorentz matrix (9.2) of the boost is L = ((17/8, 0, 0, 15/8), (0, 1, 0, 0), (0, 0, 1, 0), (15/8, 0, 0, 17/8)), and L^{-1} is the boost with -15/8 in place of 15/8
+PASS LW-2e   deviation 0.000e0 (tolerance 0.0e0): gamma'^a = sum_b (L^{-1})_{ab} gamma^b: gamma'^0 = (17/8) gamma^0 - (15/8) gamma^3 and gamma'^3 = -(15/8) gamma^0 + (17/8) gamma^3 (a change of representation by S4 is the Lorentz transformation L^{-1} of the Dirac matrices)
+PASS LW-2f   deviation 0.000e0 (tolerance 0.0e0): (9.3) for the boost: S_LL(g)^{-1} gamma^p S_LL(g) = sum_p' L_{pp'} gamma^p', with S_LL(g)^{-1} = diag(M^dag, M^{-1}) (the product S_LL(g) S_LL(g)^{-1} deviates from 1 by the second number)
+PASS LW-3a   deviation 0.000e0 (tolerance 0.0e0): the four Hermitian bi-quaternions f'_a with M_LL(f'_a) = sigma'_a are the points (17/8, 0, 0, -15/8), (0, 1, 0, 0), (0, 0, 1, 0), (-15/8, 0, 0, 17/8) of M31
+PASS LW-3b   deviation 0.000e0 (tolerance 0.0e0): their polarized norms are N_LL(f'_a, f'_b) = eta_ab: an orthonormal frame of M31
+PASS LW-3c   deviation 0.000e0 (tolerance 1.0e-16): f'_0 is the four-velocity of an observer who moves with the velocity -15/17 along x^3 (x^3/x^0 of f'_0)
+PASS LW-4a   deviation 0.000e0 (tolerance 0.0e0): the set sigma'' = (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2) consists of Hermitian matrices with real coefficients in the basis sigma_mu
+PASS LW-4b   deviation 0.000e0 (tolerance 0.0e0): the four are linearly independent: the determinant of the 4 x 4 matrix of their coefficients is 1
+PASS LW-4c   deviation 0.000e0 (tolerance 0.0e0): but N_LG(sigma''_0, sigma''_3) = 1/2 instead of eta_03 = 0
+PASS LW-4d   deviation 0.000e0 (tolerance 0.0e0): and the anticommutator (1/2){gamma''^0, gamma''^3} of Lord's Dirac matrices of the set is (1/2) 1_4 instead of 0: the Clifford relation fails
+PASS LW-5a   deviation 0.000e0 (tolerance 0.0e0): the spinor of Appendix A.5: S_LL(g)(1, 0, 1, 0) = (1/2, 0, 2, 0) for the boost g
+PASS LW-5b   deviation 0.000e0 (tolerance 0.0e0): it is a plane-wave spinor of mass 1 and momentum p = (17/8, 0, 0, 15/8): (gamma^mu p_mu - m) u = 0 exactly
+PASS LW-5c   deviation 1.616e-16 (tolerance 1.0e-14): at 12 random points the brochon Psi = (u (x) (1, 0)) e^{-i p.x} solves the free field equation in flat space-time (library function dirac_resid of Part III; canonical tetrad, no gauge fields; relative residual of the values and first derivatives)
+PASS LW-5d   deviation 8.882e-16 (tolerance 1.0e-13): its fermion-number current (library function currents) is j^mu = (17/4, 0, 0, 15/4) = 2 p^mu at every point
+PASS LW-5e   deviation 1.554e-15 (tolerance 1.0e-13): its Lagrangian density (15.3) (library function lagr8) vanishes
+PASS LW-5f   deviation 1.776e-15 (tolerance 1.0e-13): its energy-momentum tensor (16.2) (library function stress8, indices raised) is T^{mu nu} = 2 p^mu p^nu: T^00 = 289/32, T^03 = 255/32, T^33 = 225/32, the other components 0
+PASS LW-5g   deviation 5.329e-15 (tolerance 1.0e-13): its trace eta_{mu nu} T^{mu nu} equals m Psi-bar Psi = 2
+PASS LW-6a   deviation 1.776e-15 (tolerance 1.0e-13): with the printed M = M^{CJT,D}_SF and |D| = |D^CJT_SF|, the 16 x 16 Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy |D| (K^3_LL)^dag has the eigenvalues -E(q) and +E(q) eight times each, E(q) = (|q|^2 + M^2 + |D|^2)^{1/2}, at the momenta (0, 0, 0), (0, 0, 0.3), (0.3, -0.4, 0.5), (0, 0, 1), (0.6, 0.1, -0.7) (largest deviation of an eigenvalue)
+PASS LW-6b   deviation 9.446e-11 (tolerance 2.0e-10): E(0) = (M^2 + |D|^2)^{1/2} equals the printed gap E^{CJT,gap}_SF (relative; the printed numbers have ten digits)
+PASS LW-7a   deviation 5.551e-17 (tolerance 1.0e-14): the integral I^(1)(M) = int_0^1 q^2 dq/(q^2 + M^2)^{1/2} of (A.19): its closed form equals the Gauss-Legendre rule of 64 points at M = E^{CJT,gap}_SF and at M = m_LL = 0.2
+PASS LW-7b   deviation 4.333e-12 (tolerance 1.0e-8): the gap equation of the polar state: g^{CJT,P}_SF I^(1)(E^{CJT,gap}_SF)/pi^2 = 1 with g^{CJT,P}_SF = 23.7 and the printed gap (the printed numbers have ten digits)
+PASS LW-7c   deviation 2.091e-10 (tolerance 1.0e-9): pi^2/I^(1)(m_LL) for m_LL = 0.2 equals the printed critical coupling G^crit_LL (relative)
+PASS LW-0    every value printed as exact (LW-1 to LW-5) is an exact dyadic fraction (no rounding) [0 values not exact]
+
+VERDICT: ALL PASS (30 of 30)

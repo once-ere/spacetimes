@@ -31,11 +31,13 @@ definition; its report therefore states what was searched, not that every docume
 CHECK HCK-H2 (added on 22 November 2026): the manuscript lord_gravity (its source and the Markdown built from it) must
 not take objects from the earlier hypotheses of the project or from the earlier work on the Lorentz super-loop without
 restating them.  The words "earlier hypotheses" and "earlier work" mark such objects; the check lists every line of the
-manuscript that contains them and fails if there is one.  It fails for Parts I to III as they stand (22 November 2026):
-the manuscript is to be rewritten so that it contains all the material that it uses (task record, Section 4.1); the
-author instructed to stop writing manuscripts until he asks again, so the failure stands until then.  The task record
-and the README name the earlier hypotheses as the starting point of the task and are not searched by HCK-H2; the terms
-that the task record uses without defining them are listed in its Section 4.1.
+manuscript that contains them and fails if there is one.  It failed for Parts I to III as they were first written; after
+the author asked for the manuscripts again, Parts I to III were rewritten (22 November 2026, task record entries E22 to
+E24) with Appendix A (the algebra of the Lorentz super-loop) and Appendix B (the brochon model), and it passes.  The
+check searches the whole text, so that it also finds the two words split over two lines of a source (the first version
+searched line by line and missed one such case, which the rewriting removed).  The task record and the README name the
+earlier hypotheses as the starting point of the task and are
+not searched by HCK-H2; the terms that the task record uses without defining them are listed in its Section 4.1.
 
 Output: data/hck_self_contained_checks.txt (exit status 1 if a check fails).
 
@@ -103,9 +105,11 @@ def main():
         name = os.path.basename(path)
         if not name.startswith("lord_gravity"):
             continue
-        for k, line in enumerate(body_of(path).split("\n"), 1):
-            if re.search(r"\bearlier (hypotheses|work)\b", line, re.I):
-                hits2.append("%s:%d" % (os.path.relpath(path, ROOT), k))
+        # the two words may also be split over two lines of a source: search the whole text, and report the line on
+        # which the match begins
+        body = body_of(path)
+        for m in re.finditer(r"\bearlier\s+(hypotheses|work)\b", body, re.I):
+            hits2.append("%s:%d" % (os.path.relpath(path, ROOT), body.count("\n", 0, m.start()) + 1))
     ok2 = not hits2
     per_file = {}
     for h in hits2:

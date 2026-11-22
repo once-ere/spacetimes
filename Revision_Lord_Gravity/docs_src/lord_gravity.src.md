@@ -12,8 +12,11 @@ date: "November 22, 2026"
 
 The task of this manuscript is to couple the spinor field of the project, the **brochon**, to gravitation by the
 gauge theory of E. A. Lord, to solve its field equations in the Schwarzschild and the Vaidya space-times on both sides of
-the horizon, and to derive predictions involving the brochon and the zeugon that gravitation can detect. It is written in
-parts, each pushed when it is complete:
+the horizon, and to derive predictions involving the brochon and the zeugon that gravitation can detect. The brochon is a
+Dirac field with an internal index, the isospin, made of the eight spinor charges of the Lorentz super-loop of the
+bi-octonions (Appendix A). It lives in the *brochon model*, a field theory on flat space-time with the gauge group GEE, a
+contact interaction and a superfluid vacuum, whose massless gauge boson is the **zeugon** (Appendix B). The manuscript is
+written in parts, each pushed when it is complete:
 
 * **Part I** (Sections 2 to 8, this version): Lord's paper, "General relativity from gauge invariance", Proceedings of
   the Cambridge Philosophical Society 69, 423 (1971), read and restated section by section in my words, with every
@@ -21,7 +24,7 @@ parts, each pushed when it is complete:
   does not follow from Lord's definitions, with the corrected form and the check that decides.
 * **Part II** (Sections 9 to 12, this version): the association of the group $SL(2,\mathbb C)$ of the project with Lord's
   gauging of the representation of the Clifford algebra: the project's objects, the dictionary between his objects and
-  the project's, each entry checked, and what the gauging adds to the earlier hypotheses.
+  the project's, each entry checked, and what the gauging adds to the brochon model.
 * **Part III** (Sections 13 to 17, this version): the gravitational coupling of the brochon by Lord's covariant
   derivative: the tetrad (Lord's reference vectors), the spin connection and the curvature, the field equations of the
   brochon and of the quasi-particles of the superfluid in a curved space-time, the energy-momentum tensor, and Einstein's
@@ -30,15 +33,51 @@ parts, each pushed when it is complete:
   bound by the zeugon and the predictions.
 
 Section 18 gives the provenance of Parts I to III: the programs that check them and their complete reports; Section 19
-lists the symbols.
+lists the symbols of the main text. Appendix A builds the algebra of the Lorentz super-loop, with an example of every
+object, and Appendix B states the brochon model; each appendix lists its own symbols.
+
+*How to read this manuscript.* The manuscript is written for a graduate student who knows special relativity, the Dirac
+equation and the elements of general relativity and of group theory; everything else is explained where it is used. The
+objects of the project that the text needs, the bi-quaternions, the spinor charges and the brochon, are built from the
+beginning in Appendix A, and the brochon model with its superfluid vacuum in Appendix B; a reader who meets them for the
+first time can begin there. A reader who wants the physics first can read the results in brief (Section 0.2), then Parts
+II and III, and come back to Part I for the details of Lord's construction. The words of Section 0.1 are also explained at
+their first use, and most sections begin with a paragraph *In words* that says in plain language what the section does
+before the equations do it.
+
+## 0.1 Words used in this manuscript
+
+{{PART:glossary_lg}}
+
+## 0.2 The results in brief
+
+1. Lord's gauge group is not the Lorentz group. It is the group $SL(2,\mathbb C)$ of the changes of the representation of
+   the Dirac matrices that keep their Weyl form. Made local, it forces auxiliary fields into the derivative of a spinor, and
+   with a tetrad these fields become the gravitational field of general relativity (Part I).
+2. Some equations of Lord's Section 4, as printed, do not follow from his own definitions: the sign of the inhomogeneous
+   term in the law of the auxiliary fields, the normalization of a trace, a factor 2 in the connection of the vectors and a
+   factor 2 in the spinor curvature; and a statement of his Section 1 needs a qualification (Section 7). None of them changes
+   his conclusions, but the coupling of the brochon needs the corrected forms, and it is built on them.
+3. In the project, a representation of the Dirac matrices in the Weyl form is an orthonormal frame of M31, and a change of
+   representation is the action of a unit bi-quaternion of the Lorentz super-loop on frames. Lord's gauge group is therefore
+   the $SL(2,\mathbb C)$ factor of the gauge group GEE of the brochon model, and his auxiliary fields are minus its spin
+   connection (Part II).
+4. In a curved space-time the brochon obeys the Dirac equation with the spin connection of the tetrad; the square of its
+   Dirac operator contains the scalar curvature as $-\tfrac14R^{\rm LG}$; its currents are conserved; and its
+   energy-momentum tensor, with that of the gauge fields (the zeugon among them), is the source of Einstein's equations
+   (Part III).
+5. In the superfluid vacuum of the brochon model the quasi-particle of the brochon is, in every gravitational field, a
+   particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}={{GENM:p2_gap_V2_CJT}}\,\Lambda_{\rm LL}$ that couples to the zeugon
+   with the charges $\pm\tfrac12$ (Theorem L2 of Section 15.4): its gravitational problems are those of a Dirac particle of
+   this mass.
 
 # 1. Conventions, units and notation
 
 Units with $\hbar=c=1$. Space-time indices $\mu,\nu,\rho,\sigma,\dots$ run over $0,1,2,3$; the Minkowski metric is
 $\eta^{\rm LL}=\mathrm{diag}(1,-1,-1,-1)$, written with indices as $\eta^{\rm LL}_{\mu\nu}$ and its inverse
 $\eta^{{\rm LL}\,\mu\nu}$ (the same numbers). A repeated index is summed. The suffixes mark the origin of a symbol:
-LL for the objects of the earlier work on the Lorentz super-loop, SF for those of the earlier hypotheses of the project,
-LG for those that this folder introduces, and **Lord** for the objects of Lord's paper that the project does not
+LL for the objects of the Lorentz super-loop and of its fields (Appendix A), SF for those of the brochon model (Appendix
+B), LG for those that this manuscript introduces, and **Lord** for the objects of Lord's paper that the project does not
 otherwise have. Where an object of Lord's paper is the same as an object of the project, the project's symbol is used;
 Part II proves each such identity (checks P-1 to P-4 of Section 18).
 
@@ -79,6 +118,11 @@ fifth identifies those auxiliary fields with the potentials of the spin-2 field,
 non-linear theory is Einstein's general relativity. Sections 2 to 6 below follow his five sections.
 
 # 2. The free fields and their two invariance groups (Lord's Section 1)
+
+*In words.* The free field equations of particles of any spin keep their form under two different groups of
+transformations. The Lorentz transformations move the points of space-time and turn the spinors with them. The changes of
+the representation of the Dirac matrices move nothing: they only change the way in which the spinors and the Dirac matrices
+are written, as a change of basis does. Lord gauges the second group, not the first.
 
 ## 2.1 Two-component spinors
 
@@ -150,6 +194,23 @@ $S_{\rm Lord}\sigma^{\rm LL}_\mu S_{\rm Lord}^\dagger$". The general case is not
 $N_{\rm LG}(\sigma_a,\sigma_b)=g_{ab}$ for another metric $g_{ab}$ generates the Clifford algebra of $g_{ab}$, which is
 where the reference vectors of Lord's Section 4 (Section 5.6) put the metric.
 
+**Example: a change of representation, and a set that is not a representation.** Take the unimodular matrix
+$S_{\rm Lord}=\mathrm{diag}(\tfrac12,2)$. The change (2.6) turns the four matrices $\sigma^{\rm LL}_\mu$ into
+$$\begin{gathered}S_{\rm Lord}\sigma^{\rm LL}_0S_{\rm Lord}^\dagger={{GENM:lgw_lw1_sigma0p}},\qquad S_{\rm Lord}\sigma^{\rm LL}_3S_{\rm Lord}^\dagger={{GENM:lgw_lw1_sigma3p}},\\S_{\rm Lord}\sigma^{\rm LL}_1S_{\rm Lord}^\dagger=\sigma^{\rm LL}_1,\qquad S_{\rm Lord}\sigma^{\rm LL}_2S_{\rm Lord}^\dagger=\sigma^{\rm LL}_2,\end{gathered}$$
+four Hermitian matrices whose polarized determinants (2.7) are again $\eta^{\rm LL}_{ab}$. Their bars are
+$$\overline{S_{\rm Lord}\sigma^{\rm LL}_0S_{\rm Lord}^\dagger}={{GENM:lgw_lw1_sigma0p_bar}},\qquad\overline{S_{\rm Lord}\sigma^{\rm LL}_3S_{\rm Lord}^\dagger}={{GENM:lgw_lw1_sigma3p_bar}},$$
+and $-\sigma^{\rm LL}_1$, $-\sigma^{\rm LL}_2$, as (2.6) says. On Dirac spinors the change is
+$\mathsf S_{\rm Lord}=\mathrm{diag}(S_{\rm Lord},(S_{\rm Lord}^\dagger)^{-1})=\mathrm{diag}(\tfrac12,2,2,\tfrac12)$, and the new Dirac matrices are
+$$\mathsf S_{\rm Lord}\gamma^0_{\rm LL}\mathsf S_{\rm Lord}^{-1}={{GENM:lgw_lw2_gamma0p}}=\tfrac{17}8\gamma^0_{\rm LL}-\tfrac{15}8\gamma^3_{\rm LL},\qquad\mathsf S_{\rm Lord}\gamma^3_{\rm LL}\mathsf S_{\rm Lord}^{-1}=-\tfrac{15}8\gamma^0_{\rm LL}+\tfrac{17}8\gamma^3_{\rm LL},$$
+with $\gamma^1_{\rm LL}$ and $\gamma^2_{\rm LL}$ unchanged: the new matrices are combinations of the old ones with the coefficients of a
+boost along $x^3$ (of speed $\tfrac{15}{17}$), and they obey the same Clifford relation. Every spinor is changed with them,
+$\psi\mapsto\mathsf S_{\rm Lord}\psi$, so no physical result changes. On the other hand, the four Hermitian and linearly independent
+matrices $\sigma^{\rm LL}_0$, $\sigma^{\rm LL}_1$, $\sigma^{\rm LL}_2$ and $\sigma^{\rm LL}_3+\tfrac12\sigma^{\rm LL}_0$ (the determinant of their
+coefficients is ${{GENM:lgw_lw4_det}}$) are not a representation: $N_{\rm LG}(\sigma^{\rm LL}_0,\sigma^{\rm LL}_3+\tfrac12\sigma^{\rm LL}_0)={{GENM:lgw_lw4_n03}}$
+instead of $\eta^{\rm LL}_{03}=0$, and the anticommutator of the Dirac matrices built from the first and the last of them is
+$\tfrac12\mathsf 1_4$ instead of zero. (Checks LW-1 to LW-4 of the program `lg_worked`, with YW-1 to YW-4 in exact arithmetic and
+WW-1, WW-2 in the Wolfram Language; Section 18.)
+
 ## 2.5 The difficulty of the minimal coupling, and Lord's remedy
 
 If $\partial_\mu$ is replaced by a derivative that does not commute with itself, such as the electromagnetic
@@ -164,6 +225,10 @@ chirality condition, which implies the BW equation (Lord (1.26)). The brochon is
 this difficulty does not arise.
 
 # 3. The massless fields of spin 1 and 2 (Lord's Section 2)
+
+*In words.* For massless fields of spin 1 the equations of Bargmann and Wigner are Maxwell's equations, and for spin 2 they
+are the equations of a field whose potentials obey Einstein's equations linearized about flat space-time, but here as the
+exact equations of a linear field.
 
 **Spin 1.** For $m=0$, $s=\tfrac12$ the equations are those of the massless neutrino; for $m=0$, $s=1$ they are Maxwell's
 equations. A symmetric spinor $\psi^{\rm Lord}_{AB}$ that satisfies the chirality condition is a combination of the
@@ -205,6 +270,13 @@ $\eta_{\mu\nu}j-j_{\mu\nu}$ proportional to the stress-energy tensor. Lord stres
 linear theory in flat space-time.
 
 # 5. The change of representation as a gauge group (Lord's Section 4)
+
+*In words.* In flat space-time one fixes a representation of the Dirac matrices once for all. Lord lets the choice vary
+from point to point. A derivative of a spinor then no longer changes like the spinor itself, and a compensating field, the
+auxiliary field $\Gamma^{\rm Lord}_a$, must be added to it, as the electromagnetic potential must be added to the derivative
+when the phase of a wave function is allowed to vary from point to point. Lord then relates the labels of the Dirac matrices
+to the coordinates by four reference vectors (a tetrad) and shows that the auxiliary field and the tetrad describe a curved
+space-time: the commutator of two derivatives is its curvature.
 
 This is the central section of the paper, and the one that the task builds on. Its equations are restated here with
 the checks that decide them; three of them, as printed, need a correction of a sign or a factor (Sections 5.3, 5.4,
@@ -331,6 +403,10 @@ combinations of the $\partial_\mu$, makes space-time curved.
 
 # 6. The non-linear spin-2 theory (Lord's Section 5)
 
+*In words.* Lord identifies his auxiliary fields with the potentials of the massless field of spin 2 of Section 3. With this
+identification its field equations, which in flat space-time are the linearized equations of Einstein, become Einstein's
+equations themselves: gravitation is the gauge field of the local changes of representation.
+
 **The flat limit.** The generalized BW theory $\gamma^{\mu E}_{A_1}D_\mu\psi_{EA_2\dots}=m\psi_{A_1\dots}$ (Lord (5.1)) returns to the flat
 theory of Sections 2 to 4 as $g_{\rm Lord}\to0$. To follow the limit, Lord fixes a special gauge in which the Dirac matrices
 $\gamma_a$ are constant; then (5.7) gives $C_{bae}=g\,a_{abe}$ by his (4.20), and $2g\,a_{abe}$ by (5.8) (Lord (5.2); WL-6). He
@@ -399,9 +475,14 @@ These are the facts that Part III uses to couple the brochon to gravitation.
 # Part II. The $SL(2,\mathbb C)$ of the project and Lord's gauge group
 
 Part II answers the second item of the task: what in the project is Lord's group, and how the project's own gauge
-structure is his. The earlier hypotheses already contain his group as the $SL(2,\mathbb C)$ factor of their gauge group,
-acting on frames of space-time and on spinors; what they do not contain is the dynamics of its gauge field, which on
-their flat space-time is a pure gauge. Lord's construction supplies exactly that.
+structure is his. The brochon model (Appendix B) already contains his group as the $SL(2,\mathbb C)$ factor of its gauge
+group GEE, acting on frames of space-time and on spinors; what it does not contain is the dynamics of that gauge field,
+which on its flat space-time is a pure gauge. Lord's construction supplies exactly that.
+
+*In words.* In the project, the four Pauli-type matrices of Lord's construction are the four vectors of an orthonormal frame
+of space-time, written as Hermitian bi-quaternions, and a change of representation is a turn of that frame by a unit
+bi-quaternion of the Lorentz super-loop. So Lord's group is already present in the brochon model; what the model lacks is an
+equation for the field that compensates the turns of the frame from point to point.
 
 # 9. The objects of the project
 
@@ -416,7 +497,7 @@ $$M_{\rm LL}(\mathbf b)=\xi^{\rm LL}_0(\mathbf b)\,\sigma^{\rm LL}_0-i\sum_{j=1}
 the map is multiplicative, $M_{\rm LL}(\mathbf b^\dagger)=M_{\rm LL}(\mathbf b)^\dagger$, every complex $2\times2$ matrix is the matrix of
 exactly one bi-quaternion, and $\det M_{\rm LL}(\mathbf b)=N_{\rm LL}(\mathbf b)=\sum_p\xi^{\rm LL}_p(\mathbf b)^2$, the complex norm. The **unit
 bi-quaternions**, $N_{\rm LL}(\mathbf g)=1$, are therefore exactly the matrices of $SL(2,\mathbb C)$; they form a subgroup of the
-Lorentz super-loop of the bi-octonions. The element $\tilde{\mathbf g}=\mathbf g^*$ has the matrix
+Lorentz super-loop of the bi-octonions (Appendix A.2, A.3). The element $\tilde{\mathbf g}=\mathbf g^*$ has the matrix
 $M_{\rm LL}(\tilde{\mathbf g})=(M_{\rm LL}(\mathbf g)^\dagger)^{-1}$.
 
 **Space-time.** M31 is the real vector space of the Hermitian bi-quaternions
@@ -446,7 +527,7 @@ and for the transformed frame $\gamma^p_{\rm LL}[\tilde{\mathbf g}\mathbf f\tild
 
 The brochon $\Psi_{\rm LL}$ has eight complex anticommuting components, a Dirac index and an isospin index; a $4\times4$
 Dirac matrix acts on it as its Kronecker product with $\mathsf 1_2$, a $2\times2$ isospin matrix as $\mathsf 1_4\otimes t$. Its
-mass is $m_{\rm LL}$. The gauge group of the earlier hypotheses is
+mass is $m_{\rm LL}$. The gauge group of the brochon model (Appendix B) is
 $\mathrm{GEE}=SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$. A **local GEE transformation** is a unit
 bi-quaternion $\mathbf g(x)$, an isospin rotation $\mathsf U_{\rm LL}(x)$ of $SU(2)$ and a phase $\theta^{\rm F}_{\rm LL}(x)$; it acts by
 $\Psi_{\rm LL}\mapsto e^{i\theta^{\rm F}_{\rm LL}}\big(\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}\big)\Psi_{\rm LL}$ and on the frame by
@@ -457,11 +538,12 @@ $\mathsf W_{{\rm SF},p}=\sum_\iota W^\iota_{{\rm SF},p}\tau^{\rm LL}_\iota/2$ (w
 and the gauge field $B_{{\rm SF},p}$ of the fermion number; the spin connection changes as
 $\Gamma'^{\rm LL}_p=\mathsf S\Gamma^{\rm LL}_p\mathsf S^{-1}-(\partial_p\mathsf S)\mathsf S^{-1}$, $\mathsf S=\mathsf S_{\rm LL}(\mathbf g(x))$. The operator
 $\gamma^p_{\rm LL}[\mathbf f]\nabla^{\rm GEE}_p$ is covariant, and $\bar\Psi_{\rm LL}(i\gamma^p_{\rm LL}[\mathbf f]\nabla^{\rm GEE}_p-m_{\rm LL})\Psi_{\rm LL}$
-is invariant. On the flat M31 the spin connection is a pure gauge, $\Gamma^{\rm LL}_p=-(\partial_p\mathsf S)\mathsf S^{-1}$, and every result of the
-earlier hypotheses is computed in the canonical frame, where it vanishes.
+is invariant (Section B.2 proves both statements). On the flat M31 the spin connection is a pure gauge,
+$\Gamma^{\rm LL}_p=-(\partial_p\mathsf S)\mathsf S^{-1}$, and every result of the brochon model is computed in the canonical frame,
+where it vanishes.
 
-The **zeugon** is the massless gauge boson that survives the condensation of brochon pairs under the earlier
-hypotheses: the pairs form an isospin triplet, the polar condensate points along one isospin direction $\vec n$, and the
+The **zeugon** is the massless gauge boson that survives the condensation of brochon pairs in the brochon model
+(Appendix B.6): the pairs form an isospin triplet, the polar condensate points along one isospin direction $\vec n$, and the
 gauge field $\vec n\cdot\vec W_{{\rm SF},p}$ of the rotations about it stays massless. Taking $\vec n$ along the third axis, the
 zeugon couples to the isospin charge $Q_{\rm LL}=T^3_{\rm LL}$, $\pm\tfrac12$ on the two isospin components of the brochon.
 
@@ -506,8 +588,7 @@ the two agree exactly when $\det\mathsf B_{\rm LG}=\det\mathsf A_{\rm LG}=1$, th
 The sign $+$ is Lord's group; the sign $-$ adds the change by Lord's chirality matrix, which reverses all four Dirac
 matrices (the reflection of the whole frame) and is not connected to the identity. So the group of the continuous
 changes of representation of the Clifford algebra that keep its Weyl form is $SL(2,\mathbb C)$, and in the project it is
-the group of the unit bi-quaternions: the subgroup of the Lorentz super-loop that the earlier work found inside the
-bi-octonions.
+the group of the unit bi-quaternions: the subgroup of the Lorentz super-loop of the bi-octonions (Appendix A.3).
 
 # 11. The association
 
@@ -516,7 +597,12 @@ $\gamma^a(x)$ (5.2) are the Dirac matrices (9.4) of a frame field $\mathbf f_a(x
 the matrices $M_{\rm LL}(\mathbf f_a(x))$ of four Hermitian bi-quaternions, which are points (vectors) of space-time, and their
 bars are the matrices of the conjugate bi-quaternions (check P-6a). The Clifford relation of $\eta^{\rm LL}$ holds exactly
 when the four vectors are orthonormal, $N_{\rm LL}(\mathbf f_a,\mathbf f_b)=\eta^{\rm LL}_{ab}$ (Section 2.4): Lord's representations of the
-Clifford algebra in the Weyl form are the orthonormal frames of M31.
+Clifford algebra in the Weyl form are the orthonormal frames of M31. *Example:* the representation of the example of Section
+2.4 belongs to the frame $\tilde{\mathbf g}_{\rm boost}\mathbf f_a\tilde{\mathbf g}_{\rm boost}^\dagger$, with the boost
+$\mathbf g_{\rm boost}={{GENM:lgw_lw1_g}}$ of Appendix A.3 ($S_{\rm Lord}=M_{\rm LL}(\tilde{\mathbf g}_{\rm boost})$). Its four vectors are the
+points ${{GENM:lgw_lw3_f0}}$, ${{GENM:lgw_lw3_f1}}$, ${{GENM:lgw_lw3_f2}}$ and ${{GENM:lgw_lw3_f3}}$ of M31, an orthonormal frame
+whose time-like vector is the four-velocity of an observer who moves with the velocity ${{GENM:lgw_lw3_velocity}}$ along $x^3$
+(checks LW-3, YW-3, WW-1).
 
 **11.2 The change of representation is the action of the super-loop on frames.** A change of representation
 (Lord's (1.22), (4.30)) by $S$ of determinant 1 is the action $\mathbf f_a\mapsto\tilde{\mathbf g}\mathbf f_a\tilde{\mathbf g}^\dagger$ of the unit
@@ -525,7 +611,7 @@ bi-quaternion $\mathbf g$ with $M_{\rm LL}(\tilde{\mathbf g})=S$; its $4\times4$
 between his gauge group and the Lorentz group is the project's distinction between the two actions of Section 9.2: the
 Lorentz group moves the points of space-time ($\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger$, with the Lorentz matrix of
 (9.2), whose relation to Lord's (2.3) is check P-7), while Lord's group changes the frame at a point and leaves the points
-in place. The earlier hypotheses make the second action local: their local GEE transformation acts on the frame by
+in place. The brochon model makes the second action local: its local GEE transformation (B.4) acts on the frame by
 $\mathbf f_p\mapsto\tilde{\mathbf g}(x)\mathbf f_p\tilde{\mathbf g}(x)^\dagger$ and on the brochon by $\mathsf S_{\rm LL}(\mathbf g(x))$. **The
 $SL(2,\mathbb C)$ factor of GEE is therefore Lord's gauge group**, realized by the unit bi-quaternions of the super-loop.
 
@@ -535,9 +621,9 @@ corrected sign of Section 5.3 (check P-8: both derivatives are covariant to the 
 term by term). The internal factors $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$ act on the isospin index and on the phase, which
 Lord's group does not touch; their gauge fields add to his derivative.
 
-**11.4 What the gauging adds.** On the flat M31 of the earlier hypotheses the frame field is obtained from the canonical
+**11.4 What the gauging adds.** On the flat M31 of the brochon model the frame field is obtained from the canonical
 frame by a local unit bi-quaternion, and the spin connection is the pure gauge $-(\partial\mathsf S)\mathsf S^{-1}$, whose curvature
-(5.11) vanishes; the earlier hypotheses leave its dynamics out of their problem. Lord's construction supplies it in three
+(5.11) vanishes; the brochon model leaves its dynamics out. Lord's construction supplies it in three
 steps, which Part III carries out for the brochon:
 
 1. *Reference vectors.* The labels $a$ of the frame are related to the coordinates by a tetrad $h_a{}^\mu(x)$, and the metric
@@ -563,9 +649,9 @@ relation reads $\Gamma^{\rm Lord}_\mu=\tfrac14W_{\mu\,ab}\gamma^{ab}$, because $
   representation is the action of a unit bi-quaternion of the Lorentz super-loop on frames; his $4\times4$ change is the
   project's spinor matrix $\mathsf S_{\rm LL}(\mathbf g)$; and by Theorem L1 the unit bi-quaternions are all the continuous
   changes that keep the Weyl form.
-* Lord's gauge group is the $SL(2,\mathbb C)$ factor of the gauge group GEE of the earlier hypotheses, and his auxiliary
+* Lord's gauge group is the $SL(2,\mathbb C)$ factor of the gauge group GEE of the brochon model, and his auxiliary
   fields are its spin connection, with the opposite sign of the name.
-* What the earlier hypotheses lack, and what Lord's construction adds, is the dynamics of that connection: with a
+* What the brochon model lacks, and what Lord's construction adds, is the dynamics of that connection: with a
   tetrad and the compatibility condition, it becomes the connection of a curved space-time whose equations are
   Einstein's.
 
@@ -578,6 +664,11 @@ equations of the brochon and of the quasi-particles of the superfluid in a curve
 energy-momentum tensor with Einstein's equations, whose sources are the brochon and the gauge fields, the zeugon among
 them (Section 16). Section 17 states what Part III establishes.
 
+*In words.* Part III writes the brochon in a curved space-time. The tetrad replaces the fixed frame of M31, its spin
+connection enters the covariant derivative of the brochon, and the energy-momentum tensor of the brochon and of the gauge
+fields becomes the source of Einstein's equations. In the superfluid vacuum of the brochon model, the quasi-particle of the
+brochon then behaves in every gravitational field as a Dirac particle whose mass is the gap.
+
 Every statement of Part III is checked by three programs (Section 18): the Rust program `lg_curved`
 ({{GEN:lgc_verdict_rust}}); the Python program `python/lg_curved.py` ({{GEN:lgc_verdict_python}}), written
 independently, with other formulas where the subject allows and with finite differences in place of automatic
@@ -586,9 +677,13 @@ for explicit space-times and symbolic fields. The Rust and Python checks use ran
 differ from the identity by smooth random functions of size 0.25 (Section 13.1), whose scalar curvature at the points
 used lies between {{GEN:lgc_r_min}} and {{GEN:lgc_r_max}} in units in which the wave numbers of the random functions are
 of order 1, together with random gauge fields of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ with the couplings
-$g^{\rm v}_{\rm LL}=0.7$ and $g^{\rm F}_{\rm LL}=0.45$ of the earlier hypotheses.
+$g^{\rm v}_{\rm LL}=0.7$ and $g^{\rm F}_{\rm LL}=0.45$ of the brochon model (Appendix B.2).
 
 # 13. The tetrad: Lord's reference vectors in the project
+
+*In words.* A tetrad is an orthonormal frame at every point of a curved space-time. In the language of the project its four
+vectors are Hermitian bi-quaternions, points of M31, whose Minkowski products are the inverse metric: M31 becomes the space
+of the vectors at each point. Lord's change of representation and a rotation of the tetrad are then the same operation.
 
 ## 13.1 Conventions of Part III
 
@@ -632,10 +727,15 @@ tetrad with the Dirac matrices of the frame kept constant (the vierbein form):
 $$e^{{\rm LG}\,a}{}_\mu\longmapsto\Lambda_{\rm LG}{}^a{}_b\,e^{{\rm LG}\,b}{}_\mu,\qquad\gamma^a_{\rm LL}\ \text{unchanged}.\tag{13.6}$$
 The metric does not change, and the two forms give the same Dirac matrices $\gamma^\mu_{\rm LG}$ (checks G-11a, G-11c). Lord's
 special gauge of his Section 5, in which the Dirac matrices of the frame are constant, is the vierbein form. Part III works
-in it: the gravitational field is carried by the tetrad, and the Dirac matrices of the frame are the matrices
-$\gamma^a_{\rm LL}$ of the earlier hypotheses.
+in it: the gravitational field is carried by the tetrad, and the Dirac matrices of the frame are the constant matrices
+$\gamma^a_{\rm LL}$ of the chiral basis (1.2).
 
 # 14. The connection and the curvature
+
+*In words.* The connection that keeps the tetrad constant is fixed by the tetrad itself. Acting on spinors it is the spin
+connection of GEE, and its curvature is the Riemann tensor of the metric, with the coefficient $\tfrac14$ that the
+representation of the Lorentz algebra on spinors requires. Two tetrads of a black hole and the space-times of Vaidya are
+given explicitly.
 
 ## 14.1 Christoffel symbols, curvature and signs
 
@@ -694,7 +794,7 @@ G-7a to G-7e).
 
 ## 14.3 The curvature of the spinor connection
 
-The curvature of the Lorentz connection, $\Omega^{\rm L}_{{\rm SF},\mu\nu}$ of the earlier hypotheses, vanished on the flat M31. With the
+The curvature of the Lorentz connection, $\Omega^{\rm L}_{{\rm SF},\mu\nu}$ of the brochon model (B.7), vanished on the flat M31. With the
 spinor connection (14.7) it is the Riemann tensor of the metric, in the frame:
 $$\Omega^{\rm L}_{{\rm SF},\mu\nu}=\partial_\mu\Gamma^{\rm LL}_\nu-\partial_\nu\Gamma^{\rm LL}_\mu+\big[\Gamma^{\rm LL}_\mu,\Gamma^{\rm LL}_\nu\big]=\tfrac14\,R^{\rm LG}_{ab\mu\nu}\,\gamma^{ab}_{\rm LL},\qquad R^{{\rm LG}\,a}{}_{b\mu\nu}=e^{{\rm LG}\,a}{}_\rho\,e^{\rm LG}_b{}^\sigma\,R^{{\rm LG}\,\rho}{}_{\sigma\mu\nu}\tag{14.11}$$
 (checks G-8a, G-9e, YG-3a; exactly for the Schwarzschild space-time, WG-1 and WG-2). This is (5.11) with the curvature of
@@ -738,6 +838,11 @@ equations stated in Section 14.1.
 
 # 15. The brochon in a curved space-time
 
+*In words.* The brochon obeys the Dirac equation with the spinor connection of the tetrad. Squaring the Dirac operator shows
+that the brochon feels the scalar curvature as a shift of its mass squared. Two families of exact solutions are given, and in
+the superfluid vacuum the quasi-particle of the brochon obeys, in every gravitational field, a Dirac equation with the mass of
+the gap.
+
 ## 15.1 The covariant derivative and the field equation
 
 The covariant derivative of the brochon is the GEE derivative (9.5) with the spinor connection (14.7); in Lord's form it is
@@ -749,13 +854,13 @@ $\mathsf S\otimes\mathsf 1_2$ times the Dirac operator acting on $\Psi_{\rm LL}$
 indices as well, for example $\nabla^{\rm GEE}_\nu\Psi_{\rm LL}$, the full covariant derivative $\nabla^{\rm LG}_\mu$ adds the
 Christoffel symbols for those indices.
 
-**The Lagrangian.** The Lagrangian density of the earlier hypotheses becomes, in a curved space-time,
+**The Lagrangian.** The Lagrangian density (B.9) of the brochon model becomes, in a curved space-time,
 $$\mathcal L^{\rm LG}=e_{\rm LG}\Big[\mathcal L^{\Psi}_{\rm LG}-V^{(n)}_{\rm SF}-\tfrac14\sum_\iota W^\iota_{{\rm SF},\mu\nu}W^{\iota,\mu\nu}_{\rm SF}-\tfrac14B_{{\rm SF},\mu\nu}B^{\mu\nu}_{\rm SF}\Big],\tag{15.2}$$
 $$\mathcal L^{\Psi}_{\rm LG}=\tfrac i2\big(\bar\Psi_{\rm LL}\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}-\overline{\nabla^{\rm GEE}_\mu\Psi_{\rm LL}}\,\gamma^\mu_{\rm LG}\Psi_{\rm LL}\big)-m_{\rm LL}\bar\Psi_{\rm LL}\Psi_{\rm LL},\tag{15.3}$$
-with the indices of the field strengths raised by $g_{\rm LG}^{\mu\nu}$. Its parts are those of the earlier hypotheses:
+with the indices of the field strengths raised by $g_{\rm LG}^{\mu\nu}$. Its parts are those of the brochon model:
 
-* the Dirac part, here in the symmetric form (15.3), which differs from the form $\bar\Psi(i\gamma^\mu\nabla_\mu-m)\Psi$ of the
-  earlier hypotheses by $\tfrac i2e_{\rm LG}^{-1}\partial_\mu(e_{\rm LG}\bar\Psi\gamma^\mu_{\rm LG}\Psi)$ (by (15.6) below), a total derivative
+* the Dirac part, here in the symmetric form (15.3), which differs from the form $\bar\Psi(i\gamma^\mu\nabla_\mu-m)\Psi$ of (B.9)
+  by $\tfrac i2e_{\rm LG}^{-1}\partial_\mu(e_{\rm LG}\bar\Psi\gamma^\mu_{\rm LG}\Psi)$ (by (15.6) below), a total derivative
   that changes neither the field equation nor the energy-momentum tensor;
 * the Yang-Mills part, with the field strengths
   $W^\iota_{{\rm SF},\mu\nu}=\partial_\mu W^\iota_{{\rm SF},\nu}-\partial_\nu W^\iota_{{\rm SF},\mu}-g^{\rm v}_{\rm LL}\sum_{\iota'\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}W^{\iota'}_{{\rm SF},\mu}W^{\iota''}_{{\rm SF},\nu}$
@@ -771,14 +876,14 @@ with the indices of the field strengths raised by $g_{\rm LG}^{\mu\nu}$. Its par
 
 **The field equation** of the brochon, obtained by varying $\bar\Psi_{\rm LL}$, is
 $$i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}-m_{\rm LL}\Psi_{\rm LL}=\partial V^{(n)}_{\rm SF}/\partial\bar\Psi_{\rm LL}:\tag{15.4}$$
-the field equation of the earlier hypotheses with the Dirac operator of the curved space-time; its right side keeps its form
+the field equation (B.11) of the brochon model with the Dirac operator of the curved space-time; its right side keeps its form
 (the vector term $G^{\rm V}_{\rm SF}j^{\rm F}_\mu\gamma^\mu_{\rm LG}\Psi=G^{\rm V}_{\rm SF}j^{\rm F}_a\gamma^a_{\rm LL}\Psi$ is unchanged). The Dirac adjoint is
 formed with the constant matrix $\gamma^0_{\rm LL}$ of the frame, $\bar\Psi_{\rm LL}=\Psi^\dagger_{\rm LL}(\gamma^0_{\rm LL}\otimes\mathsf 1_2)$,
 because
 $$\gamma^0_{\rm LL}(\gamma^\mu_{\rm LG})^\dagger\gamma^0_{\rm LL}=\gamma^\mu_{\rm LG},\qquad\gamma^0_{\rm LL}(\Gamma^{\rm LL}_\mu)^\dagger\gamma^0_{\rm LL}=-\Gamma^{\rm LL}_\mu\tag{15.5}$$
 (checks G-12a, G-12b), so that $\overline{\nabla^{\rm GEE}_\mu\Psi}=\partial_\mu\bar\Psi-\bar\Psi\,\Gamma^{\rm LL}_\mu\otimes\mathsf 1_2-ig^{\rm v}\bar\Psi\,\mathsf 1_4\otimes\mathsf W_\mu-ig^{\rm F}B_\mu\bar\Psi$.
 
-**The currents.** The currents of the earlier hypotheses become $j^{{\rm F},\mu}_{\rm SF}=\bar\Psi_{\rm LL}\gamma^\mu_{\rm LG}\Psi_{\rm LL}$ and
+**The currents.** The currents (B.8) of the brochon model become $j^{{\rm F},\mu}_{\rm SF}=\bar\Psi_{\rm LL}\gamma^\mu_{\rm LG}\Psi_{\rm LL}$ and
 $j^{\iota,\mu}_{\rm SF}=\bar\Psi_{\rm LL}\gamma^\mu_{\rm LG}T^\iota_{\rm LL}\Psi_{\rm LL}$. For every spinor field, with
 $\mathcal E_{\rm LG}=i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}-m_{\rm LL}\Psi_{\rm LL}$,
 $$\nabla^{\rm LG}_\mu j^{{\rm F},\mu}_{\rm SF}=\frac1{e_{\rm LG}}\partial_\mu\big(e_{\rm LG}\,j^{{\rm F},\mu}_{\rm SF}\big)=i\big(\bar{\mathcal E}_{\rm LG}\Psi_{\rm LL}-\bar\Psi_{\rm LL}\mathcal E_{\rm LG}\big),\tag{15.6}$$
@@ -840,15 +945,16 @@ its current (G-14b), and its energy and momentum change by the work of the zeugo
 
 ## 15.4 The quasi-particles of the superfluid in a curved space-time
 
-The zeugon exists in the condensed vacuum of the earlier hypotheses, and there the excitations of the brochon are
-quasi-particles. In the ground state of the potential $V^{(2)}_{\rm SF}$ (the methods KS and CJT give the same state) the
-pairs are condensed along the third isospin direction; in the mean field, the normal self-energy is a Dirac mass
-$M^{\rm CJT,D}_{\rm SF}=0.1622929325$ and the pair self-energy is $D^{\rm CJT}_{\rm SF}(\mathsf K^3_{\rm LL})^\dagger$ with
-$\lvert D^{\rm CJT}_{\rm SF}\rvert=0.3284861084$ (units of the cutoff $\Lambda_{\rm LL}$), and on the flat M31 the quasi-particle energies are
+The zeugon exists in the condensed vacuum of the brochon model, and there the excitations of the brochon are
+quasi-particles (Appendix B.5). In the ground state of the interaction $V^{(2)}_{\rm SF}$ (B.17) (the mean-field methods KS and
+CJT of Appendix B.4 give the same state) the pairs are condensed along the third isospin direction; in the mean field, the
+normal self-energy is a Dirac
+mass $M^{\rm CJT,D}_{\rm SF}={{GENM:p2_M_V2_CJT}}$ and the pair self-energy is $D^{\rm CJT}_{\rm SF}(\mathsf K^3_{\rm LL})^\dagger$ with
+$\lvert D^{\rm CJT}_{\rm SF}\rvert={{GENM:p2_D_V2_CJT}}$ (units of the cutoff $\Lambda_{\rm LL}$), and on the flat M31 the quasi-particle energies are
 $(\lvert\vec q_{\rm LL}\rvert^2+(M^{\rm CJT,D}_{\rm SF})^2+\lvert D^{\rm CJT}_{\rm SF}\rvert^2)^{1/2}$ at the momentum $\vec q_{\rm LL}$, eight times, with the gap
 $E^{\rm CJT,gap}_{\rm SF}$ = {{GEN:lgc_egap}} at $\vec q_{\rm LL}=0$. In a curved space-time and a field of the zeugon the quasi-particle equation is
 $$i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}=M^{\rm CJT,D}_{\rm SF}\Psi_{\rm LL}+D^{\rm CJT}_{\rm SF}\,\mathcal C_{\rm LG}\Psi_{\rm LL},\qquad\mathcal C_{\rm LG}\Psi_{\rm LL}=\mathsf P_{\rm LG}\Psi^*_{\rm LL},\qquad\mathsf P_{\rm LG}=(\gamma^0_{\rm LL}\otimes\mathsf 1_2)(\mathsf K^3_{\rm LL})^\dagger:\tag{15.11}$$
-multiplied by $\gamma^0_{\rm LL}$, its flat form is the Bogoliubov-de Gennes equation of the earlier hypotheses. The map
+multiplied by $\gamma^0_{\rm LL}$, its flat form is the Bogoliubov-de Gennes equation of the matrix (B.14) of the polar state. The map
 $\mathcal C_{\rm LG}$ is antilinear ($\mathcal C_{\rm LG}(z\Psi)=z^*\mathcal C_{\rm LG}\Psi$), so (15.11) is linear over the real numbers only.
 
 **Theorem L2 (the quasi-particle in a gravitational field).** In every space-time (every real tetrad) and every field of the
@@ -891,17 +997,17 @@ black hole is as small as the length $1/\Lambda_{\rm LL}$ of the model; in that 
 the curved space-time, which this work does not do.
 
 **Remark (the energy of the condensed vacuum).** *What it means:* the condensation lowers the energy density of the vacuum
-below that of the normal vacuum, by $2.422384966\times10^{-4}\Lambda_{\rm LL}^4$ in the ground state of CJT. *Why it matters:* in a
-gravitational theory a constant energy density of the vacuum, here $\mathcal E^{\rm CJT}_{\rm SF}=-2.422384966\times10^{-4}\Lambda_{\rm LL}^4$, is a source,
+below that of the normal vacuum: the energy per volume of the ground state of CJT is $\mathcal E^{\rm CJT}_{\rm SF}={{GENM:p2_E_V2_CJT}}\,\Lambda_{\rm LL}^4$
+(Appendix B.5). *Why it matters:* in a gravitational theory a constant energy density of the vacuum is a source,
 $T^{\rm LG}_{\mu\nu}=\mathcal E^{\rm CJT}_{\rm SF}\,g^{\rm LG}_{\mu\nu}$ (16.4), that
-acts as a cosmological constant. *Why it is not decided here:* the earlier hypotheses measure every energy from the normal
+acts as a cosmological constant. *Why it is not decided here:* the brochon model measures every energy from the normal
 vacuum (the normal order) and fix no value of the energy of the vacuum to which gravitation responds; this energy, a
 constant of the gravitational theory, must be fixed by the observed expansion of the universe, as it must for every
 condensate (the condensates of quantum chromodynamics and of the electroweak theory raise the same question). Part VI
 compares the size of the condensation energy with the observed cosmological constant.
 
-**Remark (operators, normal order and semiclassical gravitation).** *What it means:* the brochon of the earlier hypotheses
-is a quantum field, its self-interaction is normal-ordered with respect to the normal vacuum of the flat M31, and its
+**Remark (operators, normal order and semiclassical gravitation).** *What it means:* the brochon of the brochon model
+(Appendix B) is a quantum field, its self-interaction is normal-ordered with respect to the normal vacuum of the flat M31, and its
 momenta are cut off at $\Lambda_{\rm LL}$. In a curved space-time neither the normal order nor the cutoff has a unique
 generalization: the split into particles and antiparticles that defines the normal vacuum depends on the time of an
 observer when the space-time has no time-like symmetry (as the Vaidya space-times), and a cutoff of momenta must be
@@ -913,6 +1019,10 @@ order nor a renormalized energy-momentum tensor, and the back-reaction of one br
 effects studied by the ratio of its mass to the mass of the black hole.
 
 # 16. The energy-momentum tensor and Einstein's equations
+
+*In words.* The source of gravitation is the response of the action to a change of the tetrad: the energy-momentum tensor.
+It is computed for the brochon, for its self-interaction and for the gauge fields, and it is conserved on the solutions of the
+field equations, so that Einstein's equations with these sources are consistent.
 
 ## 16.1 The energy-momentum tensor of the brochon
 
@@ -934,6 +1044,15 @@ the work of the gauge fields on the currents, the generalized Lorentz force (che
 G-14c; for the massless brochon in a conformally flat space-time G-15c, YG-7b). The trace is
 $g_{\rm LG}^{\mu\nu}T^{\Psi,{\rm LG}}_{\mu\nu}=m_{\rm LL}\bar\Psi\Psi$ (G-13c, YG-6c), zero for the massless brochon (G-15d, YG-7c), and for a plane wave
 of positive energy $\varepsilon_{\rm LL}$ in flat space-time the energy density is $T^{\Psi,{\rm LG}}_{00}=\varepsilon_{\rm LL}\,\Psi^\dagger\Psi$.
+
+**Example: the energy-momentum tensor of a plane wave.** For the plane wave of the brochon of Appendix B.1, of mass 1 and
+momentum $P_{\rm LG}={{GENM:lgw_lw5_p}}$ in flat space-time without gauge fields, the fermion-number current is
+$j^{{\rm F},\mu}_{\rm SF}={{GENM:lgw_lw5_j}}=2P^\mu_{\rm LG}$, the Lagrangian density (15.3) vanishes, and (16.2) gives
+$T^{\Psi,{\rm LG}\,\mu\nu}=2P^\mu_{\rm LG}P^\nu_{\rm LG}$: the energy density $T^{00}={{GENM:lgw_lw5_t00}}$ is the energy $\tfrac{17}8$ times the
+density $\Psi^\dagger\Psi=\tfrac{17}4$ of the wave, $T^{03}={{GENM:lgw_lw5_t03}}$ is the flux of energy along $x^3$ and equally the density of
+momentum, $T^{33}={{GENM:lgw_lw5_t33}}$ is the flux of momentum along the direction of motion, the other components vanish, and the
+trace is $m\bar\Psi\Psi={{GENM:lgw_lw5_psibar_psi}}$. (Checks LW-5d to LW-5g, which use the functions of the program `lg_curved`
+that compute (16.2), YW-5c to YW-5f, which compute it again from the formula, and WW-3.)
 
 **Local solutions.** The checks G-13 and YG-6 need solutions of (15.4) in random curved space-times with random
 non-abelian gauge fields, where no solution is known in closed form; they use local solutions. At a point $x_0$ the value,
@@ -958,7 +1077,7 @@ traceless, with the energy density of each component in a local frame equal to h
 electric and magnetic field strengths. For any fields (check
 G-16)
 $$\nabla^{\rm LG}_\mu T^{{\rm YM},{\rm LG}\,\mu\nu}=-g_{\rm LG}^{\nu\kappa}\Big(\sum_\iota W^\iota_{{\rm SF},\kappa\lambda}Y^{\iota,\lambda}_{\rm LG}+B_{{\rm SF},\kappa\lambda}Y^{{\rm F},\lambda}_{\rm LG}\Big),\tag{16.6}$$
-where $Y$ are the left sides of the Yang-Mills equations of the earlier hypotheses in the curved space-time:
+where $Y$ are the left sides of the Yang-Mills equations (B.12) of the brochon model in the curved space-time:
 $$Y^{\iota,\lambda}_{\rm LG}=\nabla^{\rm LG}_\mu W^{\iota,\mu\lambda}_{\rm SF}-g^{\rm v}_{\rm LL}\sum_{\iota'\iota''}\epsilon^{\rm LL}_{\iota\iota'\iota''}W^{\iota'}_{{\rm SF},\mu}W^{\iota'',\mu\lambda}_{\rm SF}=g^{\rm v}_{\rm LL}\,j^{\iota,\lambda}_{\rm SF},\qquad Y^{{\rm F},\lambda}_{\rm LG}=\nabla^{\rm LG}_\mu B^{\mu\lambda}_{\rm SF}=g^{\rm F}_{\rm LL}\,j^{{\rm F},\lambda}_{\rm SF},\tag{16.7}$$
 with $\nabla^{\rm LG}_\mu F^{\mu\lambda}=e_{\rm LG}^{-1}\partial_\mu(e_{\rm LG}F^{\mu\lambda})$ for an antisymmetric tensor. Where (16.7) holds, (16.6) is minus the force
 (16.3): the energy-momentum tensor of the brochon and the gauge fields together is conserved. The zeugon's tensor is the
@@ -966,10 +1085,11 @@ term $\iota=3$ of (16.5) when only the zeugon is excited; then $W^3_{{\rm SF},\m
 $T^{\rm Z,LG}_{\mu\nu}=-A_{{\rm SF},\mu\lambda}A^{\ \ \lambda}_{{\rm SF},\nu}+\tfrac14g^{\rm LG}_{\mu\nu}A_{{\rm SF},\alpha\beta}A^{\alpha\beta}_{\rm SF}$, the tensor of a Maxwell field, conserved
 for the free wave (G-14d) and traceless (G-15e).
 
-**Remark (the massive gauge fields).** In the superfluid, $W^1$, $W^2$ and $B$ are massive: the effective Lagrangians of the
-earlier hypotheses add the kinetic term and the potential of the pair field, whose energy-momentum tensors (those of
-scalar fields, with $g_{\rm LG}^{\mu\nu}$ in the kinetic term) add to the source. Their range is of the order of the inverse of
-their masses, $1/M^{\rm CJT}_{W,{\rm SF}}\approx23/\Lambda_{\rm LL}$; the task concerns the zeugon, and Part III needs only its tensor.
+**Remark (the massive gauge fields).** In the superfluid, $W^1$, $W^2$ and $B$ are massive (Appendix B.6): the effective
+Lagrangian of the condensate adds the kinetic term and the potential of the pair field $\vec\Phi_{\rm SF}$, whose
+energy-momentum tensors (those of scalar fields, with $g_{\rm LG}^{\mu\nu}$ in the kinetic term) add to the source. Their range is
+of the order of the inverse of their masses, $1/M^{\rm CJT}_{W,{\rm SF}}\approx23/\Lambda_{\rm LL}$ ($M^{\rm CJT}_{W,{\rm SF}}={{GENM:p2_cjtex_M_W}}$);
+the task concerns the zeugon, and Part III needs only its tensor.
 
 ## 16.3 Einstein's equations
 
@@ -981,9 +1101,9 @@ for solutions of the field equations. Lord's (6.1) has the same form: he identif
 multiple of the energy-momentum tensor of matter and leaves the multiple open (after his (5.24)); (16.8) fixes it by
 Newton's constant.
 
-**The new parameter.** In the units of the earlier hypotheses ($\Lambda_{\rm LL}=1$) Newton's constant is
-$G_{\rm N}=(\Lambda_{\rm LL}/M_{\rm Pl})^2$. The earlier hypotheses fix no physical value of $\Lambda_{\rm LL}$, so the strength of gravitation in
-their units is a new parameter; Parts IV to VI state every gravitational result as a function of it, or in geometric
+**The new parameter.** In the units of the brochon model ($\Lambda_{\rm LL}=1$) Newton's constant is
+$G_{\rm N}=(\Lambda_{\rm LL}/M_{\rm Pl})^2$. The brochon model fixes no physical value of $\Lambda_{\rm LL}$, so the strength of gravitation in
+its units is a new parameter; Parts IV to VI state every gravitational result as a function of it, or in geometric
 units in which it does not appear.
 
 # 17. What Part III establishes
@@ -999,7 +1119,7 @@ units in which it does not appear.
    (15.7); its currents are conserved; the massless brochon is conformally invariant (15.9); Volkov's solution in a wave of
    the zeugon holds in every coordinate system and frame (15.10).
 4. In the superfluid the quasi-particle of the brochon is, in every gravitational field, a particle of spin $\tfrac12$ and
-   mass $E^{\rm CJT,gap}_{\rm SF}=0.3664\,\Lambda_{\rm LL}$ with the zeugon charges $\pm\tfrac12$ (Theorem L2).
+   mass $E^{\rm CJT,gap}_{\rm SF}={{GENM:p2_gap_V2_CJT}}\,\Lambda_{\rm LL}$ with the zeugon charges $\pm\tfrac12$ (Theorem L2).
 5. The energy-momentum tensor (16.2) follows from the variation of the tetrad; with (16.4) and (16.5) it is the source of
    Einstein's equations (16.8), and it is conserved on solutions.
 6. The printed coefficients of Lord's (4.20) and (4.47), (4.48) would halve the connection and double the coupling to the
@@ -1097,7 +1217,56 @@ python3 code/scripts/write_lg_curved_fragments.py                # the numbers o
 {{FILE:data/hck_lg_curved_checks_wolfram.txt}}
 ```
 
+**The programs of the worked examples.** The examples of Sections 2.4, 11.1, 16.1 and of Appendix B (Lord's change of
+representation by a boost and its frame, a set of four Hermitian matrices that is not a representation, the plane wave of the
+brochon with its current and its energy-momentum tensor, and the quasi-particles and the gap equation of the polar ground
+state) are computed and checked by three programs, each independently of the others:
+
+* the Rust program `lg_worked` (`rust/lgworked/src/main.rs`): {{GEN:lgw_verdict_rust}}. The rational examples are dyadic fractions,
+  which double precision represents exactly; it computes them with the functions of the library `rust/lgcore` that the other
+  programs use (the plane wave with the functions of Part III for the Dirac operator, the current and the energy-momentum
+  tensor), prints them as exact fractions into `data/lg_worked_values.csv`, and checks that no printed value is rounded (LW-0);
+  the quasi-particles with the printed Dirac mass and pair amplitude of Appendix B.5, read from the fragment file
+  `provenance/generated/lg_examples.md`;
+* the Python program `python/lg_worked.py`: {{GEN:lgw_verdict_python}}; it writes every matrix again, computes the rational examples
+  in exact arithmetic (sympy), the energy-momentum tensor of the plane wave from the formula (16.2) with symbolic coordinates, the
+  eigenvalues of the Bogoliubov-de Gennes matrix with numpy, and the integral of the gap equation with mpmath;
+* the Wolfram script `wolfram/source/lg_worked.wls`: {{GEN:lgw_verdict_wolfram}}, symbolically, including the square of the
+  Bogoliubov-de Gennes matrix for symbolic momentum, Dirac mass and pair amplitude.
+
+To reproduce, from the folder `Revision_Lord_Gravity`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+python3 code/scripts/write_lg_examples_fragments.py               # the numbers of the appendices (read by lg_worked)
+(cd rust && cargo build --release && ./target/release/lg_worked) # data/hck_lg_worked_checks.txt, lg_worked_values.csv
+python3 python/lg_worked.py                                       # data/hck_lg_worked_checks_python.txt
+wolframscript -file wolfram/source/lg_worked.wls provenance/generated/lg_examples.md data/hck_lg_worked_checks_wolfram.txt
+python3 code/scripts/write_lg_worked_fragments.py                # the fragments of the worked examples
+```
+
+**The report of the Rust program** (`data/hck_lg_worked_checks.txt`):
+
+```
+{{FILE:data/hck_lg_worked_checks.txt}}
+```
+
+**The report of the Python program** (`data/hck_lg_worked_checks_python.txt`):
+
+```
+{{FILE:data/hck_lg_worked_checks_python.txt}}
+```
+
+**The report of the Wolfram script** (`data/hck_lg_worked_checks_wolfram.txt`):
+
+```
+{{FILE:data/hck_lg_worked_checks_wolfram.txt}}
+```
+
 # 19. The symbols of this manuscript
+
+The table lists the symbols of the main text; the symbols of Appendix A are listed in its Section A.7, and those of Appendix B
+in its Section B.7.
 
 | symbol | meaning |
 |:---|:---|
@@ -1144,7 +1313,7 @@ python3 code/scripts/write_lg_curved_fragments.py                # the numbers o
 | $\mathsf S_{\rm LL}(\mathbf g)$ | the spinor matrix of a unit bi-quaternion (9.3) |
 | $\gamma^p_{\rm LL}[\mathbf f]$ | the Dirac matrices of a frame (9.4) |
 | $\Psi_{\rm LL}$, $m_{\rm LL}$ | the brochon (eight components: Dirac index and isospin index) and its mass |
-| GEE | the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ of the earlier hypotheses |
+| GEE | the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ of the brochon model (B.3) |
 | $\mathsf U_{\rm LL}$, $\theta^{\rm F}_{\rm LL}$ | an isospin rotation and a phase of the fermion number (a local GEE transformation with $\mathbf g$) |
 | $\nabla^{\rm GEE}_p$ | the GEE covariant derivative of the brochon (9.5) |
 | $\Gamma^{\rm LL}_p$, $\Gamma^{\rm LL}_\mu$ | the spin connection of GEE, the gauge field of its $SL(2,\mathbb C)$ factor; in a curved space-time $\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$ (14.7) |
@@ -1176,7 +1345,7 @@ python3 code/scripts/write_lg_curved_fragments.py                # the numbers o
 | $v_{\rm LG}$, $u_{\rm LG}$, $l^{\rm LG}$, $\rho_{\rm LG}$ | the advanced and the retarded time of the Vaidya space-times, their null one-form, and the energy density of the null dust |
 | $G_{\rm N}$, $M_{\rm Pl}$ | Newton's constant and the Planck mass, $G_{\rm N}=M_{\rm Pl}^{-2}$ |
 | $\mathcal L^{\rm LG}$, $\mathcal L^\Psi_{\rm LG}$, $S^{\rm LG}$ | the Lagrangian density (15.2) in a curved space-time, its Dirac part (15.3), and the action |
-| $V^{(n)}_{\rm SF}$, $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$, $G_{\rm LL}$ | the self-interaction of the earlier hypotheses (step $n$ of their recursion) and its couplings |
+| $V^{(n)}_{\rm SF}$, $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$, $G_{\rm LL}$ | the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings |
 | $\Pi^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$ | the pair operators of spin zero and their matrices $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ |
 | $T^\iota_{\rm LL}$, $\epsilon^{\rm LL}_{\iota\iota'\iota''}$ | the isospin generators $\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2$ and the Levi-Civita symbol of three indices |
 | $j^{{\rm F},\mu}_{\rm SF}$, $j^{\iota,\mu}_{\rm SF}$, $j^{{\rm F},a}$ | the fermion-number current and the isospin currents (Section 15.1); frame components of the first |
@@ -1189,7 +1358,7 @@ python3 code/scripts/write_lg_curved_fragments.py                # the numbers o
 | $k_{\rm LG}$, $\mathsf a_{\rm LG}$ | the wave vector and the polarization of a plane wave of the zeugon (15.10) |
 | $s$, $Q^{\rm LG}_s$, $\chi^{\rm LG}_s$ | the isospin component of the brochon, its charge $\pm\tfrac12$ of $Q_{\rm LL}$, and its isospin vector |
 | $p^{\rm LG}_s$, $\xi^{\rm LG}_s$, $\psi^{\rm LG}_s$, $\Sigma^{\rm LG}_s$ | the momentum, the constant spinor, the Volkov solution and its phase (15.10) |
-| $M^{\rm CJT,D}_{\rm SF}$, $D^{\rm CJT}_{\rm SF}$, $E^{\rm CJT,gap}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state of the earlier hypotheses (method CJT) |
+| $M^{\rm CJT,D}_{\rm SF}$, $D^{\rm CJT}_{\rm SF}$, $E^{\rm CJT,gap}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state of the brochon model (method CJT, Appendix B.5) |
 | $\mathcal E^{\rm CJT}_{\rm SF}$ | the energy density of that ground state relative to the normal vacuum |
 | $M^{\rm CJT}_{W,{\rm SF}}$ | the mass of the massive gauge bosons $W^1$, $W^2$ in that ground state |
 | $\vec q_{\rm LL}$, $\varepsilon_{\rm LL}$ | a momentum and the energy of a plane wave |
@@ -1201,3 +1370,9 @@ python3 code/scripts/write_lg_curved_fragments.py                # the numbers o
 | $T^{\Psi,{\rm LG}}_{\mu\nu}$, $T^{\rm self,LG}_{\mu\nu}$, $T^{\rm YM,LG}_{\mu\nu}$, $T^{\rm Z,LG}_{\mu\nu}$, $T^{\rm LG}_{\mu\nu}$ | the energy-momentum tensors of the brochon (16.2), of the self-interaction (16.4), of the gauge fields (16.5), of the zeugon, and their sum (16.8) |
 | $x_0$ | the point of a local solution (Section 16.1) |
 | $Y^{\iota,\lambda}_{\rm LG}$, $Y^{{\rm F},\lambda}_{\rm LG}$ | the left sides of the Yang-Mills equations in a curved space-time (16.7) |
+| $\mathbf g_{\rm boost}$ | the boost $\tfrac54\mathbf e_0+\tfrac34i\,\mathbf e_3$ of Appendix A.3, used in the examples of Sections 2.4 and 11.1 |
+| $P_{\rm LG}$ | the momentum $(\tfrac{17}8,0,0,\tfrac{15}8)$ of the plane wave of the examples (Appendix B.1, Section 16.1) |
+
+{{PART:algebra_lg}}
+
+{{PART:brochon_lg}}

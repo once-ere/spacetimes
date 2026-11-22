@@ -825,18 +825,51 @@ its result without its scope. The undefined terms come from writing for
 a reader who already knows the field, not for the student for whom the
 author asked.
 
-\textbf{The correction.} Not made yet. The author instructed not to
-rewrite the article now, to stop writing manuscripts and to continue the
-calculations (C27). His requirements for the rewriting are recorded in
-C27 and in object O20 of Section 7: every document must contain all the
-material that it needs from the manuscript of 16 November 2026, an
+\textbf{The correction.} First deferred: the author instructed not to
+rewrite the article then, to stop writing manuscripts and to continue
+the calculations (C27). His requirements for the rewriting are recorded
+in C27 and in object O20 of Section 7: every document must contain all
+the material that it needs from the manuscript of 16 November 2026, an
 explicit example of every object it names, and a definition of every
 term at its first use; and the check of the rule must read the LaTeX
-sources of the article too. The README now states that the article is
-not complete in itself.
+sources of the article too. After he asked for the manuscripts again
+(C28) the correction was made for the article and its Supplemental
+Material (commit \texttt{3783f1b}, entries E73 to E77; the check reads
+their sources) and for the hypotheses document and the three manuscripts
+of the stages (commit \texttt{e980c4d}, entries E78 and E79). The
+manuscript \texttt{superfluid.md} is not yet rewritten (decision D39).
 
 \textbf{The pause.} The author instructed to continue the calculations;
 the work continues with them.
+
+\hypertarget{the-times-of-two-entries-of-the-log-22-november-2026}{%
+\subsection{4.6 The times of two entries of the log (22 November
+2026)}\label{the-times-of-two-entries-of-the-log-22-november-2026}}
+
+\textbf{What I stated.} Entry E78 of the log gave the time ``14:45 to
+15:30'' and entry E80 the time ``15:55 PST''.
+
+\textbf{What was true.} The commit \texttt{e980c4d}, which contains E78,
+was made at 14:50 PST, and the commit \texttt{136fea9}, which contains
+E80, at 14:56 PST (the times of the commits, read from git). The work of
+E78 lay between the commit \texttt{3783f1b} (14:33 PST) and 14:50, and
+that of E80 between 14:50 and 14:56.
+
+\textbf{How it was found.} By me, on 22 November 2026 at 15:35 PST, when
+I read the clock of the workspace before writing new entries and
+compared the commit times with the logs of this folder and of the folder
+\texttt{Revision\_Lord\_Gravity}, whose log had the same error in more
+entries.
+
+\textbf{Provenance.} The two times were written with their entries, in
+the commits named above.
+
+\textbf{Why I made it.} I wrote the times without reading a clock; my
+estimate of the elapsed time ran ahead of it.
+
+\textbf{The correction.} The two entries now give the intervals between
+the commits. From now on every time in this record is read from the
+clock of the workspace when the entry is written.
 
 \hypertarget{the-state-of-the-work-when-this-record-was-written}{%
 \section{5. The state of the work when this record was
@@ -1716,6 +1749,19 @@ same; compared on 22 November 2026 at 13:55 PST); he was asked to
 restore the committed copy with one command before the new version is
 delivered, since git would otherwise refuse to replace it, and he did so
 at 14:02 (C29). \emph{The frozen and paused folders} stay as they are.
+
+\textbf{D39. The order of the remaining rewriting (my decision, 22
+November 2026, after E80).} D38 put the other documents of this folder
+before the manuscript of the folder \texttt{Revision\_Lord\_Gravity}. Of
+these, the manuscript \texttt{superfluid.md} remains; the manuscript of
+\texttt{Revision\_Lord\_Gravity} is rewritten before it. \emph{Reasons:}
+\texttt{superfluid.md} is a document of the earlier hypotheses that this
+folder inherited, and its text is also kept unchanged in the frozen
+folder \texttt{Revision\_HS\_CJT\_and\_Kohn-Sham} (D19); the manuscript
+of \texttt{Revision\_Lord\_Gravity} belongs to the task in progress
+(C23), and its rewriting needs a complete statement of the model of the
+earlier hypotheses (the brochon model) in any case, which the rewriting
+of \texttt{superfluid.md} can then follow.
 
 \textbf{D11. Documents.} The manuscript \texttt{superfluid.md} (with
 \texttt{.tex} and \texttt{.pdf}); this record; the MASTER provenance of
@@ -3842,7 +3888,7 @@ the check of self-containedness found it, and it was reworded. (12) The
 first wording of E75 named the manuscript of 16 November with a phrase
 that the same check reads as a referral to another document; it was
 reworded \\
-E78 & 22 Nov 2026, 14:45 to 15:30 & object O20, second part: the
+E78 & 22 Nov 2026, 14:33 to 14:50 & object O20, second part: the
 hypotheses document \texttt{provenance/H0\_hypotheses} and the three
 manuscripts of the stages, \texttt{higgs\_superfluid},
 \texttt{higgs\_masses} and \texttt{higgs\_dynamics}, made complete in
@@ -3888,16 +3934,16 @@ corresponding symbols carry the suffix LL (\(\mathsf L_{\rm LL}\),
 \(\mathsf X_{\rm SH}\) already name other objects there. (4) The formula
 of the critical coupling with its closed form was wider than the page
 and is split over two lines \\
-E80 & 22 Nov 2026, 15:55 PST & \textbf{a false statement, corrected.}
-\emph{What I stated:} the rewritten article (commit \texttt{3783f1b},
-its Secs. II D and II F) and Appendix A and the word list of the
-documents of this folder (commit \texttt{e980c4d}) said that in the
-superfluid of the spinor charges, the model of the earlier hypotheses,
-the third isospin component \(T^3_{\rm LL}\) is the electric charge,
-that its pairs have the electric charges \(+1\), \(0\), \(-1\), and that
-the polar superfluid keeps the electric charge unbroken and is neutral.
-\emph{What is true:} on 21 November 2026 the author stated that the
-spinor field of the earlier hypotheses has electric charge 0 and no
+E80 & 22 Nov 2026, 14:50 to 14:56 & \textbf{a false statement,
+corrected.} \emph{What I stated:} the rewritten article (commit
+\texttt{3783f1b}, its Secs. II D and II F) and Appendix A and the word
+list of the documents of this folder (commit \texttt{e980c4d}) said that
+in the superfluid of the spinor charges, the model of the earlier
+hypotheses, the third isospin component \(T^3_{\rm LL}\) is the electric
+charge, that its pairs have the electric charges \(+1\), \(0\), \(-1\),
+and that the polar superfluid keeps the electric charge unbroken and is
+neutral. \emph{What is true:} on 21 November 2026 the author stated that
+the spinor field of the earlier hypotheses has electric charge 0 and no
 electroweak quantum numbers, and that its isospin group
 \(SU(2)_{\rm v}\) belongs to a new gauge group, not to the electroweak
 group; the manuscript \texttt{superfluid.md} records this correction in
@@ -3918,6 +3964,11 @@ the revision the electric charge is \(T^3_{\rm LL}\) plus the
 hypercharge. The definition of the earlier hypotheses in the article and
 in the parts now names their gauge fields of the isospin and of the
 fermion number as well \\
+E81 & 22 Nov 2026, 15:35 to 15:39 & the times of E78 and E80 checked
+against the times of the commits and corrected (Section 4.6); decision
+D39 (the manuscript of the folder \texttt{Revision\_Lord\_Gravity} is
+rewritten before \texttt{superfluid.md}); the record of Section 4.5 now
+states which documents the correction covers \\
 \end{longtable}
 
 \end{document}

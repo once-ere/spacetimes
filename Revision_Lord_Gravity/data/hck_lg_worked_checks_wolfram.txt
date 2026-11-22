@@ -1,0 +1,14 @@
+lg_worked.wls: the exact checks of the worked examples of the manuscript lord_gravity (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WW and a number), the statement and, in brackets, the
+facts that decide it.
+
+PASS WW-1     (LW-1 to LW-3) the change of representation by S = M_LL(gtilde) of the boost (5/4) e_0 + (3/4) i e_3: S = diag(1/2, 2), the matrices sigma'_mu, their bars and polarized determinants, Lord's Dirac matrices = S4 gamma^a S4^-1 with S4 = S_LL(g), the Clifford relation, the Lorentz matrix L of the boost, gamma'^a = (L^-1)_ab gamma^b, (9.3), and the frame of M31 with the velocity -15/17 (exact) [sigma'_0 = {{1/4, 0}, {0, 4}}, sigma'_3 = {{1/4, 0}, {0, -4}}, L^-1 = {{17/8, 0, 0, -15/8}, {0, 1, 0, 0}, {0, 0, 1, 0}, {-15/8, 0, 0, 17/8}}, f'_0 = {17/8, 0, 0, -15/8}]
+PASS WW-2     (LW-4) the set (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2): Hermitian, linearly independent (the determinant of the coefficients is 1), N_LG(sigma''_0, sigma''_3) = 1/2, (1/2){gamma''^0, gamma''^3} = (1/2) 1_4 (exact) [det 1, N03 1/2]
+PASS WW-3     (LW-5) the plane wave (u (x) (1, 0)) Exp[-i p.x], u = (1/2, 0, 2, 0), p = (17/8, 0, 0, 15/8), m = 1: the free field equation, the current 2 p^mu, the Lagrangian density 0, the energy-momentum tensor (16.2) 2 p_mu p_nu (lower indices) with the trace m Psi-bar Psi = 2 (symbolic coordinates) [j = {17/4, 0, 0, 15/4}, T_00 = 289/32, T_03 = -255/32, T_33 = 225/32]
+PASS WW-4     (LW-6) the Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy D (K^3)^dag, for symbolic real q, M, D: Hermitian, its square is (|q|^2 + M^2 + D^2) 1_16 and its trace is 0, so its eigenvalues are -E(q) and +E(q) eight times each (exact) [H^2 - E^2 1 = 0: True, tr H = 0]
+PASS WW-5     (LW-7) the integral I^(1)(M) of (A.19), computed by Integrate for M > 0, equals its closed form symbolically and as numbers of 40 digits at M = 3/10 and 1/5; with the printed numbers the gap equation 23.7 I^(1)(E_gap)/Pi^2 = 1 and Pi^2/I^(1)(1/5) = G^crit_LL hold to the ten printed digits [Integrate: (Sqrt[1 + mx^2] - mx^2*ArcCoth[Sqrt[1 + mx^2]])/2; symbolic equality: True, numerical equality: True, 23.7 I1(E_gap)/Pi^2 = 0.999999999995666, Pi^2/I1(1/5) = 21.2866097555497]
+
+Notes:
+  Wolfram Language 15.0.1; run time 1 s
+
+VERDICT: ALL PASS (5 of 5)

@@ -1,0 +1,16 @@
+# lgworked: the program lg_worked of the folder Revision_Lord_Gravity (PROJECT spacetimes): the worked examples of the
+# manuscript lord_gravity (Lord's change of representation by a boost and its frame, a set of Hermitian matrices that is
+# not a representation of the Clifford algebra, a plane wave of the brochon with its current and energy-momentum tensor,
+# and the quasi-particles and the gap equation of the polar ground state of the brochon model).
+[package]
+name = "lgworked"
+version = "0.1.0"
+edition = "2021"
+description = "The worked examples of the manuscript lord_gravity, computed exactly where they are rational"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+
+[[bin]]
+name = "lg_worked"
+path = "src/main.rs"

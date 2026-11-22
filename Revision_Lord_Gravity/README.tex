@@ -267,9 +267,10 @@ his change of representation is the action of a unit bi-quaternion of
 the Lorentz super-loop on frames, and the unit bi-quaternions are all
 the continuous changes that keep the Weyl form (Theorem L1); his gauge
 group is the \(SL(2,\mathbb C)\) factor of the gauge group GEE of the
-earlier hypotheses, and his auxiliary fields are minus its spin
-connection. What the gauging adds is the dynamics of that connection,
-which the earlier hypotheses, on their flat space-time, leave out.
+brochon model (the earlier hypotheses of the project), and his auxiliary
+fields are minus its spin connection. What the gauging adds is the
+dynamics of that connection, which the brochon model, on its flat
+space-time, leaves out.
 
 \textbf{Stage 4} (22 November 2026): Part III of the manuscript: the
 gravitational coupling of the brochon. Lord's reference vectors are the
@@ -284,10 +285,10 @@ conserved currents, the square of its Dirac operator (the coupling
 massless brochon, and Volkov's solution in a plane wave of the zeugon.
 In the condensed vacuum, where the zeugon exists, the quasi-particle of
 the brochon is a particle of spin \(\tfrac12\) and mass
-\(E^{\rm CJT,gap}_{\rm SF}=0.3664\,\Lambda_{\rm LL}\) in every
-gravitational field (Theorem L2). The energy-momentum tensor of the
-brochon follows from the variation of the tetrad, and with that of the
-gauge fields (the zeugon's among them) it is the conserved source of
+\(E^{\rm CJT,gap}_{\rm SF}=\) \(0.3663906649\) \(\Lambda_{\rm LL}\) in
+every gravitational field (Theorem L2). The energy-momentum tensor of
+the brochon follows from the variation of the tetrad, and with that of
+the gauge fields (the zeugon's among them) it is the conserved source of
 Einstein's equations. Three programs check Part III: the Rust program
 \texttt{lg\_curved} (ALL PASS (57 of 57)), the Python program
 \texttt{python/lg\_curved.py} (ALL PASS (19 of 19)) and the Wolfram
@@ -295,15 +296,34 @@ script \texttt{wolfram/source/lg\_curved.wls} (ALL PASS (6 of 6), exact
 arithmetic, including the Schwarzschild, Painlevé-Gullstrand and Vaidya
 space-times that stages 5 and 6 use).
 
-\textbf{The manuscript is not complete in itself.} Parts I to III use
-objects of the earlier hypotheses of the project and of the author's
-unpublished manuscript of 16 November 2026 on the Lorentz super-loop
-without stating them, and terms that they do not define. The task record
-states this, with its provenance, in its Section 4.1; the check HCK-H2
-of \texttt{code/scripts/check\_self\_contained.py} fails until the
-manuscript is rewritten. On 22 November 2026 the author instructed to
-continue the calculations and the analysis and to stop writing
-manuscripts; the rewriting waits for his request.
+\textbf{Parts I to III rewritten, complete in themselves} (22 November
+2026, after the author asked for the manuscripts again and for a
+friendlier style). Until then Parts I to III used objects of the earlier
+hypotheses of the project and of the author's unpublished manuscript of
+16 November 2026 on the Lorentz super-loop without stating them, and
+terms that they did not define (the task record, Section 4.1). The
+manuscript now states everything that it uses: a word list (its Section
+0.1), the results in brief (0.2), a paragraph \emph{In words} at the
+head of most sections, Appendix A (the algebra of the Lorentz super-loop
+with an example of every object: the octonions and a Moufang loop, the
+bi-octonions and the Lorentz super-loop, M31 and the Lorentz group, the
+eight spinor charges, a Dirac spinor, an isodoublet, an isovector, an
+isodoublet of Dirac spinors, and an explicit spin-zero superfluid of the
+spinor charges) and Appendix B (the brochon model: the field, the gauge
+group GEE, the Lagrangian and the field equations, the mean field and
+the methods HS, KS and CJT, the recursion of the interaction, the polar
+ground state with its quasi-particles, the masses of the gauge bosons
+and the zeugon). New worked examples (Lord's change of representation by
+a boost and its frame, a set of Hermitian matrices that is not a
+representation, a plane wave of the brochon with its energy-momentum
+tensor, the quasi-particles and the gap equation) are computed by the
+Rust program \texttt{lg\_worked} (VERDICT: ALL PASS (30 of 30)) and
+checked by \texttt{python/lg\_worked.py} (VERDICT: ALL PASS (28 of 28),
+exact) and \texttt{wolfram/source/lg\_worked.wls} (VERDICT: ALL PASS (5
+of 5)). The check HCK-H2 of
+\texttt{code/scripts/check\_self\_contained.py} passes: no line of the
+manuscript relies on the earlier hypotheses or the earlier work without
+stating them.
 
 \textbf{Stage 5} (22 November 2026), computed and checked, not written
 up: the brochon in the Schwarzschild field. In the freely falling tetrad
@@ -389,9 +409,9 @@ record, decision D11 and entries E20 and E21; the data in
 author means, and the value of \(\Lambda_{\rm LL}\) in physical units,
 are questions put to him.
 
-The manuscript, the provenance of the remarks, the registry of the
-symbols and the notebook wait for the author's request (the task record,
-Section 6).
+Next (the task record, Section 6): Parts IV to VI of the manuscript,
+written from stages 5 to 7 in the same style; then the provenance of the
+remarks, the registry of the symbols and the notebook.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -429,23 +449,32 @@ every document, with a check of the layout of every page),
 \texttt{check\_layout.py}, \texttt{check\_pages.py}, and
 \texttt{check\_self\_contained.py} (does a document send its reader
 elsewhere?) & written \\
-\texttt{docs\_src/} & the hand-edited sources of the documents &
-written \\
+\texttt{docs\_src/} & the hand-edited sources of the documents;
+\texttt{docs\_src/parts/} holds the parts that the manuscript includes
+in full (\texttt{glossary\_lg.part.md}, the word list;
+\texttt{algebra\_lg.part.md}, Appendix A; \texttt{brochon\_lg.part.md},
+Appendix B) & written \\
 \texttt{lord\_gravity.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript
 of the task: Part I (Lord's paper read and checked), Part II (the
 association of the project's \(SL(2,\mathbb C)\) with Lord's gauge
 group), Part III (the gravitational coupling of the brochon) & Parts I
-to III written, not complete in themselves (Section 2); Parts IV to VI
-not written (the author's instruction of 22 November 2026) \\
+to III written and, since 22 November 2026, complete in themselves, with
+the word list and Appendices A and B; Parts IV to VI next \\
 \texttt{provenance/generated/} & the fragments that the programs write
 for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
-\texttt{lg\_schw.md}, \texttt{lg\_vaidya.md} and \texttt{lg\_pair.md},
-written by \texttt{code/scripts/write\_lg\_lord\_fragments.py},
+\texttt{lg\_schw.md}, \texttt{lg\_vaidya.md}, \texttt{lg\_pair.md} and
+\texttt{lg\_worked.md}, written by
+\texttt{code/scripts/write\_lg\_lord\_fragments.py},
 \texttt{write\_lg\_curved\_fragments.py},
 \texttt{write\_lg\_schw\_fragments.py},
-\texttt{write\_lg\_vaidya\_fragments.py} and
-\texttt{write\_lg\_pair\_fragments.py}) & written for Parts I to III and
-stages 5 to 7a \\
+\texttt{write\_lg\_vaidya\_fragments.py},
+\texttt{write\_lg\_pair\_fragments.py} and
+\texttt{write\_lg\_worked\_fragments.py}), and \texttt{lg\_examples.md},
+the numbers of the appendices copied by
+\texttt{write\_lg\_examples\_fragments.py} from the fragment files of
+the folder \texttt{Revision\_SM\_Higgs} (with the SHA-256 checksums of
+the files that it reads) & written for Parts I to III, the appendices
+and stages 5 to 7a \\
 \texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
 (complex matrices, bi-quaternions, Dirac matrices, automatic
 differentiation, \texttt{lord.rs}, Lord's matrices from his definitions,
@@ -458,21 +487,26 @@ programs; the program \texttt{lg\_schw} (stage 5: the brochon in the
 Schwarzschild field) the program \texttt{lg\_vaidya} (stage 6: the
 brochon in the Vaidya space-time, crate \texttt{lgvaidya}) and the
 program \texttt{lg\_pair} (stage 7a: the pair bound by the zeugon, crate
-\texttt{lgpair}) & written for Parts I to III and stages 5 to 7a \\
+\texttt{lgpair}); and the program \texttt{lg\_worked} (the worked
+examples of the manuscript, crate \texttt{lgworked}) & written for Parts
+I to III and stages 5 to 7a \\
 \texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
 differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_curved.py} (the independent checks of \texttt{lg\_lord} and
 \texttt{lg\_curved}), \texttt{lgsundials.py} (CVODE through
 \texttt{lgsundials\_c}), \texttt{lg\_schw.py} and \texttt{lg\_vaidya.py}
 (the independent checks of \texttt{lg\_schw} and \texttt{lg\_vaidya}),
-and \texttt{lg\_pair.py} (the exact levels of the pair of stage 7a) &
-written for Parts I to III and stages 5 to 7a \\
+\texttt{lg\_pair.py} (the exact levels of the pair of stage 7a), and
+\texttt{lg\_worked.py} (the worked examples, exact where they are
+rational) & written for Parts I to III and stages 5 to 7a \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
 Lord's identities, signs and factors; \texttt{lg\_curved.wls}: the exact
 checks of Part III; \texttt{lg\_schw.wls}: the exact checks of stage 5
 and some of its numbers in arithmetic of 32 digits;
 \texttt{lg\_vaidya.wls}: the exact checks of stage 6;
-\texttt{lg\_pair.wls}: the exact checks of stage 7a & written \\
+\texttt{lg\_pair.wls}: the exact checks of stage 7a;
+\texttt{lg\_worked.wls}: the symbolic checks of the worked examples &
+written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_lg\_lord\_checks.txt},
 \texttt{hck\_lg\_curved\_checks.txt},
@@ -491,7 +525,9 @@ every output time; \texttt{lg\_vaidya\_values.csv}, single values;
 reports \texttt{hck\_lg\_vaidya\_checks*.txt}), of stage 7a
 (\texttt{lg\_pair\_levels.csv}, the exact coefficients of the levels;
 \texttt{lg\_pair\_values.csv}, the numbers of the pair; reports
-\texttt{hck\_lg\_pair\_checks*.txt}), and the report of the check
+\texttt{hck\_lg\_pair\_checks*.txt}), of the worked examples
+(\texttt{lg\_worked\_values.csv}; reports
+\texttt{hck\_lg\_worked\_checks*.txt}), and the report of the check
 whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures & planned \\
 \end{longtable}
