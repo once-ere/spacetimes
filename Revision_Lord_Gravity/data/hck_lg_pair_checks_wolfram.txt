@@ -1,0 +1,11 @@
+lg_pair.wls: the exact checks of stage 7a of task C23, the pair of two brochon quasi-particles bound by the zeugon (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WP and a number), the statement and, in brackets, the
+facts that decide it.  All checks are exact.
+
+PASS WP-1     (Python YP-2; Rust LP-1) the coefficients of m alpha^4 of all 18 states with n <= 3, without and with the annihilation term, computed with the radial functions of the Wolfram Language and exact integration, equal the rational numbers of data/lg_pair_levels.csv [1^1S0 -21/64 / -21/64; 1^3S1 1/192 / 49/192; 2^1S0 -53/1024 / -53/1024; 2^3S1 -31/3072 / 65/3072; 2^1P1 -31/3072 / -31/3072; 2^3P2 -43/15360 / -43/15360; 2^3P1 -47/3072 / -47/3072; 2^3P0 -95/3072 / -95/3072; 3^1S0 -85/5184 / -85/5184; 3^3S1 -7/1728 / 1/192; 3^1P1 -7/1728 / -7/1728; 3^3P2 -49/25920 / -49/25920; 3^3P1 -29/5184 / -29/5184; 3^3P0 -53/5184 / -53/5184; 3^1D2 -41/25920 / -41/25920; 3^3D3 -127/181440 / -127/181440; 3^3D2 -49/25920 / -49/25920; 3^3D1 -1/320 / -1/320]
+PASS WP-2     (Rust LP-2) the barrier of -alpha/z - k z^2 has its top at z* = (alpha/(2k))^(1/3) (dV/dz = 0, d^2V/dz^2 < 0), of height -(3/2) alpha^(2/3) (2k)^(1/3), and with k = mu r_g/r^3 it equals the level -mu alpha^2/(2 n^2) at r^3 = 54 n^6 r_g/(mu^2 alpha^4) [dV/dz 0, d2V/dz2 -6*k, top (-3*(al^2*k)^(1/3))/2^(2/3), top - level at r_ion 0]
+
+Notes:
+  Wolfram Language 15.0.1; run time 5 s
+
+VERDICT: ALL PASS (2 of 2)

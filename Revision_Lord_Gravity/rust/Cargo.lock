@@ -28,6 +28,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "lgpair"
+version = "0.1.0"
+dependencies = [
+ "lgcore",
+]
+
+[[package]]
 name = "lgschw"
 version = "0.1.0"
 dependencies = [

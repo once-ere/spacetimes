@@ -368,10 +368,30 @@ this with CVODE (ALL PASS (8 of 8)); the Python program
 algebra) check it. The task record gives the results with their numbers
 (entries E15 to E19); the data are in \texttt{data/lg\_vaidya\_*.csv}.
 
-The next stage, as a computation: stage 7, the brochon pair bound by the
-zeugon and the predictions. The manuscript, the provenance of the
-remarks, the registry of the symbols and the notebook wait for the
-author's request (the task record, Section 6).
+\textbf{Stage 7, first part} (22 November 2026), computed and checked,
+not written up: the brochon pair bound by the zeugon. Two
+quasi-particles of the condensed vacuum with opposite zeugon charges
+(each a particle of spin \(\tfrac12\) and mass \(0.3664\)
+\(\Lambda_{\rm LL}\)) attract each other through the massless zeugon
+with the coupling \(0.00975\); the pair is hydrogen-like, of size
+\(560\)\(/\Lambda_{\rm LL}\) and binding energy \(8.70\times10^{-6}\)
+\(\Lambda_{\rm LL}\). Its fine and hyperfine structure is computed
+exactly to the next order, without and with the possible annihilation of
+the two quasi-particles into zeugons, which is an open question. A black
+hole tears the pair apart before it reaches the horizon only if its mass
+is below \(1.492\times10^{5}\) \(M_{\rm Pl}^2/\Lambda_{\rm LL}\) (a
+classical estimate of the tidal dissociation). Programs:
+\texttt{python/lg\_pair.py} (ALL PASS (3 of 3), exact), the Rust program
+\texttt{lg\_pair} (ALL PASS (2 of 2)) and
+\texttt{wolfram/source/lg\_pair.wls} (ALL PASS (2 of 2)); the task
+record, decision D11 and entries E20 and E21; the data in
+\texttt{data/lg\_pair\_*.csv}. Which gravitational predictions the
+author means, and the value of \(\Lambda_{\rm LL}\) in physical units,
+are questions put to him.
+
+The manuscript, the provenance of the remarks, the registry of the
+symbols and the notebook wait for the author's request (the task record,
+Section 6).
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -419,12 +439,13 @@ to III written, not complete in themselves (Section 2); Parts IV to VI
 not written (the author's instruction of 22 November 2026) \\
 \texttt{provenance/generated/} & the fragments that the programs write
 for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
-\texttt{lg\_schw.md} and \texttt{lg\_vaidya.md}, written by
-\texttt{code/scripts/write\_lg\_lord\_fragments.py},
+\texttt{lg\_schw.md}, \texttt{lg\_vaidya.md} and \texttt{lg\_pair.md},
+written by \texttt{code/scripts/write\_lg\_lord\_fragments.py},
 \texttt{write\_lg\_curved\_fragments.py},
-\texttt{write\_lg\_schw\_fragments.py} and
-\texttt{write\_lg\_vaidya\_fragments.py}) & written for Parts I to III
-and stages 5 and 6 \\
+\texttt{write\_lg\_schw\_fragments.py},
+\texttt{write\_lg\_vaidya\_fragments.py} and
+\texttt{write\_lg\_pair\_fragments.py}) & written for Parts I to III and
+stages 5 to 7a \\
 \texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
 (complex matrices, bi-quaternions, Dirac matrices, automatic
 differentiation, \texttt{lord.rs}, Lord's matrices from his definitions,
@@ -434,21 +455,24 @@ program \texttt{lg\_curved} (the checks of Part III); the crate
 \texttt{lgsundials} (the integrator CVODE of SUNDIALS 7.8.0 in pure
 Rust) with its C interface \texttt{lgsundials\_c} for the Python
 programs; the program \texttt{lg\_schw} (stage 5: the brochon in the
-Schwarzschild field) and the program \texttt{lg\_vaidya} (stage 6: the
-brochon in the Vaidya space-time, crate \texttt{lgvaidya}) & written for
-Parts I to III and stages 5 and 6 \\
+Schwarzschild field) the program \texttt{lg\_vaidya} (stage 6: the
+brochon in the Vaidya space-time, crate \texttt{lgvaidya}) and the
+program \texttt{lg\_pair} (stage 7a: the pair bound by the zeugon, crate
+\texttt{lgpair}) & written for Parts I to III and stages 5 to 7a \\
 \texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
 differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_curved.py} (the independent checks of \texttt{lg\_lord} and
 \texttt{lg\_curved}), \texttt{lgsundials.py} (CVODE through
 \texttt{lgsundials\_c}), \texttt{lg\_schw.py} and \texttt{lg\_vaidya.py}
-(the independent checks of \texttt{lg\_schw} and \texttt{lg\_vaidya}) &
-written for Parts I to III and stages 5 and 6 \\
+(the independent checks of \texttt{lg\_schw} and \texttt{lg\_vaidya}),
+and \texttt{lg\_pair.py} (the exact levels of the pair of stage 7a) &
+written for Parts I to III and stages 5 to 7a \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
 Lord's identities, signs and factors; \texttt{lg\_curved.wls}: the exact
 checks of Part III; \texttt{lg\_schw.wls}: the exact checks of stage 5
 and some of its numbers in arithmetic of 32 digits;
-\texttt{lg\_vaidya.wls}: the exact checks of stage 6 & written \\
+\texttt{lg\_vaidya.wls}: the exact checks of stage 6;
+\texttt{lg\_pair.wls}: the exact checks of stage 7a & written \\
 \texttt{data/} & the reports of the checks
 (\texttt{hck\_lg\_lord\_checks.txt},
 \texttt{hck\_lg\_curved\_checks.txt},
@@ -464,8 +488,11 @@ their comparison with the small-mass formulas;
 \texttt{lg\_schw\_values.csv}, single values), of stage 6
 (\texttt{lg\_vaidya\_runs.csv}, the four runs with a changing mass at
 every output time; \texttt{lg\_vaidya\_values.csv}, single values;
-reports \texttt{hck\_lg\_vaidya\_checks*.txt}), and the report of the
-check whether a document sends its reader elsewhere & written \\
+reports \texttt{hck\_lg\_vaidya\_checks*.txt}), of stage 7a
+(\texttt{lg\_pair\_levels.csv}, the exact coefficients of the levels;
+\texttt{lg\_pair\_values.csv}, the numbers of the pair; reports
+\texttt{hck\_lg\_pair\_checks*.txt}), and the report of the check
+whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures & planned \\
 \end{longtable}
 
@@ -485,14 +512,17 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{python3}\NormalTok{ python/lg\_curved.py}
 \ExtensionTok{python3}\NormalTok{ python/lg\_schw.py                      }\CommentTok{\# uses rust/target/release/liblgsundials\_c (about 20 s)}
 \ExtensionTok{python3}\NormalTok{ python/lg\_vaidya.py                    }\CommentTok{\# after lg\_vaidya, whose data it checks (about 30 s)}
+\ExtensionTok{python3}\NormalTok{ python/lg\_pair.py                      }\CommentTok{\# stage 7a, exact levels (about 16 s); then (cd rust \&\& ./target/release/lg\_pair)}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_curved.wls data/hck\_lg\_curved\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_schw.wls data/lg\_schw\_qbs.csv data/lg\_schw\_grey.csv data/hck\_lg\_schw\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_vaidya.wls data/hck\_lg\_vaidya\_checks\_wolfram.txt}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_pair.wls data/lg\_pair\_levels.csv data/hck\_lg\_pair\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_lord\_fragments.py   }\CommentTok{\# the numbers of the documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_curved\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_schw\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_vaidya\_fragments.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_pair\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (HCK{-}H2 fails, Section 2)}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}

@@ -1,0 +1,16 @@
+# lgpair: the program lg_pair of the folder Revision_Lord_Gravity (PROJECT spacetimes): stage 7a of task C23, the pair of
+# two brochon quasi-particles bound by the exchange of the zeugon: the levels of the order alpha^4 by numerical quadrature
+# (a check of the exact computation of python/lg_pair.py), the numbers of the pair at the couplings of the earlier
+# hypotheses, and the estimate of its tidal dissociation by a black hole.
+[package]
+name = "lgpair"
+version = "0.1.0"
+edition = "2021"
+description = "The pair of two quasi-particles bound by the zeugon: levels to order alpha^4, numbers, tidal dissociation"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+
+[[bin]]
+name = "lg_pair"
+path = "src/main.rs"

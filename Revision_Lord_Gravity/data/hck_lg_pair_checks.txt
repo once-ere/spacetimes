@@ -1,0 +1,13 @@
+lg_pair: the pair of two brochon quasi-particles bound by the zeugon (stage 7a of task C23, Revision_Lord_Gravity, PROJECT spacetimes); hbar = c = 1, units of the cutoff Lambda_LL
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS LP-1    deviation 2.282e-14 (tolerance 1.0e-12): the levels of the order alpha^4 of two particles of equal mass (Breit-Fermi Hamiltonian, g = 2), computed by Gauss-Laguerre quadrature (48 points) of the radial integrals, equal the exact coefficients of data/lg_pair_levels.csv (python/lg_pair.py) for all 32 states with n <= 4, without and with the annihilation term (largest difference, in units of m alpha^4, and of the normalization)
+PASS LP-2    deviation 2.887e-15 (tolerance 1.0e-9): the tidal dissociation: the radius at which the top of the tidal barrier (found by golden-section search on the radial axis) falls to the level n = 1, 2, 3 of the pair of quasi-particles of mass E_gap (found by bisection), for black holes of gravitational radius 10^3 to 10^9 / Lambda_LL, equals the closed form r_ion^3 = 54 n^6 r_g/(mu^2 alpha_Z^4) (largest relative difference)
+
+Notes:
+  mass gap: Bohr radius 5.5996e2, binding 1S 8.7044e-6 (2.376e-5 of the mass), hyperfine splitting of 1S 1.1029e-9 (without annihilation) or 1.9300e-9 (with), spread of n = 2 1.620e-10; if the pair annihilates: decay rates 1.613e-11 (1S0) and 1.934e-14 (3S1); critical r_g 1.4924e5
+  mass mLL: Bohr radius 1.0258e3, binding 1S 4.7514e-6 (2.376e-5 of the mass), hyperfine splitting of 1S 6.0202e-10 (without annihilation) or 1.0535e-9 (with), spread of n = 2 8.842e-11; if the pair annihilates: decay rates 8.803e-12 (1S0) and 1.056e-14 (3S1); critical r_g 2.7340e5
+  critical black hole (n = 1, quasi-particles of mass E_gap): r_g = 1.4924e5/Lambda_LL, i.e. M = 1.4924e5 M_Pl^2/Lambda_LL; illustrative values: Lambda = 1 eV: M_crit = 3.966e25 kg = 1.994e-5 solar masses; Lambda = 1 keV: M_crit = 3.966e22 kg = 1.994e-8 solar masses; Lambda = 1 MeV: M_crit = 3.966e19 kg = 1.994e-11 solar masses; Lambda = 1 GeV: M_crit = 3.966e16 kg = 1.994e-14 solar masses; Lambda = 1 TeV: M_crit = 3.966e13 kg = 1.994e-17 solar masses
+
+VERDICT: ALL PASS (2 of 2)

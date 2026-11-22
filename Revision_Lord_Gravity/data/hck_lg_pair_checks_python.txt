@@ -1,0 +1,12 @@
+lg_pair.py: stage 7a of task C23 - the pair of two brochon quasi-particles bound by the zeugon, exact levels of the order alpha^4 (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check (YP and a number),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YP-3    the radial functions of the hydrogen-like states (n <= 5, a = 1) are normalized and give <1/r> = 1/n^2, <1/r^2> = 2/(n^3 (2l+1)), <1/r^3> = 2/(n^3 l (2l+1)(l+1)) (l >= 1) and |psi(0)|^2 = 1/(pi n^3) (l = 0) (sympy, exact) [all equal]
+PASS YP-1    one particle of spin 1/2 in a fixed Coulomb field (the limit m2 -> infinity of the Hamiltonian): the relativistic kinetic energy, the Darwin term and the spin-orbit term give Dirac's fine structure -(m alpha^4/(2 n^4))(n/(j + 1/2) - 3/4) for every state with n <= 5 (sympy, exact) [all equal]
+PASS YP-2    two particles of the same mass with the term of virtual annihilation (positronium): the levels of the order alpha^4 of every state with n <= 5 equal Ferrell's formula (sympy, exact); in particular the hyperfine splitting of the ground state is (7/12) m alpha^4, of which (1/3) m alpha^4 is the magnetic interaction and (1/4) m alpha^4 the annihilation [all equal]
+
+Notes:
+  the coefficients of m alpha^4 (without / with annihilation): 1^1S0 -21/64 / -21/64; 1^3S1 1/192 / 49/192; 2^1S0 -53/1024 / -53/1024; 2^3S1 -31/3072 / 65/3072; 2^1P1 -31/3072 / -31/3072; 2^3P2 -43/15360 / -43/15360; 2^3P1 -47/3072 / -47/3072; 2^3P0 -95/3072 / -95/3072
+
+VERDICT: ALL PASS (3 of 3)
