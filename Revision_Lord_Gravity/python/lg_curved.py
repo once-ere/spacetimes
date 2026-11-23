@@ -23,6 +23,7 @@ Checks (the counterparts in the Rust report data/hck_lg_curved_checks.txt in bra
         conservation of T, T traceless                                                                       [G-15]
   YG-8  the quasi-particle equation of the polar superfluid: C anticommutes with i Dslash (zeugon), C^2 = -1,
         and (i Dslash)^2 Psi = E_gap^2 Psi for local solutions                                               [G-17]
+        YG-8e, YG-8f: Theorem L3, the inverse map Psi -> (Psi - b C Psi)/(1 + |b|^2) gives Dirac solutions [G-17h, i]
   YG-9  local Lorentz covariance: the spin connection of the rotated tetrad is S Omega S^{-1} - (dS) S^{-1}  [G-11d]
 
 Run (from the folder Revision_Lord_Gravity):   python3 python/lg_curved.py
@@ -568,6 +569,25 @@ def main():
     rep.add("YG-9", "[G-11d] the spin connection of the rotated tetrad Lambda e equals S4 Omega S4^{-1} - (d S4) S4^{-1} (the law "
             "of GEE, Lord's corrected (5.5))", e9, 1e-9)
 
+    # YG-8e, YG-8f: Theorem L3 of Section 18.1 of the manuscript, the inverse map (at the end, so that the random numbers of
+    # the checks above are unchanged): chi = (Psi - b C Psi)/(1 + |b|^2), b = -D/(E_gap + M), of a local solution Psi of the
+    # quasi-particle equation solves the Dirac equation with the mass E_gap, and chi + b C chi = Psi
+    bq = -dpair / (np.sqrt(egap2) + M_CJT)
+    e8e = e8f = 0.0
+    for _ in range(NPT):
+        x = RNG.uniform(-1, 1, 4)
+        geo = Geo(rand_coframe())
+        w, b = rand_gauge(zeugon_only=True)
+        rq = lambda p, y: 1j * dslash(geo, w, b, p, y) - M_CJT * p(y) - dpair * cmap(p(y))
+        q, _ = local_solution(geo, rq, x, 8, antilinear=True)
+        chi = lambda y, q=q: (q(y) - bq * cmap(q(y))) / (1 + abs(bq) ** 2)
+        rd = 1j * dslash(geo, w, b, chi, x) - np.sqrt(egap2) * chi(x)
+        e8e = max(e8e, np.abs(rd).max() / np.abs(chi(x)).max())
+        back = chi(x) + bq * cmap(chi(x))
+        e8f = max(e8f, np.abs(back - q(x)).max() / np.abs(q(x)).max())
+    rep.add("YG-8e", "[G-17h] Theorem L3, the inverse map: for local solutions Psi of the quasi-particle equation, chi = (Psi - "
+            "b C Psi)/(1 + |b|^2), b = -D/(E_gap + M), solves i Dslash chi = E_gap chi (relative)", e8e, 1e-8)
+    rep.add("YG-8f", "[G-17i] and chi + b C chi = Psi (relative)", e8f, 1e-14)
     rep.write("hck_lg_curved_checks_python.txt")
     print("lg_curved.py: %d of %d checks passed" % (rep.npass, rep.n))
     raise SystemExit(0 if rep.npass == rep.n else 1)

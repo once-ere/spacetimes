@@ -95,10 +95,10 @@ power for the ground state; it is computed from the conservation of the charge o
 small as $10^{-27}$ of the mass. The Rust program `lg_schw` computes all this with CVODE ({{GEN:lgs_verdict_rust}}); the Python
 program `python/lg_schw.py` ({{GEN:lgs_verdict_python}}) and the Wolfram script `wolfram/source/lg_schw.wls`
 ({{GEN:lgs_verdict_wolfram}}, exact algebra and arithmetic of 32 digits) check them. The task record gives the results with
-their numbers (entries E7 to E14); the data are in `data/lg_schw_*.csv`. Writing Part IV added Theorem L3: every solution of
-the Dirac equation of the mass of the gap gives a solution of the equation of the quasi-particle of the superfluid, with the
-same complex frequency and the same averaged currents, so that every result of stage 5 holds for the quasi-particle (checks
-LS-14a to LS-14c and YS-13; entry E26).
+their numbers (entries E7 to E14); the data are in `data/lg_schw_*.csv`. Writing Part IV added Theorem L3: the solutions of the
+equation of the quasi-particle of the superfluid correspond one to one to those of the Dirac equation of the mass of the gap,
+and the quasi-particle has the conserved current of the corresponding Dirac solution, so that every result of stages 5 and 6
+holds for the quasi-particle (checks LS-14a to LS-14c, YS-13, G-17h, G-17i, YG-8e, YG-8f; entries E27 and E28).
 
 **Stage 6** (22 November 2026), computed and checked, not written up: the brochon in the field of a black hole whose
 mass changes. The space-time is that of Vaidya with the advanced time $v$ (constant along every light ray that falls

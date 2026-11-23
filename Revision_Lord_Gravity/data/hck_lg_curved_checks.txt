@@ -59,10 +59,12 @@ PASS G-17d   deviation 7.034e-16 (tolerance 1.0e-13): C is covariant under local
 PASS G-17e   deviation 8.218e-16 (tolerance 1.0e-13): local solutions of the quasi-particle equation i Dslash Psi = M Psi + D C Psi in a curved space-time with the zeugon (M = 0.1622929325, |D| = 0.3284861084, the polar ground state of CJT; residual relative to the field)
 PASS G-17f   deviation 9.370e-15 (tolerance 1.0e-12): for them (i Dslash)^2 Psi = (M^2 + |D|^2) Psi = E_gap^2 Psi, E_gap = 0.3663906649: the quasi-particle of the superfluid is a spin-1/2 particle of mass E_gap in any gravitational field (relative)
 PASS G-17g   deviation 6.860e-15 (tolerance 1.0e-12): and with the square of the Dirac operator (G-10): Box Psi + E_gap^2 Psi - R/4 Psi + i/2 g^v gamma^{mu nu} A_{mu nu} T^3 Psi = 0, A = W^3 the zeugon (relative)
+PASS G-17h   deviation 5.845e-16 (tolerance 1.0e-12): Theorem L3, the inverse map: for local solutions Psi of the quasi-particle equation in a curved space-time with the zeugon, chi = (Psi - b C Psi)/(1 + |b|^2), b = -D/(E_gap + M), solves the Dirac equation i Dslash chi = E_gap chi, E_gap = 0.3663906649 (residual of the value and the first derivatives relative to chi)
+PASS G-17i   deviation 1.825e-16 (tolerance 1.0e-14): and chi + b C chi = Psi: the map of Theorem L3 and its inverse are inverse to each other (relative)
 
 Notes:
   8 random points per check; random tetrads e^a_mu = delta + 0.25 r(x), gauge fields of size 0.3, g^v = 0.7, g^F = 0.45, m_LL = 0.2; exact first and second derivatives (automatic differentiation); tolerances: identities of matrices 1e-13 to 1e-11 (rounding, relative where stated); a check that a printed form fails passes when it fails by the stated amount
   the random tetrads are curved: |R| from 1.390e-1 to 2.759e0, largest component of the Riemann tensor 3.944e-1
   the conformally flat space-times of G-15 are curved: |R| from 1.948e-1 to 1.246e0
 
-VERDICT: ALL PASS (57 of 57)
+VERDICT: ALL PASS (59 of 59)

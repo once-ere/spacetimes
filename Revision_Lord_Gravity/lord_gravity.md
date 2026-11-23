@@ -222,8 +222,8 @@ brochon comes, with an example of every object, and Appendix B states the brocho
    (Part III).
 5. In the superfluid vacuum of the brochon model the quasi-particle of the brochon is, in every gravitational field, a
    particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}=0.3663906649\,\Lambda_{\rm LL}$ that couples to the zeugon
-   with the charges $\pm\tfrac12$ (Theorem L2 of Section 15.4); conversely, every solution of the Dirac equation of this mass
-   gives a solution for the quasi-particle (Theorem L3 of Section 18.1). Its gravitational problems are therefore those of a
+   with the charges $\pm\tfrac12$ (Theorem L2 of Section 15.4); and the solutions of its equation correspond one to one to
+   those of the Dirac equation of this mass (Theorem L3 of Section 18.1). Its gravitational problems are therefore those of a
    Dirac particle of this mass.
 6. Around a black hole that does not rotate, the brochon has quasi-bound states: the levels of a hydrogen atom whose
    coupling is $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, which decay by falling into the black hole at rates that fall as
@@ -828,7 +828,7 @@ fields becomes the source of Einstein's equations. In the superfluid vacuum of t
 brochon then behaves in every gravitational field as a Dirac particle whose mass is the gap.
 
 Every statement of Part III is checked by three programs (Appendix C.3): the Rust program `lg_curved`
-(ALL PASS (57 of 57)); the Python program `python/lg_curved.py` (ALL PASS (19 of 19)), written
+(ALL PASS (59 of 59)); the Python program `python/lg_curved.py` (ALL PASS (21 of 21)), written
 independently, with other formulas where the subject allows and with finite differences in place of automatic
 differentiation; and the Wolfram script `wolfram/source/lg_curved.wls` (ALL PASS (6 of 6)), in exact arithmetic
 for explicit space-times and symbolic fields. The Rust and Python checks use random curved space-times: tetrads that
@@ -1141,8 +1141,7 @@ space-times, and the square for local solutions of (15.11), Section 16.1.)
 The theorem has two consequences for the rest of the task. First, in every gravitational field the quasi-particle of the
 superfluid is a particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}$ that couples to the zeugon with the charges $\pm\tfrac12$
 times $g^{\rm v}_{\rm LL}$: its gravitational problems (Parts IV and V) are those of a Dirac particle of this mass (Theorem L3 of
-Section 18.1 proves the converse that this needs: every solution of the Dirac equation of this mass gives a solution of
-(15.11)). Second, the
+Section 18.1 proves more: the solutions of (15.11) correspond one to one to those of the Dirac equation of this mass). Second, the
 statement fails for the massive gauge fields: with $W^1$, $W^2$ or $B$ the anticommutation (a) fails (relative deviation
 $0.246$, G-17b; exactly, WG-6). The pairing term is covariant only under the unbroken group $U(1)^{\rm Q}_{\rm LL}$ of
 the charge $Q_{\rm LL}$, which is why the zeugon alone remains a field of long range in the superfluid.
@@ -1338,23 +1337,41 @@ Sections 18 to 21 solve it for one of them (the programs put it into the upper i
 The zeugon exists only in the superfluid vacuum of the brochon model, and there the excitation of the brochon is the
 quasi-particle of Section 15.4, whose equation (15.11) contains the pair amplitude through the antilinear map
 $\mathcal C_{\rm LG}$. Theorem L2 showed that every solution of (15.11) solves the equation of the second order (15.12) of a
-Dirac particle of mass $E^{\rm CJT,gap}_{\rm SF}$. For the states of Part IV the converse is needed as well, that every
-solution of the Dirac equation of that mass gives a solution of (15.11). It holds:
+Dirac particle of mass $E^{\rm CJT,gap}_{\rm SF}$. For the states of Parts IV and V more is needed: that the solutions of
+the Dirac equation of that mass give solutions of (15.11), and that every solution of (15.11) arises in this way. Both
+hold:
 
-**Theorem L3 (the quasi-particle has the solutions of a Dirac particle).** Let the tetrad be real and the zeugon be the only
-gauge field, as in Theorem L2, and write $M=M^{\rm CJT,D}_{\rm SF}$, $D=D^{\rm CJT}_{\rm SF}$,
-$E=E^{\rm CJT,gap}_{\rm SF}=(M^2+\lvert D\rvert^2)^{1/2}$ and $\mathcal C=\mathcal C_{\rm LG}$. If $\chi_{\rm LG}$ solves the Dirac equation
-$i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\chi_{\rm LG}=E\,\chi_{\rm LG}$, then
-$$\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\,\mathcal C\chi_{\rm LG},\qquad b^{\rm qp}_{\rm LG}=-\frac{D}{E+M},\tag{18.2}$$
-solves the quasi-particle equation (15.11). Moreover, $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$ have, at every point, the same
-current $\bar\Psi\gamma^\mu_{\rm LG}\Psi$ and the same scalar density $\bar\Psi\Psi$.
+**Theorem L3 (the quasi-particle and the Dirac particle of the mass of the gap).** Let the tetrad be real and the zeugon be
+the only gauge field, as in Theorem L2, and write $M=M^{\rm CJT,D}_{\rm SF}$, $D=D^{\rm CJT}_{\rm SF}$,
+$E=E^{\rm CJT,gap}_{\rm SF}=(M^2+\lvert D\rvert^2)^{1/2}$, $\mathcal C=\mathcal C_{\rm LG}$ and
+$$b^{\rm qp}_{\rm LG}=-\frac{D}{E+M}.\tag{18.2}$$
 
-*Proof.* Write $\chi=\chi_{\rm LG}$, $b=b^{\rm qp}_{\rm LG}$ and $i\gamma\nabla$ for $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu$. By Theorem L2 (a),
-$i\gamma\nabla(\mathcal C\chi)=-\mathcal C(i\gamma\nabla\chi)=-\mathcal C(E\chi)=-E\,\mathcal C\chi$, since $E$ is real; by (b) and the
-antilinearity, $\mathcal C(b\,\mathcal C\chi)=b^*\mathcal C^2\chi=-b^*\chi$. Hence
-$$i\gamma\nabla\Psi-M\Psi-D\,\mathcal C\Psi=(E-M+D\,b^*)\,\chi-\big((E+M)\,b+D\big)\,\mathcal C\chi .$$
-The second bracket vanishes by the choice of $b$, and the first is $E-M-\lvert D\rvert^2/(E+M)=(E^2-M^2-\lvert D\rvert^2)/(E+M)=0$.
-For the second statement, the matrix $\mathsf P_{\rm LG}$ of $\mathcal C\Psi=\mathsf P_{\rm LG}\Psi^*$ obeys
+(a) If $\chi_{\rm LG}$ solves the Dirac equation $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\chi_{\rm LG}=E\,\chi_{\rm LG}$, then
+$\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\,\mathcal C\chi_{\rm LG}$ solves the quasi-particle equation (15.11).
+
+(b) If $\Psi_{\rm LL}$ solves (15.11), then $\chi_{\rm LG}=(\Psi_{\rm LL}-b^{\rm qp}_{\rm LG}\,\mathcal C\Psi_{\rm LL})/(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)$ solves
+the Dirac equation with the mass $E$, and $\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\,\mathcal C\chi_{\rm LG}=\Psi_{\rm LL}$. The two maps are inverse to
+each other: the solutions of (15.11) correspond one to one to the solutions of the Dirac equation of mass $E$.
+
+(c) $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$ have, at every point, the same current $\bar\Psi\gamma^\mu_{\rm LG}\Psi$ and the same scalar
+density $\bar\Psi\Psi$.
+
+*Proof.* Write $\chi=\chi_{\rm LG}$, $\Psi=\Psi_{\rm LL}$, $b=b^{\rm qp}_{\rm LG}$ and $\mathcal K_{\rm LG}$ for the operator
+$i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu$, which is linear over the complex numbers. By Theorem L2 (a), $\mathcal K_{\rm LG}\mathcal C=-\mathcal C \mathcal K_{\rm LG}$; by (b)
+and the antilinearity, $\mathcal C(z\,\mathcal C\phi)=z^*\mathcal C^2\phi=-z^*\phi$ for every number $z$ and spinor $\phi$. Two identities follow
+from $E^2=M^2+\lvert D\rvert^2$:
+$$E-M+D\,b^*=E-M-\frac{\lvert D\rvert^2}{E+M}=\frac{E^2-M^2-\lvert D\rvert^2}{E+M}=0,\qquad D+M\,b=\frac{DE}{E+M}=-E\,b.$$
+
+*Proof of (a).* $\mathcal K_{\rm LG}\Psi=\mathcal K_{\rm LG}\chi+b\,\mathcal K_{\rm LG}\mathcal C\chi=E\chi-b\,\mathcal C(E\chi)=E\chi-Eb\,\mathcal C\chi$, since $E$ is real, while
+$M\Psi+D\,\mathcal C\Psi=M\chi+Mb\,\mathcal C\chi+D\,\mathcal C\chi-Db^*\chi$. The difference is
+$(E-M+Db^*)\,\chi-(Eb+Mb+D)\,\mathcal C\chi$, and both brackets vanish by the two identities.
+
+*Proof of (b).* With $\mathcal K_{\rm LG}\Psi=M\Psi+D\,\mathcal C\Psi$, $\mathcal C(\mathcal K_{\rm LG}\Psi)=M\,\mathcal C\Psi-D^*\Psi$ and
+$\mathcal K_{\rm LG}(\Psi-b\,\mathcal C\Psi)=\mathcal K_{\rm LG}\Psi+b\,\mathcal C(\mathcal K_{\rm LG}\Psi)=(M-bD^*)\Psi+(D+bM)\,\mathcal C\Psi=E\,(\Psi-b\,\mathcal C\Psi)$, by the identities
+($M-bD^*=M+\lvert D\rvert^2/(E+M)=E$). And $\mathcal C(\Psi-b\,\mathcal C\Psi)=\mathcal C\Psi+b^*\Psi$, so that
+$(\Psi-b\,\mathcal C\Psi)+b\,(\mathcal C\Psi+b^*\Psi)=(1+\lvert b\rvert^2)\Psi$, which is the last statement.
+
+*Proof of (c).* The matrix $\mathsf P_{\rm LG}$ of $\mathcal C\Psi=\mathsf P_{\rm LG}\Psi^*$ obeys
 $\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}=(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)^T$ for
 $a=0,\dots,3$ (for $a=0$ this says that $\mathsf P_{\rm LG}$ is unitary) and
 $\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}=(\gamma^0_{\rm LL}\otimes\mathsf 1_2)^T$. Since the number
@@ -1363,35 +1380,42 @@ $\chi^T(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)^T\chi^*$, the firs
 $\overline{\mathcal C\chi}\gamma^a_{\rm LL}\mathcal C\chi=\chi^T\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}\chi^*=\bar\chi\gamma^a_{\rm LL}\chi$,
 and the second the same for the scalar density. $\square$
 
-(Checks LS-14a to LS-14c: the separated spinor (18.3) below with the mass $E$ and complex frequencies, at 40 random points
-outside and 40 inside the horizon, solves (15.11) in the form (18.2) to $7.0\times10^{-15}$ (relative); with the wrong sign of
-$b^{\rm qp}_{\rm LG}$ the residual is at least $0.66$, so that the check can fail; the currents and the scalar densities of
-$\chi$ and $\mathcal C\chi$ agree to $1.2\times10^{-15}$. Check YS-13: the same exactly, by computer algebra, for symbolic $M$, $\lvert D\rvert$,
-phase of $D$, frequency and angular quantum numbers, together with the two matrix identities.)
+(Checks. (a) and (c): LS-14a to LS-14c, the separated spinor (18.3) below with the mass $E$ and complex frequencies, at 40
+random points outside and 40 inside the horizon: the quasi-particle equation holds to $7.0\times10^{-15}$ (relative); with the
+wrong sign of $b^{\rm qp}_{\rm LG}$ the residual is at least $0.66$, so that the check can fail; the currents and
+scalar densities of $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$ agree to $1.2\times10^{-15}$; and YS-13, the same exactly, by computer
+algebra, for symbolic $M$, $\lvert D\rvert$, phase of $D$, frequency and angular quantum numbers, with the two matrix identities.
+(b): G-17h and G-17i, at local solutions of (15.11) in random curved space-times with random fields of the zeugon, the map
+gives solutions of the Dirac equation to $5.84\times10^{-16}$ and its inverse returns the solution; YG-8e and YG-8f, the same in the
+Python program of Part III.)
 
-*What it means.* The quasi-particle (18.2) is a superposition of a solution $\chi_{\rm LG}$ of the Dirac equation and of its
-image $\mathcal C\chi_{\rm LG}$, which contains the complex conjugate of $\chi_{\rm LG}$ and lies in the other isospin component. If
-$\chi_{\rm LG}$ depends on the time as $e^{-i\omega\tau_{\rm LG}}$, then $\mathcal C\chi_{\rm LG}$ depends on it as $e^{+i\omega^*\tau_{\rm LG}}$: it
-oscillates with the opposite frequency. This is the structure of every quasi-particle of a superfluid, a mixture of a
-particle and of a missing partner of a pair (Section 0.1); here the second part has the weight
-$\lvert b^{\rm qp}_{\rm LG}\rvert^2=(E-M)/(E+M)=0.386$ relative to the first.
+*What it means.* The quasi-particle $\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\mathcal C\chi_{\rm LG}$ is a superposition of a solution
+$\chi_{\rm LG}$ of the Dirac equation and of its image $\mathcal C\chi_{\rm LG}$, which contains the complex conjugate of $\chi_{\rm LG}$ and
+lies in the other isospin component. If $\chi_{\rm LG}$ depends on the time as $e^{-i\omega\tau_{\rm LG}}$, then $\mathcal C\chi_{\rm LG}$
+depends on it as $e^{+i\omega^*\tau_{\rm LG}}$: it oscillates with the opposite frequency. This is the structure of every
+quasi-particle of a superfluid, a mixture of a particle and of a missing partner of a pair (Section 0.1); here the second
+part has the weight $\lvert b^{\rm qp}_{\rm LG}\rvert^2=(E-M)/(E+M)=0.386$ relative to the first. By (b), the problem of
+the quasi-particle in a gravitational field is the problem of the Dirac particle of mass $E$, without approximation, in every
+space-time and also when the field depends on the time (Part V).
 
-*Why it matters.* Three consequences make every result of Part IV a result for the quasi-particle as well.
+*Why it matters.* Three consequences make every result of Parts IV and V a result for the quasi-particle as well.
 
-1. A *quasi-bound state* $\chi_{\rm LG}$ of complex frequency $\omega$ (Section 20), a solution that falls into the horizon and
-   decays at large distances, gives the quasi-particle state (18.2), which does the same, because $\mathcal C\chi_{\rm LG}$ is
-   smooth at the horizon and decays at large distances wherever $\chi_{\rm LG}$ does; and both parts decay in time at the same
-   rate, because $\lvert e^{i\omega^*\tau}\rvert=\lvert e^{-i\omega\tau}\rvert=e^{({\rm Im}\,\omega)\tau}$.
-2. For a real frequency $\omega$, the current of $\Psi_{\rm LL}$ averaged over a period $2\pi/\omega$ is
-   $1+\lvert b^{\rm qp}_{\rm LG}\rvert^2$ times the current of $\chi_{\rm LG}$: the cross terms between $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$
-   oscillate as $e^{\pm2i\omega\tau}$ and average to zero, and the currents of the two parts are equal. (At each instant the
-   current of the quasi-particle is not conserved: by (15.6), a solution of (15.11) has
-   $\nabla^{\rm LG}_\mu j^{{\rm F},\mu}_{\rm SF}=2\,{\rm Im}\big(D\,\bar\Psi_{\rm LL}\mathcal C\Psi_{\rm LL}\big)$, which oscillates; the condensate takes
-   up and gives back pairs. Its average over a period vanishes.) The fraction of an incoming wave that the black hole absorbs,
-   a ratio of two such averaged currents (Section 21), is therefore the same for the quasi-particle as for the Dirac
-   particle.
-3. Every number of Part IV therefore holds for the quasi-particle at the same value of
-   $y_{\rm LG}=\mathcal M_{\rm LG}E^{\rm CJT,gap}_{\rm SF}$.
+1. *A conserved current.* The fermion-number current of the quasi-particle is not conserved: by (15.6), a solution of
+   (15.11) has $\nabla^{\rm LG}_\mu j^{{\rm F},\mu}_{\rm SF}=2\,{\rm Im}\big(D\,\bar\Psi_{\rm LL}\mathcal C\Psi_{\rm LL}\big)$, because the condensate
+   takes up and gives back pairs. But the current of $\chi_{\rm LG}=(\Psi_{\rm LL}-b^{\rm qp}_{\rm LG}\mathcal C\Psi_{\rm LL})/(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)$,
+   which (b) assigns to every solution $\Psi_{\rm LL}$, is conserved, because $\chi_{\rm LG}$ solves a Dirac equation: it is the
+   conserved current of the quasi-particle, and the charges and fluxes computed in Parts IV and V are its charges and fluxes.
+   For a state of one real frequency $\omega$ it is also the fermion-number current of $\Psi_{\rm LL}$ averaged over a period
+   $2\pi/\omega$, divided by $1+\lvert b^{\rm qp}_{\rm LG}\rvert^2$: the cross terms between $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$ oscillate as
+   $e^{\pm2i\omega\tau}$ and average to zero, and the currents of the two parts are equal by (c).
+2. *The quasi-bound states.* A quasi-bound state $\chi_{\rm LG}$ of complex frequency $\omega$ (Section 20), a solution that falls
+   into the horizon and decays at large distances, gives the quasi-particle state (a), which does the same, because
+   $\mathcal C\chi_{\rm LG}$ is smooth at the horizon and decays at large distances wherever $\chi_{\rm LG}$ does; both parts decay in time
+   at the same rate, because $\lvert e^{i\omega^*\tau}\rvert=\lvert e^{-i\omega\tau}\rvert=e^{({\rm Im}\,\omega)\tau}$; and by (b) the quasi-particle
+   has no quasi-bound states other than these.
+3. *The numbers.* Every number of Part IV holds for the quasi-particle at the same value of
+   $y_{\rm LG}=\mathcal M_{\rm LG}E^{\rm CJT,gap}_{\rm SF}$, the greybody factors of Section 21 included, which are ratios of fluxes of the
+   conserved current.
 
 ## 18.2 The two tetrads
 
@@ -1712,9 +1736,10 @@ couples the two chiralities, and the states $S_{1/2}$ and $P_{1/2}$ that the two
    as $y_{\rm LG}^5$ for the states $S_{1/2}$ and faster for larger angular momenta; twice the decay rate is the flux into the
    horizon divided by the charge outside it (20.3) (Section 20).
 3. The greybody factors of the partial waves follow from the same solutions (Section 21).
-4. By Theorem L3 every solution of the Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$ gives a solution of the equation of the
-   quasi-particle of the superfluid, with the same complex frequency and the same averaged currents: every result of Part IV
-   holds for the quasi-particle, with $m_{\rm LL}$ replaced by $E^{\rm CJT,gap}_{\rm SF}$ (Section 18.1).
+4. By Theorem L3 the solutions of the equation of the quasi-particle of the superfluid correspond one to one to those of the
+   Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$, and the quasi-particle has the conserved current of the corresponding Dirac
+   solution: every result of Part IV holds for the quasi-particle, with $m_{\rm LL}$ replaced by $E^{\rm CJT,gap}_{\rm SF}$ (Section
+   18.1).
 
 # A. The algebra of the Lorentz super-loop, with an example of every object
 
@@ -2672,11 +2697,11 @@ Three programs check Part III, each independently of the others:
 
 * the Rust program `lg_curved` (`rust/lgcurved/src/main.rs`, with the module `curved.rs` of the library `rust/lgcore`,
   which computes the geometry of a tetrad, the Dirac operator, the currents and the energy-momentum tensors, the local
-  solutions and the Volkov solution): ALL PASS (57 of 57). Its fields carry exact first and second derivatives by
+  solutions and the Volkov solution): ALL PASS (59 of 59). Its fields carry exact first and second derivatives by
   forward-mode automatic differentiation; quantities made from first derivatives of the tetrad (Christoffel symbols,
   spin connection) carry their first derivatives, and the curvature its value. It writes the numbers that Part III
   quotes into `data/lg_curved_values.csv`;
-* the Python program `python/lg_curved.py`: ALL PASS (19 of 19). It writes every matrix again, differentiates by central
+* the Python program `python/lg_curved.py`: ALL PASS (21 of 21). It writes every matrix again, differentiates by central
   finite differences of eighth order (nested for second derivatives, so that its identities hold to about $10^{-12}$
   relative and its tolerances are $10^{-9}$), computes the spin connection by (14.6) instead of (14.4), solves the
   equations of the local solutions all at once, and codes the Volkov solution again;
@@ -2758,13 +2783,15 @@ PASS G-17d   deviation 7.034e-16 (tolerance 1.0e-13): C is covariant under local
 PASS G-17e   deviation 8.218e-16 (tolerance 1.0e-13): local solutions of the quasi-particle equation i Dslash Psi = M Psi + D C Psi in a curved space-time with the zeugon (M = 0.1622929325, |D| = 0.3284861084, the polar ground state of CJT; residual relative to the field)
 PASS G-17f   deviation 9.370e-15 (tolerance 1.0e-12): for them (i Dslash)^2 Psi = (M^2 + |D|^2) Psi = E_gap^2 Psi, E_gap = 0.3663906649: the quasi-particle of the superfluid is a spin-1/2 particle of mass E_gap in any gravitational field (relative)
 PASS G-17g   deviation 6.860e-15 (tolerance 1.0e-12): and with the square of the Dirac operator (G-10): Box Psi + E_gap^2 Psi - R/4 Psi + i/2 g^v gamma^{mu nu} A_{mu nu} T^3 Psi = 0, A = W^3 the zeugon (relative)
+PASS G-17h   deviation 5.845e-16 (tolerance 1.0e-12): Theorem L3, the inverse map: for local solutions Psi of the quasi-particle equation in a curved space-time with the zeugon, chi = (Psi - b C Psi)/(1 + |b|^2), b = -D/(E_gap + M), solves the Dirac equation i Dslash chi = E_gap chi, E_gap = 0.3663906649 (residual of the value and the first derivatives relative to chi)
+PASS G-17i   deviation 1.825e-16 (tolerance 1.0e-14): and chi + b C chi = Psi: the map of Theorem L3 and its inverse are inverse to each other (relative)
 
 Notes:
   8 random points per check; random tetrads e^a_mu = delta + 0.25 r(x), gauge fields of size 0.3, g^v = 0.7, g^F = 0.45, m_LL = 0.2; exact first and second derivatives (automatic differentiation); tolerances: identities of matrices 1e-13 to 1e-11 (rounding, relative where stated); a check that a printed form fails passes when it fails by the stated amount
   the random tetrads are curved: |R| from 1.390e-1 to 2.759e0, largest component of the Riemann tensor 3.944e-1
   the conformally flat space-times of G-15 are curved: |R| from 1.948e-1 to 1.246e0
 
-VERDICT: ALL PASS (57 of 57)
+VERDICT: ALL PASS (59 of 59)
 ```
 
 **The report of the Python program** (`data/hck_lg_curved_checks_python.txt`):
@@ -2793,11 +2820,13 @@ PASS YG-8b   deviation 0.000e+00 (tolerance 1.0e-14): [G-17c] C^2 = -1
 PASS YG-8c   deviation 1.111e-11 (tolerance 1.0e-09): [G-17e] local solutions of i Dslash Psi = M Psi + D C Psi (the antilinear equations solved for the real and imaginary parts; residual relative to the field)
 PASS YG-8d   deviation 4.740e-11 (tolerance 1.0e-08): [G-17f] (i Dslash)^2 Psi = (M^2 + |D|^2) Psi for them, E_gap = 0.3663906649 (relative)
 PASS YG-9    deviation 1.405e-13 (tolerance 1.0e-09): [G-11d] the spin connection of the rotated tetrad Lambda e equals S4 Omega S4^{-1} - (d S4) S4^{-1} (the law of GEE, Lord's corrected (5.5))
+PASS YG-8e   deviation 3.481e-14 (tolerance 1.0e-08): [G-17h] Theorem L3, the inverse map: for local solutions Psi of the quasi-particle equation, chi = (Psi - b C Psi)/(1 + |b|^2), b = -D/(E_gap + M), solves i Dslash chi = E_gap chi (relative)
+PASS YG-8f   deviation 1.479e-16 (tolerance 1.0e-14): [G-17i] and chi + b C chi = Psi (relative)
 
 Notes:
   4 random points per check; finite differences of eighth order with the step 1e-2 (nested for second derivatives), so that identities hold to about 1e-12 relative; tolerances 1e-9
 
-VERDICT: ALL PASS (19 of 19)
+VERDICT: ALL PASS (21 of 21)
 ```
 
 **The report of the Wolfram script** (`data/hck_lg_curved_checks_wolfram.txt`):
@@ -3185,6 +3214,7 @@ listed in its Section A.7, and those of Appendix B in its Section B.7.
 | $P_{\rm LG}$ | the momentum $(\tfrac{17}8,0,0,\tfrac{15}8)$ of the plane wave of the examples (Appendix B.1, Section 16.1) |
 | $y_{\rm LG}$ | $\mathcal M_{\rm LG}m_{\rm LL}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, the coupling of the gravitational atom (18.1) |
 | $\chi_{\rm LG}$, $b^{\rm qp}_{\rm LG}$ | a solution of the Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$, and the coefficient $-D/(E+M)$ of Theorem L3 (18.2) |
+| $\mathcal K_{\rm LG}$ | shorthand for the operator $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu$ in the proof of Theorem L3 |
 | $E$ | shorthand for $E^{\rm CJT,gap}_{\rm SF}$ in Theorem L3 |
 | $\omega^{\rm S}_{\rm LG}$ | the frequency of a partial wave in the Schwarzschild field (time dependence $e^{-i\omega^{\rm S}_{\rm LG}\tau_{\rm LG}}$), complex for a quasi-bound state |
 | $j_{\rm LG}$, $m_{j,{\rm LG}}$ | the total angular momentum of a partial wave and its component along the axis |

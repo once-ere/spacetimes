@@ -41,7 +41,9 @@
 //!   G-17  the quasi-particle equation of the polar superfluid: the antilinear map C of the pairing term anticommutes
 //!         with i Dslash in a curved space-time with the zeugon (not with W^1, W^2, B), C^2 = -1, C is Lorentz
 //!         covariant; every local solution satisfies (i Dslash)^2 Psi = (M^2 + |D|^2) Psi: a spin-1/2 particle of mass
-//!         E_gap = (M^2 + |D|^2)^{1/2} in any gravitational field
+//!         E_gap = (M^2 + |D|^2)^{1/2} in any gravitational field; G-17h, G-17i: Theorem L3 of Section 18.1, the
+//!         inverse map Psi -> chi = (Psi - b C Psi)/(1 + |b|^2), b = -D/(E_gap + M), takes every local solution of the
+//!         quasi-particle equation to a solution of the Dirac equation with the mass E_gap, and chi + b C chi = Psi
 //!
 //! Usage (from Revision_Lord_Gravity/rust): cargo build --release && ./target/release/lg_curved
 //! Writes data/hck_lg_curved_checks.txt (the report) and data/lg_curved_values.csv (the numbers that the manuscript
@@ -961,6 +963,41 @@ fn main() {
              nu} A_{mu nu} T^3 Psi = 0, A = W^3 the zeugon (relative)", e17f, 1e-12);
     put("E_gap of the CJT ground state", egap2.sqrt());
     put("G-17b smallest deviation with W^1 and B", e17w);
+
+    // ------------------------------------------------------------------------------------------ G-17h: Theorem L3
+    // Theorem L3 of Section 18.1 of the manuscript: the map chi -> Psi = chi + b C chi, b = -D/(E_gap + M), takes the
+    // solutions of the Dirac equation with the mass E_gap to the solutions of the quasi-particle equation, and its inverse
+    // Psi -> chi = (Psi - b C Psi)/(1 + |b|^2) takes them back (because C anticommutes with i Dslash, C^2 = -1 and C is
+    // antilinear).  The check of the inverse: local solutions Psi of the quasi-particle equation in random curved
+    // space-times with the zeugon (as in G-17e) give chi that solve the Dirac equation with the mass E_gap at the point
+    // (value and first derivatives), and chi + b C chi is Psi again.  The random numbers come from a generator of their own,
+    // so that the checks G-1 to G-17g are unchanged.
+    let mut rng_h = Rng(0x2026_1122_C23_5);
+    let egap = egap2.sqrt();
+    let bq = -dpair / c(egap + M_CJT, 0.0);
+    let (mut e17h, mut e17i) = (0.0f64, 0.0f64);
+    for _ in 0..NPT {
+        let x = rand_point(&mut rng_h);
+        let geo = Geom::new(rand_coframe(&mut rng_h, &x, TETRAD_AMP));
+        let mut gau = Gauge::zero(GV, GF);
+        for mu in 0..4 {
+            gau.w[2][mu] = rand_real(&mut rng_h, &x, GAUGE_AMP); // the zeugon only
+        }
+        let mut q = rand_spinor8(&mut rng_h, &x, 1.0);
+        let g0 = geo.gam[0].value();
+        complete_local(&mut q, &g0, &|p: &[D4]| bdg_resid(&geo, &gau, p, M_CJT, dpair));
+        let norm = 1.0 / (1.0 + bq.norm_sqr());
+        let chi = vscale(&vsub(&q, &vscale(&cmap(&q), D4::cst(bq))), D4::re(norm));
+        e17h = e17h.max(vmax1(&dirac_resid(&geo, &gau, &chi, egap)) / vmax1(&chi));
+        let back = vadd(&chi, &vscale(&cmap(&chi), D4::cst(bq)));
+        e17i = e17i.max(vmax1(&vsub(&back, &q)) / vmax1(&q));
+    }
+    rep.add("G-17h", &format!("Theorem L3, the inverse map: for local solutions Psi of the quasi-particle equation in a curved \
+             space-time with the zeugon, chi = (Psi - b C Psi)/(1 + |b|^2), b = -D/(E_gap + M), solves the Dirac equation \
+             i Dslash chi = E_gap chi, E_gap = {:.10} (residual of the value and the first derivatives relative to chi)", egap),
+            e17h, 1e-12);
+    rep.add("G-17i", "and chi + b C chi = Psi: the map of Theorem L3 and its inverse are inverse to each other (relative)", e17i, 1e-14);
+    put("G-17h largest residual of the inverse map", e17h);
 
     let dd = data_dir(env!("CARGO_MANIFEST_DIR"));
     write_csv(&dd.join("lg_curved_values.csv"), &["quantity", "value"], &vals_csv);

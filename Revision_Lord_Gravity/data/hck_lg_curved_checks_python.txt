@@ -21,8 +21,10 @@ PASS YG-8b   deviation 0.000e+00 (tolerance 1.0e-14): [G-17c] C^2 = -1
 PASS YG-8c   deviation 1.111e-11 (tolerance 1.0e-09): [G-17e] local solutions of i Dslash Psi = M Psi + D C Psi (the antilinear equations solved for the real and imaginary parts; residual relative to the field)
 PASS YG-8d   deviation 4.740e-11 (tolerance 1.0e-08): [G-17f] (i Dslash)^2 Psi = (M^2 + |D|^2) Psi for them, E_gap = 0.3663906649 (relative)
 PASS YG-9    deviation 1.405e-13 (tolerance 1.0e-09): [G-11d] the spin connection of the rotated tetrad Lambda e equals S4 Omega S4^{-1} - (d S4) S4^{-1} (the law of GEE, Lord's corrected (5.5))
+PASS YG-8e   deviation 3.481e-14 (tolerance 1.0e-08): [G-17h] Theorem L3, the inverse map: for local solutions Psi of the quasi-particle equation, chi = (Psi - b C Psi)/(1 + |b|^2), b = -D/(E_gap + M), solves i Dslash chi = E_gap chi (relative)
+PASS YG-8f   deviation 1.479e-16 (tolerance 1.0e-14): [G-17i] and chi + b C chi = Psi (relative)
 
 Notes:
   4 random points per check; finite differences of eighth order with the step 1e-2 (nested for second derivatives), so that identities hold to about 1e-12 relative; tolerances 1e-9
 
-VERDICT: ALL PASS (19 of 19)
+VERDICT: ALL PASS (21 of 21)

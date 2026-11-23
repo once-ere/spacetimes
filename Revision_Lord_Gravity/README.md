@@ -56,7 +56,7 @@ Volkov's solution in a plane wave of the zeugon. In the condensed vacuum, where 
 the brochon is a particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}=$ $0.3663906649$ $\Lambda_{\rm LL}$ in every gravitational field (Theorem L2).
 The energy-momentum tensor of the brochon follows from the variation of the tetrad, and with that of the gauge fields
 (the zeugon's among them) it is the conserved source of Einstein's equations. Three programs check Part III: the Rust
-program `lg_curved` (ALL PASS (57 of 57)), the Python program `python/lg_curved.py` (ALL PASS (19 of 19)) and the Wolfram
+program `lg_curved` (ALL PASS (59 of 59)), the Python program `python/lg_curved.py` (ALL PASS (21 of 21)) and the Wolfram
 script `wolfram/source/lg_curved.wls` (ALL PASS (6 of 6), exact arithmetic, including the Schwarzschild,
 Painlevé-Gullstrand and Vaidya space-times that stages 5 and 6 use).
 
@@ -94,10 +94,10 @@ power for the ground state; it is computed from the conservation of the charge o
 small as $10^{-27}$ of the mass. The Rust program `lg_schw` computes all this with CVODE (ALL PASS (21 of 21)); the Python
 program `python/lg_schw.py` (ALL PASS (14 of 14)) and the Wolfram script `wolfram/source/lg_schw.wls`
 (ALL PASS (9 of 9), exact algebra and arithmetic of 32 digits) check them. The task record gives the results with
-their numbers (entries E7 to E14); the data are in `data/lg_schw_*.csv`. Writing Part IV added Theorem L3: every solution of
-the Dirac equation of the mass of the gap gives a solution of the equation of the quasi-particle of the superfluid, with the
-same complex frequency and the same averaged currents, so that every result of stage 5 holds for the quasi-particle (checks
-LS-14a to LS-14c and YS-13; entry E26).
+their numbers (entries E7 to E14); the data are in `data/lg_schw_*.csv`. Writing Part IV added Theorem L3: the solutions of the
+equation of the quasi-particle of the superfluid correspond one to one to those of the Dirac equation of the mass of the gap,
+and the quasi-particle has the conserved current of the corresponding Dirac solution, so that every result of stages 5 and 6
+holds for the quasi-particle (checks LS-14a to LS-14c, YS-13, G-17h, G-17i, YG-8e, YG-8f; entries E27 and E28).
 
 **Stage 6** (22 November 2026), computed and checked, not written up: the brochon in the field of a black hole whose
 mass changes. The space-time is that of Vaidya with the advanced time $v$ (constant along every light ray that falls

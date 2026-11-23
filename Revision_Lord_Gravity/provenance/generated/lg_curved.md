@@ -8,14 +8,17 @@ $1.000000$
 <!-- BEGIN lgc_g17b -->
 $0.246$
 <!-- END lgc_g17b -->
+<!-- BEGIN lgc_g17h -->
+$5.84\times10^{-16}$
+<!-- END lgc_g17h -->
 <!-- BEGIN lgc_g8b -->
 $1.000000$
 <!-- END lgc_g8b -->
 <!-- BEGIN lgc_n_python -->
-19
+21
 <!-- END lgc_n_python -->
 <!-- BEGIN lgc_n_rust -->
-57
+59
 <!-- END lgc_n_rust -->
 <!-- BEGIN lgc_n_wolfram -->
 6
@@ -33,10 +36,10 @@ $1.25$
 $0.195$
 <!-- END lgc_rc_min -->
 <!-- BEGIN lgc_verdict_python -->
-ALL PASS (19 of 19)
+ALL PASS (21 of 21)
 <!-- END lgc_verdict_python -->
 <!-- BEGIN lgc_verdict_rust -->
-ALL PASS (57 of 57)
+ALL PASS (59 of 59)
 <!-- END lgc_verdict_rust -->
 <!-- BEGIN lgc_verdict_wolfram -->
 ALL PASS (6 of 6)

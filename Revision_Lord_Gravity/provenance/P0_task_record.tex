@@ -966,7 +966,7 @@ the other modules unchanged), the program \texttt{lg\_curved} (crate
 \texttt{rust/lgcurved}), \texttt{python/lg\_curved.py},
 \texttt{wolfram/source/lg\_curved.wls} and
 \texttt{code/scripts/write\_lg\_curved\_fragments.py}. Results: Rust ALL
-PASS (57 of 57), Python ALL PASS (19 of 19), Wolfram ALL PASS (6 of 6).
+PASS (59 of 59), Python ALL PASS (21 of 21), Wolfram ALL PASS (6 of 6).
 The Wolfram script reached its form in four runs on the author's
 computer (watcher requests 326 to 329): the first two failed the checks
 WG-1 to WG-3 because the iterator \texttt{r} of the sums of the
@@ -1849,6 +1849,28 @@ added: Theorem L3 follows by algebra from the properties of
 exactly (WG-6), and the two checks above test it at the solutions.
 Verdicts now: Rust ALL PASS (21 of 21), Python ALL PASS (14 of 14),
 Wolfram ALL PASS (9 of 9) \\
+E28 & 22 Nov 2026, 16:21 to 16:26 & Theorem L3 completed before Part V,
+which needs it for fields that change in time: the map of E27 is one to
+one, with the inverse
+\(\Psi\mapsto(\Psi-b\,\mathcal C_{\rm LG}\Psi)/(1+\lvert b\rvert^2)\),
+\(b=-D^{\rm CJT}_{\rm SF}/(E^{\rm CJT,gap}_{\rm SF}+M^{\rm CJT,D}_{\rm SF})\),
+which takes every solution of the equation of the quasi-particle to a
+solution of the Dirac equation with the mass of the gap. The
+quasi-particle therefore has a conserved current, that of the
+corresponding Dirac solution (its fermion-number current is not
+conserved, because the condensate takes up and gives back pairs), and
+the problem of the quasi-particle in any gravitational field with the
+zeugon alone is that of the Dirac particle of the mass of the gap, also
+when the field changes in time. Checks added to the programs of Part
+III, at the end and with random numbers of their own, so that the
+earlier checks are unchanged: Rust G-17h (local solutions of the
+quasi-particle equation in random curved space-times with random fields
+of the zeugon are taken to solutions of the Dirac equation, residual
+\(5.84\times10^{-16}\)) and G-17i (the two maps are inverse to each
+other), now ALL PASS (59 of 59); Python YG-8e and YG-8f, the same with
+the finite differences of that program, now ALL PASS (21 of 21). Section
+18.1 of the manuscript states (a), (b), (c) with the proof; Sections
+0.2, 15.4 and 22 were changed to match \\
 \end{longtable}
 
 \hypertarget{the-symbols-of-this-document}{%
