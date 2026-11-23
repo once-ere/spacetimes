@@ -535,8 +535,25 @@ symbols of the documents and checks the rule (ALL PASS (7 of 7)); the
 task record, entry E38; the data in \texttt{data/lg\_symbols.csv} and
 the report \texttt{data/hck\_lg\_symbols\_checks.txt}.
 
-Next (the task record, Section 6): stage 8, the notebook of the folder
-in the Wolfram Language with its provenance.
+\textbf{Stage 8} (22 November 2026): the notebook
+\texttt{lord\_gravity.nb} and its printed copy
+\texttt{lord\_gravity\_notebook.pdf}. It runs, in the order of the
+manuscript, the code of the nine scripts in the Wolfram Language of the
+folder (\texttt{wolfram/source/lg\_*.wls}, 46 checks, most of them in
+exact arithmetic), and puts before each check a text that says, with the
+symbols of the manuscript, what the check decides and why it matters; a
+chapter gives the remarks of the manuscript in brief, and the last
+chapter lists all checks. It was evaluated in the front end of Wolfram
+without a message (46 of 46 checks pass, in 48 s), and each check
+printed the same line as in the report of its script. It does not repeat
+the long evolutions in time of Parts V and VI, which the Rust programs
+compute with CVODE. Its provenance is
+\texttt{provenance/P3\_notebook.md} (\texttt{.tex}, \texttt{.pdf}); the
+task record, entry E39.
+
+With stage 8 every stage of the plan (the task record, Section 6) is
+carried out. The remarks of the manuscript name what it leaves open, for
+example the polarization of the condensate (R9).
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -572,6 +589,24 @@ meaning, the suffixes, the symbols shared with the registries of
 Revision\_SM\_Higgs and Revision\_SuperLoop, and the report of the
 checks of the rule one symbol, one object (stage 4b) & written for Parts
 I to VI \\
+\texttt{provenance/P3\_notebook.md}, \texttt{.tex}, \texttt{.pdf} & the
+provenance of the notebook: what it contains and leaves out, how it is
+made from the scripts and evaluated, the evaluation of this version, the
+corrections on the way (stage 8) & written \\
+\texttt{lord\_gravity.nb}, \texttt{lord\_gravity\_notebook.pdf} & the
+notebook of the checks in the Wolfram Language, evaluated, and its
+printed copy (stage 8) & written; 46 of 46 checks pass \\
+\texttt{wolfram/notebook/} & \texttt{lord\_gravity.texts.wl}, the
+hand-written texts of the notebook, and
+\texttt{lord\_gravity.source.wl}, its complete source, written from the
+texts and the scripts by
+\texttt{wolfram/tools/make\_notebook\_source.py} & written \\
+\texttt{wolfram/tools/} & the programs that make the notebook:
+\texttt{make\_notebook\_source.py}, \texttt{make\_dryrun.py}, the
+builder \texttt{build\_notebook.wls} with the reader of formulas
+\texttt{lg\_formula.wl}, and the evaluation in the front end
+\texttt{guirun.wl} with \texttt{gui\_start.wl}, \texttt{gui\_go.wl},
+\texttt{gui\_status.wl} & written \\
 \texttt{provenance/inputs\_sha256.txt} & the SHA-256 checksum of the
 copy of Lord's paper that is read (the paper is not in the repository) &
 written \\
@@ -584,9 +619,10 @@ every document, with a check of the layout of every page),
 \texttt{check\_layout.py}, \texttt{check\_pages.py},
 \texttt{check\_self\_contained.py} (does a document send its reader
 elsewhere?), the writers of the fragments
-(\texttt{write\_lg\_*\_fragments.py}), and
-\texttt{write\_lg\_symbols.py} (the registry of the symbols and its
-checks) & written \\
+(\texttt{write\_lg\_*\_fragments.py}), \texttt{write\_lg\_symbols.py}
+(the registry of the symbols and its checks), and
+\texttt{write\_lg\_notebook\_fragments.py} (the fragments and the checks
+of the provenance of the notebook) & written \\
 \texttt{docs\_src/} & the hand-edited sources of the documents;
 \texttt{docs\_src/parts/} holds the parts that the manuscript includes
 in full (\texttt{glossary\_lg.part.md}, the word list;
@@ -620,7 +656,9 @@ for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
 \texttt{write\_lg\_annih\_fragments.py} and
 \texttt{write\_lg\_worked\_fragments.py}), \texttt{lg\_symbols.md} (the
 tables and counts of the registry of the symbols, written by
-\texttt{code/scripts/write\_lg\_symbols.py}), and
+\texttt{code/scripts/write\_lg\_symbols.py}), \texttt{lg\_notebook.md}
+(the numbers of the evaluation of the notebook, written by
+\texttt{code/scripts/write\_lg\_notebook\_fragments.py}), and
 \texttt{lg\_examples.md}, the numbers of the appendices copied by
 \texttt{write\_lg\_examples\_fragments.py} from the fragment files of
 the folder \texttt{Revision\_SM\_Higgs} (with the SHA-256 checksums of
@@ -709,8 +747,12 @@ reports \texttt{hck\_lg\_tidal\_checks*.txt}), of stage 7d
 lifetimes over the cutoff; reports
 \texttt{hck\_lg\_annih\_checks*.txt}), the registry of the symbols
 (\texttt{lg\_symbols.csv}, one row per symbol of the manuscript; report
-\texttt{hck\_lg\_symbols\_checks.txt}), and the report of the check
-whether a document sends its reader elsewhere & written \\
+\texttt{hck\_lg\_symbols\_checks.txt}), the notebook
+(\texttt{hck\_lg\_notebook\_log.txt}, the log of its evaluation;
+\texttt{hck\_lg\_notebook\_build.txt}, the report of its builder;
+\texttt{hck\_lg\_notebook\_checks.txt}, the checks of its provenance),
+and the report of the check whether a document sends its reader
+elsewhere & written \\
 \texttt{figures/} & the figures of the manuscript:
 \texttt{fig\_lg\_schw\_interior} and \texttt{fig\_lg\_schw\_decay}
 (Figures IV.1 and IV.2), drawn by \texttt{python/lg\_schw\_figures.py}
@@ -771,6 +813,11 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_annih\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_worked\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_symbols.py       }\CommentTok{\# the registry of the symbols, from the tables of the documents (checks LY)}
+\ExtensionTok{python3}\NormalTok{ wolfram/tools/make\_notebook\_source.py  }\CommentTok{\# the source of the notebook, from its texts and the nine scripts}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/tools/build\_notebook.wls wolfram/notebook/lord\_gravity.source.wl lord\_gravity.nb wolfram/tools/lg\_formula.wl}
+\CommentTok{\# then evaluate lord\_gravity.nb in Wolfram (Evaluation \textgreater{} Evaluate Notebook) and save its log as data/hck\_lg\_notebook\_log.txt}
+\CommentTok{\# (provenance/P3\_notebook.md, Section 4, describes the evaluation that wrote the log of this version)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_notebook\_fragments.py   }\CommentTok{\# the fragments and the checks of the provenance of the notebook}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (checks HCK{-}H1, HCK{-}H2)}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}

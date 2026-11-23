@@ -1,0 +1,8 @@
+PROJECT spacetimes, Revision_Lord_Gravity: the checks of the provenance of the notebook lord_gravity.nb (stage 8 of task C23; code/scripts/write_lg_notebook_fragments.py)
+
+PASS LN-1  the notebook was evaluated in the front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026) in 48 s: 84 input cells, 84 of them evaluated; 0 messages; 46 checks registered, 46 passed
+PASS LN-2  the 46 checks of the nine scripts were each made once in the notebook, and no other check
+PASS LN-3  the line that each check printed in the notebook is character for character the line of the same check in the report of its script: 46 of 46
+PASS LN-4  the builder made 228 cells (4 of them closed cells of data) with 422 formulas in the text cells, and reported 0 warnings of the reader of formulas
+
+VERDICT: ALL PASS (4 of 4)

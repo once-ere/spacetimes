@@ -872,8 +872,9 @@ vacuum, which Section 15.4 of the manuscript announced) was computed in
 entry E36, and Part VI of the manuscript was written from stages 7a to
 7e in entry E37. The manuscript \texttt{superfluid.md} of the folder
 Revision\_SM\_Higgs was then rewritten in the same style (C5; entry E82
-of the task record of that folder), and stage 4b was carried out in
-entry E38. Next: stage 8.
+of the task record of that folder), stage 4b was carried out in entry
+E38, and stage 8 in entry E39; with it every stage of this plan is
+carried out.
 
 The plan is changed only with a record in Section 7.
 
@@ -2380,6 +2381,62 @@ the worked examples (\texttt{write\_lg\_examples\_fragments.py},
 \texttt{wolfram/source/lg\_worked.wls},
 \texttt{write\_lg\_worked\_fragments.py}) since they were added; they
 are now listed, with \texttt{write\_lg\_symbols.py} \\
+E39 & 22 Nov 2026, 20:31 to 20:56 & stage 8 (Section 6): the notebook
+\texttt{lord\_gravity.nb} (with its printed copy
+\texttt{lord\_gravity\_notebook.pdf}) and its provenance
+\texttt{provenance/P3\_notebook.md} (\texttt{.tex}, \texttt{.pdf}, from
+\texttt{docs\_src/P3\_notebook.src.md}). \emph{What it is.} The notebook
+runs the code of the nine scripts in the Wolfram Language of the folder,
+in the order of the manuscript, one chapter per script, each chapter in
+a context of its own; before each check a text says, with the symbols of
+the manuscript, what the check decides and why it matters; a chapter
+gives the remarks R1 to R16 in brief, and the last chapter lists all
+checks. The hand-written texts are
+\texttt{wolfram/notebook/lord\_gravity.texts.wl}; the new program
+\texttt{wolfram/tools/make\_notebook\_source.py} writes the source
+\texttt{wolfram/notebook/lord\_gravity.source.wl} from the texts and the
+scripts and fails if a section of a script is left out or used twice;
+the builder, the reader of formulas (here \texttt{lg\_formula.wl}), the
+dry run and the evaluation in the front end are copied from the folder
+Revision\_SM\_Higgs with their contexts renamed. The notebook does not
+repeat the evolutions in time of Parts V and VI (the Rust programs with
+CVODE), so it does not contain every formula of the manuscript, as the
+plan asked, and its provenance states this. \emph{The runs} (watcher
+requests on the author's computer): 351, the dry run, 46 of 46 checks,
+one message ClebschGordan::tri (below); 352, \texttt{lg\_tidal.wls}
+again; 353, the first build, one warning; 354, the second build, 228
+cells and 422 formulas, 0 warnings; 355 to 357, the evaluation in the
+front end of 15.0.1 for Mac OS X ARM (64-bit) (July 2, 2026): 48 s, 0
+messages, 46 of 46 checks pass. The new program
+\texttt{code/scripts/write\_lg\_notebook\_fragments.py} writes the
+fragments of the provenance of the notebook from the log
+(\texttt{data/hck\_lg\_notebook\_log.txt},
+\texttt{data/hck\_lg\_notebook\_build.txt}) and checks LN-1 to LN-4 (ALL
+PASS (4 of 4)); LN-3: each of the 46 lines that the checks printed in
+the notebook equals, character for character, the line of the report of
+its script. \emph{Corrections on the way.} (1) The check WT-1 of
+\texttt{lg\_tidal.wls} printed the message ClebschGordan::tri for a 3-j
+symbol that violates the triangle condition (also in its first run,
+request 349; its report does not show messages); the script now sets
+such a symbol to 0 without calling \texttt{ThreeJSymbol}, and its report
+is unchanged byte for byte. (2) The first build warned that the reader
+of formulas does not know the command of the box of the wave operator in
+the text of WG-4, which also wrote the Dirac operator as a slashed
+letter; the text now writes both out. (3) The texts of Parts III to VI
+of the first build used short letters of the scripts without suffixes;
+they were rewritten with the symbols of the manuscript before the second
+build. (4) My first drafts of the texts made claims that I then checked
+against the scripts and the remarks document and corrected before the
+first build: that every exact statement of the manuscript is checked in
+the Wolfram Language, that the Python program computed the levels of the
+pair by another method, that remark R7 models the shrinking black hole
+by outgoing radiation (it is ingoing radiation of negative energy), and
+the summaries of remarks R2, R4, R5, R9 and R14, now written from the
+remarks document; and, before the second build, the names of variables
+of the code that the texts gave wrongly (\texttt{mD}, \texttt{dD} in
+WW-4, \texttt{kappa} in the tidal checks, \texttt{W} in Part IV; the
+code has \texttt{mM}, \texttt{dd}, \texttt{kap} and \texttt{kk}, and
+\texttt{wPG} and \texttt{sW}) \\
 \end{longtable}
 
 \hypertarget{the-symbols-of-this-document}{%

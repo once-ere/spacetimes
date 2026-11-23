@@ -45,7 +45,10 @@ check[id_String, text_String, ok_, detail_String] := Module[{line},
 (* ------------------------------------------------------------------ WT-1: the coupling *)
 closed[l_, lp_] := Which[l == lp, l (l + 1)/((2 l - 1) (2 l + 3)),
    lp == l + 2, 3/2 (l + 1) (l + 2)/((2 l + 3) Sqrt[(2 l + 1) (2 l + 5)]), True, 0];
-threej[l_, lp_] := Sqrt[(2 l + 1) (2 lp + 1)] ThreeJSymbol[{l, 0}, {2, 0}, {lp, 0}]^2;
+(* a 3-j symbol whose three angular momenta violate the triangle condition |l - l'| <= 2 <= l + l' is 0; it is set to 0
+   here without calling ThreeJSymbol, which returns 0 as well but prints the message ClebschGordan::tri (for l = l' = 0;
+   the first version of this script printed it, request 349) *)
+threej[l_, lp_] := If[Abs[l - lp] <= 2 <= l + lp, Sqrt[(2 l + 1) (2 lp + 1)] ThreeJSymbol[{l, 0}, {2, 0}, {lp, 0}]^2, 0];
 bad1 = Select[Flatten[Table[{l, lp, FullSimplify[threej[l, lp] - closed[l, lp]]}, {l, 0, 30, 2}, {lp, {l, l + 2}}], 1],
    #[[3]] =!= 0 &];
 check["WT-1", "(Rust LT-0; Python YT-1) <Y_l0|P_2|Y_l'0> = ((2l+1)(2l'+1))^(1/2) (l 2 l'; 0 0 0)^2 equals the closed forms \

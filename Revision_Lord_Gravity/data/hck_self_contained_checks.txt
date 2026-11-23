@@ -1,7 +1,7 @@
 PROJECT spacetimes, Revision_Lord_Gravity: does any document send its reader to another document? (Hard Rules 4 and 10)
 2 of 2 checks passed
 
-[PASS] HCK-H1  none of the 10 documents and document sources of Revision_Lord_Gravity contains one of the wordings by which a text sends its reader to another document (the patterns listed in this script: 'see the document ...', 'is defined in the manuscript ...', 'supplement', 'companion paper', 'an earlier paper', a provenance document named as a place to read); this does not find a text that uses an object of another document without naming the document (check HCK-H2)
+[PASS] HCK-H1  none of the 12 documents and document sources of Revision_Lord_Gravity contains one of the wordings by which a text sends its reader to another document (the patterns listed in this script: 'see the document ...', 'is defined in the manuscript ...', 'supplement', 'companion paper', 'an earlier paper', a provenance document named as a place to read); this does not find a text that uses an object of another document without naming the document (check HCK-H2)
 [PASS] HCK-H2  the manuscript lord_gravity takes no object from the earlier hypotheses of the project or from the earlier work on the Lorentz super-loop without restating it: the words 'earlier hypotheses' and 'earlier work' occur in no line of it
 
 Allowed exceptions:

@@ -1,0 +1,10 @@
+The report of the builder of the notebook lord_gravity.nb (wolfram/tools/build_notebook.wls), as it printed it when it
+built the notebook from wolfram/notebook/lord_gravity.source.wl on the author's computer (watcher request 354,
+22 November 2026); the counts are those of the cells of the notebook, of its closed cells of data, of the formulas of
+its text cells, and of the warnings of the reader of formulas (none).
+
+components: 0
+cells: 228
+closed input cells: 4
+formulas in text cells: 422
+warnings: 0
