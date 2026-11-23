@@ -28,12 +28,16 @@ written in parts, each pushed when it is complete:
   derivative: the tetrad (Lord's reference vectors), the spin connection and the curvature, the field equations of the
   brochon and of the quasi-particles of the superfluid in a curved space-time, the energy-momentum tensor, and Einstein's
   equations with the brochon and the gauge fields, the zeugon among them, as sources.
-* **Parts IV to VI** (planned): the brochon in the Schwarzschild field; the brochon in the Vaidya metric; the brochon pair
-  bound by the zeugon and the predictions.
+* **Part IV** (Sections 18 to 22, this version): the brochon in the Schwarzschild field, on both sides of the horizon: the
+  separation of its Dirac equation, the horizon and the inside of the black hole, the quasi-bound states (the levels of a
+  gravitational atom that decay by falling into the black hole) and the greybody factors; and Theorem L3, which makes every
+  result a result for the quasi-particle of the superfluid.
+* **Parts V and VI** (planned): the brochon in the Vaidya space-time of a black hole whose mass changes; the brochon pair bound
+  by the zeugon, and the predictions.
 
-Section 18 gives the provenance of Parts I to III: the programs that check them and their complete reports; Section 19
-lists the symbols of the main text. Appendix A builds the algebra of the Lorentz super-loop, with an example of every
-object, and Appendix B states the brochon model; each appendix lists its own symbols.
+Appendix A builds the algebra of the Lorentz super-loop, with an example of every object, and Appendix B states the brochon
+model; each lists its own symbols. Appendix C gives the provenance of the main text: the programs that compute and check
+it, and their complete reports. Appendix D lists the symbols of the main text.
 
 *How to read this manuscript.* The manuscript is written for a graduate student who knows special relativity, the Dirac
 equation and the elements of general relativity and of group theory; everything else is explained where it is used. The
@@ -159,6 +163,46 @@ brochon comes, with an example of every object, and Appendix B states the brocho
 * *Momentum cutoff $\Lambda_{\rm LL}$.* The largest momentum of the brochon model; it is the unit of energy of its numbers, and its
   value in physical units is not fixed by the model.
 
+**Waves around a black hole (Part IV)**
+
+* *Test particle.* A particle that moves in a given field and is too light to change it: its own gravitational field is
+  neglected. The brochon of Part IV is a test particle in the field of the black hole.
+* *Separation of variables, partial wave.* A solution of a partial differential equation written as a product of functions of
+  one variable each, so that the equation splits into ordinary differential equations; the constants that link them are
+  *separation constants*. Around a black hole that does not change in time and looks the same in every direction, a solution
+  can be chosen with a definite frequency and a definite angular momentum: a *partial wave*.
+* *Total angular momentum $j$, its component $m_j$, the notation $nL_j$.* The angular momentum of a particle with spin is the
+  sum of its orbital angular momentum $\ell$ and its spin; for a Dirac particle $j=\ell\pm\tfrac12$. A level of the hydrogen
+  atom is written $nL_j$: the principal quantum number $n$, the letter S, P, D for $\ell=0,1,2$, and $j$ as the index; for example
+  $2P_{3/2}$ has $n=2$, $\ell=1$, $j=\tfrac32$.
+* *Fine structure.* The splitting of the levels of the hydrogen atom that have the same $n$ but different $\ell$ or $j$, smaller
+  than the distances of the levels by the square of the coupling; around a black hole the coupling is $y_{\rm LG}$ (Section 20.4).
+* *Analytic function, power series, radius of convergence.* A function is analytic at a point if near it it equals a
+  convergent power series in the distance to the point; the series converges inside a circle whose radius, the radius of
+  convergence, reaches to the nearest point where the function is not analytic.
+* *Regular singular point, exponents (the method of Frobenius).* A point where the coefficients of a linear differential
+  equation have a simple pole. Near it the solutions behave as powers of the distance to it, times analytic functions; the
+  powers, the *exponents*, are the eigenvalues of the residue matrix, the limit of the distance times the matrix of the
+  coefficients (Section 19.1).
+* *Quasi-bound state, complex frequency, decay rate.* A bound state that leaks, here into the horizon: a solution that falls into
+  the horizon and decays far away. It exists only at a complex frequency $\omega$; the real part is the energy of the level, and
+  the amplitude decays in time as $e^{-\lvert{\rm Im}\,\omega\rvert t}$, at the *decay rate* $\lvert{\rm Im}\,\omega\rvert$ (Section 20).
+* *Wronskian.* For two solutions of a linear system of two first-order equations, the determinant of the matrix whose columns are
+  the two solution vectors; it vanishes exactly when one solution is a multiple of the other.
+* *Secant method, Muller's method.* Ways of finding a zero of a function from its values alone: the secant method draws the line
+  through the last two points, Muller's method the parabola through the last three, and each takes the zero of the curve as the
+  next point.
+* *Greybody factor.* The fraction of an incoming wave that a black hole absorbs (Section 21). The name comes from Hawking's
+  radiation of a black hole, whose spectrum is that of a black body multiplied by this fraction.
+* *Richardson extrapolation.* The estimate of the limit of a quantity that is known at a few values of a small parameter and
+  approaches its limit by known powers of it: combinations of the values that cancel the leading powers.
+* *CVODE, SUNDIALS.* SUNDIALS is a library of numerical solvers of the Lawrence Livermore National Laboratory; CVODE is its
+  integrator of ordinary differential equations, which chooses its steps so that the estimated error stays below a set
+  tolerance. Every integration of this manuscript uses it.
+* *Planck mass, gravitational radius, Compton wavelength.* The Planck mass $M_{\rm Pl}=(\hbar c/G_{\rm N})^{1/2}$ (about 22
+  micrograms); the gravitational radius $G_{\rm N}M/c^2$ of a mass $M$, half the radius of its horizon; and the reduced Compton
+  wavelength $\hbar/(mc)$ of a particle of mass $m$, the length below which its position cannot be fixed without creating pairs.
+
 ## 0.2 The results in brief
 
 1. Lord's gauge group is not the Lorentz group. It is the group $SL(2,\mathbb C)$ of the changes of the representation of
@@ -178,8 +222,12 @@ brochon comes, with an example of every object, and Appendix B states the brocho
    (Part III).
 5. In the superfluid vacuum of the brochon model the quasi-particle of the brochon is, in every gravitational field, a
    particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}=0.3663906649\,\Lambda_{\rm LL}$ that couples to the zeugon
-   with the charges $\pm\tfrac12$ (Theorem L2 of Section 15.4): its gravitational problems are those of a Dirac particle of
-   this mass.
+   with the charges $\pm\tfrac12$ (Theorem L2 of Section 15.4); conversely, every solution of the Dirac equation of this mass
+   gives a solution for the quasi-particle (Theorem L3 of Section 18.1). Its gravitational problems are therefore those of a
+   Dirac particle of this mass.
+6. Around a black hole that does not rotate, the brochon has quasi-bound states: the levels of a hydrogen atom whose
+   coupling is $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, which decay by falling into the black hole at rates that fall as
+   $y_{\rm LG}^5$ and faster. The wave that falls in crosses the horizon smoothly and reaches the centre (Part IV).
 
 # 1. Conventions, units and notation
 
@@ -189,7 +237,7 @@ $\eta^{{\rm LL}\,\mu\nu}$ (the same numbers). A repeated index is summed. The su
 LL for the objects of the Lorentz super-loop and of its fields (Appendix A), SF for those of the brochon model (Appendix
 B), LG for those that this manuscript introduces, and **Lord** for the objects of Lord's paper that the project does not
 otherwise have. Where an object of Lord's paper is the same as an object of the project, the project's symbol is used;
-Part II proves each such identity (checks P-1 to P-4 of Section 18).
+Part II proves each such identity (checks P-1 to P-4 of Appendix C).
 
 **The matrices of Lord's Section 1.** The four $2\times2$ matrices $\sigma^{\rm LL}_\mu$ are the unit matrix and the
 Pauli matrices, $\sigma^{\rm LL}_0=\mathsf 1_2$, $\sigma^{\rm LL}_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$,
@@ -216,7 +264,7 @@ Section 4 must be read as $\mathrm{tr}_{\rm N}$.
 
 **Equation numbers.** An equation number without a name, such as (5.3), refers to this manuscript; Lord's equations are
 cited as "Lord (4.13)". Lord's paper is not in the repository; the copy that was read is identified by its SHA-256
-checksum in Section 18.
+checksum in Appendix C.1.
 
 # Part I. Lord's paper, read and understood
 
@@ -250,7 +298,7 @@ $$\Lambda_{{\rm Lord}\,\nu}{}^\mu\,L_{\rm Lord}\,\sigma^{\rm LL}_\nu\,L_{\rm Lor
 A Weyl spinor $\phi$ of the kind $(\tfrac12,0)$ transforms as $\phi\mapsto L_{\rm Lord}\phi$, one of the kind $(0,\tfrac12)$
 as $\chi\mapsto(L_{\rm Lord}^\dagger)^{-1}\chi$; a Dirac spinor is the pair $(\phi,\chi)$.
 
-*Checks* (Section 18): L1-1 to L1-6 (Rust), YL-1, YL-2 (Python), WL-1, WL-4 (Wolfram, exact): the relations (2.1),
+*Checks* (Appendix C): L1-1 to L1-6 (Rust), YL-1, YL-2 (Python), WL-1, WL-4 (Wolfram, exact): the relations (2.1),
 (2.2), the self-duality, the infinitesimal solution of (2.3), and for random matrices $L_{\rm Lord}$ that the
 $\Lambda_{\rm Lord}$ of (2.3) is a proper orthochronous Lorentz matrix.
 
@@ -319,7 +367,7 @@ matrices $\sigma^{\rm LL}_0$, $\sigma^{\rm LL}_1$, $\sigma^{\rm LL}_2$ and $\sig
 coefficients is $1$) are not a representation: $N_{\rm LG}(\sigma^{\rm LL}_0,\sigma^{\rm LL}_3+\tfrac12\sigma^{\rm LL}_0)=\tfrac{1}{2}$
 instead of $\eta^{\rm LL}_{03}=0$, and the anticommutator of the Dirac matrices built from the first and the last of them is
 $\tfrac12\mathsf 1_4$ instead of zero. (Checks LW-1 to LW-4 of the program `lg_worked`, with YW-1 to YW-4 in exact arithmetic and
-WW-1, WW-2 in the Wolfram Language; Section 18.)
+WW-1, WW-2 in the Wolfram Language; Appendix C.)
 
 ## 2.5 The difficulty of the minimal coupling, and Lord's remedy
 
@@ -660,7 +708,7 @@ zeugon couples to the isospin charge $Q_{\rm LL}=T^3_{\rm LL}$, $\pm\tfrac12$ on
 # 10. The dictionary
 
 Table 10.1 lists every object of Lord's construction with its counterpart in the project; each line is proved by the
-check named in its last column (Section 18).
+check named in its last column (Appendix C).
 
 Table 10.1. Lord's objects and the project's.
 
@@ -779,7 +827,7 @@ connection enters the covariant derivative of the brochon, and the energy-moment
 fields becomes the source of Einstein's equations. In the superfluid vacuum of the brochon model, the quasi-particle of the
 brochon then behaves in every gravitational field as a Dirac particle whose mass is the gap.
 
-Every statement of Part III is checked by three programs (Section 18): the Rust program `lg_curved`
+Every statement of Part III is checked by three programs (Appendix C.3): the Rust program `lg_curved`
 (ALL PASS (57 of 57)); the Python program `python/lg_curved.py` (ALL PASS (19 of 19)), written
 independently, with other formulas where the subject allows and with finite differences in place of automatic
 differentiation; and the Wolfram script `wolfram/source/lg_curved.wls` (ALL PASS (6 of 6)), in exact arithmetic
@@ -1092,7 +1140,9 @@ space-times, and the square for local solutions of (15.11), Section 16.1.)
 
 The theorem has two consequences for the rest of the task. First, in every gravitational field the quasi-particle of the
 superfluid is a particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}$ that couples to the zeugon with the charges $\pm\tfrac12$
-times $g^{\rm v}_{\rm LL}$: its gravitational problems (Parts IV and V) are those of a Dirac particle of this mass. Second, the
+times $g^{\rm v}_{\rm LL}$: its gravitational problems (Parts IV and V) are those of a Dirac particle of this mass (Theorem L3 of
+Section 18.1 proves the converse that this needs: every solution of the Dirac equation of this mass gives a solution of
+(15.11)). Second, the
 statement fails for the massive gauge fields: with $W^1$, $W^2$ or $B$ the anticommutation (a) fails (relative deviation
 $0.246$, G-17b; exactly, WG-6). The pairing term is covariant only under the unbroken group $U(1)^{\rm Q}_{\rm LL}$ of
 the charge $Q_{\rm LL}$, which is why the zeugon alone remains a field of long range in the superfluid.
@@ -1235,539 +1285,436 @@ units in which it does not appear.
 6. The printed coefficients of Lord's (4.20) and (4.47), (4.48) would halve the connection and double the coupling to the
    curvature; the corrected relations are used throughout.
 
-# 18. Provenance of Parts I to III
+# Part IV. The brochon in the Schwarzschild field
 
-**The input.** E. A. Lord, "General relativity from gauge invariance", Proc. Camb. Phil. Soc. 69, 423 (1971): twenty pages
-(the journal pages 423 to 442), a scan with recognized text; all pages were read. The file is not in the repository;
-its SHA-256 checksum:
-```
-c928b11e5721bb37093f9b19b19e8e9d4a743fcd3f8f4779e804845fcaff2275  General relativity from gauge invariance.pdf
-```
+Part IV solves the field equation of Part III for one brochon in the space-time of a black hole that neither rotates nor
+carries a charge: the Schwarzschild space-time of a mass $M_{\rm LG}$, outside the horizon and inside it. The field of the
+zeugon and the self-interaction are left out, and the brochon is a *test particle*: it feels the gravitational field and
+does not change it (the field it would produce is smaller than that of the black hole by the ratio of the two masses,
+Section 15.4). Section 18.1 shows that every result holds, unchanged, for the quasi-particle of the superfluid vacuum, with
+the mass of the brochon replaced by the gap.
 
-**The programs of Parts I and II.** Three programs check Part I and Part II, each independently of the others:
+*In words.* The gravity of a black hole binds a brochon as a proton binds the electron of a hydrogen atom, with the number
+$y_{\rm LG}$ of (18.1) in the place of the fine-structure constant. But a black hole also swallows what comes close to it,
+so its bound states are not stationary: they leak into the horizon and decay, slowly when $y_{\rm LG}$ is small. Seen by an
+observer who falls freely, the wave of the brochon crosses the horizon without noticing it and goes on to the centre. Part
+IV computes the wave on both sides of the horizon (Sections 18 and 19), the decaying bound states (Section 20) and the
+fraction of an incoming wave that the black hole absorbs (Section 21); Section 22 states what Part IV establishes.
 
-* the Rust program `lg_lord` (`rust/lglord/src/main.rs`, with the library `rust/lgcore`, whose module `lord.rs` builds
-  Lord's matrices from his definitions): ALL PASS (46 of 46). Its local checks use fields of the four coordinates built
-  from smooth pseudo-random functions, with exact first and second derivatives by forward-mode automatic
-  differentiation;
-* the Python program `python/lg_lord.py` (with `python/lgcommon.py`): ALL PASS (17 of 17); it writes every matrix again
-  from the definitions and differentiates by central finite differences of eighth order;
-* the Wolfram script `wolfram/source/lg_lord.wls`: ALL PASS (7 of 7), in exact arithmetic (symbolic matrices).
+Every statement of Part IV is checked by three programs (Appendix C.5): the Rust program `lg_schw`
+(ALL PASS (21 of 21)), which computes every number of Part IV; the Python program `python/lg_schw.py`
+(ALL PASS (14 of 14)), which derives the equations again by computer algebra, with the spin connection as printed in
+Section 14.3, and recomputes a part of the numbers with its own starting values, root finder and integrals; and the Wolfram
+script `wolfram/source/lg_schw.wls` (ALL PASS (9 of 9)), which derives the equations again in exact arithmetic,
+with the spin connection computed from the tetrad, and recomputes a part of the numbers with another integrator in
+arithmetic of 32 digits. Every differential equation is integrated with CVODE, the integrator of ordinary differential
+equations of the library SUNDIALS (Appendix C.5). The reports of the programs, reproduced in Appendix C.5, call the
+equations (18.4), (18.5) and (18.7) below (A), (PG) and (S), write Mm for $y_{\rm LG}$, Gamma for the greybody factor
+$\mathcal T_{\rm LG}$, A and B for the angular functions $\alpha_{\rm LG}$, $\beta_{\rm LG}$, u and w for the static radial functions
+$\mathcal U_{\rm LG}$, $\mathcal V_{\rm LG}$, W for the speed $w_{\rm LG}$, and $q_0$ for $\mathcal Q_{\rm LG}(2)$.
 
-A finding about an equation as printed is a check that passes when the printed form fails by the stated amount; its
-numbers are in `data/lg_lord_findings.csv`. To reproduce, from the folder `Revision_Lord_Gravity`:
+# 18. The particle, the tetrads and the separation of the Dirac equation
 
-```bash
-cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
-(cd rust && cargo build --release && ./target/release/lg_lord)   # data/hck_lg_lord_checks.txt, lg_lord_findings.csv
-python3 python/lg_lord.py                                         # data/hck_lg_lord_checks_python.txt
-wolframscript -file wolfram/source/lg_lord.wls data/hck_lg_lord_checks_wolfram.txt
-python3 code/scripts/write_lg_lord_fragments.py                  # the numbers of this manuscript
-```
+*In words.* Because the black hole does not change in time and looks the same in every direction, the Dirac equation of
+the brochon, an equation in four variables, splits into two ordinary differential equations of the first order in the
+angle $\theta$ and two in the radius $r$. Section 18.1 first explains why the solutions serve the quasi-particle of the
+superfluid as well.
 
-**The report of the Rust program** (`data/hck_lg_lord_checks.txt`):
+**Units.** In Part IV $G_{\rm N}=c=\hbar=1$, and lengths and times are measured in units of
+$\mathcal M_{\rm LG}=G_{\rm N}M_{\rm LG}$ (Section 14.3), so that the horizon is at $r=2$. Masses and frequencies are then measured in
+units of $1/\mathcal M_{\rm LG}$, and the mass of the brochon in these units is the number
+$$y_{\rm LG}=\mathcal M_{\rm LG}\,m_{\rm LL}=\frac{G_{\rm N}M_{\rm LG}\,m_{\rm LL}}{\hbar c}\quad\text{(in ordinary units)}.\tag{18.1}$$
+Every result depends on the two masses only through $y_{\rm LG}$: in the units of Part IV the equations below contain the mass
+of the black hole not at all and the mass of the brochon as the number $y_{\rm LG}$. A frequency $\omega^{\rm S}_{\rm LG}$ is quoted
+as the ratio $\omega^{\rm S}_{\rm LG}/m_{\rm LL}$, which is the same in every system of units.
 
-```
-PROJECT spacetimes, Revision_Lord_Gravity: lg_lord -- the checks of the equations of E. A. Lord, General relativity from gauge invariance (1971), Part I of lord_gravity.md, and of the association of the SL(2,C) of the project with his gauge group, Part II
-Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
-statement that is true or false, the facts that decide it), and the statement that is checked.
+## 18.1 The particle, and why the results hold for the quasi-particle
 
-PASS L1-1    deviation 0.000e0 (tolerance 1.0e-15): (1.2): sigma-bar^mu = -epsilon (sigma^mu)^T epsilon is (1, -sigma_1, -sigma_2, -sigma_3) for the standard set (1.1)
-PASS L1-2    deviation 0.000e0 (tolerance 1.0e-15): (1.3): 1/2 (sigma^mu sigma-bar^nu + sigma^nu sigma-bar^mu) = eta^{mu nu} 1 (16 pairs)
-PASS L1-3    deviation 0.000e0 (tolerance 1.0e-14): (1.5): [sigma^{mu nu}, sigma^{rho sigma}] = 2 (eta^{nu rho} sigma^{mu sigma} - eta^{mu rho} sigma^{nu sigma} + eta^{mu sigma} sigma^{nu rho} - eta^{nu sigma} sigma^{mu rho}) (256 index combinations)
-PASS L1-4    deviation 0.000e0 (tolerance 1.0e-15): (1.6), (1.7): sigma_{mu nu} is self-dual, sigma_{mu nu} = 1/2 i eps_{mu nu rho sigma} sigma^{rho sigma} with eps_0123 = +1
-PASS L1-5    deviation 2.220e-16 (tolerance 1.0e-15): (1.8), infinitesimal: with Lambda_mu^nu = delta_mu^nu + eta^{nu rho} lambda_{rho mu}, L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu} satisfies (1.8) to first order (20 random lambda): eta^{mu rho} lambda_{rho nu} sigma^nu + X sigma^mu + sigma^mu X^dag = 0
-PASS L1-6a   deviation 9.770e-15 (tolerance 1.0e-12): (1.8): for 50 random L of SL(2,C), the Lambda defined by Lambda_nu^mu L sigma^nu L^dag = sigma^mu satisfies Lambda eta Lambda^T = eta
-PASS L1-6b   (1.8): ... and has det Lambda = 1 and Lambda_0^0 >= 1 (proper orthochronous): L -> Lambda is the covering map of the proper orthochronous Lorentz group [50 random L]
-PASS L1-6c   deviation 9.115e-15 (tolerance 1.0e-12): (1.16): Lambda_nu^mu L4 gamma^nu L4^{-1} = gamma^mu with L4 = diag(L, (L^dag)^{-1}), the same Lambda (50 random L)
-PASS L1-7a   deviation 0.000e0 (tolerance 1.0e-15): (1.10): 1/2 (gamma^mu gamma^nu + gamma^nu gamma^mu) = eta^{mu nu} for the Weyl representation (1.9)
-PASS L1-7b   deviation 0.000e0 (tolerance 1.0e-15): (1.11): gamma^mu gamma^5 + gamma^5 gamma^mu = 0
-PASS L1-7c   deviation 0.000e0 (tolerance 1.0e-15): (1.12): (gamma^5)^2 = 1
-PASS L1-7d   deviation 0.000e0 (tolerance 1.0e-14): (1.13): gamma^5 = -i gamma^0 gamma^1 gamma^2 gamma^3 = -(1/24) i eps_{mu nu rho sigma} gamma^mu gamma^nu gamma^rho gamma^sigma (both forms)
-PASS L1-8    deviation 0.000e0 (tolerance 1.0e-15): (1.14): C gamma^mu C^{-1} = -(gamma^mu)^T with C = diag(epsilon, -epsilon)
-PASS L1-9    deviation 0.000e0 (tolerance 1.0e-15): (1.15): gamma^{mu nu} = diag(sigma^{mu nu}, -(sigma^{mu nu})^dag) in the Weyl representation
-PASS L1-10   deviation 0.000e0 (tolerance 1.0e-15): (1.17): gamma_5 gamma_{mu nu} = gamma_{mu nu} gamma_5 = gamma_{mu-bar nu-bar} (the dual (1.6))
-PASS L1-11a  deviation 8.113e-15 (tolerance 1.0e-13): property of epsilon used for (1.23): epsilon S = (S^T)^{-1} epsilon for every unimodular S (50 random S)
-PASS L1-11b  deviation 5.329e-14 (tolerance 1.0e-12): (1.22), (1.23): for sigma^mu -> S sigma^mu S^dag, the sigma-bar defined by (1.2) becomes (S^dag)^{-1} sigma-bar^mu S^{-1} (50 random S)
-PASS L1-12   deviation 5.440e-15 (tolerance 1.0e-12): Section 1, 'all the properties ... are unaltered': every set S sigma^mu S^dag (S unimodular) satisfies (1.3), (1.7) and (1.10) (20 random S)
-PASS L1-13   deviation 5.551e-16 (tolerance 1.0e-14): for ANY four Hermitian matrices, 1/2 (sigma^a sigma-bar^b + sigma^b sigma-bar^a) = N(sigma^a, sigma^b) 1, with N the polarized determinant (the Minkowski product of the matrices read as points of space-time) (20 random sets)
-PASS L1-14   hence (1.3) and (1.10) hold for a set exactly when N(sigma^a, sigma^b) = eta^{ab}: a generic linearly independent Hermitian set violates them, and Lord's 'any linearly independent set' must be read as 'any set S sigma^mu S^dag' [smallest deviation from eta over 20 random sets: 1.073]
-PASS L4-1    deviation 6.661e-15 (tolerance 1.0e-12): (4.2) to (4.5): for a field S(x) of SL(2,C), the Dirac matrices gamma^a(x) built by (4.3), (4.5) from sigma^a(x) = S sigma^a S^dag equal S4 gamma^a S4^{-1}, S4 = diag(S, (S^dag)^{-1}) (4.1): values and first derivatives at 12 random points
-PASS L4-2    deviation 7.183e-16 (tolerance 1.0e-13): (4.13), (4.31) corrected: D_a = d_a - Gamma_a is covariant, D'_a (T psi) = T D_a psi, when Gamma'_a = T Gamma_a T^{-1} + (d_a T) T^{-1} (relative deviation, 12 points, 4 directions)
-PASS L4-3    (4.14), (4.31) as printed: with the inhomogeneous term T d_a T^{-1} read as the product T (d_a T^{-1}) = -(d_a T) T^{-1}, D_a = d_a - Gamma_a is NOT covariant; the printed sign belongs to the derivative d_a + Gamma_a [smallest relative deviation of the printed law: 0.156]
-PASS L4-4    deviation 7.427e-15 (tolerance 1.0e-11): (4.15), (4.16), (4.32) corrected: Gamma_a = 1/2 g a_abc gamma^{bc} with a_abc = -(1/(4g)) tr(gamma_bc Gamma_a) (reconstruction), and under the gauge transformation delta a_abc = -(1/g) tr_N[gamma'_bc (d_a T) T^{-1}], with tr_N the trace normalized to tr_N 1 = 1 and gamma' the transformed matrices
-PASS L4-5    (4.16), (4.32) as printed, with tr = tr_N: the inhomogeneous term -(1/g) tr[gamma_bc T d_a T^{-1}] has the opposite sign of the correct one (it is the law of the derivative d_a + Gamma_a) [smallest |printed - true| / |true| over all coefficients: 2.0000 (2 for an opposite sign)]
-PASS L4-6a   deviation 1.427e-14 (tolerance 1.0e-12): (4.19): d_a gamma_b - [Gamma_a, gamma_b] is a linear combination of the gamma_e with real coefficients C_ba^e, as Lord states (residual and imaginary parts)
-PASS L4-6b   deviation 3.997e-15 (tolerance 1.0e-12): (4.19) solved: C_ba^e = 2 g a_ab^e + tr_N[(d_a gamma_b) gamma^e] (tr_N = 1/4 tr), for Gamma_a = 1/2 g a_abc gamma^{bc} (4.15)
-PASS L4-6c   deviation 1.998e-15 (tolerance 1.0e-12): (4.20) as printed, read with tr = tr_N, g a_ab^e + 1/2 tr_N[(d_a gamma_b) gamma^e], is exactly HALF of the C_ba^e that (4.19) requires
-PASS L4-6d   (4.20) as printed, read with tr the full trace, is not C_ba^e either; since its term g a_ab^e carries half the coefficient 2 g that (4.19) requires, no normalization of tr makes (4.20) equal to C, and only tr_N makes it proportional (L4-6c) [smallest, over the 12 points, of the largest deviation of a coefficient relative to the largest coefficient: 0.5649]
-PASS L4-7    deviation 8.438e-15 (tolerance 1.0e-12): (4.24): C_bae = -C_eab, for the C that solves (4.19)
-PASS L4-8    deviation 3.580e-15 (tolerance 1.0e-11): (4.25): D_e eps_abcd = C_ae^f eps_fbcd + C_be^f eps_afcd + C_ce^f eps_abfd + C_de^f eps_abcf = 0
-PASS L4-9    deviation 9.486e-16 (tolerance 1.0e-12): (4.47), (4.48): for D_mu = d_mu - Gamma_mu (coordinate derivatives, no torsion), [D_mu, D_nu] psi = (d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu]) psi (12 points, exact second derivatives)
-PASS L4-10a  deviation 2.220e-16 (tolerance 1.0e-13): the spinor image of a vector connection: Gamma_mu = 1/4 omega_{mu ab} gamma^{ab} satisfies [Gamma_mu, gamma_b] = -(W_mu)_b^e gamma_e, that is D_mu gamma_b = 0 with constant gamma (Lord's special gauge (5.2))
-PASS L4-10b  deviation 1.144e-16 (tolerance 1.0e-12): then the spinor curvature is d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu] = 1/4 R_{mu nu alpha beta} gamma^{alpha beta}, with R the curvature (4.46) of the vector connection: exactly, to all orders
-PASS L4-10c  (4.47), (4.48) as printed, 1/2 R_{mu nu alpha beta} gamma^{alpha beta}, with R the curvature of the same (compatible) vector connection: twice the spinor curvature [smallest relative deviation of the printed 1/2: 1.0000 (1 for a factor 2)]
-PASS L4-10d  with Lord's printed factors together, C = W/2 from (4.20) and 1/2 R(C) gamma^{ab} in (4.48), the spinor curvature is reproduced only to first order in the connection: the deviation is of second order (it falls by 100 when the connection falls by 10) [deviation at amplitude 0.4: 1.442e-1; at 0.04: 1.502e-3; ratio 96.00]
-PASS P-1     deviation 0.000e0 (tolerance 0.0e0): Lord's sigma^mu (1.1) and sigma-bar^mu (1.2) are the project's sigma^LL_p and sigma-bar_p (the Pauli matrices of the chiral basis)
-PASS P-2     deviation 0.000e0 (tolerance 0.0e0): Lord's epsilon (1.1) is the project's E_LL
-PASS P-3     deviation 0.000e0 (tolerance 0.0e0): Lord's gamma^mu of the Weyl representation (1.9) are the project's gamma^p_LL of the chiral basis, and his C (1.14) is C_LL
-PASS P-4     deviation 0.000e0 (tolerance 1.0e-15): Lord's gamma^5 (1.9) is minus the project's chirality matrix gamma^ch_LL = i gamma^0 gamma^1 gamma^2 gamma^3
-PASS P-5     deviation 5.551e-16 (tolerance 1.0e-13): Lord's 4x4 change of representation (4.1), diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) = (M_LL(g)^dag)^{-1}, is the project's spinor matrix S_LL(g) = diag(M_LL(g-tilde), M_LL(g)) of the unit bi-quaternion g (50 random g)
-PASS P-6a    deviation 0.000e0 (tolerance 1.0e-14): the project's conjugation of bi-quaternions is Lord's sigma-bar: M_LL(b-bar) = -epsilon M_LL(b)^T epsilon for every bi-quaternion b (50 random b)
-PASS P-6b    deviation 3.997e-15 (tolerance 1.0e-12): the frame f'_p = g-tilde f_p g-tilde^dag of the project is Lord's change of representation (1.22): its Dirac matrices (3.6) are Lord's gamma (4.5) of sigma'^p = S sigma^p S^dag and equal S_LL(g) gamma^p S_LL(g)^{-1}
-PASS P-7     deviation 1.554e-15 (tolerance 1.0e-12): Lord's Lorentz matrix (1.8) of L = M_LL(g-tilde) is the transpose of the project's L_LL(g) (2.10): Lambda_nu^mu = (L_LL(g))_{mu nu}
-PASS P-9     the changes of representation that keep the Weyl form: for 50 random A of SL(2,C), the matrices C for which A X C is Hermitian for every Hermitian X form a real line spanned by A^dag (the Gram matrix of the map has exactly one zero eigenvalue); with det A = det B this leaves S = diag(A, B), B = +-(A^dag)^{-1}: Lord's group and the reflection by gamma^5 [largest smallest eigenvalue relative to the largest 4.1e-16 (zero to rounding); smallest second eigenvalue relative to the largest 5.000e-1; A sigma A^dag Hermitian to 0.0e0]
-PASS P-8     deviation 1.162e-15 (tolerance 1.0e-13): the Lorentz part of the GEE derivative of the earlier hypotheses, nabla_p = d_p + Gamma^LL_p with Gamma'^LL = S_LL Gamma^LL S_LL^{-1} - (d_p S_LL) S_LL^{-1}, is covariant, and it is Lord's derivative (4.13) with Gamma_a = -Gamma^LL_a and his inhomogeneous term corrected (L4-2) (relative deviation, 12 points)
+Part IV solves the field equation (15.4) without gauge fields and without self-interaction,
+$i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}=m_{\rm LL}\Psi_{\rm LL}$, in the Schwarzschild space-time. Without gauge fields
+the two isospin components of the brochon do not mix, and each obeys the same Dirac equation for four components;
+Sections 18 to 21 solve it for one of them (the programs put it into the upper isospin component).
 
-Notes:
-  tolerances: exact identities of the matrices 0 or 1e-15; products of random matrices 1e-12 to 1e-14 (rounding); findings about an equation as printed pass when the printed form fails by the stated amount
+The zeugon exists only in the superfluid vacuum of the brochon model, and there the excitation of the brochon is the
+quasi-particle of Section 15.4, whose equation (15.11) contains the pair amplitude through the antilinear map
+$\mathcal C_{\rm LG}$. Theorem L2 showed that every solution of (15.11) solves the equation of the second order (15.12) of a
+Dirac particle of mass $E^{\rm CJT,gap}_{\rm SF}$. For the states of Part IV the converse is needed as well, that every
+solution of the Dirac equation of that mass gives a solution of (15.11). It holds:
 
-VERDICT: ALL PASS (46 of 46)
-```
+**Theorem L3 (the quasi-particle has the solutions of a Dirac particle).** Let the tetrad be real and the zeugon be the only
+gauge field, as in Theorem L2, and write $M=M^{\rm CJT,D}_{\rm SF}$, $D=D^{\rm CJT}_{\rm SF}$,
+$E=E^{\rm CJT,gap}_{\rm SF}=(M^2+\lvert D\rvert^2)^{1/2}$ and $\mathcal C=\mathcal C_{\rm LG}$. If $\chi_{\rm LG}$ solves the Dirac equation
+$i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\chi_{\rm LG}=E\,\chi_{\rm LG}$, then
+$$\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\,\mathcal C\chi_{\rm LG},\qquad b^{\rm qp}_{\rm LG}=-\frac{D}{E+M},\tag{18.2}$$
+solves the quasi-particle equation (15.11). Moreover, $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$ have, at every point, the same
+current $\bar\Psi\gamma^\mu_{\rm LG}\Psi$ and the same scalar density $\bar\Psi\Psi$.
 
-**The report of the Python program** (`data/hck_lg_lord_checks_python.txt`):
+*Proof.* Write $\chi=\chi_{\rm LG}$, $b=b^{\rm qp}_{\rm LG}$ and $i\gamma\nabla$ for $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu$. By Theorem L2 (a),
+$i\gamma\nabla(\mathcal C\chi)=-\mathcal C(i\gamma\nabla\chi)=-\mathcal C(E\chi)=-E\,\mathcal C\chi$, since $E$ is real; by (b) and the
+antilinearity, $\mathcal C(b\,\mathcal C\chi)=b^*\mathcal C^2\chi=-b^*\chi$. Hence
+$$i\gamma\nabla\Psi-M\Psi-D\,\mathcal C\Psi=(E-M+D\,b^*)\,\chi-\big((E+M)\,b+D\big)\,\mathcal C\chi .$$
+The second bracket vanishes by the choice of $b$, and the first is $E-M-\lvert D\rvert^2/(E+M)=(E^2-M^2-\lvert D\rvert^2)/(E+M)=0$.
+For the second statement, the matrix $\mathsf P_{\rm LG}$ of $\mathcal C\Psi=\mathsf P_{\rm LG}\Psi^*$ obeys
+$\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}=(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)^T$ for
+$a=0,\dots,3$ (for $a=0$ this says that $\mathsf P_{\rm LG}$ is unitary) and
+$\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}=(\gamma^0_{\rm LL}\otimes\mathsf 1_2)^T$. Since the number
+$\bar\chi\gamma^a_{\rm LL}\chi=\chi^\dagger(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)\chi$ equals its transpose
+$\chi^T(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)^T\chi^*$, the first identity gives
+$\overline{\mathcal C\chi}\gamma^a_{\rm LL}\mathcal C\chi=\chi^T\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}\chi^*=\bar\chi\gamma^a_{\rm LL}\chi$,
+and the second the same for the scalar density. $\square$
 
-```
-PROJECT spacetimes, Revision_Lord_Gravity: lg_lord.py -- the independent check, in Python, of the Rust program lg_lord (the equations of E. A. Lord (1971) and their association with the SL(2,C) of the project)
-Each line: PASS or FAIL, the identifier of the check (YL-n; the counterparts in the Rust report are named in the text),
-the measured deviation and its tolerance (or the facts that decide it), and the statement.
+(Checks LS-14a to LS-14c: the separated spinor (18.3) below with the mass $E$ and complex frequencies, at 40 random points
+outside and 40 inside the horizon, solves (15.11) in the form (18.2) to $7.0\times10^{-15}$ (relative); with the wrong sign of
+$b^{\rm qp}_{\rm LG}$ the residual is at least $0.66$, so that the check can fail; the currents and the scalar densities of
+$\chi$ and $\mathcal C\chi$ agree to $1.2\times10^{-15}$. Check YS-13: the same exactly, by computer algebra, for symbolic $M$, $\lvert D\rvert$,
+phase of $D$, frequency and angular quantum numbers, together with the two matrix identities.)
 
-PASS YL-1    deviation 0.000e+00 (tolerance 1.0e-13): Section 1: (1.2), (1.3), (1.5), (1.7), (1.10) to (1.15) and (1.17) of Lord hold for his matrices [L1-1 to L1-4, L1-7 to L1-10]
-PASS YL-2    deviation 5.330e-15 (tolerance 1.0e-12): (1.8) to first order with L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu}; for 50 random L the Lambda of (1.8) is a Lorentz matrix and satisfies (1.16) [L1-5, L1-6a, L1-6c]
-PASS YL-2b   the Lambda of (1.8) is proper orthochronous [L1-6b] [50 random L]
-PASS YL-3    deviation 2.665e-14 (tolerance 1.0e-12): (1.22), (1.23): epsilon S = (S^T)^{-1} epsilon; sigma-bar of S sigma S^dag is (S^dag)^{-1} sigma-bar S^{-1}; the transformed sets satisfy (1.3); for any Hermitian set (1.3) holds with N(sigma^a, sigma^b) [L1-11a to L1-13]
-PASS YL-3b   a generic Hermitian set violates (1.3): Lord's 'any linearly independent set' means 'any set S sigma^mu S^dag' [L1-14] [smallest deviation from eta over 20 sets: 1.192]
-PASS YL-4    deviation 7.776e-14 (tolerance 1.0e-09): (4.2) to (4.5): gamma^a(x) = S4 gamma^a S4^{-1}; (4.13), (4.31) corrected: D'_a(T psi) = T D_a psi with Gamma'_a = T Gamma_a T^{-1} + (d_a T) T^{-1} (relative, finite differences) [L4-1, L4-2]
-PASS YL-4b   (4.31) as printed (T d_a T^{-1} read as a product) violates the covariance of d_a - Gamma_a [L4-3] [smallest relative violation: 0.202]
-PASS YL-5    deviation 4.926e-15 (tolerance 1.0e-09): (4.32) corrected: delta a_abc = -(1/g) tr_N[gamma'_bc (d_a T) T^{-1}] [L4-4]
-PASS YL-5b   (4.32) as printed (with tr_N) has the opposite sign of the inhomogeneous term [L4-5] [smallest |printed - true| / |true|: 2.00000000]
-PASS YL-6    deviation 8.619e-13 (tolerance 1.0e-09): (4.19) solved: C_ba^e = 2 g a_ab^e + tr_N[(d_a gamma_b) gamma^e] (real); (4.24) C_bae = -C_eab [L4-6a, L4-6b, L4-7]
-PASS YL-6b   deviation 1.610e-15 (tolerance 1.0e-09): (4.20) as printed with tr = tr_N is exactly half of that C [L4-6c]
-PASS YL-6c   (4.20) as printed with the full trace is not C [L4-6d] [smallest relative deviation of the whole array: 0.5926]
-PASS YL-7    deviation 3.852e-14 (tolerance 1.0e-08): (4.48): [D_mu, D_nu] psi = (d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu]) psi (nested finite differences) [L4-9]
-PASS YL-7b   deviation 7.006e-15 (tolerance 1.0e-09): the spinor image Gamma_mu = 1/4 omega_{mu ab} gamma^{ab} of a vector connection keeps gamma_b constant, and its curvature is 1/4 R_{mu nu alpha beta} gamma^{alpha beta} [L4-10a, L4-10b]
-PASS YL-7c   the printed coefficient 1/2 of (4.47), (4.48) gives twice the spinor curvature [L4-10c] [smallest relative deviation: 1.00000000]
-PASS YL-8    deviation 4.761e-13 (tolerance 1.0e-11): the dictionary: Lord's sigma, sigma-bar, gamma, C equal the project's; his gamma^5 = -gamma^ch_LL; his diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) is S_LL(g); M_LL(b-bar) = -epsilon M_LL(b)^T epsilon; the frame g-tilde f g-tilde^dag has Lord's Dirac matrices; his Lambda of M_LL(g-tilde) is L_LL(g)^T [P-1 to P-7]
-PASS YL-9    for 50 random A of SL(2,C), the C with A X C Hermitian for every Hermitian X form a real line, spanned by A^dag (singular values of the real-linear map): the changes of representation that keep the Weyl form are diag(A, +-(A^dag)^{-1}) [P-9] [smallest singular value relative 2.1e-16; second 0.707; null vector minus kappa A^dag 4.6e-16]
+*What it means.* The quasi-particle (18.2) is a superposition of a solution $\chi_{\rm LG}$ of the Dirac equation and of its
+image $\mathcal C\chi_{\rm LG}$, which contains the complex conjugate of $\chi_{\rm LG}$ and lies in the other isospin component. If
+$\chi_{\rm LG}$ depends on the time as $e^{-i\omega\tau_{\rm LG}}$, then $\mathcal C\chi_{\rm LG}$ depends on it as $e^{+i\omega^*\tau_{\rm LG}}$: it
+oscillates with the opposite frequency. This is the structure of every quasi-particle of a superfluid, a mixture of a
+particle and of a missing partner of a pair (Section 0.1); here the second part has the weight
+$\lvert b^{\rm qp}_{\rm LG}\rvert^2=(E-M)/(E+M)=0.386$ relative to the first.
 
-Notes:
-  derivatives by central finite differences of eighth order (step 0.01), nested for second derivatives; tolerances 1e-12 for exact matrix identities, 1e-8 to 1e-9 where finite differences enter
+*Why it matters.* Three consequences make every result of Part IV a result for the quasi-particle as well.
 
-VERDICT: ALL PASS (17 of 17)
-```
+1. A *quasi-bound state* $\chi_{\rm LG}$ of complex frequency $\omega$ (Section 20), a solution that falls into the horizon and
+   decays at large distances, gives the quasi-particle state (18.2), which does the same, because $\mathcal C\chi_{\rm LG}$ is
+   smooth at the horizon and decays at large distances wherever $\chi_{\rm LG}$ does; and both parts decay in time at the same
+   rate, because $\lvert e^{i\omega^*\tau}\rvert=\lvert e^{-i\omega\tau}\rvert=e^{({\rm Im}\,\omega)\tau}$.
+2. For a real frequency $\omega$, the current of $\Psi_{\rm LL}$ averaged over a period $2\pi/\omega$ is
+   $1+\lvert b^{\rm qp}_{\rm LG}\rvert^2$ times the current of $\chi_{\rm LG}$: the cross terms between $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$
+   oscillate as $e^{\pm2i\omega\tau}$ and average to zero, and the currents of the two parts are equal. (At each instant the
+   current of the quasi-particle is not conserved: by (15.6), a solution of (15.11) has
+   $\nabla^{\rm LG}_\mu j^{{\rm F},\mu}_{\rm SF}=2\,{\rm Im}\big(D\,\bar\Psi_{\rm LL}\mathcal C\Psi_{\rm LL}\big)$, which oscillates; the condensate takes
+   up and gives back pairs. Its average over a period vanishes.) The fraction of an incoming wave that the black hole absorbs,
+   a ratio of two such averaged currents (Section 21), is therefore the same for the quasi-particle as for the Dirac
+   particle.
+3. Every number of Part IV therefore holds for the quasi-particle at the same value of
+   $y_{\rm LG}=\mathcal M_{\rm LG}E^{\rm CJT,gap}_{\rm SF}$.
 
-**The report of the Wolfram script** (`data/hck_lg_lord_checks_wolfram.txt`):
+## 18.2 The two tetrads
 
-```
-lg_lord.wls: the exact identities and factors of Lord (1971), Sections 1 and 4 (Revision_Lord_Gravity, PROJECT spacetimes)
-Each line: PASS or FAIL, the identifier of the check in this script (WL and a number), the statement and, in brackets, the
-facts that decide it.  Exact arithmetic: symbolic matrices, every identity simplified to zero.
+Section 14.3 gave two tetrads of the Schwarzschild space-time. The *static tetrad*, in the coordinates $(t,r,\theta,\varphi)$
+of Schwarzschild, belongs to observers who stay at a fixed radius; it is singular at the horizon, where no observer can stay
+at rest. The *freely falling tetrad* of Painlevé and Gullstrand, in the coordinates $(\tau_{\rm LG},r,\theta,\varphi)$, belongs to
+observers who fall from rest at infinity: $\tau_{\rm LG}$ is their proper time, and their radius shrinks at the rate
+$dr/d\tau_{\rm LG}=-w_{\rm LG}$, $w_{\rm LG}=(2/r)^{1/2}$. Its components, its spin connection (14.13), and therefore the Dirac
+equation written with it, are finite at the horizon: Part IV uses it on both sides, and the static tetrad outside, far from
+the black hole.
 
-PASS WL-1     (Rust L1-1 to L1-4, L1-7 to L1-10; Python YL-1) Lord's identities (1.2), (1.3), (1.5) (256 index combinations), (1.7), (1.10), (1.11), (1.12), (1.13) (both forms), (1.14), (1.15) and (1.17) hold exactly for his matrices [(1.2) True, (1.3) True, (1.5) True, (1.7) True, (1.10)-(1.14) True, (1.15) True, (1.17) True]
-PASS WL-2     (Rust L1-11a, L1-11b; Python YL-3) for S of determinant 1 (symbolic entries): epsilon S = (S^T)^{-1} epsilon; and for any matrix sigma and a second S' of determinant 1, bar(S sigma S') = S'^{-1} bar(sigma) S^{-1}; with S' = S^dag this is (1.23) [epsilon True, (1.23) True]
-PASS WL-3     (Rust L1-13, L1-14; Python YL-3, YL-3b) for any two 2x2 matrices A, B (symbolic entries): 1/2 (A bar(B) + B bar(A)) = N(A, B) 1 with N(A, B) = (det(A + B) - det A - det B)/2, and N(sigma^mu, sigma^nu) = eta^{mu nu}; so (1.3) holds for a set of four matrices exactly when their products N are eta^{ab} [identity True, N of the standard set True]
-PASS WL-4     (Rust L1-5; Python YL-2) (1.8) to first order: with Lambda_mu^nu = delta_mu^nu + eta^{nu rho} lambda_{rho mu} and L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu} (six real symbols), eta^{mu rho} lambda_{rho nu} sigma^nu + X sigma^mu + sigma^mu X^dag = 0 for every mu [True]
-PASS WL-5     (Rust L4-2, L4-3; Python YL-4, YL-4b) for S(t) = ((1 + t^3, t), (t^2, 1)) (determinant 1), a constant Gamma = diag(Y, -Y^dag) of the Lorentz algebra and a spinor of four symbolic functions: D = d - Gamma is covariant with Gamma' = S Gamma S^{-1} + (dS) S^{-1}, and not with the printed inhomogeneous term S (d S^{-1}) [corrected law covariant True, printed law not covariant True]
-PASS WL-6     (Rust L4-6b, L4-6c; Python YL-6, YL-6b) in Lord's special gauge (constant gamma, (5.2)): for Gamma = 1/2 g a_bc gamma^{bc} with six symbolic a_bc, [Gamma, gamma_b] = -2 g a_b^e gamma_e, so (4.19) gives C_b^e = 2 g a_b^e: twice the printed (4.20) and (5.2), C = g a [C = 2 g a: True, in the span of gamma_e: True]
-PASS WL-7     (Rust L4-10a, L4-10b, L4-10c; Python YL-7b, YL-7c) lambda(W) = 1/4 W_{ab} gamma^{ab} (W antisymmetric, symbolic) satisfies [lambda(W), gamma_b] = -W_b^e gamma_e and [lambda(W1), lambda(W2)] = lambda([W1, W2]): a homomorphism of Lie algebras, so the curvature of the spinor connection lambda(W_mu) is lambda(R_{mu nu}) = 1/4 R_{mu nu ab} gamma^{ab} exactly, and Lord's printed 1/2 R gamma is twice it [action on gamma True, homomorphism True]
+## 18.3 The separation of the Dirac equation
 
-Notes:
-  Wolfram Language 15.0.1; run time 0.0 s
+To *separate the variables* of a partial differential equation means to write its solutions as products of functions of one
+variable each, so that the equation splits into ordinary differential equations. The black hole is *static* (nothing
+depends on $\tau_{\rm LG}$) and *spherically symmetric* (nothing depends on the direction), so a solution can be chosen with a
+definite **frequency** $\omega^{\rm S}_{\rm LG}$, a time dependence $e^{-i\omega^{\rm S}_{\rm LG}\tau_{\rm LG}}$, with a definite **total angular
+momentum** $j_{\rm LG}=\tfrac12,\tfrac32,\dots$ (orbital angular momentum and spin together) and with a definite component
+$m_{j,{\rm LG}}$ of it along the axis $\theta=0$. Such a solution is a **partial wave**. The frequency may be complex: a
+solution with ${\rm Im}\,\omega^{\rm S}_{\rm LG}<0$ decays in time.
 
-VERDICT: ALL PASS (7 of 7)
-```
+Let $\mathsf H_{\rm LG}=i(\sigma^{\rm LL}_1+\sigma^{\rm LL}_3)/\sqrt2$, a unitary matrix of determinant 1, and
+$\mathsf S^{\rm H}_{\rm LG}=\mathrm{diag}(\mathsf H_{\rm LG},\mathsf H_{\rm LG})$. In the language of Section 9.2, $\mathsf S^{\rm H}_{\rm LG}$ is the spinor
+matrix $\mathsf S_{\rm LL}(\mathbf g)$ of a constant rotation: the rotation by the angle $\pi$ about the axis halfway between the
+first and the third frame vectors, which exchanges them, so that the Pauli matrix of the radial direction becomes diagonal,
+$\mathsf H_{\rm LG}\sigma^{\rm LL}_1\mathsf H_{\rm LG}^\dagger=\sigma^{\rm LL}_3$. The partial waves of one isospin component are
+$$\psi=\frac{e^{-i\omega^{\rm S}_{\rm LG}\tau_{\rm LG}+im_{j,{\rm LG}}\varphi}}{r\,(\sin\theta)^{1/2}}\;\mathsf S^{\rm H}_{\rm LG}\begin{pmatrix}-i\,\mathcal Q_{\rm LG}(r)\,\alpha_{\rm LG}(\theta)\\i\,\mathcal P_{\rm LG}(r)\,\beta_{\rm LG}(\theta)\\\mathcal P_{\rm LG}(r)\,\alpha_{\rm LG}(\theta)\\\mathcal Q_{\rm LG}(r)\,\beta_{\rm LG}(\theta)\end{pmatrix},\tag{18.3}$$
+with two angular functions $\alpha_{\rm LG}$, $\beta_{\rm LG}$ and two radial functions $\mathcal P_{\rm LG}$, $\mathcal Q_{\rm LG}$. The Dirac
+equation then holds exactly when the angular functions solve the **angular equations**
+$$\alpha_{\rm LG}'=\frac{m_{j,{\rm LG}}}{\sin\theta}\,\alpha_{\rm LG}-\lambda_{\rm LG}\,\beta_{\rm LG},\qquad\beta_{\rm LG}'=-\frac{m_{j,{\rm LG}}}{\sin\theta}\,\beta_{\rm LG}+\lambda_{\rm LG}\,\alpha_{\rm LG},\tag{18.4}$$
+with a constant $\lambda_{\rm LG}$ (the prime is the derivative with respect to the argument), and the radial functions the
+**radial equations**
+$$\mathcal P_{\rm LG}'=\frac{\big(i\omega^{\rm S}_{\rm LG}-\frac{w_{\rm LG}}{4r}\big)\mathcal P_{\rm LG}-\big(\frac{i\lambda_{\rm LG}}r+m_{\rm LL}\big)\mathcal Q_{\rm LG}}{1-w_{\rm LG}},\qquad\mathcal Q_{\rm LG}'=\frac{\big(\frac{i\lambda_{\rm LG}}r-m_{\rm LL}\big)\mathcal P_{\rm LG}-\big(i\omega^{\rm S}_{\rm LG}-\frac{w_{\rm LG}}{4r}\big)\mathcal Q_{\rm LG}}{1+w_{\rm LG}}.\tag{18.5}$$
+The angle $\varphi$ and the time have dropped out, and the radius and the polar angle are coupled only through the constant
+$\lambda_{\rm LG}$, the *separation constant*.
 
-**The programs of Part III.** Three programs check Part III, each independently of the others:
+*Why the prefactor.* The factor $r^{-1}(\sin\theta)^{-1/2}$ cancels the terms in which the spin connection (14.13) acts without a
+derivative. The frame vectors $e^{\rm LG}_2$ and $e^{\rm LG}_3$ point along the directions of $\theta$ and $\varphi$ and turn as one
+moves over the sphere, and in $\gamma^\theta_{\rm LG}(\partial_\theta+\Gamma^{\rm LL}_\theta)+\gamma^\varphi_{\rm LG}(\partial_\varphi+\Gamma^{\rm LL}_\varphi)$, with
+$\gamma^\theta_{\rm LG}=\gamma^2_{\rm LL}/r$ and $\gamma^\varphi_{\rm LG}=\gamma^3_{\rm LL}/(r\sin\theta)$, the connection contributes
+$\gamma^r_{\rm LG}/r+\cot\theta\,\gamma^2_{\rm LL}/(2r)$, where $\gamma^r_{\rm LG}=-w_{\rm LG}\gamma^0_{\rm LL}+\gamma^1_{\rm LL}$. The derivative
+$\gamma^r_{\rm LG}\partial_r$ acting on $r^{-1}$ gives $-\gamma^r_{\rm LG}/r$, and $\gamma^\theta_{\rm LG}\partial_\theta$ acting on $(\sin\theta)^{-1/2}$ gives
+$-\cot\theta\,\gamma^2_{\rm LL}/(2r)$: the two pairs cancel.
 
-* the Rust program `lg_curved` (`rust/lgcurved/src/main.rs`, with the module `curved.rs` of the library `rust/lgcore`,
-  which computes the geometry of a tetrad, the Dirac operator, the currents and the energy-momentum tensors, the local
-  solutions and the Volkov solution): ALL PASS (57 of 57). Its fields carry exact first and second derivatives by
-  forward-mode automatic differentiation; quantities made from first derivatives of the tetrad (Christoffel symbols,
-  spin connection) carry their first derivatives, and the curvature its value. It writes the numbers that Part III
-  quotes into `data/lg_curved_values.csv`;
-* the Python program `python/lg_curved.py`: ALL PASS (19 of 19). It writes every matrix again, differentiates by central
-  finite differences of eighth order (nested for second derivatives, so that its identities hold to about $10^{-12}$
-  relative and its tolerances are $10^{-9}$), computes the spin connection by (14.6) instead of (14.4), solves the
-  equations of the local solutions all at once, and codes the Volkov solution again;
-* the Wolfram script `wolfram/source/lg_curved.wls`: ALL PASS (6 of 6), in exact arithmetic for the Schwarzschild,
-  Painlevé-Gullstrand and Vaidya space-times, for conformally flat metrics with a symbolic conformal factor, for the
-  variation of the tetrad with sixteen symbolic functions, and for the matrix of the pairing term.
+*The checks.* The Rust program puts the spinor (18.3), with random values of the four functions and their derivatives taken
+from (18.4) and (18.5), into the Dirac operator of Part III, whose spin connection it computes from the tetrad, at 40 random
+points outside and 40 inside the horizon, for $\lambda_{\rm LG}=\pm1,\pm2,\pm3$, $m_{j,{\rm LG}}=\pm\tfrac12,\pm\tfrac32$ and complex
+frequencies: the largest residual is $9.8\times10^{-15}$ of the spinor (check LS-2). The Python program simplifies the residual to
+zero by computer algebra with the spin connection (14.13) as printed (YS-2), and the Wolfram script does so with the spin
+connection computed from the tetrad (WS-2).
 
-To reproduce, from the folder `Revision_Lord_Gravity`:
+## 18.4 The angular functions and the labels of the states
 
-```bash
-cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
-(cd rust && cargo build --release && ./target/release/lg_curved) # data/hck_lg_curved_checks.txt, lg_curved_values.csv
-python3 python/lg_curved.py                                       # data/hck_lg_curved_checks_python.txt
-wolframscript -file wolfram/source/lg_curved.wls data/hck_lg_curved_checks_wolfram.txt
-python3 code/scripts/write_lg_curved_fragments.py                # the numbers of Part III
-```
+The angular equations (18.4) have solutions that are finite at both poles, $\theta=0$ and $\theta=\pi$, exactly when
+$\lambda_{\rm LG}=\pm(j_{\rm LG}+\tfrac12)$ and $\lvert m_{j,{\rm LG}}\rvert\le j_{\rm LG}$, as for the Dirac equation in flat
+space-time.
 
-**The report of the Rust program** (`data/hck_lg_curved_checks.txt`):
+**Example: $j_{\rm LG}=m_{j,{\rm LG}}=\tfrac12$.** For $\lambda_{\rm LG}=\pm1$ the solutions are
+$$\alpha_{\rm LG}=\sin^{1/2}\tfrac\theta2\,\cos^{3/2}\tfrac\theta2,\qquad\beta_{\rm LG}=\lambda_{\rm LG}\,\sin^{3/2}\tfrac\theta2\,\cos^{1/2}\tfrac\theta2.\tag{18.6}$$
+One checks them by differentiating: with $s=\sin\tfrac\theta2$, $c=\cos\tfrac\theta2$ and $\sin\theta=2sc$,
+$\alpha_{\rm LG}'=\tfrac14s^{-1/2}c^{5/2}-\tfrac34s^{3/2}c^{1/2}$, while $\alpha_{\rm LG}/(2\sin\theta)-\lambda_{\rm LG}\beta_{\rm LG}
+=\tfrac14s^{-1/2}c^{1/2}-s^{3/2}c^{1/2}$, and the two agree because $c^{5/2}=c^{1/2}(1-s^2)$. Divided by $(\sin\theta)^{1/2}$,
+as in (18.3), they become $\cos\tfrac\theta2/\sqrt2$ and $\lambda_{\rm LG}\sin\tfrac\theta2/\sqrt2$, finite at both poles. (Check WS-6, exactly,
+for $\lambda_{\rm LG}=\pm1$ and $m_{j,{\rm LG}}=\pm\tfrac12$.)
 
-```
-PROJECT spacetimes, Revision_Lord_Gravity: lg_curved -- the checks of Part III of lord_gravity.md, the gravitational coupling of the brochon by Lord's covariant derivative (tetrad, spin connection, curvature, the Dirac operator of the brochon, its currents and energy-momentum tensor, the quasi-particles of the superfluid)
-Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
-statement that is true or false, the facts that decide it), and the statement that is checked.
+**The labels.** In Dirac's theory of the hydrogen atom the two states of the same $j$ are told apart by the integer
+$\kappa^{\rm H}_{\rm LG}$, which is $-(j+\tfrac12)$ when the orbital angular momentum is $\ell=j-\tfrac12$ and $+(j+\tfrac12)$ when
+$\ell=j+\tfrac12$. The separation constant is $\lambda_{\rm LG}=-\kappa^{\rm H}_{\rm LG}$. A state is written $n\,L_j$ as in the hydrogen
+atom: the **principal quantum number** $n_{\rm LG}$, the **orbital angular momentum** $\ell_{\rm LG}$ written S, P, D for 0, 1, 2,
+and $j_{\rm LG}$ as the index. The six states computed below are
+$$1S_{1/2},\ 2S_{1/2}\ (\lambda_{\rm LG}=1),\qquad2P_{1/2}\ (\lambda_{\rm LG}=-1),\qquad2P_{3/2},\ 3P_{3/2}\ (\lambda_{\rm LG}=2),\qquad3D_{3/2}\ (\lambda_{\rm LG}=-2).$$
+The relation $\lambda_{\rm LG}=-\kappa^{\rm H}_{\rm LG}$ was found from the levels at small $y_{\rm LG}$ (Section 20): $\lambda_{\rm LG}=1$ has a
+level with $n_{\rm LG}=1$ and $\lambda_{\rm LG}=-1$ has none, as in the hydrogen atom, where $1S_{1/2}$ exists and $1P_{1/2}$ does not; it is
+confirmed by the small-mass formulas of Section 20.4, which depend on $\ell_{\rm LG}$ and $j_{\rm LG}$ separately and agree with the
+computed states.
 
-PASS G-1a    deviation 4.441e-16 (tolerance 1.0e-13): the coframe e^a_mu and the frame e_a^mu (Lord's reference vectors h_a^mu) are inverse to each other, and the metric g_{mu nu} = eta_ab e^a_mu e^b_nu is symmetric (values and first derivatives)
-PASS G-1b    deviation 8.882e-16 (tolerance 1.0e-13): g^{mu nu} = eta^{ab} e_a^mu e_b^nu is the inverse of g_{mu nu} (values and first derivatives)
-PASS G-1c    deviation 1.147e-15 (tolerance 1.0e-13): e = det(e^a_mu) satisfies e^2 = -det g (relative, values and first derivatives)
-PASS G-1d    the metric has the signature (+,-,-,-) (one positive and three negative eigenvalues) and e > 0 at every point [8 points]
-PASS G-2     deviation 4.441e-16 (tolerance 1.0e-13): the Dirac matrices of the curved space-time gamma^mu_LG = e_a^mu gamma^a_LL satisfy 1/2 {gamma^mu, gamma^nu} = g^{mu nu} 1 (values and first derivatives)
-PASS G-3a    deviation 0.000e0 (tolerance 1.0e-15): their blocks sigma^mu_LG = e_a^mu sigma_a are Hermitian matrices: the matrices M_LL of four Hermitian bi-quaternions, four points of M31 at every point of the curved space-time
-PASS G-3b    deviation 5.829e-16 (tolerance 1.0e-13): N_LG(sigma^mu_LG, sigma^nu_LG) = g^{mu nu}: the Minkowski products of the four points are the inverse metric (the case 'N = g' of Section 2.4)
-PASS G-3c    deviation 0.000e0 (tolerance 1.0e-15): Lord's (5.2), gamma = ((0, sigma), (sigma-bar, 0)) with his bar, builds gamma^mu_LG from sigma^mu_LG (values and first derivatives)
-PASS G-4a    deviation 1.110e-16 (tolerance 1.0e-14): the Christoffel symbols are symmetric, Gamma^rho_{mu nu} = Gamma^rho_{nu mu}
-PASS G-4b    deviation 5.412e-16 (tolerance 1.0e-13): the Christoffel symbols are compatible with the metric, d_la g_{mu nu} - Gamma^ka_{la mu} g_{ka nu} - Gamma^ka_{la nu} g_{mu ka} = 0 (values and first derivatives)
-PASS G-5a    deviation 7.216e-16 (tolerance 1.0e-13): the spin connection of the tetrad postulate is antisymmetric, omega_{mu ab} = -omega_{mu ba} (values and first derivatives)
-PASS G-5b    deviation 3.678e-16 (tolerance 1.0e-13): the tetrad postulate holds for the coframe as well: d_mu e^a_nu - Gamma^la_{mu nu} e^a_la + omega_mu^a_b e^b_nu = 0
-PASS G-5c    deviation 4.857e-16 (tolerance 1.0e-13): no torsion: d_mu e^a_nu - d_nu e^a_mu + omega_mu^a_b e^b_nu - omega_nu^a_b e^b_mu = 0
-PASS G-6     deviation 7.216e-16 (tolerance 1.0e-13): the Dirac matrices are covariantly constant, d_mu gamma^nu + Gamma^nu_{mu la} gamma^la + [Omega_mu, gamma^nu] = 0 with Omega_mu = 1/4 omega_{mu ab} gamma^{ab} (Lord's (5.7) in coordinates; values and first derivatives)
-PASS G-8a    deviation 4.690e-16 (tolerance 1.0e-12): the spinor curvature d_mu Omega_nu - d_nu Omega_mu + [Omega_mu, Omega_nu] = 1/4 R_{ab mu nu} gamma^{ab}, with R_{ab mu nu} = eta_aa e^a_rho e_b^sigma R^rho_{sigma mu nu} the Riemann tensor of the metric (relative to the largest component of the Riemann tensor)
-PASS G-8b    Lord's printed (4.47), (4.48), 1/2 R gamma, is twice the spinor curvature of the metric [smallest relative deviation of the printed form: 1.0000 (1 for a factor 2)]
-PASS G-9a    deviation 1.518e-15 (tolerance 1.0e-12): R_{rho sigma mu nu} = -R_{sigma rho mu nu} (relative)
-PASS G-9b    deviation 1.412e-15 (tolerance 1.0e-12): R_{rho sigma mu nu} = R_{mu nu rho sigma} (relative)
-PASS G-9c    deviation 5.604e-16 (tolerance 1.0e-12): the first Bianchi identity R_{rho sigma mu nu} + R_{rho mu nu sigma} + R_{rho nu sigma mu} = 0 (relative)
-PASS G-9d    deviation 5.968e-16 (tolerance 1.0e-12): the Ricci tensor R_{sigma nu} = R^rho_{sigma rho nu} is symmetric (relative)
-PASS G-9e    deviation 1.185e-15 (tolerance 1.0e-12): the curvature of the spin connection is the Riemann tensor of the metric in the frame, R^a_{b mu nu} = e^a_rho e_b^sigma R^rho_{sigma mu nu} (relative)
-PASS G-7a    deviation 2.220e-16 (tolerance 1.0e-13): Lord's non-commuting derivatives (4.6) are the frame derivatives of the tetrad, d_a = e_a^mu d_mu: [d_a, d_b] f = X_ab^c d_c f with X_ab^c = e^c_nu (d_a e_b^nu - d_b e_a^nu) (a random test function f)
-PASS G-7b    deviation 3.192e-16 (tolerance 1.0e-13): Lord's compatibility (5.7) in his special gauge (constant gamma^a): with Gamma^Lord_a = -e_a^mu Omega_mu and C_ba^e = e_a^mu omega_mu^e_b, -[Gamma^Lord_a, gamma_b] - C_ba^e gamma_e = 0
-PASS G-7c    deviation 2.927e-16 (tolerance 1.0e-13): Lord's coefficients a_abc of (5.4), a_abc = -(1/(4 g)) tr(gamma_bc Gamma^Lord_a), satisfy the corrected (5.8) C_ba^e = 2 g a_ab^e: g a_abc = -1/2 omega_abc with omega_abc = e_a^mu omega_{mu bc}
-PASS G-7d    the printed (4.20), C = g a in the special gauge, is half of the connection of the tetrad [smallest relative deviation |g a - C| / |C|: 0.5000 (0.5 for a factor 1/2)]
-PASS G-7e    deviation 3.331e-16 (tolerance 1.0e-13): Lord's vanishing torsion: the commutator coefficients of the frame derivatives are X_ab^c = C_ba^c - C_ab^c
-PASS G-10a   deviation 5.864e-16 (tolerance 1.0e-12): the square of the Dirac operator of the brochon (Lichnerowicz): Dslash Dslash Psi = Box Psi - R/4 Psi + i/2 gamma^{mu nu} (g^v W_{mu nu} + g^F B_{mu nu}) Psi, with Box = g^{mu nu} nabla_mu nabla_nu, in a curved space-time with non-abelian gauge fields (relative to the largest term)
-PASS G-10b   with Lord's printed spinor curvature 1/2 R gamma, the scalar term would be -R/2 Psi: the form -R/4 is decided [smallest deviation of the form -R/2 relative to |R/4 Psi|: 1.0000 (1 for a factor 2)]
-PASS G-11a   deviation 1.388e-15 (tolerance 1.0e-13): a local Lorentz rotation of the tetrad, e'^a_mu = Lambda^a_b(x) e^b_mu with S4^{-1} gamma^a S4 = Lambda^a_b gamma^b, S4 = diag(S, (S^dag)^{-1}) for a random field S of SL(2,C), leaves the metric unchanged
-PASS G-11b   deviation 3.461e-15 (tolerance 1.0e-12): the Dirac operator of the brochon is covariant: Dslash' (S4 Psi) = S4 Dslash Psi, with the spin connection of the rotated tetrad (relative, values and first derivatives)
-PASS G-11c   deviation 2.665e-15 (tolerance 1.0e-13): Lord's form of the same transformation, gamma^a -> S4 gamma^a S4^{-1} with the tetrad fixed, gives the Dirac matrices of the rotated tetrad: S4 gamma^mu S4^{-1} = e'_a^mu gamma^a (values and first derivatives)
-PASS G-11d   deviation 3.463e-15 (tolerance 1.0e-12): and the law of GEE (= Lord's corrected (5.5) with Gamma^Lord = -Omega), Omega' = S4 Omega S4^{-1} - (d S4) S4^{-1}, gives the spin connection of the rotated tetrad (values and first derivatives)
-PASS G-12a   deviation 0.000e0 (tolerance 1.0e-14): gamma^0_LL (gamma^mu_LG)^dag gamma^0_LL = gamma^mu_LG: the Dirac adjoint is formed with the constant gamma^0 of the frame
-PASS G-12b   deviation 0.000e0 (tolerance 1.0e-14): gamma^0_LL Omega_mu^dag gamma^0_LL = -Omega_mu, so (nabla Psi)-bar = d Psi-bar - Psi-bar Omega
-PASS G-12c   deviation 1.012e-15 (tolerance 1.0e-12): the identity nabla_mu j^{F,mu} = i (E-bar Psi - Psi-bar E), E = i Dslash Psi - m Psi, for random Psi (off shell): every solution of the field equation conserves the fermion-number current in any curved space-time (relative)
-PASS G-12d   deviation 6.815e-16 (tolerance 1.0e-12): the same for the isospin currents with the covariant divergence of SU(2)_v: nabla_mu j^{iota,mu} - g^v eps_{iota i' i''} W^i'_mu j^{i'' mu} = i (E-bar T^iota Psi - Psi-bar T^iota E) (relative)
-PASS G-13a   deviation 5.544e-16 (tolerance 1.0e-13): local solutions of the Dirac equation of the brochon in a curved space-time with non-abelian gauge fields and the mass m_LL (the Taylor data at a point completed so that E and its first derivatives vanish there; residual relative to the field)
-PASS G-13b   deviation 1.158e-15 (tolerance 1.0e-12): for them nabla_mu T^{mu nu} = g^v W^iota nu_la j^{iota la} + g^F B^nu_la j^{F la}: the energy-momentum tensor of the brochon changes only by the work of the gauge fields (relative to the largest component of T and its derivatives)
-PASS G-13c   deviation 1.167e-15 (tolerance 1.0e-12): and the trace g^{mu nu} T_{mu nu} = m_LL Psi-bar Psi: T is traceless exactly for the massless brochon (relative)
-PASS G-13d   deviation 8.698e-16 (tolerance 1.0e-12): and nabla_mu j^{F,mu} = 0 (relative)
-PASS G-14a   deviation 1.003e-15 (tolerance 1.0e-12): the Volkov solution of the brochon in a plane wave of the zeugon, written in random curvilinear coordinates of flat space-time and a random local Lorentz frame, solves the Dirac equation with the mass m_LL and the coupling g^v Q_LL (relative residual, values and first derivatives)
-PASS G-14b   deviation 6.556e-16 (tolerance 1.0e-12): its fermion-number current is conserved (relative)
-PASS G-14c   deviation 1.458e-15 (tolerance 1.0e-12): its energy-momentum tensor changes by the force of the zeugon on the isospin current, nabla_mu T^{mu nu} = g^v A^nu_la j^{3 la} (relative)
-PASS G-14d   deviation 1.775e-15 (tolerance 1.0e-12): the energy-momentum tensor of the free zeugon wave is conserved (relative)
-PASS G-15a   deviation 2.530e-15 (tolerance 1.0e-12): conformal invariance of the massless brochon: in the curved space-time g = Omega^2 eta (Omega = exp(phi(x)) random, R != 0) with a random local frame S, Psi = Omega^{-3/2} S4 Psi_flat solves the massless Dirac equation when Psi_flat is the flat Volkov solution in the zeugon wave (relative residual)
-PASS G-15b   deviation 9.291e-16 (tolerance 1.0e-12): its current is conserved (relative)
-PASS G-15c   deviation 1.631e-15 (tolerance 1.0e-12): nabla_mu T^{mu nu} = the force of the zeugon (relative)
-PASS G-15d   deviation 1.528e-15 (tolerance 1.0e-12): T is traceless (relative)
-PASS G-15e   deviation 1.245e-15 (tolerance 1.0e-12): the zeugon wave, a solution of Maxwell's equations in any conformally flat space-time, has a conserved and traceless energy-momentum tensor (relative)
-PASS G-16    deviation 8.543e-16 (tolerance 1.0e-12): the energy-momentum tensor of the gauge fields in a curved space-time satisfies nabla_mu T^{mu nu}_YM = -g^{nu ka} (W^iota_{ka la} Y^{iota la} + B_{ka la} Y^{F la}), with Y the left sides of the Yang-Mills equations (for random fields, off shell); with Y = g^v j^iota, g^F j^F it cancels the force of G-13b, so the total tensor of the brochon and the gauge fields is conserved, as Einstein's equations require (relative)
-PASS G-17a   deviation 0.000e0 (tolerance 1.0e-13): the antilinear map C Psi = (gamma^0 (x) 1_2)(K^3_LL)^dag Psi^* of the pairing term of the polar superfluid commutes with nabla_mu and anticommutes with i Dslash in a curved space-time with the zeugon (relative, values and first derivatives)
-PASS G-17b   with the massive gauge fields W^1 (or W^2) and B the anticommutation fails: the zeugon is the only gauge field with which the pairing term is covariant [smallest relative deviation with W^1 and B: 2.462e-1]
-PASS G-17c   deviation 0.000e0 (tolerance 1.0e-15): C^2 = -1 (relative)
-PASS G-17d   deviation 7.034e-16 (tolerance 1.0e-13): C is covariant under local Lorentz transformations, C (S4 Psi) = S4 C Psi (relative)
-PASS G-17e   deviation 8.218e-16 (tolerance 1.0e-13): local solutions of the quasi-particle equation i Dslash Psi = M Psi + D C Psi in a curved space-time with the zeugon (M = 0.1622929325, |D| = 0.3284861084, the polar ground state of CJT; residual relative to the field)
-PASS G-17f   deviation 9.370e-15 (tolerance 1.0e-12): for them (i Dslash)^2 Psi = (M^2 + |D|^2) Psi = E_gap^2 Psi, E_gap = 0.3663906649: the quasi-particle of the superfluid is a spin-1/2 particle of mass E_gap in any gravitational field (relative)
-PASS G-17g   deviation 6.860e-15 (tolerance 1.0e-12): and with the square of the Dirac operator (G-10): Box Psi + E_gap^2 Psi - R/4 Psi + i/2 g^v gamma^{mu nu} A_{mu nu} T^3 Psi = 0, A = W^3 the zeugon (relative)
+## 18.5 The radial equations in the static tetrad
 
-Notes:
-  8 random points per check; random tetrads e^a_mu = delta + 0.25 r(x), gauge fields of size 0.3, g^v = 0.7, g^F = 0.45, m_LL = 0.2; exact first and second derivatives (automatic differentiation); tolerances: identities of matrices 1e-13 to 1e-11 (rounding, relative where stated); a check that a printed form fails passes when it fails by the stated amount
-  the random tetrads are curved: |R| from 1.390e-1 to 2.759e0, largest component of the Riemann tensor 3.944e-1
-  the conformally flat space-times of G-15 are curved: |R| from 1.948e-1 to 1.246e0
+Far from the black hole the static tetrad is the natural one: there the radial equations become those of a free particle,
+and the waves that come in and go out can be told apart. With $f_{\rm LG}=1-2/r$, the prefactor $f_{\rm LG}^{-1/4}$ added to that
+of (18.3), the time $t$ in place of $\tau_{\rm LG}$, and $\mathcal P_{\rm LG}$, $\mathcal Q_{\rm LG}$ replaced by
+$(\mathcal U_{\rm LG}-i\mathcal V_{\rm LG})/2$ and $(\mathcal U_{\rm LG}+i\mathcal V_{\rm LG})/2$, the Dirac equation is equivalent to
+$$\begin{aligned}f_{\rm LG}\,\mathcal U_{\rm LG}'&=-m_{\rm LL}f_{\rm LG}^{1/2}\,\mathcal U_{\rm LG}+\Big(\omega^{\rm S}_{\rm LG}+\frac{\lambda_{\rm LG}f_{\rm LG}^{1/2}}r\Big)\mathcal V_{\rm LG},\\f_{\rm LG}\,\mathcal V_{\rm LG}'&=-\Big(\omega^{\rm S}_{\rm LG}-\frac{\lambda_{\rm LG}f_{\rm LG}^{1/2}}r\Big)\mathcal U_{\rm LG}+m_{\rm LL}f_{\rm LG}^{1/2}\,\mathcal V_{\rm LG}\end{aligned}\tag{18.7}$$
+(checks LS-1, YS-1, WS-1). The two descriptions are the same field (LS-3, YS-3, WS-3): if $\mathcal U_{\rm LG}$, $\mathcal V_{\rm LG}$
+solve (18.7), then
+$$\mathcal P_{\rm LG}=\frac{\mathcal U_{\rm LG}-i\mathcal V_{\rm LG}}{2\,(1-w_{\rm LG})^{1/2}}\,e^{i\omega^{\rm S}_{\rm LG}(\tau_{\rm LG}-t)},\qquad\mathcal Q_{\rm LG}=\frac{\mathcal U_{\rm LG}+i\mathcal V_{\rm LG}}{2\,(1+w_{\rm LG})^{1/2}}\,e^{i\omega^{\rm S}_{\rm LG}(\tau_{\rm LG}-t)},\qquad\frac{d(\tau_{\rm LG}-t)}{dr}=\frac{w_{\rm LG}}{f_{\rm LG}},\tag{18.8}$$
+solve (18.5). The factor $(1-w_{\rm LG})^{-1/2}$ is infinite at the horizon: a solution that is smooth in the freely falling tetrad
+looks singular in the static one, which is why the static tetrad is used only outside. As $r\to\infty$, $f_{\rm LG}\to1$ and
+(18.7) become the radial equations of a free Dirac particle of mass $m_{\rm LL}$ in flat space-time.
 
-VERDICT: ALL PASS (57 of 57)
-```
+# 19. The horizon and the inside of the black hole
 
-**The report of the Python program** (`data/hck_lg_curved_checks_python.txt`):
+*In words.* The radial equations (18.5) have a pole at the horizon, where $w_{\rm LG}=1$. Of their two independent solutions,
+one is smooth there and the other oscillates infinitely fast as it approaches the horizon. The smooth one is the wave that
+falls in; it continues through the horizon unchanged and reaches the centre, and what flows in at the horizon arrives
+there.
 
-```
-PROJECT spacetimes, Revision_Lord_Gravity: lg_curved.py -- the independent check (Python, finite differences) of Part III of lord_gravity.md, the gravitational coupling of the brochon
-Each line: PASS or FAIL, the identifier of the check (YG and a number; the counterparts of the Rust program lg_curved in brackets),
-the measured deviation and its tolerance (or the facts that decide it), and the statement.
+## 19.1 The exponents at the horizon
 
-PASS YG-1a   deviation 4.441e-16 (tolerance 1.0e-12): [G-2] 1/2 {gamma^mu, gamma^nu} = g^{mu nu} for the curved Dirac matrices gamma^mu = e_a^mu gamma^a
-PASS YG-1b   deviation 1.110e-15 (tolerance 1.0e-12): [G-3b] N_LG(sigma^mu, sigma^nu) = g^{mu nu}, sigma^mu = e_a^mu sigma_a
-PASS YG-2a   deviation 3.549e-14 (tolerance 1.0e-09): [G-5] the spin connection from the anholonomy of the tetrad (no Christoffel symbols) equals that of the tetrad postulate with the Christoffel symbols
-PASS YG-2b   deviation 6.861e-14 (tolerance 1.0e-09): [G-6] d_mu gamma^nu + Gamma^nu_{mu la} gamma^la + [Omega_mu, gamma^nu] = 0
-PASS YG-3a   deviation 4.662e-12 (tolerance 1.0e-09): [G-8a] d_mu Omega_nu - d_nu Omega_mu + [Omega_mu, Omega_nu] = 1/4 R_{ab mu nu} gamma^{ab} with the Riemann tensor of the metric (nested differences; relative)
-PASS YG-3b   [G-8b] Lord's printed 1/2 R gamma is twice the spinor curvature [smallest relative deviation 1.0000 (1 for a factor 2)]
-PASS YG-4    deviation 3.978e-13 (tolerance 1.0e-09): [G-10a] Dslash Dslash Psi = Box Psi - R/4 Psi + i/2 gamma^{mu nu} (g^v W_{mu nu} + g^F B_{mu nu}) Psi in a curved space-time with non-abelian gauge fields (nested differences; relative)
-PASS YG-5    deviation 4.121e-13 (tolerance 1.0e-09): [G-12c] nabla_mu j^{F,mu} = i (E-bar Psi - Psi-bar E) for random Psi (relative)
-PASS YG-6a   deviation 5.975e-12 (tolerance 1.0e-09): [G-13a] local solutions of the Dirac equation (all 40 unknown Taylor coefficients solved at once; residual relative to the field)
-PASS YG-6b   deviation 1.265e-12 (tolerance 1.0e-09): [G-13b] nabla_mu T^{mu nu} = g^v W^iota nu_la j^{iota la} + g^F B^nu_la j^{F la} (relative)
-PASS YG-6c   deviation 9.899e-14 (tolerance 1.0e-09): [G-13c] g^{mu nu} T_{mu nu} = m_LL Psi-bar Psi (relative)
-PASS YG-7a   deviation 2.251e-13 (tolerance 1.0e-09): [G-15a] in g = Omega^2 eta with a random local frame, Omega^{-3/2} S Psi_flat (Volkov, massless) solves the massless Dirac equation with the zeugon wave (relative residual)
-PASS YG-7b   deviation 4.649e-12 (tolerance 1.0e-09): [G-15c] nabla_mu T^{mu nu} = the force of the zeugon (relative)
-PASS YG-7c   deviation 1.586e-13 (tolerance 1.0e-09): [G-15d] T is traceless (relative)
-PASS YG-8a   deviation 2.802e-16 (tolerance 1.0e-09): [G-17a] C Psi = (gamma^0 (x) 1_2)(K^3)^dag Psi^* anticommutes with i Dslash in a curved space-time with the zeugon (relative)
-PASS YG-8b   deviation 0.000e+00 (tolerance 1.0e-14): [G-17c] C^2 = -1
-PASS YG-8c   deviation 1.111e-11 (tolerance 1.0e-09): [G-17e] local solutions of i Dslash Psi = M Psi + D C Psi (the antilinear equations solved for the real and imaginary parts; residual relative to the field)
-PASS YG-8d   deviation 4.740e-11 (tolerance 1.0e-08): [G-17f] (i Dslash)^2 Psi = (M^2 + |D|^2) Psi for them, E_gap = 0.3663906649 (relative)
-PASS YG-9    deviation 1.405e-13 (tolerance 1.0e-09): [G-11d] the spin connection of the rotated tetrad Lambda e equals S4 Omega S4^{-1} - (d S4) S4^{-1} (the law of GEE, Lord's corrected (5.5))
+A point at which the coefficients of a linear differential equation have a simple pole is a **regular singular point**.
+Near it, $r=r_0$, the solutions behave as powers $(r-r_0)^{\varsigma}$ times functions that are smooth at $r_0$, and the possible
+powers, the **exponents** $\varsigma_{\rm LG}$, are the eigenvalues of the *residue matrix*, the limit of $(r-r_0)$ times the matrix of
+the coefficients (this is the method of Frobenius). The horizon $r=2$ is a regular singular point of (18.5), and the exponents
+there are
+$$\varsigma_{\rm LG}=0\qquad\text{and}\qquad\varsigma_{\rm LG}=4i\omega^{\rm S}_{\rm LG}-\tfrac12\tag{19.1}$$
+(in ordinary units $4i\mathcal M_{\rm LG}\omega^{\rm S}_{\rm LG}-\tfrac12$; checks YS-4 and WS-4, by the limit of the residue matrix).
 
-Notes:
-  4 random points per check; finite differences of eighth order with the step 1e-2 (nested for second derivatives), so that identities hold to about 1e-12 relative; tolerances 1e-9
+* The exponent 0 belongs to a solution that is *analytic* at the horizon: a power series in $r-2$ that converges for
+  $\lvert r-2\rvert<2$, out to the next singular point $r=0$. It is the same function on both sides of the horizon. It is the wave
+  that falls in: the freely falling observer sees nothing special at the horizon, and neither does this solution. The
+  program computes the series to order 90; it satisfies (18.5) on both sides of the horizon to $3.3\times10^{-15}$ (relative; LS-4),
+  and it agrees with the solution that CVODE integrates from it to $1.5\times10^{-12}$ (LS-5).
+* The exponent $4i\omega^{\rm S}_{\rm LG}-\tfrac12$ belongs to a solution that behaves as
+  $(r-2)^{4i\omega^{\rm S}_{\rm LG}-1/2}=(r-2)^{-1/2}e^{4i\omega^{\rm S}_{\rm LG}\ln(r-2)}$ for a real frequency: its modulus grows without bound
+  and its phase turns infinitely often as $r\to2$. It is the wave that would come out of the horizon, which no physical
+  solution contains. (Check LS-4b: a solution that is not analytic, integrated toward the horizon, has the modulus
+  $\lvert\mathcal P_{\rm LG}\rvert\propto(r-2)^{-1/2}$.)
 
-VERDICT: ALL PASS (19 of 19)
-```
+The *boundary condition at the horizon* of every solution below is therefore: the solution is analytic there.
 
-**The report of the Wolfram script** (`data/hck_lg_curved_checks_wolfram.txt`):
+## 19.2 Inside the horizon
 
-```
-lg_curved.wls: the exact checks of Part III of lord_gravity.md, the gravitational coupling of the brochon (Revision_Lord_Gravity, PROJECT spacetimes)
-Each line: PASS or FAIL, the identifier of the check in this script (WG and a number), the statement and, in brackets, the
-facts that decide it.  Exact arithmetic: symbolic metrics, tetrads and fields, every identity simplified to zero.
+Inside the horizon the radius decreases along the path of every particle, as along the path of the observer who falls,
+and the solution that fell in is carried to $r=0$, where the curvature diverges (the Kretschmann invariant is
+$48\mathcal M_{\rm LG}^2/r^6$, Section 14.3). The point $r=0$ is again a regular singular point of (18.5), with the residue
+matrix $\tfrac14$ times the unit matrix (YS-4, WS-4): both radial functions behave as $r^{1/4}$, and the spinor (18.3), which
+has the factor $r^{-1}$, grows as $r^{-3/4}$. The program follows the solution that fell in from $r=1.5$ down to
+$r=1.5\times10^{-12}$ and finds $r\mathcal P_{\rm LG}'/\mathcal P_{\rm LG}$ and $r\mathcal Q_{\rm LG}'/\mathcal Q_{\rm LG}$ equal to $\tfrac14$ up to
+corrections of the order $(r/2)^{1/2}$ (LS-6; the Python program to $r=10^{-10}$, YS-8).
 
-PASS WG-1     (Rust G-4 to G-9; Python YG-2, YG-3) Schwarzschild, f = 1 - 2M/r, coframe e^0 = f^{1/2} dt, e^1 = f^{-1/2} dr, e^2 = r dth, e^3 = r sin(th) dph: Ricci tensor zero; Kretschmann invariant 48 M^2/r^6; Omega_t = M/(2 r^2) gamma^0 gamma^1, Omega_r = 0, Omega_th = 1/2 f^{1/2} gamma^1 gamma^2, Omega_ph = 1/2 (f^{1/2} sin(th) gamma^1 gamma^3 + cos(th) gamma^2 gamma^3); d_mu gamma^nu + Gamma^nu_{mu la} gamma^la + [Omega_mu, gamma^nu] = 0; spinor curvature = 1/4 R_{ab mu nu} gamma^{ab} (for every static, spherically symmetric tetrad diag(h(r), 1/h(r), r, r sin th) with a symbolic function h) [Ricci 0 True, Kretschmann True, Omega True, nabla gamma True, curvature True]
-PASS WG-2     (Rust G-4 to G-9; Python YG-2, YG-3) Painleve-Gullstrand, v = (2M/r)^{1/2}, coframe e^0 = dT, e^1 = dr + v dT, e^2 = r dth, e^3 = r sin(th) dph (the frame of the observers falling freely from rest at infinity): the metric is Schwarzschild's under T = t + int v/f dr; Ricci zero; Omega_T = M/(2 r^2) gamma^0 gamma^1, Omega_r = v/(4 r) gamma^0 gamma^1, Omega_th = 1/2 (-v gamma^0 gamma^2 + gamma^1 gamma^2), Omega_ph = 1/2 (-v sin(th) gamma^0 gamma^3 + sin(th) gamma^1 gamma^3 + cos(th) gamma^2 gamma^3); nabla gamma = 0; spinor curvature = 1/4 R gamma; the frame, the Christoffel symbols and Omega are finite at r = 2M, where g_TT = 0 [pull-back True, Ricci 0 True, Omega True, nabla gamma True, curvature True, regular at 2M True]
-PASS WG-3     Vaidya, ingoing: ds^2 = (1 - 2M(v)/r) dv^2 - 2 dv dr - r^2 dOmega^2: G_{mu nu} = 8 pi rho l_mu l_nu with l = dv and rho = M'(v)/(4 pi r^2) (null dust falling in), R = 0; outgoing: ds^2 = (1 - 2M(u)/r) du^2 + 2 du dr - r^2 dOmega^2: G_{mu nu} = 8 pi rho k_mu k_nu with k = du and rho = -M'(u)/(4 pi r^2) (null dust radiated, positive for M' < 0), R = 0 [ingoing True, outgoing True]
-PASS WG-4     (Rust G-10, G-15; Python YG-4, YG-7) g = Omega^2 eta with Omega = exp(phi(x)), phi a symbolic function, coframe Omega delta, spinor of four symbolic functions: Dslash (Omega^{-3/2} psi) = Omega^{-5/2} dslash psi (the massless brochon is conformally invariant); Dslash Dslash psi = Box psi - R/4 psi (Lichnerowicz), not Box psi - R/2 psi (Lord's printed coefficient); R is not zero [conformal True, -R/4 True, -R/2 fails True, R != 0 True]
-PASS WG-5     (Rust G-13; Python YG-6) the energy-momentum tensor of the brochon from the variation of the action e [i/2 (psi-bar gamma^mu nabla_mu psi - (nabla_mu psi)-bar gamma^mu psi) - m psi-bar psi] with respect to the tetrad, at first order about flat space-time (e_a^mu = delta + eps h_{a mu}, sixteen symbolic functions h; symbolic psi and psi-bar): the symmetric part of Theta_{mu nu} = (dS/de_a^mu) eta_{a nu} is exactly T_{mu nu} = i/4 (psi-bar gamma_mu d_nu psi + psi-bar gamma_nu d_mu psi - d_mu psi-bar gamma_nu psi - d_nu psi-bar gamma_mu psi) - eta_{mu nu} L, off shell; the antisymmetric part is not zero off shell and vanishes on a solution (two plane waves of mass 3) [symmetric part = T True, solution True, antisymmetric part 0 on shell True, and not off shell True]
-PASS WG-6     (Rust G-17; Python YG-8) the pairing term of the polar superfluid, C psi = P conj(psi) with P = (gamma^0 (x) 1_2)(K^3_LL)^dag, K^3_LL = C_LL gamma^ch_LL (x) E_LL tau_3: P conj(gamma^a) = gamma^a P (so C anticommutes with i gamma^mu, real tetrad), P conj(P) = -1 (C^2 = -1), P conj(Omega) = Omega P for every Omega = 1/4 w_{ab} gamma^{ab} of the Lorentz algebra (w real symbols), and P conj(i t) = i t P for the generator t = T^3 of the zeugon but not for T^1, T^2 or the fermion number [gamma True, C^2 = -1 True, Lorentz True, T^3 True, not T^1 True, not T^2 True, not F True]
+![](figures/fig_lg_schw_interior.png){width=92%}
 
-Notes:
-  Wolfram Language 15.0.1; run time 0.7 s
+**Figure IV.1.** The two radial functions of a wave that falls into the black hole, on both sides of the horizon:
+$\lvert\mathcal P_{\rm LG}\rvert$ and $\lvert\mathcal Q_{\rm LG}\rvert$ for the frequency $\omega^{\rm S}_{\rm LG}=0.7$, the mass $m_{\rm LL}=0.3$
+(units of $1/\mathcal M_{\rm LG}$, so $y_{\rm LG}=0.3$) and $\lambda_{\rm LG}=1$, normalized by $\mathcal Q_{\rm LG}(2)=1$, on logarithmic axes from
+$r=1.5\times10^{-12}$ to $r=2500$. The wave passes the horizon $r=2$ smoothly; inside, both functions fall as $r^{1/4}$ (the grey
+line has the slope $\tfrac14$); far outside, where the frequency exceeds the mass, the solution is a travelling wave and its
+moduli vary only slowly. (Data `data/lg_schw_interior.csv` of the program `lg_schw`; figure drawn by
+`python/lg_schw_figures.py`.)
 
-VERDICT: ALL PASS (6 of 6)
-```
+## 19.3 The radial current
 
-**The programs of the worked examples.** The examples of Sections 2.4, 11.1, 16.1 and of Appendix B (Lord's change of
-representation by a boost and its frame, a set of four Hermitian matrices that is not a representation, the plane wave of the
-brochon with its current and its energy-momentum tensor, and the quasi-particles and the gap equation of the polar ground
-state) are computed and checked by three programs, each independently of the others:
+The Dirac equation conserves the current $j^{{\rm F},\mu}_{\rm SF}=\bar\Psi\gamma^\mu_{\rm LG}\Psi$ of the brochon (15.6). For a partial wave of
+real frequency the flux of this current *into* the sphere of radius $r$ is
+$$J_{\rm LG}\int\!\!\int\big(\lvert\alpha_{\rm LG}\rvert^2+\lvert\beta_{\rm LG}\rvert^2\big)\,d\theta\,d\varphi,\qquad J_{\rm LG}=(1+w_{\rm LG})\,\lvert\mathcal Q_{\rm LG}\rvert^2-(1-w_{\rm LG})\,\lvert\mathcal P_{\rm LG}\rvert^2\tag{19.2}$$
+(check YS-14: the volume element times the radial component of the current is $-J_{\rm LG}(\lvert\alpha_{\rm LG}\rvert^2+\lvert\beta_{\rm LG}\rvert^2)$
+at every point). Since the angular functions do not depend on $r$, conservation means that $J_{\rm LG}$ is the same at every
+radius, inside the horizon as outside: exactly by computer algebra (YS-5, WS-5), and to $1.0\times10^{-9}$ (relative) along the
+computed solution of Figure IV.1 from $r=2500$ down to $r=1.5\times10^{-12}$ (LS-7). At the horizon $J_{\rm LG}=2\lvert\mathcal Q_{\rm LG}(2)\rvert^2$,
+which is positive: the solution analytic at the horizon carries the current inward, as the wave that falls in must. What
+flows in at the horizon arrives at the centre.
 
-* the Rust program `lg_worked` (`rust/lgworked/src/main.rs`): VERDICT: ALL PASS (30 of 30). The rational examples are dyadic fractions,
-  which double precision represents exactly; it computes them with the functions of the library `rust/lgcore` that the other
-  programs use (the plane wave with the functions of Part III for the Dirac operator, the current and the energy-momentum
-  tensor), prints them as exact fractions into `data/lg_worked_values.csv`, and checks that no printed value is rounded (LW-0);
-  the quasi-particles with the printed Dirac mass and pair amplitude of Appendix B.5, read from the fragment file
-  `provenance/generated/lg_examples.md`;
-* the Python program `python/lg_worked.py`: VERDICT: ALL PASS (28 of 28); it writes every matrix again, computes the rational examples
-  in exact arithmetic (sympy), the energy-momentum tensor of the plane wave from the formula (16.2) with symbolic coordinates, the
-  eigenvalues of the Bogoliubov-de Gennes matrix with numpy, and the integral of the gap equation with mpmath;
-* the Wolfram script `wolfram/source/lg_worked.wls`: VERDICT: ALL PASS (5 of 5), symbolically, including the square of the
-  Bogoliubov-de Gennes matrix for symbolic momentum, Dirac mass and pair amplitude.
+# 20. The quasi-bound states
 
-To reproduce, from the folder `Revision_Lord_Gravity`:
+*In words.* A hydrogen atom has bound states of real energy. Around a black hole the bound states leak: the part of the wave
+near the horizon falls in. Such a state is a *quasi-bound state*. It exists only at a complex frequency, whose real part is
+the energy of the level and whose imaginary part, which is negative, is the rate at which the black hole absorbs the
+particle. For small $y_{\rm LG}$ the levels approach those of a hydrogen atom, and the decay is very slow.
 
-```bash
-cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
-python3 code/scripts/write_lg_examples_fragments.py               # the numbers of the appendices (read by lg_worked)
-(cd rust && cargo build --release && ./target/release/lg_worked) # data/hck_lg_worked_checks.txt, lg_worked_values.csv
-python3 python/lg_worked.py                                       # data/hck_lg_worked_checks_python.txt
-wolframscript -file wolfram/source/lg_worked.wls provenance/generated/lg_examples.md data/hck_lg_worked_checks_wolfram.txt
-python3 code/scripts/write_lg_worked_fragments.py                # the fragments of the worked examples
-```
+## 20.1 What is computed, and how
 
-**The report of the Rust program** (`data/hck_lg_worked_checks.txt`):
+A **quasi-bound state** is a solution of (18.5) that is analytic at the horizon (the exponent 0 of (19.1)) and decays at
+large $r$. Such solutions exist only for discrete complex frequencies $\omega^{\rm S}_{\rm LG}$, with
+${\rm Re}\,\omega^{\rm S}_{\rm LG}<m_{\rm LL}$ (a bound state) and ${\rm Im}\,\omega^{\rm S}_{\rm LG}<0$; the amplitude decays in time as
+$e^{-\lvert{\rm Im}\,\omega^{\rm S}_{\rm LG}\rvert\tau_{\rm LG}}$ and the probability, the square of the amplitude, twice as fast.
 
-```
-lg_worked: the worked examples of the manuscript lord_gravity (Revision_Lord_Gravity, PROJECT spacetimes); hbar = c = 1
-Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
-statement that is true or false, the facts that decide it), and the statement that is checked.
+For a trial frequency the program computes two solutions: the one that falls in, from the power series at the horizon,
+integrated outward by CVODE; and the one that decays at large $r$, started at the radius
+$45/{\rm Re}\,\big(m_{\rm LL}^2-(\omega^{\rm S}_{\rm LG})^2\big)^{1/2}$, about 45 decay lengths of the bound state, where the coefficients of
+(18.5) change slowly and the decaying solution starts along the eigenvector of the matrix of the coefficients that belongs
+to the decaying eigenvalue, and integrated inward. It compares them at the radius $r=n^2/y_{\rm LG}^2$ of the orbit of the hydrogen-like state by their normalized
+**Wronskian**, the determinant of the two solution vectors $(\mathcal P_{\rm LG},\mathcal Q_{\rm LG})$ divided by their lengths, which
+vanishes exactly when the two are multiples of each other, that is, when one solution both falls in and decays. A complex
+secant iteration (Newton's method with the derivative replaced by a difference quotient) finds the zeros. Each state is found
+first at $y_{\rm LG}=0.05$, starting from its hydrogen level, and is then followed to $y_{\rm LG}=0.4$ in steps of 0.05, each start
+extrapolated from the previous roots (LS-8a: 48 roots, all with ${\rm Re}\,\omega^{\rm S}_{\rm LG}<m_{\rm LL}$ and, where it exceeds the
+resolution $10^{-12}m_{\rm LL}$ of the computation, ${\rm Im}\,\omega^{\rm S}_{\rm LG}<0$; a starting radius 1.3 times larger changes no
+frequency by more than $4.3\times10^{-14}$, LS-8b). The Python program finds the states at $y_{\rm LG}=0.3$ again with its own
+start and Muller's method of finding roots, to $1.7\times10^{-14}$ of $m_{\rm LL}$ (YS-6), and the Wolfram script three of them in
+arithmetic of 32 digits, to $7.3\times10^{-14}$ (WS-7).
 
-PASS LW-1a   deviation 0.000e0 (tolerance 0.0e0): Lord's change of representation by S = M_LL(gtilde) of the boost g = (5/4) e_0 + (3/4) i e_3: S = diag(1/2, 2) = (M_LL(g)^dag)^{-1}, and the four matrices sigma'_mu = S sigma_mu S^dag are diag(1/4, 4), sigma_1, sigma_2, diag(1/4, -4) (largest deviation of an entry)
-PASS LW-1b   deviation 0.000e0 (tolerance 0.0e0): the four matrices sigma'_mu are Hermitian
-PASS LW-1c   deviation 0.000e0 (tolerance 0.0e0): their bars (the adjugates (1.1), Lord's definition -eps X^T eps) are (S^dag)^{-1} bar(sigma_mu) S^{-1}
-PASS LW-1d   deviation 0.000e0 (tolerance 0.0e0): their polarized determinants (2.7) are N_LG(sigma'_a, sigma'_b) = eta_ab
-PASS LW-2a   deviation 0.000e0 (tolerance 0.0e0): its 4 x 4 form S4 = diag(S, (S^dag)^{-1}) = diag(1/2, 2, 2, 1/2) is the spinor matrix S_LL(g) of (9.3), and diag(S^{-1}, S^dag) is its inverse
-PASS LW-2b   deviation 0.000e0 (tolerance 0.0e0): Lord's Dirac matrices of the new set, gamma'^a = ((0, sigma'_a), (bar sigma'_a, 0)) (his (4.5)), equal S4 gamma^a S4^{-1}
-PASS LW-2c   deviation 0.000e0 (tolerance 0.0e0): they obey the Clifford relation (1/2){gamma'^a, gamma'^b} = eta^{ab} 1_4
-PASS LW-2d   deviation 0.000e0 (tolerance 0.0e0): the Lorentz matrix (9.2) of the boost is L = ((17/8, 0, 0, 15/8), (0, 1, 0, 0), (0, 0, 1, 0), (15/8, 0, 0, 17/8)), and L^{-1} is the boost with -15/8 in place of 15/8
-PASS LW-2e   deviation 0.000e0 (tolerance 0.0e0): gamma'^a = sum_b (L^{-1})_{ab} gamma^b: gamma'^0 = (17/8) gamma^0 - (15/8) gamma^3 and gamma'^3 = -(15/8) gamma^0 + (17/8) gamma^3 (a change of representation by S4 is the Lorentz transformation L^{-1} of the Dirac matrices)
-PASS LW-2f   deviation 0.000e0 (tolerance 0.0e0): (9.3) for the boost: S_LL(g)^{-1} gamma^p S_LL(g) = sum_p' L_{pp'} gamma^p', with S_LL(g)^{-1} = diag(M^dag, M^{-1}) (the product S_LL(g) S_LL(g)^{-1} deviates from 1 by the second number)
-PASS LW-3a   deviation 0.000e0 (tolerance 0.0e0): the four Hermitian bi-quaternions f'_a with M_LL(f'_a) = sigma'_a are the points (17/8, 0, 0, -15/8), (0, 1, 0, 0), (0, 0, 1, 0), (-15/8, 0, 0, 17/8) of M31
-PASS LW-3b   deviation 0.000e0 (tolerance 0.0e0): their polarized norms are N_LL(f'_a, f'_b) = eta_ab: an orthonormal frame of M31
-PASS LW-3c   deviation 0.000e0 (tolerance 1.0e-16): f'_0 is the four-velocity of an observer who moves with the velocity -15/17 along x^3 (x^3/x^0 of f'_0)
-PASS LW-4a   deviation 0.000e0 (tolerance 0.0e0): the set sigma'' = (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2) consists of Hermitian matrices with real coefficients in the basis sigma_mu
-PASS LW-4b   deviation 0.000e0 (tolerance 0.0e0): the four are linearly independent: the determinant of the 4 x 4 matrix of their coefficients is 1
-PASS LW-4c   deviation 0.000e0 (tolerance 0.0e0): but N_LG(sigma''_0, sigma''_3) = 1/2 instead of eta_03 = 0
-PASS LW-4d   deviation 0.000e0 (tolerance 0.0e0): and the anticommutator (1/2){gamma''^0, gamma''^3} of Lord's Dirac matrices of the set is (1/2) 1_4 instead of 0: the Clifford relation fails
-PASS LW-5a   deviation 0.000e0 (tolerance 0.0e0): the spinor of Appendix A.5: S_LL(g)(1, 0, 1, 0) = (1/2, 0, 2, 0) for the boost g
-PASS LW-5b   deviation 0.000e0 (tolerance 0.0e0): it is a plane-wave spinor of mass 1 and momentum p = (17/8, 0, 0, 15/8): (gamma^mu p_mu - m) u = 0 exactly
-PASS LW-5c   deviation 1.616e-16 (tolerance 1.0e-14): at 12 random points the brochon Psi = (u (x) (1, 0)) e^{-i p.x} solves the free field equation in flat space-time (library function dirac_resid of Part III; canonical tetrad, no gauge fields; relative residual of the values and first derivatives)
-PASS LW-5d   deviation 8.882e-16 (tolerance 1.0e-13): its fermion-number current (library function currents) is j^mu = (17/4, 0, 0, 15/4) = 2 p^mu at every point
-PASS LW-5e   deviation 1.554e-15 (tolerance 1.0e-13): its Lagrangian density (15.3) (library function lagr8) vanishes
-PASS LW-5f   deviation 1.776e-15 (tolerance 1.0e-13): its energy-momentum tensor (16.2) (library function stress8, indices raised) is T^{mu nu} = 2 p^mu p^nu: T^00 = 289/32, T^03 = 255/32, T^33 = 225/32, the other components 0
-PASS LW-5g   deviation 5.329e-15 (tolerance 1.0e-13): its trace eta_{mu nu} T^{mu nu} equals m Psi-bar Psi = 2
-PASS LW-6a   deviation 1.776e-15 (tolerance 1.0e-13): with the printed M = M^{CJT,D}_SF and |D| = |D^CJT_SF|, the 16 x 16 Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy |D| (K^3_LL)^dag has the eigenvalues -E(q) and +E(q) eight times each, E(q) = (|q|^2 + M^2 + |D|^2)^{1/2}, at the momenta (0, 0, 0), (0, 0, 0.3), (0.3, -0.4, 0.5), (0, 0, 1), (0.6, 0.1, -0.7) (largest deviation of an eigenvalue)
-PASS LW-6b   deviation 9.446e-11 (tolerance 2.0e-10): E(0) = (M^2 + |D|^2)^{1/2} equals the printed gap E^{CJT,gap}_SF (relative; the printed numbers have ten digits)
-PASS LW-7a   deviation 5.551e-17 (tolerance 1.0e-14): the integral I^(1)(M) = int_0^1 q^2 dq/(q^2 + M^2)^{1/2} of (A.19): its closed form equals the Gauss-Legendre rule of 64 points at M = E^{CJT,gap}_SF and at M = m_LL = 0.2
-PASS LW-7b   deviation 4.333e-12 (tolerance 1.0e-8): the gap equation of the polar state: g^{CJT,P}_SF I^(1)(E^{CJT,gap}_SF)/pi^2 = 1 with g^{CJT,P}_SF = 23.7 and the printed gap (the printed numbers have ten digits)
-PASS LW-7c   deviation 2.091e-10 (tolerance 1.0e-9): pi^2/I^(1)(m_LL) for m_LL = 0.2 equals the printed critical coupling G^crit_LL (relative)
-PASS LW-0    every value printed as exact (LW-1 to LW-5) is an exact dyadic fraction (no rounding) [0 values not exact]
+## 20.2 The levels
 
-VERDICT: ALL PASS (30 of 30)
-```
+For small $y_{\rm LG}$ the levels approach those of a hydrogen atom with the coupling $y_{\rm LG}$,
+$$\frac{{\rm Re}\,\omega^{\rm S}_{\rm LG}}{m_{\rm LL}}\approx1-\frac{y_{\rm LG}^2}{2n_{\rm LG}^2},\tag{20.1}$$
+the rest energy minus the binding energy $m_{\rm LL}y_{\rm LG}^2/(2n_{\rm LG}^2)$; the attraction of the black hole is Newton's
+$-G_{\rm N}M_{\rm LG}m_{\rm LL}/r$ far from it, which is the Coulomb potential of the hydrogen atom with $y_{\rm LG}$ in the place of the
+fine-structure constant. At $y_{\rm LG}=0.05$ every computed level lies within $2.75$$\,y_{\rm LG}^4\,m_{\rm LL}$ of (20.1) (LS-8c).
+Table IV.1 gives the six states at two masses.
 
-**The report of the Python program** (`data/hck_lg_worked_checks_python.txt`):
+**Table IV.1.** The frequencies $\omega^{\rm S}_{\rm LG}/m_{\rm LL}$ of the six quasi-bound states at $y_{\rm LG}=0.1$ and $0.3$, and the
+hydrogen-like levels (20.1) (data `data/lg_schw_qbs.csv`). The asterisk marks an imaginary part below the resolution
+$10^{-12}$ of the computation.
 
-```
-lg_worked.py: the worked examples of the manuscript lord_gravity, a second computation (exact where rational; Revision_Lord_Gravity, PROJECT spacetimes)
-Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
-the measured deviation and its tolerance (or the facts that decide it), and the statement.
+| state | $\lambda_{\rm LG}$ | $\omega^{\rm S}_{\rm LG}/m_{\rm LL}$ at $y_{\rm LG}=0.1$ | hydrogen | $\omega^{\rm S}_{\rm LG}/m_{\rm LL}$ at $y_{\rm LG}=0.3$ | hydrogen |
+|:---|:---:|:---|:---|:---|:---|
+| $1S_{1/2}$ | $+1$ | $0.9946882775-2.79\times10^{-5}\,i$ | $0.9950$ | $0.9454639375-0.0296\,i$ | $0.9550$ |
+| $2S_{1/2}$ | $+1$ | $0.9986985113-3.50\times10^{-6}\,i$ | $0.9988$ | $0.9861973324-4.54\times10^{-3}\,i$ | $0.9888$ |
+| $2P_{1/2}$ | $-1$ | $0.9987296936-5.80\times10^{-9}\,i$ | $0.9988$ | $0.9861834925-4.08\times10^{-4}\,i$ | $0.9888$ |
+| $2P_{3/2}$ | $+2$ | $0.9987396568-6.03\times10^{-12}\,i$ | $0.9988$ | $0.9877468037-3.30\times10^{-6}\,i$ | $0.9888$ |
+| $3P_{3/2}$ | $+2$ | $0.9994402017-2.13\times10^{-12}\,i$ | $0.9994$ | $0.9945885005-1.30\times10^{-6}\,i$ | $0.9950$ |
+| $3D_{3/2}$ | $-2$ | $0.9994417316^{\,*}$ | $0.9994$ | $0.9947595601-3.29\times10^{-9}\,i$ | $0.9950$ |
 
-PASS YW-1a   deviation 0.000e+00 (tolerance 0.0e+00): S = M_LL(gtilde) = diag(1/2, 2) = (M_LL(g)^dag)^{-1}, sigma'_mu = S sigma_mu S^dag = diag(1/4, 4), sigma_1, sigma_2, diag(1/4, -4) (exact)
-PASS YW-1b   deviation 0.000e+00 (tolerance 0.0e+00): the sigma'_mu are Hermitian (exact)
-PASS YW-1c   deviation 0.000e+00 (tolerance 0.0e+00): their bars are (S^dag)^{-1} bar(sigma_mu) S^{-1} (exact)
-PASS YW-1d   deviation 0.000e+00 (tolerance 0.0e+00): N_LG(sigma'_a, sigma'_b) = eta_ab (exact)
-PASS YW-2a   deviation 0.000e+00 (tolerance 0.0e+00): S4 = diag(S, (S^dag)^{-1}) = diag(1/2, 2, 2, 1/2) = S_LL(g) (exact)
-PASS YW-2b   deviation 0.000e+00 (tolerance 0.0e+00): gamma'^a = ((0, sigma'_a), (bar sigma'_a, 0)) = S4 gamma^a S4^{-1} (exact)
-PASS YW-2c   deviation 0.000e+00 (tolerance 0.0e+00): the Clifford relation (1/2){gamma'^a, gamma'^b} = eta^{ab} 1_4 (exact)
-PASS YW-2d   deviation 0.000e+00 (tolerance 0.0e+00): the Lorentz matrix of the boost is ((17/8, 0, 0, 15/8), (0, 1, 0, 0), (0, 0, 1, 0), (15/8, 0, 0, 17/8)), and its inverse has -15/8 in place of 15/8 (exact)
-PASS YW-2e   deviation 0.000e+00 (tolerance 0.0e+00): gamma'^a = sum_b (L^{-1})_{ab} gamma^b (exact)
-PASS YW-2f   deviation 0.000e+00 (tolerance 0.0e+00): (9.3): S_LL(g)^{-1} gamma^p S_LL(g) = sum_q L_pq gamma^q (exact)
-PASS YW-3a   deviation 0.000e+00 (tolerance 0.0e+00): the points f'_a of M31 with M_LL(f'_a) = sigma'_a are (17/8, 0, 0, -15/8), (0, 1, 0, 0), (0, 0, 1, 0), (-15/8, 0, 0, 17/8) (exact)
-PASS YW-3b   deviation 0.000e+00 (tolerance 0.0e+00): they are orthonormal: their Minkowski products are eta_ab (exact)
-PASS YW-3c   deviation 0.000e+00 (tolerance 0.0e+00): the velocity x^3/x^0 of f'_0 is -15/17 (exact)
-PASS YW-4a   deviation 0.000e+00 (tolerance 0.0e+00): the set (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2) is Hermitian with real coefficients (exact)
-PASS YW-4b   deviation 0.000e+00 (tolerance 0.0e+00): the determinant of the matrix of their coefficients is 1: they are linearly independent (exact)
-PASS YW-4c   deviation 0.000e+00 (tolerance 0.0e+00): N_LG(sigma''_0, sigma''_3) = 1/2 (exact)
-PASS YW-4d   deviation 0.000e+00 (tolerance 0.0e+00): (1/2){gamma''^0, gamma''^3} = (1/2) 1_4: the Clifford relation fails (exact)
-PASS YW-5a   deviation 0.000e+00 (tolerance 0.0e+00): u = S_LL(g)(1, 0, 1, 0) = (1/2, 0, 2, 0) (exact)
-PASS YW-5b   deviation 0.000e+00 (tolerance 0.0e+00): Psi = (u (x) (1, 0)) e^{-i p.x} solves i gamma^mu d_mu Psi = m Psi (symbolic coordinates)
-PASS YW-5c   deviation 0.000e+00 (tolerance 0.0e+00): the current j^mu = Psi-bar gamma^mu Psi = (17/4, 0, 0, 15/4) = 2 p^mu (exact)
-PASS YW-5d   deviation 0.000e+00 (tolerance 0.0e+00): the Lagrangian density (15.3) of the plane wave vanishes (exact)
-PASS YW-5e   deviation 0.000e+00 (tolerance 0.0e+00): its energy-momentum tensor (16.2), with lower indices, is T_{mu nu} = 2 p_mu p_nu (T_00 = 289/32, T_03 = -255/32, T_33 = 225/32; exact)
-PASS YW-5f   deviation 0.000e+00 (tolerance 0.0e+00): its trace eta^{mu nu} T_{mu nu} = m Psi-bar Psi = 2 (exact)
-PASS YW-6a   deviation 9.992e-16 (tolerance 1.0e-13): the eigenvalues of the 16 x 16 Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy |D| (K^3)^dag are -E(q) and +E(q) eight times each, E(q) = (|q|^2 + M^2 + |D|^2)^{1/2} (five momenta, numpy.linalg.eigvalsh)
-PASS YW-6b   deviation 9.446e-11 (tolerance 2.0e-10): E(0) = (M^2 + |D|^2)^{1/2} is the printed gap (relative)
-PASS YW-7a   deviation 4.930e-32 (tolerance 1.0e-25): the closed form (A.19) of I^(1) equals mpmath.quad (30 digits) at M = E_gap and at M = 0.2
-PASS YW-7b   deviation 4.334e-12 (tolerance 1.0e-08): the gap equation 23.7 I^(1)(E_gap)/pi^2 = 1 with the printed gap
-PASS YW-7c   deviation 2.091e-10 (tolerance 1.0e-09): pi^2/I^(1)(0.2) equals the printed critical coupling G^crit_LL (relative)
+**Example: the state $1S_{1/2}$ at $y_{\rm LG}=0.1$.** Its frequency is $0.9946882775-2.79\times10^{-5}\,i$ times $m_{\rm LL}$. The level lies
+$0.0053$ $m_{\rm LL}$ below the rest energy, close to the hydrogen value $y_{\rm LG}^2/2=0.005$ of (20.1). The amplitude decays by
+the factor $e$ in the time $1/\lvert{\rm Im}\,\omega^{\rm S}_{\rm LG}\rvert$ = $3.59\times10^{5}$ $G_{\rm N}M_{\rm LG}/c^3$, which is
+$5.7\times10^{3}$ periods of the oscillation $e^{-i{\rm Re}\,\omega\,\tau}$: the state is long-lived on the scale of its own
+oscillation. At $y_{\rm LG}=0.4$ the frequency of $1S_{1/2}$ is $0.930061-0.0701\,i$, far from the hydrogen value $0.9200$: the
+particle then spends much of its time near the horizon and is absorbed within a few periods.
 
-Notes:
-  pi^2/I^(1)(0.2) = 21.2866097555497; E(0.3) = 0.473542098816
+## 20.3 The decay rate from the charge
 
-VERDICT: ALL PASS (28 of 28)
-```
+For a complex frequency the current $J_{\rm LG}$ of (19.2) is no longer the same at every radius: the radial equations give
+exactly (YS-10, WS-9)
+$$\frac{dJ_{\rm LG}}{dr}=2\,{\rm Im}\,\omega^{\rm S}_{\rm LG}\,\big(\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2\big).\tag{20.2}$$
+In words: the charge between two spheres changes in time only through the fluxes through the two spheres; its density per
+unit of $r$ is $\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2$ times the integral of $\lvert\alpha_{\rm LG}\rvert^2+\lvert\beta_{\rm LG}\rvert^2$
+over the angles, as $J_{\rm LG}$ times that integral is the flux (YS-14). A quasi-bound state decays at
+large $r$, where $J_{\rm LG}$ therefore vanishes, and $J_{\rm LG}=2$ at the horizon for the normalization $\mathcal Q_{\rm LG}(2)=1$.
+Integrating (20.2) from the horizon to infinity gives
+$${\rm Im}\,\omega^{\rm S}_{\rm LG}=-\frac1{\mathcal N^{\rm S}_{\rm LG}},\qquad\mathcal N^{\rm S}_{\rm LG}=\int_2^\infty\big(\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2\big)\,dr:\tag{20.3}$$
+the charge outside the horizon decreases at the rate $2\lvert{\rm Im}\,\omega^{\rm S}_{\rm LG}\rvert$, which is the flux into the horizon
+divided by that charge. At the 30 quasi-bound states whose decay rate
+exceeds $10^{-7}m_{\rm LL}$ the two sides of (20.3) agree to $5.5\times10^{-8}$ (relative; LS-10a), and at the others to
+$1.0\times10^{-14}$ of $m_{\rm LL}$ (LS-10b).
 
-**The report of the Wolfram script** (`data/hck_lg_worked_checks_wolfram.txt`):
+Formula (20.3) also gives decay rates that the root finder cannot resolve. Evaluated with the solution at the real frequency
+${\rm Re}\,\omega^{\rm S}_{\rm LG}$, it gives the decay rate with a relative error of the order of the ratio of the decay rate to the
+distance of the neighbouring levels, which is tiny for a slowly decaying state, and without the limit $10^{-12}m_{\rm LL}$ of the
+root finder. At $y_{\rm LG}=0.05$, where both methods work, they agree to $1.3\times10^{-5}$ (relative; LS-13); the Python program
+recomputes the rates at $y_{\rm LG}=0.01$ with its own start and integrals to $9.7\times10^{-11}$ (YS-11).
 
-```
-lg_worked.wls: the exact checks of the worked examples of the manuscript lord_gravity (Revision_Lord_Gravity, PROJECT spacetimes)
-Each line: PASS or FAIL, the identifier of the check in this script (WW and a number), the statement and, in brackets, the
-facts that decide it.
+## 20.4 Small masses: the fine structure and the decay rates
 
-PASS WW-1     (LW-1 to LW-3) the change of representation by S = M_LL(gtilde) of the boost (5/4) e_0 + (3/4) i e_3: S = diag(1/2, 2), the matrices sigma'_mu, their bars and polarized determinants, Lord's Dirac matrices = S4 gamma^a S4^-1 with S4 = S_LL(g), the Clifford relation, the Lorentz matrix L of the boost, gamma'^a = (L^-1)_ab gamma^b, (9.3), and the frame of M31 with the velocity -15/17 (exact) [sigma'_0 = {{1/4, 0}, {0, 4}}, sigma'_3 = {{1/4, 0}, {0, -4}}, L^-1 = {{17/8, 0, 0, -15/8}, {0, 1, 0, 0}, {0, 0, 1, 0}, {-15/8, 0, 0, 17/8}}, f'_0 = {17/8, 0, 0, -15/8}]
-PASS WW-2     (LW-4) the set (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2): Hermitian, linearly independent (the determinant of the coefficients is 1), N_LG(sigma''_0, sigma''_3) = 1/2, (1/2){gamma''^0, gamma''^3} = (1/2) 1_4 (exact) [det 1, N03 1/2]
-PASS WW-3     (LW-5) the plane wave (u (x) (1, 0)) Exp[-i p.x], u = (1/2, 0, 2, 0), p = (17/8, 0, 0, 15/8), m = 1: the free field equation, the current 2 p^mu, the Lagrangian density 0, the energy-momentum tensor (16.2) 2 p_mu p_nu (lower indices) with the trace m Psi-bar Psi = 2 (symbolic coordinates) [j = {17/4, 0, 0, 15/4}, T_00 = 289/32, T_03 = -255/32, T_33 = 225/32]
-PASS WW-4     (LW-6) the Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy D (K^3)^dag, for symbolic real q, M, D: Hermitian, its square is (|q|^2 + M^2 + D^2) 1_16 and its trace is 0, so its eigenvalues are -E(q) and +E(q) eight times each (exact) [H^2 - E^2 1 = 0: True, tr H = 0]
-PASS WW-5     (LW-7) the integral I^(1)(M) of (A.19), computed by Integrate for M > 0, equals its closed form symbolically and as numbers of 40 digits at M = 3/10 and 1/5; with the printed numbers the gap equation 23.7 I^(1)(E_gap)/Pi^2 = 1 and Pi^2/I^(1)(1/5) = G^crit_LL hold to the ten printed digits [Integrate: (Sqrt[1 + mx^2] - mx^2*ArcCoth[Sqrt[1 + mx^2]])/2; symbolic equality: True, numerical equality: True, 23.7 I1(E_gap)/Pi^2 = 0.999999999995666, Pi^2/I1(1/5) = 21.2866097555497]
+For small $y_{\rm LG}$ the levels and the decay rates follow formulas that S. R. Dolan and D. Dempsey derived for a Dirac field
+around a rotating black hole, of which the Schwarzschild black hole is the case without rotation ("Bound states of the Dirac
+equation on Kerr spacetime", arXiv:1504.03190, their equations (94) to (96); the last two after Ternov and co-workers).
+Writing $n$, $\ell$, $j$ for $n_{\rm LG}$, $\ell_{\rm LG}$, $j_{\rm LG}$,
+$$\frac{{\rm Re}\,\omega^{\rm S}_{\rm LG}}{m_{\rm LL}}=1-\frac{y_{\rm LG}^2}{2n^2}+F^{\rm H}_{\rm LG}\,y_{\rm LG}^4+\dots,\qquad F^{\rm H}_{\rm LG}=\frac1{n^4}\Big(\frac{15}8-\frac{3n}{2j+1}-\frac{3n}{2\ell+1}\Big),\tag{20.4}$$
+the gravitational counterpart of the fine structure of the hydrogen atom: the levels of the same $n$ split by $\ell$ and by $j$.
+And
+$$-\frac{{\rm Im}\,\omega^{\rm S}_{\rm LG}}{m_{\rm LL}}=c^{\rm H}_{\rm LG}\,y_{\rm LG}^{2\ell+2j+4},\qquad c^{\rm H}_{\rm LG}=\frac{(n+\ell)!\,(2\ell+1)^{2\ell-2j}}{n^{4+2\ell}\,(2\ell)!\,(2\ell+1)!\,(n-\ell-1)!}\prod_{p=1}^{j+1/2}\Big(1+\frac{16\,y_{\rm LG}^2}{(p-\frac12)^2}\Big).\tag{20.5}$$
+The decay rate falls with a high power of $y_{\rm LG}$: the fifth for the states $S_{1/2}$, the seventh for $P_{1/2}$, the ninth for
+$P_{3/2}$ and the eleventh for $D_{3/2}$. The reason is that a state of larger angular momentum keeps farther from the horizon,
+behind its centrifugal barrier.
 
-Notes:
-  Wolfram Language 15.0.1; run time 1 s
+*Example.* For $1S_{1/2}$ ($n=1$, $\ell=0$, $j=\tfrac12$): $F^{\rm H}_{\rm LG}=\tfrac{15}8-\tfrac32-3=-\tfrac{21}8$, and
+$c^{\rm H}_{\rm LG}=\tfrac{1!}{1\cdot0!\cdot1!\cdot0!}\,(1+64y_{\rm LG}^2)=1+64y_{\rm LG}^2$, so that at $y_{\rm LG}=0.005$ the decay rate is
+$(1+0.0016)\times(0.005)^5\,m_{\rm LL}=3.13\times10^{-12}\,m_{\rm LL}$; the computed rate is $-3.14\times10^{-12}$ $m_{\rm LL}$ (with the sign of
+${\rm Im}\,\omega$), $1.0027$ times (20.5).
 
-VERDICT: ALL PASS (5 of 5)
-```
+*The comparison.* The program computes the six states at $y_{\rm LG}=0.005$, $0.01$, $0.02$, $0.04$ and $0.05$, the decay rates from
+the charge (20.3). Between $y_{\rm LG}=0.005$ and $0.01$ the local powers of the decay rate, $d\ln\lvert{\rm Im}\,\omega\rvert/d\ln y_{\rm LG}$,
+are $1S_{1/2}$: 5.017 (limit 5); $2S_{1/2}$: 5.017 (limit 5); $2P_{1/2}$: 7.014 (limit 7); $2P_{3/2}$: 9.012 (limit 9); $3P_{3/2}$: 9.012 (limit 9); $3D_{3/2}$: 11.012 (limit 11). The computed rate of $3D_{3/2}$ at $y_{\rm LG}=0.005$ is $1.0010$ times (20.5), and
+${\rm Im}\,\omega^{\rm S}_{\rm LG}/m_{\rm LL}=$ $-3.21\times10^{-27}$ for $3D_{3/2}$ at $y_{\rm LG}=0.01$: its amplitude decays by the factor $e$ only
+after about $5\times10^{25}$ periods of its oscillation. Extrapolated to
+$y_{\rm LG}=0$ (by Richardson's rule, which removes the leading corrections of a known power, and by a fit of a quadratic in
+$y_{\rm LG}$; the larger deviation of the two is quoted), the ratios of the computed energies and decay rates to (20.4) and
+(20.5) are 1 for all six states, to $3.4\times10^{-4}$ and $7.2\times10^{-4}$ (LS-11, LS-12). This agreement is an independent
+confirmation of the computed states and of their labels (Section 18.4). At larger masses the corrections are large: between
+$y_{\rm LG}=0.05$ and the next masses the local powers are $1S_{1/2}$: 6.03 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2S_{1/2}$: 6.03 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2P_{1/2}$: 7.92 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2P_{3/2}$: 10.87 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.1 to 0.15); $3P_{3/2}$: 10.90 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.1 to 0.15); $3D_{3/2}$: 14.79 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.2 to 0.25).
 
-# 19. The symbols of this manuscript
+![](figures/fig_lg_schw_decay.png){width=92%}
 
-The table lists the symbols of the main text; the symbols of Appendix A are listed in its Section A.7, and those of Appendix B
-in its Section B.7.
+**Figure IV.2.** The decay rate $-{\rm Im}\,\omega^{\rm S}_{\rm LG}/m_{\rm LL}$ of the six quasi-bound states as a function of $y_{\rm LG}$, on
+logarithmic axes. Markers: computed, from the charge (20.3) for $y_{\rm LG}\le0.05$ and from the complex roots for larger
+$y_{\rm LG}$ (where the decay rate exceeds the resolution $10^{-12}$); lines: the small-mass formula (20.5). The slopes of the lines
+are the powers 5, 7, 9 and 11; the markers leave the lines where the corrections of relative order $y_{\rm LG}^2$ become large.
+(Data `data/lg_schw_small.csv` and `data/lg_schw_qbs.csv`; figure drawn by `python/lg_schw_figures.py`, which evaluates (20.5)
+again.)
 
-| symbol | meaning |
-|:---|:---|
-| $\eta^{\rm LL}_{\mu\nu}$, $\eta^{{\rm LL}\,\mu\nu}$ | the Minkowski metric $\mathrm{diag}(1,-1,-1,-1)$ and its inverse |
-| $\sigma^{\rm LL}_\mu$ | the unit matrix and the Pauli matrices (Lord's $\sigma^\mu$) |
-| $\bar X$ | the bar of a $2\times2$ matrix, $-\mathsf E_{\rm LL}X^T\mathsf E_{\rm LL}$, its adjugate (1.1) |
-| $\mathsf E_{\rm LL}$ | the matrix $\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ (Lord's $\epsilon$) |
-| $\mathsf 1_2$, $\mathsf 1_4$ | the unit matrices |
-| $\gamma^\mu_{\rm LL}$, $\gamma^{\mu\nu}_{\rm LL}$ | the Dirac matrices in the Weyl form (the chiral basis) and their antisymmetrized products |
-| $\gamma^{\rm ch}_{\rm LL}$ | the chirality matrix $i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}$ (minus Lord's $\gamma^5$) |
-| $C_{\rm LL}$ | the charge-conjugation matrix $\mathrm{diag}(\mathsf E_{\rm LL},-\mathsf E_{\rm LL})$ (Lord's $C$) |
-| $\sigma^{\mu\nu}_{\rm LG}$ | $\tfrac12(\sigma^{\rm LL}_\mu\bar\sigma^{\rm LL}_\nu-\sigma^{\rm LL}_\nu\bar\sigma^{\rm LL}_\mu)$ (Lord's $\sigma^{\mu\nu}$) |
-| $\epsilon^{\rm LG}_{\mu\nu\rho\sigma}$ | the Levi-Civita symbol, $\epsilon^{\rm LG}_{0123}=+1$ |
-| $f_{\bar\mu\bar\nu}$ | the dual $\tfrac12i\,\epsilon^{\rm LG}_{\mu\nu\rho\sigma}f^{\rho\sigma}$ of an antisymmetric tensor |
-| $\mathrm{tr}$, $\mathrm{tr}_{\rm N}$ | the trace, and the trace of a $4\times4$ matrix normalized to $\mathrm{tr}_{\rm N}\mathsf 1_4=1$ |
-| $N_{\rm LG}(X,Y)$ | the polarized determinant $\tfrac12(\det(X+Y)-\det X-\det Y)$, the Minkowski product of two Hermitian matrices (2.7) |
-| $\Lambda_{\rm Lord}$, $\lambda^{\rm Lord}_{\mu\nu}$ | a Lorentz matrix of Lord's (2.3), and the parameters of an infinitesimal one |
-| $L_{\rm Lord}$, $\mathsf L_{\rm Lord}$ | its spinor matrices of $SL(2,\mathbb C)$ ($2\times2$) and on Dirac spinors ($4\times4$) |
-| $\psi^{\rm Lord}_{A_1\dots A_{2s}}$ | a Bargmann-Wigner field of spin $s$; capital Latin letters are Dirac spinor indices |
-| $m$ | the rest mass of a Bargmann-Wigner field |
-| $S_{\rm Lord}$, $\mathsf S_{\rm Lord}$ | a change of representation (2.6): a unimodular $2\times2$ matrix, and its $4\times4$ form (5.1) |
-| $\mathsf T$ | a matrix field by which a spinor index is transformed, in (5.5) and (5.6) |
-| $\sigma^a_{\rm Lord}(x)$, $\gamma^a_{\rm Lord}(x)$ | the Pauli-type matrices and the Dirac matrices as fields (5.2) |
-| $d^{\rm Lord}_a$, $X^{\rm Lord}_{ab}{}^c$ | Lord's derivative operators and the coefficients of their commutators |
-| $D^{\rm Lord}_a$ | Lord's generalized derivative (5.3) |
-| $\Gamma^{\rm Lord}_a$, $a^{\rm Lord}_{abc}$, $g_{\rm Lord}$ | the auxiliary fields of the spinors, their coefficients (5.4), and the universal coupling |
-| $C^{\rm Lord}_{ba}{}^e$ | the connection of the vectors (5.7), (5.8) |
-| $h^{\rm Lord}_a{}^\mu$, $g^{\rm Lord}_{\mu\nu}$ | the reference vectors (tetrad) and the metric |
-| $\Gamma^{\rm Lord}_{\mu\nu}{}^\rho$, $T^{\rm Lord}_{\mu\nu}{}^\rho$, $R^{\rm Lord}_{\mu\nu\rho}{}^\sigma$ | the affine connection, its torsion and its curvature (5.9) |
-| $W_\mu$, $W_{\mu\,ab}$ | a connection of the vectors as a matrix $(W_\mu)_b{}^e$ and with both indices lowered (5.11) |
-| $R_{\mu\nu\alpha\beta}$ | the curvature of a connection of the vectors, with its last two indices lowered (5.11) |
-| $A^{\rm Lord}_{\mu\nu\rho\sigma}$, $A^{\rm Lord}_{\rho\sigma\lambda}$, $A^{\rm Lord}_{\mu\nu}$ | the real spin-2 tensor, its potentials and its secondary potentials |
-| $B^{\rm Lord}_{\mu\nu\rho\sigma}$ | the tensor of Lord's Section 3 that has the symmetries of the Riemann tensor |
-| $j^{\rm Lord}_{\nu\rho\sigma}$, $j^{\rm Lord}_{\mu\nu}$, $j^{\rm Lord}$, $f_{\rm Lord}$ | the current of the spin-2 field, the symmetric tensor from which it derives, its trace, and the coupling of Lord's Section 3 |
-| $f_{\mu\nu}$, $A_\mu$, $e$ | the electromagnetic field strength, its potential and the electric charge (Lord's Sections 1 and 2) |
-| $\mathbf b$, $\xi^{\rm LL}_p(\mathbf b)$, $\mathbf e_p$ | a bi-quaternion, its four complex coefficients, and the units |
-| $\bar{\mathbf b}$, $\mathbf b^*$, $\mathbf b^\dagger$ | the conjugate, the complex conjugate and the Hermitian conjugate of a bi-quaternion |
-| $M_{\rm LL}(\mathbf b)$ | the $2\times2$ matrix of a bi-quaternion (9.1) |
-| $N_{\rm LL}(\mathbf b)$, $N_{\rm LL}(\mathbf b,\mathbf b')$ | the complex norm $\det M_{\rm LL}(\mathbf b)$ and its polarization |
-| $\mathbf g$, $\tilde{\mathbf g}$ | a unit bi-quaternion ($N_{\rm LL}(\mathbf g)=1$), an element of $SL(2,\mathbb C)$, and $\tilde{\mathbf g}=\mathbf g^*$ |
-| M31, $\mathbf x$, $x^p$ | the space-time of the Hermitian bi-quaternions, a point, and its coordinates |
-| $\mathbf f_p$ | a frame: four Hermitian bi-quaternions with $N_{\rm LL}(\mathbf f_p,\mathbf f_q)=\eta^{\rm LL}_{pq}$ |
-| $\mathsf L_{\rm LL}(\mathbf g)$ | the Lorentz matrix of a unit bi-quaternion (9.2) |
-| $\mathsf S_{\rm LL}(\mathbf g)$ | the spinor matrix of a unit bi-quaternion (9.3) |
-| $\gamma^p_{\rm LL}[\mathbf f]$ | the Dirac matrices of a frame (9.4) |
-| $\Psi_{\rm LL}$, $m_{\rm LL}$ | the brochon (eight components: Dirac index and isospin index) and its mass |
-| GEE | the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ of the brochon model (B.3) |
-| $\mathsf U_{\rm LL}$, $\theta^{\rm F}_{\rm LL}$ | an isospin rotation and a phase of the fermion number (a local GEE transformation with $\mathbf g$) |
-| $\nabla^{\rm GEE}_p$ | the GEE covariant derivative of the brochon (9.5) |
-| $\Gamma^{\rm LL}_p$, $\Gamma^{\rm LL}_\mu$ | the spin connection of GEE, the gauge field of its $SL(2,\mathbb C)$ factor; in a curved space-time $\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$ (14.7) |
-| $\mathsf W_{{\rm SF},p}$, $W^\iota_{{\rm SF},p}$, $\tau^{\rm LL}_\iota$ | the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index |
-| $B_{{\rm SF},p}$ | the gauge field of $U(1)^{\rm F}_{\rm LL}$ |
-| $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$ | the couplings of $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$ |
-| $T^3_{\rm LL}$, $Q_{\rm LL}$, $\vec n$ | the third isospin generator, the charge $Q_{\rm LL}=T^3_{\rm LL}$ of the zeugon, and the direction of the polar condensate |
-| $\mathsf A_{\rm LG}$, $\mathsf B_{\rm LG}$, $\kappa_{\rm LG}$ | the blocks of a change of representation that keeps the chirality matrix, and the real factor of Theorem L1 |
-| $\mathsf C$, $X_r$ | the unknown matrix and the basis of the Hermitian matrices in the proof of Theorem L1 |
-| $a,b,c,d$ (Part III) | frame (Lorentz) indices, raised and lowered with $\eta^{\rm LL}$ |
-| $x^\mu$ | the coordinates of a curved space-time; Greek indices are raised and lowered with $g^{\rm LG}_{\mu\nu}$ in Part III |
-| $e^{\rm LG}_a{}^\mu$, $e^{{\rm LG}\,a}{}_\mu$ | the tetrad (Lord's reference vectors $h^{\rm Lord}_a{}^\mu$) and the coframe, its inverse (13.1) |
-| $g^{\rm LG}_{\mu\nu}$, $g_{\rm LG}^{\mu\nu}$, $e_{\rm LG}$ | the metric of the tetrad and its inverse (13.2) (Lord's $g^{\rm Lord}$), and the volume element $\det e^{{\rm LG}\,a}{}_\mu$ |
-| $\gamma^\mu_{\rm LG}$, $\gamma^{\rm LG}_\mu$, $\gamma^{\mu\nu}_{\rm LG}$ | the Dirac matrices of the curved space-time (13.3), with the index lowered, and their antisymmetrized products |
-| $\sigma^\mu_{\rm LG}$, $\mathbf e^\mu_{\rm LG}$ | the Hermitian blocks of $\gamma^\mu_{\rm LG}$ and the four Hermitian bi-quaternions with $M_{\rm LL}(\mathbf e^\mu_{\rm LG})=\sigma^\mu_{\rm LG}$ (13.4) |
-| $\mathsf S$ | shorthand for the spinor matrix $\mathsf S_{\rm LL}(\mathbf g(x))$ of a local transformation (Sections 9.3, 13.2) |
-| $\Lambda_{\rm LG}{}^a{}_b$ | the Lorentz matrix of $\mathsf S$, $\mathsf S^{-1}\gamma^a_{\rm LL}\mathsf S=\Lambda_{\rm LG}{}^a{}_b\gamma^b_{\rm LL}$ (13.6) |
-| $\Gamma^{{\rm LG}\,\rho}{}_{\mu\nu}$, $\nabla^{\rm LG}_\mu$ | the Christoffel symbols (14.1) and the covariant derivative on coordinate indices |
-| $\zeta^\rho$, $\zeta_\nu$, $\zeta\cdot\zeta'$ | a vector field and a one-form in (14.1), (14.2); the Minkowski product of two frame vectors (Section 15.3) |
-| $R^{{\rm LG}\,\rho}{}_{\sigma\mu\nu}$, $R^{\rm LG}_{\rho\sigma\mu\nu}$, $R^{{\rm LG}\,a}{}_{b\mu\nu}$ | the Riemann tensor (14.2), with all indices lowered, and in the frame (14.11) |
-| $R^{\rm LG}_{\sigma\nu}$, $R^{\rm LG}$, $G^{\rm LG}_{\mu\nu}$ | the Ricci tensor, the scalar curvature and the Einstein tensor (14.3) |
-| $\omega^{\rm LG}_\mu{}^a{}_b$, $\omega^{\rm LG}_{\mu\,ab}$, $\omega^{\rm LG}_{c\,ab}$ | the spin connection of the tetrad (14.4), with the first frame index lowered, and its frame components (14.6) |
-| $C^{\rm LG}_{a\,cd}$ | the anholonomy coefficients of the coframe (14.6) |
-| $\Omega^{\rm L}_{{\rm SF},\mu\nu}$ | the curvature of the Lorentz connection, $\tfrac14R^{\rm LG}_{ab\mu\nu}\gamma^{ab}_{\rm LL}$ (14.11) |
-| $M_{\rm LG}$, $\mathcal M_{\rm LG}$ | the mass of a black hole (or of the Vaidya space-time), and $G_{\rm N}M_{\rm LG}$, the mass in units of length |
-| $t$, $r$, $\theta$, $\varphi$, $d\Omega^2$ | the coordinates of Schwarzschild and the metric of the unit sphere |
-| $h_{\rm LG}(r)$ | an arbitrary function in the static, spherically symmetric coframe of check WG-1 |
-| $f_{\rm LG}$, $w_{\rm LG}$, $\tau_{\rm LG}$ | $1-2\mathcal M_{\rm LG}/r$; the speed $(2\mathcal M_{\rm LG}/r)^{1/2}$ and the proper time of the observers falling freely from rest at infinity (Painlevé-Gullstrand) |
-| $v_{\rm LG}$, $u_{\rm LG}$, $l^{\rm LG}$, $\rho_{\rm LG}$ | the advanced and the retarded time of the Vaidya space-times, their null one-form, and the energy density of the null dust |
-| $G_{\rm N}$, $M_{\rm Pl}$ | Newton's constant and the Planck mass, $G_{\rm N}=M_{\rm Pl}^{-2}$ |
-| $\mathcal L^{\rm LG}$, $\mathcal L^\Psi_{\rm LG}$, $S^{\rm LG}$ | the Lagrangian density (15.2) in a curved space-time, its Dirac part (15.3), and the action |
-| $V^{(n)}_{\rm SF}$, $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$, $G_{\rm LL}$ | the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings |
-| $\Pi^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$ | the pair operators of spin zero and their matrices $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ |
-| $T^\iota_{\rm LL}$, $\epsilon^{\rm LL}_{\iota\iota'\iota''}$ | the isospin generators $\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2$ and the Levi-Civita symbol of three indices |
-| $j^{{\rm F},\mu}_{\rm SF}$, $j^{\iota,\mu}_{\rm SF}$, $j^{{\rm F},a}$ | the fermion-number current and the isospin currents (Section 15.1); frame components of the first |
-| $W^\iota_{{\rm SF},\mu\nu}$, $\mathsf W_{{\rm SF},\mu\nu}$, $B_{{\rm SF},\mu\nu}$ | the field strengths of $SU(2)_{\rm v}$ (components and matrix) and of $U(1)^{\rm F}_{\rm LL}$ |
-| $\mathcal E_{\rm LG}$ | the left side $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}-m_{\rm LL}\Psi_{\rm LL}$ of the free field equation (15.6) |
-| $\Box_{\rm LG}$ | $g_{\rm LG}^{\mu\nu}\nabla^{\rm LG}_\mu\nabla^{\rm GEE}_\nu$ (15.7) |
-| $\gamma_{\rm LL}(\zeta)$ | $\gamma^a_{\rm LL}\eta^{\rm LL}_{ab}\zeta^b$ for a vector $\zeta$ (Section 15.3) |
-| $\Omega_{\rm LG}$ | a conformal factor, $g^{\rm LG}=\Omega_{\rm LG}^2\eta^{\rm LL}$ (15.9) |
-| $A_{{\rm SF},\mu}$, $A_{{\rm SF},\mu\nu}$ | the zeugon $W^3_{{\rm SF},\mu}$ and its field strength |
-| $k_{\rm LG}$, $\mathsf a_{\rm LG}$ | the wave vector and the polarization of a plane wave of the zeugon (15.10) |
-| $s$, $Q^{\rm LG}_s$, $\chi^{\rm LG}_s$ | the isospin component of the brochon, its charge $\pm\tfrac12$ of $Q_{\rm LL}$, and its isospin vector |
-| $p^{\rm LG}_s$, $\xi^{\rm LG}_s$, $\psi^{\rm LG}_s$, $\Sigma^{\rm LG}_s$ | the momentum, the constant spinor, the Volkov solution and its phase (15.10) |
-| $M^{\rm CJT,D}_{\rm SF}$, $D^{\rm CJT}_{\rm SF}$, $E^{\rm CJT,gap}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state of the brochon model (method CJT, Appendix B.5) |
-| $\mathcal E^{\rm CJT}_{\rm SF}$ | the energy density of that ground state relative to the normal vacuum |
-| $M^{\rm CJT}_{W,{\rm SF}}$ | the mass of the massive gauge bosons $W^1$, $W^2$ in that ground state |
-| $\vec q_{\rm LL}$, $\varepsilon_{\rm LL}$ | a momentum and the energy of a plane wave |
-| $\mathcal C_{\rm LG}$, $\mathsf P_{\rm LG}$ | the antilinear map of the pairing term and its matrix $(\gamma^0_{\rm LL}\otimes\mathsf 1_2)(\mathsf K^3_{\rm LL})^\dagger$ (15.11) |
-| $M$, $D$ | shorthands for $M^{\rm CJT,D}_{\rm SF}$ and $D^{\rm CJT}_{\rm SF}$ in Theorem L2 |
-| $w^{\rm LG}_{ab}$ | the real coefficients of an element of the Lorentz algebra (proof of Theorem L2) |
-| $U(1)^{\rm Q}_{\rm LL}$ | the unbroken group of the charge $Q_{\rm LL}$ in the superfluid |
-| $\Theta^{\rm LG}_{\mu\nu}$ | the response of the action to the tetrad (16.1) |
-| $T^{\Psi,{\rm LG}}_{\mu\nu}$, $T^{\rm self,LG}_{\mu\nu}$, $T^{\rm YM,LG}_{\mu\nu}$, $T^{\rm Z,LG}_{\mu\nu}$, $T^{\rm LG}_{\mu\nu}$ | the energy-momentum tensors of the brochon (16.2), of the self-interaction (16.4), of the gauge fields (16.5), of the zeugon, and their sum (16.8) |
-| $x_0$ | the point of a local solution (Section 16.1) |
-| $Y^{\iota,\lambda}_{\rm LG}$, $Y^{{\rm F},\lambda}_{\rm LG}$ | the left sides of the Yang-Mills equations in a curved space-time (16.7) |
-| $\mathbf g_{\rm boost}$ | the boost $\tfrac54\mathbf e_0+\tfrac34i\,\mathbf e_3$ of Appendix A.3, used in the examples of Sections 2.4 and 11.1 |
-| $P_{\rm LG}$ | the momentum $(\tfrac{17}8,0,0,\tfrac{15}8)$ of the plane wave of the examples (Appendix B.1, Section 16.1) |
+## 20.5 What $y_{\rm LG}$ means in physical units
+
+In ordinary units $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)=M_{\rm LG}m_{\rm LL}/M_{\rm Pl}^2$, with the Planck mass
+$M_{\rm Pl}=(\hbar c/G_{\rm N})^{1/2}$; equivalently $y_{\rm LG}$ is the ratio of the gravitational radius
+$G_{\rm N}M_{\rm LG}/c^2$ of the black hole to the reduced Compton wavelength $\hbar/(m_{\rm LL}c)$ of the particle. The states of Table
+IV.1 have $y_{\rm LG}$ between 0.05 and 0.4: the two lengths are comparable, and the particle is a wave that surrounds the
+black hole. The Sun has the gravitational radius $1477$ m, and a black hole of one solar mass has $y_{\rm LG}=0.1$ for a
+particle of rest energy $1.3\times10^{-11}$ eV (Appendix C.5 gives the constants). For a heavier particle the same $y_{\rm LG}$ needs a
+proportionally lighter black hole. Around a black hole much heavier than that, $y_{\rm LG}\gg1$: the wavelength of the particle is
+short compared with the black hole, and the particle moves like a classical body, on orbits that this part does not compute.
+Which black holes matter for the brochon depends on the value of $\Lambda_{\rm LL}$ in physical units, which the brochon model
+does not fix (Section 16.3); Part VI takes up this question.
+
+# 21. Scattering: the greybody factors
+
+*In words.* A wave of the brochon that comes in from far away is partly absorbed by the black hole and partly scattered
+back. The absorbed fraction is the *greybody factor*: a black hole absorbs like a body that is not perfectly black, and the
+name comes from Hawking's radiation, whose spectrum is that of a black body multiplied by this factor.
+
+For a real frequency above the mass, $\omega^{\rm S}_{\rm LG}>m_{\rm LL}$, a partial wave can come in from infinity. The program takes
+the solution that is analytic at the horizon (the only physical one), integrates it outward with CVODE to $r=4000$, writes it
+there, in the functions of (18.7), as the sum of a wave that goes out and a wave that comes in (the two local solutions of
+(18.7) far from the black hole), and divides the flux that falls into the horizon by the flux that comes in:
+$$\mathcal T_{\rm LG}=\frac{\text{flux into the horizon}}{\text{incoming flux}},\qquad1-\mathcal T_{\rm LG}=\text{the fraction scattered back}.\tag{21.1}$$
+The two fractions add to 1 to $3.0\times10^{-8}$ (the global error of the integration; LS-9a), and moving the outer radius from
+2000 to 4000 changes $\mathcal T_{\rm LG}$ by at most $1.0\times10^{-6}$ (LS-9b). The Python program finds the greybody factors again to
+$1.7\times10^{-9}$ (YS-7), and the Wolfram script three of them in arithmetic of 32 digits to $6.6\times10^{-10}$ (WS-8).
+
+**Examples.** For the massless brochon at $\mathcal M_{\rm LG}\omega^{\rm S}_{\rm LG}=0.25$, $0.4$ and $0.6$: $\mathcal T_{\rm LG}=$ $0.873387$, $0.998219$, $0.999993$ for
+$\lambda_{\rm LG}=\pm1$ ($j_{\rm LG}=\tfrac12$), and $0.009528$, $0.632114$, $0.998753$ for $\lambda_{\rm LG}=2$ ($j_{\rm LG}=\tfrac32$). At the lowest of these
+frequencies the black hole absorbs most of the wave of $j_{\rm LG}=\tfrac12$ but scatters back almost all of the wave of
+$j_{\rm LG}=\tfrac32$, which its centrifugal barrier keeps away from the horizon; at the highest, both pass over the barrier. For
+the massless brochon the two signs of $\lambda_{\rm LG}$ agree to $2.2\times10^{-16}$, as they must: for $m_{\rm LL}=0$ the substitution
+$(\mathcal U_{\rm LG},\mathcal V_{\rm LG})\to(\mathcal V_{\rm LG},-\mathcal U_{\rm LG})$ turns the equations (18.7) of $\lambda_{\rm LG}$ into those of
+$-\lambda_{\rm LG}$ and keeps the current (YS-9). With the mass, $y_{\rm LG}=0.2$ at $\mathcal M_{\rm LG}\omega^{\rm S}_{\rm LG}=0.25$, the two signs
+differ: $\mathcal T_{\rm LG}=$ $0.9017$ for $\lambda_{\rm LG}=1$ and $0.4763$ for $\lambda_{\rm LG}=-1$; the mass
+couples the two chiralities, and the states $S_{1/2}$ and $P_{1/2}$ that the two signs describe feel different barriers.
+
+# 22. What Part IV establishes
+
+1. In the freely falling tetrad of Painlevé and Gullstrand the Dirac equation of the brochon separates on both sides of the
+   horizon into the angular equations (18.4) and the radial equations (18.5). The physical solution is analytic at the
+   horizon, continues through it unchanged, and grows as $r^{-3/4}$ at the centre; the current that falls in at the horizon
+   arrives at the centre (Sections 18 and 19).
+2. The black hole has quasi-bound states that approach the levels of a hydrogen atom with the coupling
+   $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, with the gravitational fine structure (20.4), and decay at the rates (20.5), which fall
+   as $y_{\rm LG}^5$ for the states $S_{1/2}$ and faster for larger angular momenta; twice the decay rate is the flux into the
+   horizon divided by the charge outside it (20.3) (Section 20).
+3. The greybody factors of the partial waves follow from the same solutions (Section 21).
+4. By Theorem L3 every solution of the Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$ gives a solution of the equation of the
+   quasi-particle of the superfluid, with the same complex frequency and the same averaged currents: every result of Part IV
+   holds for the quasi-particle, with $m_{\rm LL}$ replaced by $E^{\rm CJT,gap}_{\rm SF}$ (Section 18.1).
 
 # A. The algebra of the Lorentz super-loop, with an example of every object
 
@@ -2425,7 +2372,7 @@ self-energy is $D^{\rm CJT}_{\rm SF}(\mathsf K^3_{\rm LL})^\dagger$ with $|D^{\r
 the non-zero entries $(\mathsf K^3_{\rm LL})_{03}=(\mathsf K^3_{\rm LL})_{12}=(\mathsf K^3_{\rm LL})_{47}=(\mathsf K^3_{\rm LL})_{56}=1$ and $(\mathsf K^3_{\rm LL})_{21}=(\mathsf K^3_{\rm LL})_{30}=(\mathsf K^3_{\rm LL})_{65}=(\mathsf K^3_{\rm LL})_{74}=-1$ (rows and columns numbered from 0 to 7, the component number minus 1), so each
 condensed pair joins an isospin-up with an isospin-down component of the same chirality and of opposite spin. Built with these self-energies,
 the $16\times16$ matrix (B.14) has, at every momentum the program tried, the eigenvalues $\pm E(\vec q)$ of (B.18) eight times
-each (check LW-6a of the program `lg_worked` of this folder, Section 18). A quasi-particle at rest has the
+each (check LW-6a of the program `lg_worked` of this folder, Appendix C.4). A quasi-particle at rest has the
 energy $E(0)=0.3663906649$, the gap; one with $|\vec q|=0.3$ has $E=0.4735420988$, and one at the cutoff
 $E=1.065008037$. The gap equation (B.19) holds: $I^{(1)}_{\rm SF}(E^{\rm CJT,gap}_{\rm SF})=0.4164390043$ by the
 closed form (A.19), equal to $\pi^2/23.7=0.4164390043$ (check LW-7b).
@@ -2569,3 +2516,688 @@ of its name to the work. The name *brochon* for the field was proposed in the sa
 | $M^{\rm CJT}_{W,{\rm SF}}$, $M^{\rm CJT}_{Z,{\rm SF}}$, $M^{\rm CJT}_{A,{\rm SF}}$ | their masses in CJT |
 | $Q_1$, $Q_2$, $r_{12}$, $\alpha^{\rm Z}_{\rm LG}$ | two charges, their distance, and the strength $(g^{\rm v}_{\rm LL})^2/(16\pi)$ of the zeugon potential |
 | $u_{\rm LL}$, $P_{\rm LG}$ | the spinor of Appendix A.5 and the momentum $(\tfrac{17}8,0,0,\tfrac{15}8)$ of the plane wave of the example |
+
+# C. Provenance of the main text
+
+This appendix names, for every part of the main text, the programs that compute and check it, the commands that run them,
+and their complete reports. The input of Part I, Lord's paper, is identified by its checksum.
+
+## C.1 The input
+
+E. A. Lord, "General relativity from gauge invariance", Proc. Camb. Phil. Soc. 69, 423 (1971): twenty pages
+(the journal pages 423 to 442), a scan with recognized text; all pages were read. The file is not in the repository;
+its SHA-256 checksum:
+```
+c928b11e5721bb37093f9b19b19e8e9d4a743fcd3f8f4779e804845fcaff2275  General relativity from gauge invariance.pdf
+```
+
+## C.2 The programs of Parts I and II
+
+Three programs check Part I and Part II, each independently of the others:
+
+* the Rust program `lg_lord` (`rust/lglord/src/main.rs`, with the library `rust/lgcore`, whose module `lord.rs` builds
+  Lord's matrices from his definitions): ALL PASS (46 of 46). Its local checks use fields of the four coordinates built
+  from smooth pseudo-random functions, with exact first and second derivatives by forward-mode automatic
+  differentiation;
+* the Python program `python/lg_lord.py` (with `python/lgcommon.py`): ALL PASS (17 of 17); it writes every matrix again
+  from the definitions and differentiates by central finite differences of eighth order;
+* the Wolfram script `wolfram/source/lg_lord.wls`: ALL PASS (7 of 7), in exact arithmetic (symbolic matrices).
+
+A finding about an equation as printed is a check that passes when the printed form fails by the stated amount; its
+numbers are in `data/lg_lord_findings.csv`. To reproduce, from the folder `Revision_Lord_Gravity`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+(cd rust && cargo build --release && ./target/release/lg_lord)   # data/hck_lg_lord_checks.txt, lg_lord_findings.csv
+python3 python/lg_lord.py                                         # data/hck_lg_lord_checks_python.txt
+wolframscript -file wolfram/source/lg_lord.wls data/hck_lg_lord_checks_wolfram.txt
+python3 code/scripts/write_lg_lord_fragments.py                  # the numbers of this manuscript
+```
+
+**The report of the Rust program** (`data/hck_lg_lord_checks.txt`):
+
+```
+PROJECT spacetimes, Revision_Lord_Gravity: lg_lord -- the checks of the equations of E. A. Lord, General relativity from gauge invariance (1971), Part I of lord_gravity.md, and of the association of the SL(2,C) of the project with his gauge group, Part II
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS L1-1    deviation 0.000e0 (tolerance 1.0e-15): (1.2): sigma-bar^mu = -epsilon (sigma^mu)^T epsilon is (1, -sigma_1, -sigma_2, -sigma_3) for the standard set (1.1)
+PASS L1-2    deviation 0.000e0 (tolerance 1.0e-15): (1.3): 1/2 (sigma^mu sigma-bar^nu + sigma^nu sigma-bar^mu) = eta^{mu nu} 1 (16 pairs)
+PASS L1-3    deviation 0.000e0 (tolerance 1.0e-14): (1.5): [sigma^{mu nu}, sigma^{rho sigma}] = 2 (eta^{nu rho} sigma^{mu sigma} - eta^{mu rho} sigma^{nu sigma} + eta^{mu sigma} sigma^{nu rho} - eta^{nu sigma} sigma^{mu rho}) (256 index combinations)
+PASS L1-4    deviation 0.000e0 (tolerance 1.0e-15): (1.6), (1.7): sigma_{mu nu} is self-dual, sigma_{mu nu} = 1/2 i eps_{mu nu rho sigma} sigma^{rho sigma} with eps_0123 = +1
+PASS L1-5    deviation 2.220e-16 (tolerance 1.0e-15): (1.8), infinitesimal: with Lambda_mu^nu = delta_mu^nu + eta^{nu rho} lambda_{rho mu}, L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu} satisfies (1.8) to first order (20 random lambda): eta^{mu rho} lambda_{rho nu} sigma^nu + X sigma^mu + sigma^mu X^dag = 0
+PASS L1-6a   deviation 9.770e-15 (tolerance 1.0e-12): (1.8): for 50 random L of SL(2,C), the Lambda defined by Lambda_nu^mu L sigma^nu L^dag = sigma^mu satisfies Lambda eta Lambda^T = eta
+PASS L1-6b   (1.8): ... and has det Lambda = 1 and Lambda_0^0 >= 1 (proper orthochronous): L -> Lambda is the covering map of the proper orthochronous Lorentz group [50 random L]
+PASS L1-6c   deviation 9.115e-15 (tolerance 1.0e-12): (1.16): Lambda_nu^mu L4 gamma^nu L4^{-1} = gamma^mu with L4 = diag(L, (L^dag)^{-1}), the same Lambda (50 random L)
+PASS L1-7a   deviation 0.000e0 (tolerance 1.0e-15): (1.10): 1/2 (gamma^mu gamma^nu + gamma^nu gamma^mu) = eta^{mu nu} for the Weyl representation (1.9)
+PASS L1-7b   deviation 0.000e0 (tolerance 1.0e-15): (1.11): gamma^mu gamma^5 + gamma^5 gamma^mu = 0
+PASS L1-7c   deviation 0.000e0 (tolerance 1.0e-15): (1.12): (gamma^5)^2 = 1
+PASS L1-7d   deviation 0.000e0 (tolerance 1.0e-14): (1.13): gamma^5 = -i gamma^0 gamma^1 gamma^2 gamma^3 = -(1/24) i eps_{mu nu rho sigma} gamma^mu gamma^nu gamma^rho gamma^sigma (both forms)
+PASS L1-8    deviation 0.000e0 (tolerance 1.0e-15): (1.14): C gamma^mu C^{-1} = -(gamma^mu)^T with C = diag(epsilon, -epsilon)
+PASS L1-9    deviation 0.000e0 (tolerance 1.0e-15): (1.15): gamma^{mu nu} = diag(sigma^{mu nu}, -(sigma^{mu nu})^dag) in the Weyl representation
+PASS L1-10   deviation 0.000e0 (tolerance 1.0e-15): (1.17): gamma_5 gamma_{mu nu} = gamma_{mu nu} gamma_5 = gamma_{mu-bar nu-bar} (the dual (1.6))
+PASS L1-11a  deviation 8.113e-15 (tolerance 1.0e-13): property of epsilon used for (1.23): epsilon S = (S^T)^{-1} epsilon for every unimodular S (50 random S)
+PASS L1-11b  deviation 5.329e-14 (tolerance 1.0e-12): (1.22), (1.23): for sigma^mu -> S sigma^mu S^dag, the sigma-bar defined by (1.2) becomes (S^dag)^{-1} sigma-bar^mu S^{-1} (50 random S)
+PASS L1-12   deviation 5.440e-15 (tolerance 1.0e-12): Section 1, 'all the properties ... are unaltered': every set S sigma^mu S^dag (S unimodular) satisfies (1.3), (1.7) and (1.10) (20 random S)
+PASS L1-13   deviation 5.551e-16 (tolerance 1.0e-14): for ANY four Hermitian matrices, 1/2 (sigma^a sigma-bar^b + sigma^b sigma-bar^a) = N(sigma^a, sigma^b) 1, with N the polarized determinant (the Minkowski product of the matrices read as points of space-time) (20 random sets)
+PASS L1-14   hence (1.3) and (1.10) hold for a set exactly when N(sigma^a, sigma^b) = eta^{ab}: a generic linearly independent Hermitian set violates them, and Lord's 'any linearly independent set' must be read as 'any set S sigma^mu S^dag' [smallest deviation from eta over 20 random sets: 1.073]
+PASS L4-1    deviation 6.661e-15 (tolerance 1.0e-12): (4.2) to (4.5): for a field S(x) of SL(2,C), the Dirac matrices gamma^a(x) built by (4.3), (4.5) from sigma^a(x) = S sigma^a S^dag equal S4 gamma^a S4^{-1}, S4 = diag(S, (S^dag)^{-1}) (4.1): values and first derivatives at 12 random points
+PASS L4-2    deviation 7.183e-16 (tolerance 1.0e-13): (4.13), (4.31) corrected: D_a = d_a - Gamma_a is covariant, D'_a (T psi) = T D_a psi, when Gamma'_a = T Gamma_a T^{-1} + (d_a T) T^{-1} (relative deviation, 12 points, 4 directions)
+PASS L4-3    (4.14), (4.31) as printed: with the inhomogeneous term T d_a T^{-1} read as the product T (d_a T^{-1}) = -(d_a T) T^{-1}, D_a = d_a - Gamma_a is NOT covariant; the printed sign belongs to the derivative d_a + Gamma_a [smallest relative deviation of the printed law: 0.156]
+PASS L4-4    deviation 7.427e-15 (tolerance 1.0e-11): (4.15), (4.16), (4.32) corrected: Gamma_a = 1/2 g a_abc gamma^{bc} with a_abc = -(1/(4g)) tr(gamma_bc Gamma_a) (reconstruction), and under the gauge transformation delta a_abc = -(1/g) tr_N[gamma'_bc (d_a T) T^{-1}], with tr_N the trace normalized to tr_N 1 = 1 and gamma' the transformed matrices
+PASS L4-5    (4.16), (4.32) as printed, with tr = tr_N: the inhomogeneous term -(1/g) tr[gamma_bc T d_a T^{-1}] has the opposite sign of the correct one (it is the law of the derivative d_a + Gamma_a) [smallest |printed - true| / |true| over all coefficients: 2.0000 (2 for an opposite sign)]
+PASS L4-6a   deviation 1.427e-14 (tolerance 1.0e-12): (4.19): d_a gamma_b - [Gamma_a, gamma_b] is a linear combination of the gamma_e with real coefficients C_ba^e, as Lord states (residual and imaginary parts)
+PASS L4-6b   deviation 3.997e-15 (tolerance 1.0e-12): (4.19) solved: C_ba^e = 2 g a_ab^e + tr_N[(d_a gamma_b) gamma^e] (tr_N = 1/4 tr), for Gamma_a = 1/2 g a_abc gamma^{bc} (4.15)
+PASS L4-6c   deviation 1.998e-15 (tolerance 1.0e-12): (4.20) as printed, read with tr = tr_N, g a_ab^e + 1/2 tr_N[(d_a gamma_b) gamma^e], is exactly HALF of the C_ba^e that (4.19) requires
+PASS L4-6d   (4.20) as printed, read with tr the full trace, is not C_ba^e either; since its term g a_ab^e carries half the coefficient 2 g that (4.19) requires, no normalization of tr makes (4.20) equal to C, and only tr_N makes it proportional (L4-6c) [smallest, over the 12 points, of the largest deviation of a coefficient relative to the largest coefficient: 0.5649]
+PASS L4-7    deviation 8.438e-15 (tolerance 1.0e-12): (4.24): C_bae = -C_eab, for the C that solves (4.19)
+PASS L4-8    deviation 3.580e-15 (tolerance 1.0e-11): (4.25): D_e eps_abcd = C_ae^f eps_fbcd + C_be^f eps_afcd + C_ce^f eps_abfd + C_de^f eps_abcf = 0
+PASS L4-9    deviation 9.486e-16 (tolerance 1.0e-12): (4.47), (4.48): for D_mu = d_mu - Gamma_mu (coordinate derivatives, no torsion), [D_mu, D_nu] psi = (d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu]) psi (12 points, exact second derivatives)
+PASS L4-10a  deviation 2.220e-16 (tolerance 1.0e-13): the spinor image of a vector connection: Gamma_mu = 1/4 omega_{mu ab} gamma^{ab} satisfies [Gamma_mu, gamma_b] = -(W_mu)_b^e gamma_e, that is D_mu gamma_b = 0 with constant gamma (Lord's special gauge (5.2))
+PASS L4-10b  deviation 1.144e-16 (tolerance 1.0e-12): then the spinor curvature is d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu] = 1/4 R_{mu nu alpha beta} gamma^{alpha beta}, with R the curvature (4.46) of the vector connection: exactly, to all orders
+PASS L4-10c  (4.47), (4.48) as printed, 1/2 R_{mu nu alpha beta} gamma^{alpha beta}, with R the curvature of the same (compatible) vector connection: twice the spinor curvature [smallest relative deviation of the printed 1/2: 1.0000 (1 for a factor 2)]
+PASS L4-10d  with Lord's printed factors together, C = W/2 from (4.20) and 1/2 R(C) gamma^{ab} in (4.48), the spinor curvature is reproduced only to first order in the connection: the deviation is of second order (it falls by 100 when the connection falls by 10) [deviation at amplitude 0.4: 1.442e-1; at 0.04: 1.502e-3; ratio 96.00]
+PASS P-1     deviation 0.000e0 (tolerance 0.0e0): Lord's sigma^mu (1.1) and sigma-bar^mu (1.2) are the project's sigma^LL_p and sigma-bar_p (the Pauli matrices of the chiral basis)
+PASS P-2     deviation 0.000e0 (tolerance 0.0e0): Lord's epsilon (1.1) is the project's E_LL
+PASS P-3     deviation 0.000e0 (tolerance 0.0e0): Lord's gamma^mu of the Weyl representation (1.9) are the project's gamma^p_LL of the chiral basis, and his C (1.14) is C_LL
+PASS P-4     deviation 0.000e0 (tolerance 1.0e-15): Lord's gamma^5 (1.9) is minus the project's chirality matrix gamma^ch_LL = i gamma^0 gamma^1 gamma^2 gamma^3
+PASS P-5     deviation 5.551e-16 (tolerance 1.0e-13): Lord's 4x4 change of representation (4.1), diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) = (M_LL(g)^dag)^{-1}, is the project's spinor matrix S_LL(g) = diag(M_LL(g-tilde), M_LL(g)) of the unit bi-quaternion g (50 random g)
+PASS P-6a    deviation 0.000e0 (tolerance 1.0e-14): the project's conjugation of bi-quaternions is Lord's sigma-bar: M_LL(b-bar) = -epsilon M_LL(b)^T epsilon for every bi-quaternion b (50 random b)
+PASS P-6b    deviation 3.997e-15 (tolerance 1.0e-12): the frame f'_p = g-tilde f_p g-tilde^dag of the project is Lord's change of representation (1.22): its Dirac matrices (3.6) are Lord's gamma (4.5) of sigma'^p = S sigma^p S^dag and equal S_LL(g) gamma^p S_LL(g)^{-1}
+PASS P-7     deviation 1.554e-15 (tolerance 1.0e-12): Lord's Lorentz matrix (1.8) of L = M_LL(g-tilde) is the transpose of the project's L_LL(g) (2.10): Lambda_nu^mu = (L_LL(g))_{mu nu}
+PASS P-9     the changes of representation that keep the Weyl form: for 50 random A of SL(2,C), the matrices C for which A X C is Hermitian for every Hermitian X form a real line spanned by A^dag (the Gram matrix of the map has exactly one zero eigenvalue); with det A = det B this leaves S = diag(A, B), B = +-(A^dag)^{-1}: Lord's group and the reflection by gamma^5 [largest smallest eigenvalue relative to the largest 4.1e-16 (zero to rounding); smallest second eigenvalue relative to the largest 5.000e-1; A sigma A^dag Hermitian to 0.0e0]
+PASS P-8     deviation 1.162e-15 (tolerance 1.0e-13): the Lorentz part of the GEE derivative of the earlier hypotheses, nabla_p = d_p + Gamma^LL_p with Gamma'^LL = S_LL Gamma^LL S_LL^{-1} - (d_p S_LL) S_LL^{-1}, is covariant, and it is Lord's derivative (4.13) with Gamma_a = -Gamma^LL_a and his inhomogeneous term corrected (L4-2) (relative deviation, 12 points)
+
+Notes:
+  tolerances: exact identities of the matrices 0 or 1e-15; products of random matrices 1e-12 to 1e-14 (rounding); findings about an equation as printed pass when the printed form fails by the stated amount
+
+VERDICT: ALL PASS (46 of 46)
+```
+
+**The report of the Python program** (`data/hck_lg_lord_checks_python.txt`):
+
+```
+PROJECT spacetimes, Revision_Lord_Gravity: lg_lord.py -- the independent check, in Python, of the Rust program lg_lord (the equations of E. A. Lord (1971) and their association with the SL(2,C) of the project)
+Each line: PASS or FAIL, the identifier of the check (YL-n; the counterparts in the Rust report are named in the text),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YL-1    deviation 0.000e+00 (tolerance 1.0e-13): Section 1: (1.2), (1.3), (1.5), (1.7), (1.10) to (1.15) and (1.17) of Lord hold for his matrices [L1-1 to L1-4, L1-7 to L1-10]
+PASS YL-2    deviation 5.330e-15 (tolerance 1.0e-12): (1.8) to first order with L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu}; for 50 random L the Lambda of (1.8) is a Lorentz matrix and satisfies (1.16) [L1-5, L1-6a, L1-6c]
+PASS YL-2b   the Lambda of (1.8) is proper orthochronous [L1-6b] [50 random L]
+PASS YL-3    deviation 2.665e-14 (tolerance 1.0e-12): (1.22), (1.23): epsilon S = (S^T)^{-1} epsilon; sigma-bar of S sigma S^dag is (S^dag)^{-1} sigma-bar S^{-1}; the transformed sets satisfy (1.3); for any Hermitian set (1.3) holds with N(sigma^a, sigma^b) [L1-11a to L1-13]
+PASS YL-3b   a generic Hermitian set violates (1.3): Lord's 'any linearly independent set' means 'any set S sigma^mu S^dag' [L1-14] [smallest deviation from eta over 20 sets: 1.192]
+PASS YL-4    deviation 7.776e-14 (tolerance 1.0e-09): (4.2) to (4.5): gamma^a(x) = S4 gamma^a S4^{-1}; (4.13), (4.31) corrected: D'_a(T psi) = T D_a psi with Gamma'_a = T Gamma_a T^{-1} + (d_a T) T^{-1} (relative, finite differences) [L4-1, L4-2]
+PASS YL-4b   (4.31) as printed (T d_a T^{-1} read as a product) violates the covariance of d_a - Gamma_a [L4-3] [smallest relative violation: 0.202]
+PASS YL-5    deviation 4.926e-15 (tolerance 1.0e-09): (4.32) corrected: delta a_abc = -(1/g) tr_N[gamma'_bc (d_a T) T^{-1}] [L4-4]
+PASS YL-5b   (4.32) as printed (with tr_N) has the opposite sign of the inhomogeneous term [L4-5] [smallest |printed - true| / |true|: 2.00000000]
+PASS YL-6    deviation 8.619e-13 (tolerance 1.0e-09): (4.19) solved: C_ba^e = 2 g a_ab^e + tr_N[(d_a gamma_b) gamma^e] (real); (4.24) C_bae = -C_eab [L4-6a, L4-6b, L4-7]
+PASS YL-6b   deviation 1.610e-15 (tolerance 1.0e-09): (4.20) as printed with tr = tr_N is exactly half of that C [L4-6c]
+PASS YL-6c   (4.20) as printed with the full trace is not C [L4-6d] [smallest relative deviation of the whole array: 0.5926]
+PASS YL-7    deviation 3.852e-14 (tolerance 1.0e-08): (4.48): [D_mu, D_nu] psi = (d_nu Gamma_mu - d_mu Gamma_nu + [Gamma_mu, Gamma_nu]) psi (nested finite differences) [L4-9]
+PASS YL-7b   deviation 7.006e-15 (tolerance 1.0e-09): the spinor image Gamma_mu = 1/4 omega_{mu ab} gamma^{ab} of a vector connection keeps gamma_b constant, and its curvature is 1/4 R_{mu nu alpha beta} gamma^{alpha beta} [L4-10a, L4-10b]
+PASS YL-7c   the printed coefficient 1/2 of (4.47), (4.48) gives twice the spinor curvature [L4-10c] [smallest relative deviation: 1.00000000]
+PASS YL-8    deviation 4.761e-13 (tolerance 1.0e-11): the dictionary: Lord's sigma, sigma-bar, gamma, C equal the project's; his gamma^5 = -gamma^ch_LL; his diag(S, (S^dag)^{-1}) with S = M_LL(g-tilde) is S_LL(g); M_LL(b-bar) = -epsilon M_LL(b)^T epsilon; the frame g-tilde f g-tilde^dag has Lord's Dirac matrices; his Lambda of M_LL(g-tilde) is L_LL(g)^T [P-1 to P-7]
+PASS YL-9    for 50 random A of SL(2,C), the C with A X C Hermitian for every Hermitian X form a real line, spanned by A^dag (singular values of the real-linear map): the changes of representation that keep the Weyl form are diag(A, +-(A^dag)^{-1}) [P-9] [smallest singular value relative 2.1e-16; second 0.707; null vector minus kappa A^dag 4.6e-16]
+
+Notes:
+  derivatives by central finite differences of eighth order (step 0.01), nested for second derivatives; tolerances 1e-12 for exact matrix identities, 1e-8 to 1e-9 where finite differences enter
+
+VERDICT: ALL PASS (17 of 17)
+```
+
+**The report of the Wolfram script** (`data/hck_lg_lord_checks_wolfram.txt`):
+
+```
+lg_lord.wls: the exact identities and factors of Lord (1971), Sections 1 and 4 (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WL and a number), the statement and, in brackets, the
+facts that decide it.  Exact arithmetic: symbolic matrices, every identity simplified to zero.
+
+PASS WL-1     (Rust L1-1 to L1-4, L1-7 to L1-10; Python YL-1) Lord's identities (1.2), (1.3), (1.5) (256 index combinations), (1.7), (1.10), (1.11), (1.12), (1.13) (both forms), (1.14), (1.15) and (1.17) hold exactly for his matrices [(1.2) True, (1.3) True, (1.5) True, (1.7) True, (1.10)-(1.14) True, (1.15) True, (1.17) True]
+PASS WL-2     (Rust L1-11a, L1-11b; Python YL-3) for S of determinant 1 (symbolic entries): epsilon S = (S^T)^{-1} epsilon; and for any matrix sigma and a second S' of determinant 1, bar(S sigma S') = S'^{-1} bar(sigma) S^{-1}; with S' = S^dag this is (1.23) [epsilon True, (1.23) True]
+PASS WL-3     (Rust L1-13, L1-14; Python YL-3, YL-3b) for any two 2x2 matrices A, B (symbolic entries): 1/2 (A bar(B) + B bar(A)) = N(A, B) 1 with N(A, B) = (det(A + B) - det A - det B)/2, and N(sigma^mu, sigma^nu) = eta^{mu nu}; so (1.3) holds for a set of four matrices exactly when their products N are eta^{ab} [identity True, N of the standard set True]
+PASS WL-4     (Rust L1-5; Python YL-2) (1.8) to first order: with Lambda_mu^nu = delta_mu^nu + eta^{nu rho} lambda_{rho mu} and L = 1 + 1/4 lambda_{mu nu} sigma^{mu nu} (six real symbols), eta^{mu rho} lambda_{rho nu} sigma^nu + X sigma^mu + sigma^mu X^dag = 0 for every mu [True]
+PASS WL-5     (Rust L4-2, L4-3; Python YL-4, YL-4b) for S(t) = ((1 + t^3, t), (t^2, 1)) (determinant 1), a constant Gamma = diag(Y, -Y^dag) of the Lorentz algebra and a spinor of four symbolic functions: D = d - Gamma is covariant with Gamma' = S Gamma S^{-1} + (dS) S^{-1}, and not with the printed inhomogeneous term S (d S^{-1}) [corrected law covariant True, printed law not covariant True]
+PASS WL-6     (Rust L4-6b, L4-6c; Python YL-6, YL-6b) in Lord's special gauge (constant gamma, (5.2)): for Gamma = 1/2 g a_bc gamma^{bc} with six symbolic a_bc, [Gamma, gamma_b] = -2 g a_b^e gamma_e, so (4.19) gives C_b^e = 2 g a_b^e: twice the printed (4.20) and (5.2), C = g a [C = 2 g a: True, in the span of gamma_e: True]
+PASS WL-7     (Rust L4-10a, L4-10b, L4-10c; Python YL-7b, YL-7c) lambda(W) = 1/4 W_{ab} gamma^{ab} (W antisymmetric, symbolic) satisfies [lambda(W), gamma_b] = -W_b^e gamma_e and [lambda(W1), lambda(W2)] = lambda([W1, W2]): a homomorphism of Lie algebras, so the curvature of the spinor connection lambda(W_mu) is lambda(R_{mu nu}) = 1/4 R_{mu nu ab} gamma^{ab} exactly, and Lord's printed 1/2 R gamma is twice it [action on gamma True, homomorphism True]
+
+Notes:
+  Wolfram Language 15.0.1; run time 0.0 s
+
+VERDICT: ALL PASS (7 of 7)
+```
+
+## C.3 The programs of Part III
+
+Three programs check Part III, each independently of the others:
+
+* the Rust program `lg_curved` (`rust/lgcurved/src/main.rs`, with the module `curved.rs` of the library `rust/lgcore`,
+  which computes the geometry of a tetrad, the Dirac operator, the currents and the energy-momentum tensors, the local
+  solutions and the Volkov solution): ALL PASS (57 of 57). Its fields carry exact first and second derivatives by
+  forward-mode automatic differentiation; quantities made from first derivatives of the tetrad (Christoffel symbols,
+  spin connection) carry their first derivatives, and the curvature its value. It writes the numbers that Part III
+  quotes into `data/lg_curved_values.csv`;
+* the Python program `python/lg_curved.py`: ALL PASS (19 of 19). It writes every matrix again, differentiates by central
+  finite differences of eighth order (nested for second derivatives, so that its identities hold to about $10^{-12}$
+  relative and its tolerances are $10^{-9}$), computes the spin connection by (14.6) instead of (14.4), solves the
+  equations of the local solutions all at once, and codes the Volkov solution again;
+* the Wolfram script `wolfram/source/lg_curved.wls`: ALL PASS (6 of 6), in exact arithmetic for the Schwarzschild,
+  Painlevé-Gullstrand and Vaidya space-times, for conformally flat metrics with a symbolic conformal factor, for the
+  variation of the tetrad with sixteen symbolic functions, and for the matrix of the pairing term.
+
+To reproduce, from the folder `Revision_Lord_Gravity`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+(cd rust && cargo build --release && ./target/release/lg_curved) # data/hck_lg_curved_checks.txt, lg_curved_values.csv
+python3 python/lg_curved.py                                       # data/hck_lg_curved_checks_python.txt
+wolframscript -file wolfram/source/lg_curved.wls data/hck_lg_curved_checks_wolfram.txt
+python3 code/scripts/write_lg_curved_fragments.py                # the numbers of Part III
+```
+
+**The report of the Rust program** (`data/hck_lg_curved_checks.txt`):
+
+```
+PROJECT spacetimes, Revision_Lord_Gravity: lg_curved -- the checks of Part III of lord_gravity.md, the gravitational coupling of the brochon by Lord's covariant derivative (tetrad, spin connection, curvature, the Dirac operator of the brochon, its currents and energy-momentum tensor, the quasi-particles of the superfluid)
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS G-1a    deviation 4.441e-16 (tolerance 1.0e-13): the coframe e^a_mu and the frame e_a^mu (Lord's reference vectors h_a^mu) are inverse to each other, and the metric g_{mu nu} = eta_ab e^a_mu e^b_nu is symmetric (values and first derivatives)
+PASS G-1b    deviation 8.882e-16 (tolerance 1.0e-13): g^{mu nu} = eta^{ab} e_a^mu e_b^nu is the inverse of g_{mu nu} (values and first derivatives)
+PASS G-1c    deviation 1.147e-15 (tolerance 1.0e-13): e = det(e^a_mu) satisfies e^2 = -det g (relative, values and first derivatives)
+PASS G-1d    the metric has the signature (+,-,-,-) (one positive and three negative eigenvalues) and e > 0 at every point [8 points]
+PASS G-2     deviation 4.441e-16 (tolerance 1.0e-13): the Dirac matrices of the curved space-time gamma^mu_LG = e_a^mu gamma^a_LL satisfy 1/2 {gamma^mu, gamma^nu} = g^{mu nu} 1 (values and first derivatives)
+PASS G-3a    deviation 0.000e0 (tolerance 1.0e-15): their blocks sigma^mu_LG = e_a^mu sigma_a are Hermitian matrices: the matrices M_LL of four Hermitian bi-quaternions, four points of M31 at every point of the curved space-time
+PASS G-3b    deviation 5.829e-16 (tolerance 1.0e-13): N_LG(sigma^mu_LG, sigma^nu_LG) = g^{mu nu}: the Minkowski products of the four points are the inverse metric (the case 'N = g' of Section 2.4)
+PASS G-3c    deviation 0.000e0 (tolerance 1.0e-15): Lord's (5.2), gamma = ((0, sigma), (sigma-bar, 0)) with his bar, builds gamma^mu_LG from sigma^mu_LG (values and first derivatives)
+PASS G-4a    deviation 1.110e-16 (tolerance 1.0e-14): the Christoffel symbols are symmetric, Gamma^rho_{mu nu} = Gamma^rho_{nu mu}
+PASS G-4b    deviation 5.412e-16 (tolerance 1.0e-13): the Christoffel symbols are compatible with the metric, d_la g_{mu nu} - Gamma^ka_{la mu} g_{ka nu} - Gamma^ka_{la nu} g_{mu ka} = 0 (values and first derivatives)
+PASS G-5a    deviation 7.216e-16 (tolerance 1.0e-13): the spin connection of the tetrad postulate is antisymmetric, omega_{mu ab} = -omega_{mu ba} (values and first derivatives)
+PASS G-5b    deviation 3.678e-16 (tolerance 1.0e-13): the tetrad postulate holds for the coframe as well: d_mu e^a_nu - Gamma^la_{mu nu} e^a_la + omega_mu^a_b e^b_nu = 0
+PASS G-5c    deviation 4.857e-16 (tolerance 1.0e-13): no torsion: d_mu e^a_nu - d_nu e^a_mu + omega_mu^a_b e^b_nu - omega_nu^a_b e^b_mu = 0
+PASS G-6     deviation 7.216e-16 (tolerance 1.0e-13): the Dirac matrices are covariantly constant, d_mu gamma^nu + Gamma^nu_{mu la} gamma^la + [Omega_mu, gamma^nu] = 0 with Omega_mu = 1/4 omega_{mu ab} gamma^{ab} (Lord's (5.7) in coordinates; values and first derivatives)
+PASS G-8a    deviation 4.690e-16 (tolerance 1.0e-12): the spinor curvature d_mu Omega_nu - d_nu Omega_mu + [Omega_mu, Omega_nu] = 1/4 R_{ab mu nu} gamma^{ab}, with R_{ab mu nu} = eta_aa e^a_rho e_b^sigma R^rho_{sigma mu nu} the Riemann tensor of the metric (relative to the largest component of the Riemann tensor)
+PASS G-8b    Lord's printed (4.47), (4.48), 1/2 R gamma, is twice the spinor curvature of the metric [smallest relative deviation of the printed form: 1.0000 (1 for a factor 2)]
+PASS G-9a    deviation 1.518e-15 (tolerance 1.0e-12): R_{rho sigma mu nu} = -R_{sigma rho mu nu} (relative)
+PASS G-9b    deviation 1.412e-15 (tolerance 1.0e-12): R_{rho sigma mu nu} = R_{mu nu rho sigma} (relative)
+PASS G-9c    deviation 5.604e-16 (tolerance 1.0e-12): the first Bianchi identity R_{rho sigma mu nu} + R_{rho mu nu sigma} + R_{rho nu sigma mu} = 0 (relative)
+PASS G-9d    deviation 5.968e-16 (tolerance 1.0e-12): the Ricci tensor R_{sigma nu} = R^rho_{sigma rho nu} is symmetric (relative)
+PASS G-9e    deviation 1.185e-15 (tolerance 1.0e-12): the curvature of the spin connection is the Riemann tensor of the metric in the frame, R^a_{b mu nu} = e^a_rho e_b^sigma R^rho_{sigma mu nu} (relative)
+PASS G-7a    deviation 2.220e-16 (tolerance 1.0e-13): Lord's non-commuting derivatives (4.6) are the frame derivatives of the tetrad, d_a = e_a^mu d_mu: [d_a, d_b] f = X_ab^c d_c f with X_ab^c = e^c_nu (d_a e_b^nu - d_b e_a^nu) (a random test function f)
+PASS G-7b    deviation 3.192e-16 (tolerance 1.0e-13): Lord's compatibility (5.7) in his special gauge (constant gamma^a): with Gamma^Lord_a = -e_a^mu Omega_mu and C_ba^e = e_a^mu omega_mu^e_b, -[Gamma^Lord_a, gamma_b] - C_ba^e gamma_e = 0
+PASS G-7c    deviation 2.927e-16 (tolerance 1.0e-13): Lord's coefficients a_abc of (5.4), a_abc = -(1/(4 g)) tr(gamma_bc Gamma^Lord_a), satisfy the corrected (5.8) C_ba^e = 2 g a_ab^e: g a_abc = -1/2 omega_abc with omega_abc = e_a^mu omega_{mu bc}
+PASS G-7d    the printed (4.20), C = g a in the special gauge, is half of the connection of the tetrad [smallest relative deviation |g a - C| / |C|: 0.5000 (0.5 for a factor 1/2)]
+PASS G-7e    deviation 3.331e-16 (tolerance 1.0e-13): Lord's vanishing torsion: the commutator coefficients of the frame derivatives are X_ab^c = C_ba^c - C_ab^c
+PASS G-10a   deviation 5.864e-16 (tolerance 1.0e-12): the square of the Dirac operator of the brochon (Lichnerowicz): Dslash Dslash Psi = Box Psi - R/4 Psi + i/2 gamma^{mu nu} (g^v W_{mu nu} + g^F B_{mu nu}) Psi, with Box = g^{mu nu} nabla_mu nabla_nu, in a curved space-time with non-abelian gauge fields (relative to the largest term)
+PASS G-10b   with Lord's printed spinor curvature 1/2 R gamma, the scalar term would be -R/2 Psi: the form -R/4 is decided [smallest deviation of the form -R/2 relative to |R/4 Psi|: 1.0000 (1 for a factor 2)]
+PASS G-11a   deviation 1.388e-15 (tolerance 1.0e-13): a local Lorentz rotation of the tetrad, e'^a_mu = Lambda^a_b(x) e^b_mu with S4^{-1} gamma^a S4 = Lambda^a_b gamma^b, S4 = diag(S, (S^dag)^{-1}) for a random field S of SL(2,C), leaves the metric unchanged
+PASS G-11b   deviation 3.461e-15 (tolerance 1.0e-12): the Dirac operator of the brochon is covariant: Dslash' (S4 Psi) = S4 Dslash Psi, with the spin connection of the rotated tetrad (relative, values and first derivatives)
+PASS G-11c   deviation 2.665e-15 (tolerance 1.0e-13): Lord's form of the same transformation, gamma^a -> S4 gamma^a S4^{-1} with the tetrad fixed, gives the Dirac matrices of the rotated tetrad: S4 gamma^mu S4^{-1} = e'_a^mu gamma^a (values and first derivatives)
+PASS G-11d   deviation 3.463e-15 (tolerance 1.0e-12): and the law of GEE (= Lord's corrected (5.5) with Gamma^Lord = -Omega), Omega' = S4 Omega S4^{-1} - (d S4) S4^{-1}, gives the spin connection of the rotated tetrad (values and first derivatives)
+PASS G-12a   deviation 0.000e0 (tolerance 1.0e-14): gamma^0_LL (gamma^mu_LG)^dag gamma^0_LL = gamma^mu_LG: the Dirac adjoint is formed with the constant gamma^0 of the frame
+PASS G-12b   deviation 0.000e0 (tolerance 1.0e-14): gamma^0_LL Omega_mu^dag gamma^0_LL = -Omega_mu, so (nabla Psi)-bar = d Psi-bar - Psi-bar Omega
+PASS G-12c   deviation 1.012e-15 (tolerance 1.0e-12): the identity nabla_mu j^{F,mu} = i (E-bar Psi - Psi-bar E), E = i Dslash Psi - m Psi, for random Psi (off shell): every solution of the field equation conserves the fermion-number current in any curved space-time (relative)
+PASS G-12d   deviation 6.815e-16 (tolerance 1.0e-12): the same for the isospin currents with the covariant divergence of SU(2)_v: nabla_mu j^{iota,mu} - g^v eps_{iota i' i''} W^i'_mu j^{i'' mu} = i (E-bar T^iota Psi - Psi-bar T^iota E) (relative)
+PASS G-13a   deviation 5.544e-16 (tolerance 1.0e-13): local solutions of the Dirac equation of the brochon in a curved space-time with non-abelian gauge fields and the mass m_LL (the Taylor data at a point completed so that E and its first derivatives vanish there; residual relative to the field)
+PASS G-13b   deviation 1.158e-15 (tolerance 1.0e-12): for them nabla_mu T^{mu nu} = g^v W^iota nu_la j^{iota la} + g^F B^nu_la j^{F la}: the energy-momentum tensor of the brochon changes only by the work of the gauge fields (relative to the largest component of T and its derivatives)
+PASS G-13c   deviation 1.167e-15 (tolerance 1.0e-12): and the trace g^{mu nu} T_{mu nu} = m_LL Psi-bar Psi: T is traceless exactly for the massless brochon (relative)
+PASS G-13d   deviation 8.698e-16 (tolerance 1.0e-12): and nabla_mu j^{F,mu} = 0 (relative)
+PASS G-14a   deviation 1.003e-15 (tolerance 1.0e-12): the Volkov solution of the brochon in a plane wave of the zeugon, written in random curvilinear coordinates of flat space-time and a random local Lorentz frame, solves the Dirac equation with the mass m_LL and the coupling g^v Q_LL (relative residual, values and first derivatives)
+PASS G-14b   deviation 6.556e-16 (tolerance 1.0e-12): its fermion-number current is conserved (relative)
+PASS G-14c   deviation 1.458e-15 (tolerance 1.0e-12): its energy-momentum tensor changes by the force of the zeugon on the isospin current, nabla_mu T^{mu nu} = g^v A^nu_la j^{3 la} (relative)
+PASS G-14d   deviation 1.775e-15 (tolerance 1.0e-12): the energy-momentum tensor of the free zeugon wave is conserved (relative)
+PASS G-15a   deviation 2.530e-15 (tolerance 1.0e-12): conformal invariance of the massless brochon: in the curved space-time g = Omega^2 eta (Omega = exp(phi(x)) random, R != 0) with a random local frame S, Psi = Omega^{-3/2} S4 Psi_flat solves the massless Dirac equation when Psi_flat is the flat Volkov solution in the zeugon wave (relative residual)
+PASS G-15b   deviation 9.291e-16 (tolerance 1.0e-12): its current is conserved (relative)
+PASS G-15c   deviation 1.631e-15 (tolerance 1.0e-12): nabla_mu T^{mu nu} = the force of the zeugon (relative)
+PASS G-15d   deviation 1.528e-15 (tolerance 1.0e-12): T is traceless (relative)
+PASS G-15e   deviation 1.245e-15 (tolerance 1.0e-12): the zeugon wave, a solution of Maxwell's equations in any conformally flat space-time, has a conserved and traceless energy-momentum tensor (relative)
+PASS G-16    deviation 8.543e-16 (tolerance 1.0e-12): the energy-momentum tensor of the gauge fields in a curved space-time satisfies nabla_mu T^{mu nu}_YM = -g^{nu ka} (W^iota_{ka la} Y^{iota la} + B_{ka la} Y^{F la}), with Y the left sides of the Yang-Mills equations (for random fields, off shell); with Y = g^v j^iota, g^F j^F it cancels the force of G-13b, so the total tensor of the brochon and the gauge fields is conserved, as Einstein's equations require (relative)
+PASS G-17a   deviation 0.000e0 (tolerance 1.0e-13): the antilinear map C Psi = (gamma^0 (x) 1_2)(K^3_LL)^dag Psi^* of the pairing term of the polar superfluid commutes with nabla_mu and anticommutes with i Dslash in a curved space-time with the zeugon (relative, values and first derivatives)
+PASS G-17b   with the massive gauge fields W^1 (or W^2) and B the anticommutation fails: the zeugon is the only gauge field with which the pairing term is covariant [smallest relative deviation with W^1 and B: 2.462e-1]
+PASS G-17c   deviation 0.000e0 (tolerance 1.0e-15): C^2 = -1 (relative)
+PASS G-17d   deviation 7.034e-16 (tolerance 1.0e-13): C is covariant under local Lorentz transformations, C (S4 Psi) = S4 C Psi (relative)
+PASS G-17e   deviation 8.218e-16 (tolerance 1.0e-13): local solutions of the quasi-particle equation i Dslash Psi = M Psi + D C Psi in a curved space-time with the zeugon (M = 0.1622929325, |D| = 0.3284861084, the polar ground state of CJT; residual relative to the field)
+PASS G-17f   deviation 9.370e-15 (tolerance 1.0e-12): for them (i Dslash)^2 Psi = (M^2 + |D|^2) Psi = E_gap^2 Psi, E_gap = 0.3663906649: the quasi-particle of the superfluid is a spin-1/2 particle of mass E_gap in any gravitational field (relative)
+PASS G-17g   deviation 6.860e-15 (tolerance 1.0e-12): and with the square of the Dirac operator (G-10): Box Psi + E_gap^2 Psi - R/4 Psi + i/2 g^v gamma^{mu nu} A_{mu nu} T^3 Psi = 0, A = W^3 the zeugon (relative)
+
+Notes:
+  8 random points per check; random tetrads e^a_mu = delta + 0.25 r(x), gauge fields of size 0.3, g^v = 0.7, g^F = 0.45, m_LL = 0.2; exact first and second derivatives (automatic differentiation); tolerances: identities of matrices 1e-13 to 1e-11 (rounding, relative where stated); a check that a printed form fails passes when it fails by the stated amount
+  the random tetrads are curved: |R| from 1.390e-1 to 2.759e0, largest component of the Riemann tensor 3.944e-1
+  the conformally flat space-times of G-15 are curved: |R| from 1.948e-1 to 1.246e0
+
+VERDICT: ALL PASS (57 of 57)
+```
+
+**The report of the Python program** (`data/hck_lg_curved_checks_python.txt`):
+
+```
+PROJECT spacetimes, Revision_Lord_Gravity: lg_curved.py -- the independent check (Python, finite differences) of Part III of lord_gravity.md, the gravitational coupling of the brochon
+Each line: PASS or FAIL, the identifier of the check (YG and a number; the counterparts of the Rust program lg_curved in brackets),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YG-1a   deviation 4.441e-16 (tolerance 1.0e-12): [G-2] 1/2 {gamma^mu, gamma^nu} = g^{mu nu} for the curved Dirac matrices gamma^mu = e_a^mu gamma^a
+PASS YG-1b   deviation 1.110e-15 (tolerance 1.0e-12): [G-3b] N_LG(sigma^mu, sigma^nu) = g^{mu nu}, sigma^mu = e_a^mu sigma_a
+PASS YG-2a   deviation 3.549e-14 (tolerance 1.0e-09): [G-5] the spin connection from the anholonomy of the tetrad (no Christoffel symbols) equals that of the tetrad postulate with the Christoffel symbols
+PASS YG-2b   deviation 6.861e-14 (tolerance 1.0e-09): [G-6] d_mu gamma^nu + Gamma^nu_{mu la} gamma^la + [Omega_mu, gamma^nu] = 0
+PASS YG-3a   deviation 4.662e-12 (tolerance 1.0e-09): [G-8a] d_mu Omega_nu - d_nu Omega_mu + [Omega_mu, Omega_nu] = 1/4 R_{ab mu nu} gamma^{ab} with the Riemann tensor of the metric (nested differences; relative)
+PASS YG-3b   [G-8b] Lord's printed 1/2 R gamma is twice the spinor curvature [smallest relative deviation 1.0000 (1 for a factor 2)]
+PASS YG-4    deviation 3.978e-13 (tolerance 1.0e-09): [G-10a] Dslash Dslash Psi = Box Psi - R/4 Psi + i/2 gamma^{mu nu} (g^v W_{mu nu} + g^F B_{mu nu}) Psi in a curved space-time with non-abelian gauge fields (nested differences; relative)
+PASS YG-5    deviation 4.121e-13 (tolerance 1.0e-09): [G-12c] nabla_mu j^{F,mu} = i (E-bar Psi - Psi-bar E) for random Psi (relative)
+PASS YG-6a   deviation 5.975e-12 (tolerance 1.0e-09): [G-13a] local solutions of the Dirac equation (all 40 unknown Taylor coefficients solved at once; residual relative to the field)
+PASS YG-6b   deviation 1.265e-12 (tolerance 1.0e-09): [G-13b] nabla_mu T^{mu nu} = g^v W^iota nu_la j^{iota la} + g^F B^nu_la j^{F la} (relative)
+PASS YG-6c   deviation 9.899e-14 (tolerance 1.0e-09): [G-13c] g^{mu nu} T_{mu nu} = m_LL Psi-bar Psi (relative)
+PASS YG-7a   deviation 2.251e-13 (tolerance 1.0e-09): [G-15a] in g = Omega^2 eta with a random local frame, Omega^{-3/2} S Psi_flat (Volkov, massless) solves the massless Dirac equation with the zeugon wave (relative residual)
+PASS YG-7b   deviation 4.649e-12 (tolerance 1.0e-09): [G-15c] nabla_mu T^{mu nu} = the force of the zeugon (relative)
+PASS YG-7c   deviation 1.586e-13 (tolerance 1.0e-09): [G-15d] T is traceless (relative)
+PASS YG-8a   deviation 2.802e-16 (tolerance 1.0e-09): [G-17a] C Psi = (gamma^0 (x) 1_2)(K^3)^dag Psi^* anticommutes with i Dslash in a curved space-time with the zeugon (relative)
+PASS YG-8b   deviation 0.000e+00 (tolerance 1.0e-14): [G-17c] C^2 = -1
+PASS YG-8c   deviation 1.111e-11 (tolerance 1.0e-09): [G-17e] local solutions of i Dslash Psi = M Psi + D C Psi (the antilinear equations solved for the real and imaginary parts; residual relative to the field)
+PASS YG-8d   deviation 4.740e-11 (tolerance 1.0e-08): [G-17f] (i Dslash)^2 Psi = (M^2 + |D|^2) Psi for them, E_gap = 0.3663906649 (relative)
+PASS YG-9    deviation 1.405e-13 (tolerance 1.0e-09): [G-11d] the spin connection of the rotated tetrad Lambda e equals S4 Omega S4^{-1} - (d S4) S4^{-1} (the law of GEE, Lord's corrected (5.5))
+
+Notes:
+  4 random points per check; finite differences of eighth order with the step 1e-2 (nested for second derivatives), so that identities hold to about 1e-12 relative; tolerances 1e-9
+
+VERDICT: ALL PASS (19 of 19)
+```
+
+**The report of the Wolfram script** (`data/hck_lg_curved_checks_wolfram.txt`):
+
+```
+lg_curved.wls: the exact checks of Part III of lord_gravity.md, the gravitational coupling of the brochon (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WG and a number), the statement and, in brackets, the
+facts that decide it.  Exact arithmetic: symbolic metrics, tetrads and fields, every identity simplified to zero.
+
+PASS WG-1     (Rust G-4 to G-9; Python YG-2, YG-3) Schwarzschild, f = 1 - 2M/r, coframe e^0 = f^{1/2} dt, e^1 = f^{-1/2} dr, e^2 = r dth, e^3 = r sin(th) dph: Ricci tensor zero; Kretschmann invariant 48 M^2/r^6; Omega_t = M/(2 r^2) gamma^0 gamma^1, Omega_r = 0, Omega_th = 1/2 f^{1/2} gamma^1 gamma^2, Omega_ph = 1/2 (f^{1/2} sin(th) gamma^1 gamma^3 + cos(th) gamma^2 gamma^3); d_mu gamma^nu + Gamma^nu_{mu la} gamma^la + [Omega_mu, gamma^nu] = 0; spinor curvature = 1/4 R_{ab mu nu} gamma^{ab} (for every static, spherically symmetric tetrad diag(h(r), 1/h(r), r, r sin th) with a symbolic function h) [Ricci 0 True, Kretschmann True, Omega True, nabla gamma True, curvature True]
+PASS WG-2     (Rust G-4 to G-9; Python YG-2, YG-3) Painleve-Gullstrand, v = (2M/r)^{1/2}, coframe e^0 = dT, e^1 = dr + v dT, e^2 = r dth, e^3 = r sin(th) dph (the frame of the observers falling freely from rest at infinity): the metric is Schwarzschild's under T = t + int v/f dr; Ricci zero; Omega_T = M/(2 r^2) gamma^0 gamma^1, Omega_r = v/(4 r) gamma^0 gamma^1, Omega_th = 1/2 (-v gamma^0 gamma^2 + gamma^1 gamma^2), Omega_ph = 1/2 (-v sin(th) gamma^0 gamma^3 + sin(th) gamma^1 gamma^3 + cos(th) gamma^2 gamma^3); nabla gamma = 0; spinor curvature = 1/4 R gamma; the frame, the Christoffel symbols and Omega are finite at r = 2M, where g_TT = 0 [pull-back True, Ricci 0 True, Omega True, nabla gamma True, curvature True, regular at 2M True]
+PASS WG-3     Vaidya, ingoing: ds^2 = (1 - 2M(v)/r) dv^2 - 2 dv dr - r^2 dOmega^2: G_{mu nu} = 8 pi rho l_mu l_nu with l = dv and rho = M'(v)/(4 pi r^2) (null dust falling in), R = 0; outgoing: ds^2 = (1 - 2M(u)/r) du^2 + 2 du dr - r^2 dOmega^2: G_{mu nu} = 8 pi rho k_mu k_nu with k = du and rho = -M'(u)/(4 pi r^2) (null dust radiated, positive for M' < 0), R = 0 [ingoing True, outgoing True]
+PASS WG-4     (Rust G-10, G-15; Python YG-4, YG-7) g = Omega^2 eta with Omega = exp(phi(x)), phi a symbolic function, coframe Omega delta, spinor of four symbolic functions: Dslash (Omega^{-3/2} psi) = Omega^{-5/2} dslash psi (the massless brochon is conformally invariant); Dslash Dslash psi = Box psi - R/4 psi (Lichnerowicz), not Box psi - R/2 psi (Lord's printed coefficient); R is not zero [conformal True, -R/4 True, -R/2 fails True, R != 0 True]
+PASS WG-5     (Rust G-13; Python YG-6) the energy-momentum tensor of the brochon from the variation of the action e [i/2 (psi-bar gamma^mu nabla_mu psi - (nabla_mu psi)-bar gamma^mu psi) - m psi-bar psi] with respect to the tetrad, at first order about flat space-time (e_a^mu = delta + eps h_{a mu}, sixteen symbolic functions h; symbolic psi and psi-bar): the symmetric part of Theta_{mu nu} = (dS/de_a^mu) eta_{a nu} is exactly T_{mu nu} = i/4 (psi-bar gamma_mu d_nu psi + psi-bar gamma_nu d_mu psi - d_mu psi-bar gamma_nu psi - d_nu psi-bar gamma_mu psi) - eta_{mu nu} L, off shell; the antisymmetric part is not zero off shell and vanishes on a solution (two plane waves of mass 3) [symmetric part = T True, solution True, antisymmetric part 0 on shell True, and not off shell True]
+PASS WG-6     (Rust G-17; Python YG-8) the pairing term of the polar superfluid, C psi = P conj(psi) with P = (gamma^0 (x) 1_2)(K^3_LL)^dag, K^3_LL = C_LL gamma^ch_LL (x) E_LL tau_3: P conj(gamma^a) = gamma^a P (so C anticommutes with i gamma^mu, real tetrad), P conj(P) = -1 (C^2 = -1), P conj(Omega) = Omega P for every Omega = 1/4 w_{ab} gamma^{ab} of the Lorentz algebra (w real symbols), and P conj(i t) = i t P for the generator t = T^3 of the zeugon but not for T^1, T^2 or the fermion number [gamma True, C^2 = -1 True, Lorentz True, T^3 True, not T^1 True, not T^2 True, not F True]
+
+Notes:
+  Wolfram Language 15.0.1; run time 0.7 s
+
+VERDICT: ALL PASS (6 of 6)
+```
+
+## C.4 The programs of the worked examples
+
+The examples of Sections 2.4, 11.1, 16.1 and of Appendix B (Lord's change of
+representation by a boost and its frame, a set of four Hermitian matrices that is not a representation, the plane wave of the
+brochon with its current and its energy-momentum tensor, and the quasi-particles and the gap equation of the polar ground
+state) are computed and checked by three programs, each independently of the others:
+
+* the Rust program `lg_worked` (`rust/lgworked/src/main.rs`): VERDICT: ALL PASS (30 of 30). The rational examples are dyadic fractions,
+  which double precision represents exactly; it computes them with the functions of the library `rust/lgcore` that the other
+  programs use (the plane wave with the functions of Part III for the Dirac operator, the current and the energy-momentum
+  tensor), prints them as exact fractions into `data/lg_worked_values.csv`, and checks that no printed value is rounded (LW-0);
+  the quasi-particles with the printed Dirac mass and pair amplitude of Appendix B.5, read from the fragment file
+  `provenance/generated/lg_examples.md`;
+* the Python program `python/lg_worked.py`: VERDICT: ALL PASS (28 of 28); it writes every matrix again, computes the rational examples
+  in exact arithmetic (sympy), the energy-momentum tensor of the plane wave from the formula (16.2) with symbolic coordinates, the
+  eigenvalues of the Bogoliubov-de Gennes matrix with numpy, and the integral of the gap equation with mpmath;
+* the Wolfram script `wolfram/source/lg_worked.wls`: VERDICT: ALL PASS (5 of 5), symbolically, including the square of the
+  Bogoliubov-de Gennes matrix for symbolic momentum, Dirac mass and pair amplitude.
+
+To reproduce, from the folder `Revision_Lord_Gravity`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+python3 code/scripts/write_lg_examples_fragments.py               # the numbers of the appendices (read by lg_worked)
+(cd rust && cargo build --release && ./target/release/lg_worked) # data/hck_lg_worked_checks.txt, lg_worked_values.csv
+python3 python/lg_worked.py                                       # data/hck_lg_worked_checks_python.txt
+wolframscript -file wolfram/source/lg_worked.wls provenance/generated/lg_examples.md data/hck_lg_worked_checks_wolfram.txt
+python3 code/scripts/write_lg_worked_fragments.py                # the fragments of the worked examples
+```
+
+**The report of the Rust program** (`data/hck_lg_worked_checks.txt`):
+
+```
+lg_worked: the worked examples of the manuscript lord_gravity (Revision_Lord_Gravity, PROJECT spacetimes); hbar = c = 1
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS LW-1a   deviation 0.000e0 (tolerance 0.0e0): Lord's change of representation by S = M_LL(gtilde) of the boost g = (5/4) e_0 + (3/4) i e_3: S = diag(1/2, 2) = (M_LL(g)^dag)^{-1}, and the four matrices sigma'_mu = S sigma_mu S^dag are diag(1/4, 4), sigma_1, sigma_2, diag(1/4, -4) (largest deviation of an entry)
+PASS LW-1b   deviation 0.000e0 (tolerance 0.0e0): the four matrices sigma'_mu are Hermitian
+PASS LW-1c   deviation 0.000e0 (tolerance 0.0e0): their bars (the adjugates (1.1), Lord's definition -eps X^T eps) are (S^dag)^{-1} bar(sigma_mu) S^{-1}
+PASS LW-1d   deviation 0.000e0 (tolerance 0.0e0): their polarized determinants (2.7) are N_LG(sigma'_a, sigma'_b) = eta_ab
+PASS LW-2a   deviation 0.000e0 (tolerance 0.0e0): its 4 x 4 form S4 = diag(S, (S^dag)^{-1}) = diag(1/2, 2, 2, 1/2) is the spinor matrix S_LL(g) of (9.3), and diag(S^{-1}, S^dag) is its inverse
+PASS LW-2b   deviation 0.000e0 (tolerance 0.0e0): Lord's Dirac matrices of the new set, gamma'^a = ((0, sigma'_a), (bar sigma'_a, 0)) (his (4.5)), equal S4 gamma^a S4^{-1}
+PASS LW-2c   deviation 0.000e0 (tolerance 0.0e0): they obey the Clifford relation (1/2){gamma'^a, gamma'^b} = eta^{ab} 1_4
+PASS LW-2d   deviation 0.000e0 (tolerance 0.0e0): the Lorentz matrix (9.2) of the boost is L = ((17/8, 0, 0, 15/8), (0, 1, 0, 0), (0, 0, 1, 0), (15/8, 0, 0, 17/8)), and L^{-1} is the boost with -15/8 in place of 15/8
+PASS LW-2e   deviation 0.000e0 (tolerance 0.0e0): gamma'^a = sum_b (L^{-1})_{ab} gamma^b: gamma'^0 = (17/8) gamma^0 - (15/8) gamma^3 and gamma'^3 = -(15/8) gamma^0 + (17/8) gamma^3 (a change of representation by S4 is the Lorentz transformation L^{-1} of the Dirac matrices)
+PASS LW-2f   deviation 0.000e0 (tolerance 0.0e0): (9.3) for the boost: S_LL(g)^{-1} gamma^p S_LL(g) = sum_p' L_{pp'} gamma^p', with S_LL(g)^{-1} = diag(M^dag, M^{-1}) (the product S_LL(g) S_LL(g)^{-1} deviates from 1 by the second number)
+PASS LW-3a   deviation 0.000e0 (tolerance 0.0e0): the four Hermitian bi-quaternions f'_a with M_LL(f'_a) = sigma'_a are the points (17/8, 0, 0, -15/8), (0, 1, 0, 0), (0, 0, 1, 0), (-15/8, 0, 0, 17/8) of M31
+PASS LW-3b   deviation 0.000e0 (tolerance 0.0e0): their polarized norms are N_LL(f'_a, f'_b) = eta_ab: an orthonormal frame of M31
+PASS LW-3c   deviation 0.000e0 (tolerance 1.0e-16): f'_0 is the four-velocity of an observer who moves with the velocity -15/17 along x^3 (x^3/x^0 of f'_0)
+PASS LW-4a   deviation 0.000e0 (tolerance 0.0e0): the set sigma'' = (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2) consists of Hermitian matrices with real coefficients in the basis sigma_mu
+PASS LW-4b   deviation 0.000e0 (tolerance 0.0e0): the four are linearly independent: the determinant of the 4 x 4 matrix of their coefficients is 1
+PASS LW-4c   deviation 0.000e0 (tolerance 0.0e0): but N_LG(sigma''_0, sigma''_3) = 1/2 instead of eta_03 = 0
+PASS LW-4d   deviation 0.000e0 (tolerance 0.0e0): and the anticommutator (1/2){gamma''^0, gamma''^3} of Lord's Dirac matrices of the set is (1/2) 1_4 instead of 0: the Clifford relation fails
+PASS LW-5a   deviation 0.000e0 (tolerance 0.0e0): the spinor of Appendix A.5: S_LL(g)(1, 0, 1, 0) = (1/2, 0, 2, 0) for the boost g
+PASS LW-5b   deviation 0.000e0 (tolerance 0.0e0): it is a plane-wave spinor of mass 1 and momentum p = (17/8, 0, 0, 15/8): (gamma^mu p_mu - m) u = 0 exactly
+PASS LW-5c   deviation 1.616e-16 (tolerance 1.0e-14): at 12 random points the brochon Psi = (u (x) (1, 0)) e^{-i p.x} solves the free field equation in flat space-time (library function dirac_resid of Part III; canonical tetrad, no gauge fields; relative residual of the values and first derivatives)
+PASS LW-5d   deviation 8.882e-16 (tolerance 1.0e-13): its fermion-number current (library function currents) is j^mu = (17/4, 0, 0, 15/4) = 2 p^mu at every point
+PASS LW-5e   deviation 1.554e-15 (tolerance 1.0e-13): its Lagrangian density (15.3) (library function lagr8) vanishes
+PASS LW-5f   deviation 1.776e-15 (tolerance 1.0e-13): its energy-momentum tensor (16.2) (library function stress8, indices raised) is T^{mu nu} = 2 p^mu p^nu: T^00 = 289/32, T^03 = 255/32, T^33 = 225/32, the other components 0
+PASS LW-5g   deviation 5.329e-15 (tolerance 1.0e-13): its trace eta_{mu nu} T^{mu nu} equals m Psi-bar Psi = 2
+PASS LW-6a   deviation 1.776e-15 (tolerance 1.0e-13): with the printed M = M^{CJT,D}_SF and |D| = |D^CJT_SF|, the 16 x 16 Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy |D| (K^3_LL)^dag has the eigenvalues -E(q) and +E(q) eight times each, E(q) = (|q|^2 + M^2 + |D|^2)^{1/2}, at the momenta (0, 0, 0), (0, 0, 0.3), (0.3, -0.4, 0.5), (0, 0, 1), (0.6, 0.1, -0.7) (largest deviation of an eigenvalue)
+PASS LW-6b   deviation 9.446e-11 (tolerance 2.0e-10): E(0) = (M^2 + |D|^2)^{1/2} equals the printed gap E^{CJT,gap}_SF (relative; the printed numbers have ten digits)
+PASS LW-7a   deviation 5.551e-17 (tolerance 1.0e-14): the integral I^(1)(M) = int_0^1 q^2 dq/(q^2 + M^2)^{1/2} of (A.19): its closed form equals the Gauss-Legendre rule of 64 points at M = E^{CJT,gap}_SF and at M = m_LL = 0.2
+PASS LW-7b   deviation 4.333e-12 (tolerance 1.0e-8): the gap equation of the polar state: g^{CJT,P}_SF I^(1)(E^{CJT,gap}_SF)/pi^2 = 1 with g^{CJT,P}_SF = 23.7 and the printed gap (the printed numbers have ten digits)
+PASS LW-7c   deviation 2.091e-10 (tolerance 1.0e-9): pi^2/I^(1)(m_LL) for m_LL = 0.2 equals the printed critical coupling G^crit_LL (relative)
+PASS LW-0    every value printed as exact (LW-1 to LW-5) is an exact dyadic fraction (no rounding) [0 values not exact]
+
+VERDICT: ALL PASS (30 of 30)
+```
+
+**The report of the Python program** (`data/hck_lg_worked_checks_python.txt`):
+
+```
+lg_worked.py: the worked examples of the manuscript lord_gravity, a second computation (exact where rational; Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check (the same identifier as in the Rust program),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YW-1a   deviation 0.000e+00 (tolerance 0.0e+00): S = M_LL(gtilde) = diag(1/2, 2) = (M_LL(g)^dag)^{-1}, sigma'_mu = S sigma_mu S^dag = diag(1/4, 4), sigma_1, sigma_2, diag(1/4, -4) (exact)
+PASS YW-1b   deviation 0.000e+00 (tolerance 0.0e+00): the sigma'_mu are Hermitian (exact)
+PASS YW-1c   deviation 0.000e+00 (tolerance 0.0e+00): their bars are (S^dag)^{-1} bar(sigma_mu) S^{-1} (exact)
+PASS YW-1d   deviation 0.000e+00 (tolerance 0.0e+00): N_LG(sigma'_a, sigma'_b) = eta_ab (exact)
+PASS YW-2a   deviation 0.000e+00 (tolerance 0.0e+00): S4 = diag(S, (S^dag)^{-1}) = diag(1/2, 2, 2, 1/2) = S_LL(g) (exact)
+PASS YW-2b   deviation 0.000e+00 (tolerance 0.0e+00): gamma'^a = ((0, sigma'_a), (bar sigma'_a, 0)) = S4 gamma^a S4^{-1} (exact)
+PASS YW-2c   deviation 0.000e+00 (tolerance 0.0e+00): the Clifford relation (1/2){gamma'^a, gamma'^b} = eta^{ab} 1_4 (exact)
+PASS YW-2d   deviation 0.000e+00 (tolerance 0.0e+00): the Lorentz matrix of the boost is ((17/8, 0, 0, 15/8), (0, 1, 0, 0), (0, 0, 1, 0), (15/8, 0, 0, 17/8)), and its inverse has -15/8 in place of 15/8 (exact)
+PASS YW-2e   deviation 0.000e+00 (tolerance 0.0e+00): gamma'^a = sum_b (L^{-1})_{ab} gamma^b (exact)
+PASS YW-2f   deviation 0.000e+00 (tolerance 0.0e+00): (9.3): S_LL(g)^{-1} gamma^p S_LL(g) = sum_q L_pq gamma^q (exact)
+PASS YW-3a   deviation 0.000e+00 (tolerance 0.0e+00): the points f'_a of M31 with M_LL(f'_a) = sigma'_a are (17/8, 0, 0, -15/8), (0, 1, 0, 0), (0, 0, 1, 0), (-15/8, 0, 0, 17/8) (exact)
+PASS YW-3b   deviation 0.000e+00 (tolerance 0.0e+00): they are orthonormal: their Minkowski products are eta_ab (exact)
+PASS YW-3c   deviation 0.000e+00 (tolerance 0.0e+00): the velocity x^3/x^0 of f'_0 is -15/17 (exact)
+PASS YW-4a   deviation 0.000e+00 (tolerance 0.0e+00): the set (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2) is Hermitian with real coefficients (exact)
+PASS YW-4b   deviation 0.000e+00 (tolerance 0.0e+00): the determinant of the matrix of their coefficients is 1: they are linearly independent (exact)
+PASS YW-4c   deviation 0.000e+00 (tolerance 0.0e+00): N_LG(sigma''_0, sigma''_3) = 1/2 (exact)
+PASS YW-4d   deviation 0.000e+00 (tolerance 0.0e+00): (1/2){gamma''^0, gamma''^3} = (1/2) 1_4: the Clifford relation fails (exact)
+PASS YW-5a   deviation 0.000e+00 (tolerance 0.0e+00): u = S_LL(g)(1, 0, 1, 0) = (1/2, 0, 2, 0) (exact)
+PASS YW-5b   deviation 0.000e+00 (tolerance 0.0e+00): Psi = (u (x) (1, 0)) e^{-i p.x} solves i gamma^mu d_mu Psi = m Psi (symbolic coordinates)
+PASS YW-5c   deviation 0.000e+00 (tolerance 0.0e+00): the current j^mu = Psi-bar gamma^mu Psi = (17/4, 0, 0, 15/4) = 2 p^mu (exact)
+PASS YW-5d   deviation 0.000e+00 (tolerance 0.0e+00): the Lagrangian density (15.3) of the plane wave vanishes (exact)
+PASS YW-5e   deviation 0.000e+00 (tolerance 0.0e+00): its energy-momentum tensor (16.2), with lower indices, is T_{mu nu} = 2 p_mu p_nu (T_00 = 289/32, T_03 = -255/32, T_33 = 225/32; exact)
+PASS YW-5f   deviation 0.000e+00 (tolerance 0.0e+00): its trace eta^{mu nu} T_{mu nu} = m Psi-bar Psi = 2 (exact)
+PASS YW-6a   deviation 9.992e-16 (tolerance 1.0e-13): the eigenvalues of the 16 x 16 Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy |D| (K^3)^dag are -E(q) and +E(q) eight times each, E(q) = (|q|^2 + M^2 + |D|^2)^{1/2} (five momenta, numpy.linalg.eigvalsh)
+PASS YW-6b   deviation 9.446e-11 (tolerance 2.0e-10): E(0) = (M^2 + |D|^2)^{1/2} is the printed gap (relative)
+PASS YW-7a   deviation 4.930e-32 (tolerance 1.0e-25): the closed form (A.19) of I^(1) equals mpmath.quad (30 digits) at M = E_gap and at M = 0.2
+PASS YW-7b   deviation 4.334e-12 (tolerance 1.0e-08): the gap equation 23.7 I^(1)(E_gap)/pi^2 = 1 with the printed gap
+PASS YW-7c   deviation 2.091e-10 (tolerance 1.0e-09): pi^2/I^(1)(0.2) equals the printed critical coupling G^crit_LL (relative)
+
+Notes:
+  pi^2/I^(1)(0.2) = 21.2866097555497; E(0.3) = 0.473542098816
+
+VERDICT: ALL PASS (28 of 28)
+```
+
+**The report of the Wolfram script** (`data/hck_lg_worked_checks_wolfram.txt`):
+
+```
+lg_worked.wls: the exact checks of the worked examples of the manuscript lord_gravity (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WW and a number), the statement and, in brackets, the
+facts that decide it.
+
+PASS WW-1     (LW-1 to LW-3) the change of representation by S = M_LL(gtilde) of the boost (5/4) e_0 + (3/4) i e_3: S = diag(1/2, 2), the matrices sigma'_mu, their bars and polarized determinants, Lord's Dirac matrices = S4 gamma^a S4^-1 with S4 = S_LL(g), the Clifford relation, the Lorentz matrix L of the boost, gamma'^a = (L^-1)_ab gamma^b, (9.3), and the frame of M31 with the velocity -15/17 (exact) [sigma'_0 = {{1/4, 0}, {0, 4}}, sigma'_3 = {{1/4, 0}, {0, -4}}, L^-1 = {{17/8, 0, 0, -15/8}, {0, 1, 0, 0}, {0, 0, 1, 0}, {-15/8, 0, 0, 17/8}}, f'_0 = {17/8, 0, 0, -15/8}]
+PASS WW-2     (LW-4) the set (sigma_0, sigma_1, sigma_2, sigma_3 + sigma_0/2): Hermitian, linearly independent (the determinant of the coefficients is 1), N_LG(sigma''_0, sigma''_3) = 1/2, (1/2){gamma''^0, gamma''^3} = (1/2) 1_4 (exact) [det 1, N03 1/2]
+PASS WW-3     (LW-5) the plane wave (u (x) (1, 0)) Exp[-i p.x], u = (1/2, 0, 2, 0), p = (17/8, 0, 0, 15/8), m = 1: the free field equation, the current 2 p^mu, the Lagrangian density 0, the energy-momentum tensor (16.2) 2 p_mu p_nu (lower indices) with the trace m Psi-bar Psi = 2 (symbolic coordinates) [j = {17/4, 0, 0, 15/4}, T_00 = 289/32, T_03 = -255/32, T_33 = 225/32]
+PASS WW-4     (LW-6) the Bogoliubov-de Gennes matrix with the normal self-energy (M - m_LL) beta (x) 1_2 and the pair self-energy D (K^3)^dag, for symbolic real q, M, D: Hermitian, its square is (|q|^2 + M^2 + D^2) 1_16 and its trace is 0, so its eigenvalues are -E(q) and +E(q) eight times each (exact) [H^2 - E^2 1 = 0: True, tr H = 0]
+PASS WW-5     (LW-7) the integral I^(1)(M) of (A.19), computed by Integrate for M > 0, equals its closed form symbolically and as numbers of 40 digits at M = 3/10 and 1/5; with the printed numbers the gap equation 23.7 I^(1)(E_gap)/Pi^2 = 1 and Pi^2/I^(1)(1/5) = G^crit_LL hold to the ten printed digits [Integrate: (Sqrt[1 + mx^2] - mx^2*ArcCoth[Sqrt[1 + mx^2]])/2; symbolic equality: True, numerical equality: True, 23.7 I1(E_gap)/Pi^2 = 0.999999999995666, Pi^2/I1(1/5) = 21.2866097555497]
+
+Notes:
+  Wolfram Language 15.0.1; run time 1 s
+
+VERDICT: ALL PASS (5 of 5)
+```
+
+## C.5 The programs of Part IV
+
+Three programs compute and check Part IV, each independently of the others:
+
+* the Rust program `lg_schw` (`rust/lgschw/src/main.rs`, with the library `rust/lgcore` for the tetrads and the Dirac operator
+  of Part III, and the crate `rust/lgsundials`, the integrator CVODE of SUNDIALS 7.8.0 written in Rust): ALL PASS (21 of 21).
+  It checks the separation at random points, sums the power series at the horizon to order 90, integrates the solutions on both
+  sides of the horizon, finds the quasi-bound states by a complex secant iteration on the normalized Wronskian, computes the
+  decay rates from the charge (20.3), the greybody factors and the check of Theorem L3, and writes the data files
+  `data/lg_schw_qbs.csv` (the quasi-bound states), `lg_schw_small.csv` (the small masses), `lg_schw_grey.csv` (the greybody
+  factors), `lg_schw_interior.csv` (the solution of Figure IV.1) and `lg_schw_values.csv` (single values);
+* the Python program `python/lg_schw.py`: ALL PASS (14 of 14). It derives the separation, the exponents, the conservation
+  laws, Theorem L3 and the meaning of the radial current by computer algebra (sympy), with the spin connections (14.12) and
+  (14.13) as printed, and recomputes quasi-bound states, greybody factors and decay rates with its own start (a Taylor polynomial
+  of order 6 at $r=2.002$), its own root finder (Muller's method) and its own integrals; its integrations use the same
+  integrator CVODE, through the C interface `rust/lgsundials_c`;
+* the Wolfram script `wolfram/source/lg_schw.wls`: ALL PASS (9 of 9), exactly for the separation (with the spin connection
+  computed from the tetrad), the exponents, the conservation laws and the angular functions of $j_{\rm LG}=\tfrac12$, and in arithmetic
+  of 32 digits, with the integrator NDSolve of the Wolfram Language, for three quasi-bound states and three greybody factors.
+
+The figures of Part IV are drawn by `python/lg_schw_figures.py` from the data files, and the numbers of the text are written
+from the data files and the reports by `code/scripts/write_lg_schw_fragments.py`. The physical constants of Section 20.5 are
+the nominal solar mass parameter $G_{\rm N}M_\odot=1.3271244\times10^{20}$ m$^3$ s$^{-2}$ of the International Astronomical Union
+(2015, resolution B3), $c=299\,792\,458$ m/s and $\hbar c=197.3269804$ MeV fm (CODATA 2018). To reproduce, from the folder
+`Revision_Lord_Gravity`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+(cd rust && cargo build --release && ./target/release/lg_schw)   # data/hck_lg_schw_checks.txt and the data files
+python3 python/lg_schw.py                                         # data/hck_lg_schw_checks_python.txt
+wolframscript -file wolfram/source/lg_schw.wls data/lg_schw_qbs.csv data/lg_schw_grey.csv data/hck_lg_schw_checks_wolfram.txt
+python3 python/lg_schw_figures.py                                 # figures/fig_lg_schw_interior, fig_lg_schw_decay
+python3 code/scripts/write_lg_schw_fragments.py                  # the numbers of Part IV
+```
+
+**The report of the Rust program** (`data/hck_lg_schw_checks.txt`):
+
+```
+lg_schw: the brochon in the Schwarzschild field (stage 5 of task C23, Revision_Lord_Gravity, PROJECT spacetimes); units G_N = c = hbar = 1, mass of the black hole 1 (horizon at r = 2)
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS LS-1    deviation 1.255e-15 (tolerance 1.0e-12): the separation in the static tetrad: the spinor f^(-1/4) r^(-1) sin(theta)^(-1/2) e^(-i omega t + i m_j phi) S_H (a_L A, b_L B, a_R A, b_R B) with (A), (S) and a_L = -i b_R, b_L = i a_R solves the Dirac equation of Part III (module lgcore::curved, the spinor connection from the tetrad postulate) at 40 random points outside the horizon, for lambda = +-1, +-2, +-3, m_j = +-1/2, +-3/2, complex omega and random values of the functions (largest residual relative to the spinor)
+PASS LS-2    deviation 9.772e-15 (tolerance 1.0e-12): the separation in the freely falling tetrad with (PG): the same at 40 random points outside and 40 inside the horizon (0.3 < r < 1.9); the largest relative residual of both
+PASS LS-3    deviation 5.510e-16 (tolerance 1.0e-13): the two separations describe the same field: if (u, w) solve (S), then P = (1 - W)^(-1/2) a_R e^{i omega (tau - t)}, Q = (1 + W)^(-1/2) b_R e^{i omega (tau - t)} solve (PG), with d(tau - t)/dr = W/f (40 random cases outside the horizon; largest relative difference of the derivatives)
+PASS LS-4    deviation 3.308e-15 (tolerance 1.0e-12): the horizon: the power series in x = r - 2 (90 terms) of the solution of (PG) that is analytic at r = 2 satisfies (PG) at x = -0.5, -0.25, 0.25, 0.5, on both sides of the horizon, for four cases (real and complex omega, m = 0 to 0.6, lambda = +-1, +-2; largest relative residual)
+PASS LS-5    deviation 1.534e-12 (tolerance 1.0e-9): the series agrees with CVODE on both sides: from the series at x = 0.1 integrated outward to x = 0.5, and from x = -0.1 inward to x = -0.5, the solution equals the series there (largest relative difference)
+PASS LS-4b   deviation 1.377e-5 (tolerance 1.0e-4): the other solution at the horizon: a start that is not analytic, integrated with CVODE toward r = 2 from outside (in the variable -ln(r - 2)), has |P| ~ (r - 2)^(-1/2), the modulus of the exponent 4 i omega - 1/2 (omega = 0.7, m = 0.3, lambda = 1; difference of the logarithmic slope between x = 1e-5 and 1e-6 from -1/2)
+PASS LS-6    inside the horizon: the solution that falls in, continued from the series at r = 1.5 inward with CVODE to r = 1.5e-12, has the logarithmic derivatives r P'/P and r Q'/Q equal to 1/4 up to corrections of the order (r/2)^(1/2) = 8.7e-7 (so P, Q ~ r^(1/4) and psi ~ r^(-3/4) at the singularity); the difference is at most 3 |lambda| (r/2)^(1/2) [r P'/P - 1/4 = 5.54e-7, r Q'/Q - 1/4 = 1.62e-6]
+PASS LS-7    deviation 1.007e-9 (tolerance 1.0e-7): the radial current J = (1 + W)|Q|^2 - (1 - W)|P|^2 of a real frequency is the same at the horizon (J = 2 for q_0 = 1), at 60 radii inside down to r = 1.5e-12 and at 40 radii outside up to r = 2.5e3 (largest relative difference; CVODE with rtol 1e-13, whose global error over the integration is of the order 1e-8)
+PASS LS-8a   quasi-bound states (data/lg_schw_qbs.csv): six states followed from Mm = 0.05 to 0.4; every root has Re omega < m, and Im omega < 0 (it decays in time by absorption into the black hole) wherever |Im omega| exceeds the resolution 1e-12 m of the computation [48 roots, 5 with |Im omega| below the resolution; lost: none]
+PASS LS-8b   deviation 4.263e-14 (tolerance 1.0e-10): the outer radius: 1.3 times larger changes no quasi-bound frequency by more than 1e-10 (relative)
+PASS LS-8c   deviation 2.751e0 (tolerance 1.0e1): the hydrogen-like limit: at Mm = 0.05 every state lies within 10 (Mm)^4 of its level 1 - (Mm)^2/(2 n^2) (the largest difference divided by (Mm)^4)
+PASS LS-9a   deviation 2.981e-8 (tolerance 1.0e-7): scattering: the greybody factors Gamma of the partial waves lambda = +-1, 2 at M omega = 0.25, 0.4, 0.6 and Mm = 0, 0.2 (data/lg_schw_grey.csv) obey flux conservation, Gamma + |R|^2 = 1, and the current at the outer radius equals the current into the horizon (largest deviation; the global error of CVODE with rtol 1e-13 over r = 2.5 to 4000)
+PASS LS-9b   deviation 1.033e-6 (tolerance 1.0e-4): the outer radius of the decomposition into outgoing and incoming waves: Gamma at r = 4000 and r = 2000 differ by less than 1e-4 (the local eigenvectors leave errors of the order 1/(k r^2) and of the Coulomb phase)
+PASS LS-10a  deviation 5.480e-8 (tolerance 1.0e-6): the decay rate from the charge: at the 30 quasi-bound states of LS-8 with |Im omega| >= 1e-7 m, Im omega equals -1/N, N the integral of |P|^2 + |Q|^2 from the horizon to infinity of the state normalized by q_0 = 1 (the exact consequence of dJ/dr = 2 Im omega (|P|^2 + |Q|^2); largest relative difference; the two solutions fit at r_match to a relative misfit of at most 6.8e-12)
+PASS LS-10b  deviation 1.021e-14 (tolerance 1.0e-12): the same at the other 18 quasi-bound states of LS-8 (|Im omega| < 1e-7 m): the largest |Im omega + 1/N| / m, against the resolution 1e-12 m of the root finder
+PASS LS-11   deviation 3.362e-4 (tolerance 1.0e-3): the energies at small Mm: for each of the six states the ratio of (Re omega/m - 1 + (Mm)^2/(2 n^2))/(Mm)^4 to the coefficient F = (15/8 - 3n/(2j+1) - 3n/(2l+1))/n^4 of the small-mass formula (Dolan and Dempsey, arXiv:1504.03190, eq. (94)), extrapolated to Mm = 0 from Mm = 0.01, 0.02, 0.04 (by Richardson's rule for even powers and by the fit r(0) + b Mm + c (Mm)^2), is 1 (largest deviation of the two extrapolations)
+PASS LS-12   deviation 7.213e-4 (tolerance 1.0e-3): the decay rates at small Mm: for each of the six states the ratio of -Im omega/m (from the charge, at the real frequency Re omega) to a (Mm)^(4l+2S+4) of the small-mass formula (Dolan and Dempsey, eqs. (95), (96), after Ternov and co-workers), extrapolated to Mm = 0 from Mm = 0.005, 0.01, 0.02 (by Richardson's rule for even powers and by the fit r(0) + b Mm + c (Mm)^2), is 1 (largest deviation of the two extrapolations)
+PASS LS-13   deviation 1.330e-5 (tolerance 1.0e-2): the decay rate from the charge at the real frequency Re omega agrees with the imaginary part of the root of LS-8 at Mm = 0.05, where the root resolves it (largest relative difference; it is of the first order in Im omega divided by the distance to the neighbouring levels); the two solutions fit at r_match to a relative misfit of at most 1.6e-5 at the small masses
+PASS LS-14a  deviation 7.029e-15 (tolerance 1.0e-12): the quasi-particle of the superfluid (the converse of Theorem L2 of Part III): if chi is the separated spinor of the freely falling tetrad with the mass E_gap = (M^2 + |D|^2)^(1/2) = 0.3663906649 (M = 0.1622929325, |D| = 0.3284861084, the polar ground state of CJT), then Psi = chi - D/(E_gap + M) C chi solves the quasi-particle equation i Dslash Psi = M Psi + D C Psi, C Psi = (gamma^0 (x) 1_2)(K^3_LL)^dag Psi^*, at 40 random points outside and 40 inside the horizon (random values of the functions, complex omega; the largest residual relative to the field)
+PASS LS-14b  the check LS-14a can fail: with the wrong sign, Psi = chi + D/(E_gap + M) C chi, the residual is not small [smallest relative residual with the wrong sign: 6.570e-1]
+PASS LS-14c  deviation 1.230e-15 (tolerance 1.0e-13): the currents Psi-bar gamma^mu Psi and the scalar densities Psi-bar Psi of chi and of C chi are equal at the same points (largest difference relative to the square of the field): averaged over a period of a real frequency, the current of Psi = chi - D/(E_gap + M) C chi is (1 + |D|^2/(E_gap + M)^2) times that of chi and its divergence vanishes, so that the quasi-particle has the greybody factors of the Dirac particle of mass E_gap
+
+VERDICT: ALL PASS (21 of 21)
+```
+
+**The report of the Python program** (`data/hck_lg_schw_checks_python.txt`):
+
+```
+lg_schw.py: the independent check of stage 5 of task C23, the brochon in the Schwarzschild field (Revision_Lord_Gravity, PROJECT spacetimes); units G_N = c = hbar = 1, mass of the black hole 1
+Each line: PASS or FAIL, the identifier of the check (YS and a number; the counterpart of the check LS of the Rust program lg_schw),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YS-1    the separation in the static tetrad: with the angular equations (A) and the radial system (S), the spinor f^(-1/4) r^(-1) sin(theta)^(-1/2) e^(-i omega t + i m_j phi) S_H (-i b_R A, i a_R B, a_R A, b_R B), a_R = (u - i w)/2, b_R = (u + i w)/2, solves i gamma^mu (d_mu + Gamma_mu) psi = m psi identically, with the spinor connection (14.12) as printed in Part III (sympy simplifies the four components of the residual to 0, for symbolic omega, m, lambda, m_j) [residual [0, 0, 0, 0]]
+PASS YS-2    the separation in the freely falling tetrad: with (A), the same ansatz with the prefactor r^(-1) sin(theta)^(-1/2) e^(-i omega tau + i m_j phi), a_R = P, b_R = Q, solves the Dirac equation with the connection (14.13) identically when (P, Q) solve the system (PG) (sympy; the identity holds for every r > 0, on both sides of the horizon) [residual [0, 0, 0, 0]]
+PASS YS-3    deviation 5.440e-41 (tolerance 1.0e-35): the two separations describe the same field: if (u, w) solve (S), then P = (1 - W)^(-1/2) a_R e^{i omega (tau - t)} and Q = (1 + W)^(-1/2) b_R e^{i omega (tau - t)}, with d(tau - t)/dr = W/f, solve (PG) (the identity evaluated in arithmetic of 40 significant digits, mpmath, at 10 random points outside the horizon; largest residual relative to the derivative)
+PASS YS-4    the exponents: the residue matrix lim (r - 2) A(r) of (PG) at the horizon has the eigenvalues 0 (the solution analytic there, which falls in) and 4 i omega - 1/2 (the solution that comes out, (r - 2)^(4 i omega - 1/2)); at r = 0 the residue matrix lim r A(r) is 1/4 times the unit matrix, so both solutions behave as r^(1/4) (sympy limits) [residue matrix at r = 2: [4*I*omega - 1/2, -2*I*lambda - 4*m, 0, 0], eigenvalues [0, I*(8*omega + I)/2]; at r = 0: [1/4, 0, 0, 1/4]]
+PASS YS-5    the radial current J = (1 + W)|Q|^2 - (1 - W)|P|^2 of a real frequency is constant: dJ/dr = 0 identically on both sides of the horizon (sympy, with the complex conjugates of P and Q as independent functions that obey the conjugate equations) [dJ/dr = 0]
+PASS YS-9    the massless brochon (m = 0): the map (u, w) -> (w, -u) takes the radial system (S) with lambda into (S) with -lambda, and leaves the current |b_R|^2 - |a_R|^2 = (i/2)(u* w - w* u) unchanged; hence the partial waves lambda and -lambda of a massless brochon have the same greybody factor (sympy) [residuals 0, 0; change of the current 0; current 0]
+PASS YS-10   the conservation of the charge for a complex frequency omega = a + i b: dJ/dr = 2 b (|P|^2 + |Q|^2) identically, J = (1 + W)|Q|^2 - (1 - W)|P|^2 (sympy, with the conjugates as independent functions); for a quasi-bound state, which decays at infinity, it gives Im omega = -J(2)/(2 N) = -1/N with N the integral of |P|^2 + |Q|^2 from the horizon to infinity and q_0 = 1 [dJ/dr - 2 b (|P|^2 + |Q|^2) = 0]
+PASS YS-13   the quasi-particle of the superfluid (the converse of Theorem L2 of Part III): if chi is the separated spinor of the freely falling tetrad with the mass E_gap = (M^2 + |D|^2)^(1/2) and a complex frequency, then Psi = chi - D/(E_gap + M) C chi solves i Dslash Psi = M Psi + D C Psi, C Psi = (gamma^0 (x) 1_2)(K^3)^dag Psi^*, with the connection (14.13) as printed (sympy simplifies the coefficients of both phases to 0, for symbolic M, |D|, the phase of D, omega, lambda, m_j); with the wrong sign of the coefficient the residual does not vanish; and chi and C chi have the same currents and scalar densities (exact matrix identities), so that the quasi-particle has the greybody factors of the Dirac particle [Pm Pm^* = -1: True; currents True and scalar densities True equal; residual linear in the two phases: True; coefficients [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]; wrong sign leaves a residual: True]
+PASS YS-14   the meaning of the radial current: for the separated spinor of the freely falling tetrad at a real frequency, e j^r = -J (|A|^2 + |B|^2) with the volume element e = r^2 sin(theta) and j^r = Psi-bar gamma^r Psi, gamma^r = -W gamma^0 + gamma^1; J times the integral of |A|^2 + |B|^2 over the angles is therefore the flux of the conserved current into the sphere of radius r; and the density is e j^tau = (|P|^2 + |Q|^2)(|A|^2 + |B|^2) (sympy) [e j^r + J (|A|^2 + |B|^2) = 0; e j^tau - (|P|^2 + |Q|^2)(|A|^2 + |B|^2) = 0]
+PASS YS-6    deviation 1.693e-14 (tolerance 1.0e-11): the quasi-bound states at Mm = 0.3 (the six states 1S1/2, 2S1/2, 2P1/2, 2P3/2, 3P3/2, 3D3/2) and at Mm = 0.1 (1S1/2, 2S1/2, 2P1/2), found again from starts 1e-4 away from the values of data/lg_schw_qbs.csv (Taylor start at r = 2.002, CVODE with rtol 1e-13, matching at r = n^2/(Mm)^2 with the decaying solution from r = 45/kappa, kappa = (m^2 - omega^2)^(1/2), Muller's method): the largest |omega_Python - omega_Rust|/m
+PASS YS-7    deviation 1.748e-09 (tolerance 1.0e-06): the greybody factors of data/lg_schw_grey.csv (Mm = 0, 0.2; lambda = 1, -1, 2; M omega = 0.25, 0.4, 0.6) found again: Taylor start at r = 2.002, CVODE with rtol 1e-13 to r = 4000, the decomposition into the local outgoing and incoming waves there, Gamma = (current into the horizon)/(incident current); the largest difference of Gamma
+PASS YS-8    inside the horizon: the solution that falls in, from its Taylor start at r = 1.998 integrated inward to r = 1e-10 (CVODE in the variable -ln r, rtol 1e-13, omega = 0.7, m = 0.3, lambda = 1), has r P'/P and r Q'/Q within 3 |lambda| (r/2)^(1/2) of 1/4, and its radial current keeps the value it has at r = 1.998 to 1e-9 (relative) [r P'/P - 1/4 = 4.52e-06, r Q'/Q - 1/4 = 1.32e-05 (bound 2.12e-05); J = 1.999999999997 at r = 1e-10, 2.000000000000 at r = 1.998]
+PASS YS-11   deviation 9.651e-11 (tolerance 1.0e-06): the decay rate from the charge at the real frequency Re omega, Im omega/m = -1/(m N), for the six states at Mm = 0.01 of data/lg_schw_small.csv, recomputed from the Taylor start at r = 2.002 (the integral over the first 0.002 by Gauss-Legendre), CVODE to r_match and from r_max, and the least-squares fit at r_match: the largest relative difference from the Rust values
+PASS YS-12   deviation 3.495e-11 (tolerance 1.0e-06): at the quasi-bound states 1S1/2 and 2P1/2 at Mm = 0.3 of data/lg_schw_qbs.csv (complex omega), Im omega = -1/N exactly (the consequence of YS-10): the largest relative difference
+
+Notes:
+  YS-6: 1S1/2 at Mm = 0.3: omega/m = 0.945463937509 -2.964848e-02 i (5 steps, |matching| 8e-15); 2S1/2 at Mm = 0.3: omega/m = 0.986197332390 -4.538765e-03 i (7 steps, |matching| 8e-14); 2P1/2 at Mm = 0.3: omega/m = 0.986183492457 -4.084443e-04 i (8 steps, |matching| 3e-14); 2P3/2 at Mm = 0.3: omega/m = 0.987746803741 -3.298463e-06 i (7 steps, |matching| 1e-13); 3P3/2 at Mm = 0.3: omega/m = 0.994588500479 -1.297291e-06 i (8 steps, |matching| 3e-14); 3D3/2 at Mm = 0.3: omega/m = 0.994759560097 -3.290467e-09 i (8 steps, |matching| 3e-13); 1S1/2 at Mm = 0.1: omega/m = 0.994688277460 -2.787028e-05 i (7 steps, |matching| 4e-14); 2S1/2 at Mm = 0.1: omega/m = 0.998698511272 -3.499266e-06 i (13 steps, |matching| 5e-14); 2P1/2 at Mm = 0.1: omega/m = 0.998729693602 -5.803636e-09 i (13 steps, |matching| 9e-14).  The largest relative difference of Im omega, for the states with |Im omega| > 1e-9 m: 2.3e-06.
+  YS-11: Im omega/m at Mm = 0.01: 1S1/2 -1.015944e-10; 2S1/2 -1.269937e-11; 2P1/2 -2.373970e-16; 2P3/2 -2.634219e-21; 3P3/2 -9.251133e-22; 3D3/2 -3.209839e-27
+  run time 46 s
+
+VERDICT: ALL PASS (14 of 14)
+```
+
+**The report of the Wolfram script** (`data/hck_lg_schw_checks_wolfram.txt`):
+
+```
+lg_schw.wls: the exact checks and a computation in arithmetic of 32 digits of stage 5 of task C23, the brochon in the Schwarzschild field (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WS and a number), the statement and, in brackets, the
+facts that decide it (or the measured deviation and its tolerance).  WS-1 to WS-6 and WS-9 are exact (symbolic).
+
+PASS WS-1     (Rust LS-1; Python YS-1) the separation in the static tetrad: with the spin connection computed from the tetrad, the spinor f^(-1/4) r^(-1) sin(th)^(-1/2) e^(-i omega t + i m_j ph) S_H (-i b_R A, i a_R B, a_R A, b_R B), a_R = (u - i w)/2, b_R = (u + i w)/2, solves i gamma^k (d_k + Omega_k) psi = m psi exactly when A, B solve (A) and u, w solve (S) (omega, m, lambda, m_j symbolic; r > 2) [residual {0, 0, 0, 0}]
+PASS WS-2     (Rust LS-2; Python YS-2) the separation in the freely falling tetrad: the spinor r^(-1) sin(th)^(-1/2) e^(-i omega tau + i m_j ph) S_H (-i Q A, i P B, P A, Q B) solves the Dirac equation exactly when A, B solve (A) and P, Q solve (PG), for every r > 0 (the identity holds on both sides of the horizon) [residual {0, 0, 0, 0}]
+PASS WS-3     (Rust LS-3; Python YS-3) the two separations describe the same field: if (u, w) solve (S), then P = (1 - W)^(-1/2) a_R e^{i omega (tau - t)} and Q = (1 + W)^(-1/2) b_R e^{i omega (tau - t)}, with d(tau - t)/dr = W/f, solve (PG) exactly outside the horizon (the identity written as rational functions of a = (1 - W)^(1/2), b = (1 + W)^(1/2), the numerators reduced modulo a^2 + b^2 = 2) [remainders {0, 0}]
+PASS WS-4     (Rust LS-4, LS-4b, LS-6; Python YS-4) the exponents: the residue matrix lim (r - 2) A(r) of (PG) at the horizon has the eigenvalues 0 (the solution analytic at r = 2, which falls in) and 4 i omega - 1/2 (the solution that comes out); lim r A(r) at r = 0 is 1/4 times the unit matrix (both solutions behave as r^(1/4)) [residue at r = 2: {{-1/2 + (4*I)*om, (-2*I)*lam - 4*mB}, {0, 0}}, eigenvalues {0, -1/2 + (4*I)*om}; at r = 0: {{1/4, 0}, {0, 1/4}}]
+PASS WS-5     (Rust LS-7; Python YS-5) the radial current J = (1 + W)|Q|^2 - (1 - W)|P|^2 of a real frequency is constant: dJ/dr = 0 exactly for every r > 0 (the conjugates of P, Q are independent functions that solve the conjugate equations; omega, m, lambda real) [dJ/dr = 0]
+PASS WS-9     (Rust LS-10 to LS-13; Python YS-10) for a complex frequency omega = a + i b (a, b, m, lambda real) the radial current obeys dJ/dr = 2 b (|P|^2 + |Q|^2) exactly for every r > 0; for a quasi-bound state, which decays at infinity, with J = 2 at the horizon (q_0 = 1), this gives Im omega = -1/N, N the integral of |P|^2 + |Q|^2 from the horizon to infinity [dJ/dr - 2 b (|P|^2 + |Q|^2) = 0]
+PASS WS-6     (Rust: the closed forms for j = 1/2) for lambda = +-1: A = sin(th/2)^(1/2) cos(th/2)^(3/2), B = lambda sin(th/2)^(3/2) cos(th/2)^(1/2) solve (A) with m_j = 1/2, and A = sin(th/2)^(3/2) cos(th/2)^(1/2), B = -lambda sin(th/2)^(1/2) cos(th/2)^(3/2) with m_j = -1/2; A/sin(th)^(1/2) and B/sin(th)^(1/2) are cos(th/2)/2^(1/2) and sin(th/2)/2^(1/2) up to sign, bounded at both poles [cases (lambda, m_j) = (1, 1/2), (-1, 1/2), (1, -1/2), (-1, -1/2): {True, True, True, True}]
+PASS WS-7     deviation 7.275e-14 (tolerance 1.0e-11): (Rust LS-8; Python YS-6) the quasi-bound states 1S1/2, 2P1/2 and 2P3/2 at Mm = 3/10, found again with NDSolve in arithmetic of 32 digits from the Taylor start of order 20 at r = 2 + 1/20, the decaying local eigenvector at r = 45/kappa, matching at r = n^2/(Mm)^2, and FindRoot from starts 1e-4 away from data/lg_schw_qbs.csv: the largest |omega_Wolfram - omega_Rust|/m (the Rust values have the accuracy of double precision)
+PASS WS-8     deviation 6.620e-10 (tolerance 1.0e-7): (Rust LS-9; Python YS-7) the greybody factors (Mm, lambda, M omega) = (0, 1, 1/4), (1/5, -1, 1/4), (0, 2, 2/5) at r = 4000, found again with NDSolve in arithmetic of 32 digits from the Taylor start and the decomposition into the local outgoing and incoming waves: the largest difference of Gamma from data/lg_schw_grey.csv (the Rust values carry the global error 3e-8 of CVODE, check LS-9a)
+
+Notes:
+  WS-7: 1S1/2: omega/m = 9.4546393750871e-1 -2.964848059e-2 i (Rust 9.4546393750878e-1 -2.964848059e-2 i); 2P1/2: omega/m = 9.8618349245694e-1 -4.084442990e-4 i (Rust 9.8618349245693e-1 -4.084442990e-4 i); 2P3/2: omega/m = 9.8774680374106e-1 -3.298463256e-6 i (Rust 9.8774680374105e-1 -3.298463266e-6 i)
+  WS-8: Mm = 0, lambda = 1, M omega = 1/4: Gamma = 8.733870042061e-1 (Rust 8.733870041154e-1); Mm = 1/5, lambda = -1, M omega = 1/4: Gamma = 4.763007218779e-1 (Rust 4.763007218835e-1); Mm = 0, lambda = 2, M omega = 2/5: Gamma = 6.321144869149e-1 (Rust 6.321144862529e-1)
+  Wolfram Language 15.0.1; run time 30 s
+
+VERDICT: ALL PASS (9 of 9)
+```
+
+# D. The symbols of the main text
+
+The table lists the symbols of the main text, Parts I to IV, in the order of their first use; the symbols of Appendix A are
+listed in its Section A.7, and those of Appendix B in its Section B.7.
+
+| symbol | meaning |
+|:---|:---|
+| $\eta^{\rm LL}_{\mu\nu}$, $\eta^{{\rm LL}\,\mu\nu}$ | the Minkowski metric $\mathrm{diag}(1,-1,-1,-1)$ and its inverse |
+| $\sigma^{\rm LL}_\mu$ | the unit matrix and the Pauli matrices (Lord's $\sigma^\mu$) |
+| $\bar X$ | the bar of a $2\times2$ matrix, $-\mathsf E_{\rm LL}X^T\mathsf E_{\rm LL}$, its adjugate (1.1) |
+| $\mathsf E_{\rm LL}$ | the matrix $\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ (Lord's $\epsilon$) |
+| $\mathsf 1_2$, $\mathsf 1_4$ | the unit matrices |
+| $\gamma^\mu_{\rm LL}$, $\gamma^{\mu\nu}_{\rm LL}$ | the Dirac matrices in the Weyl form (the chiral basis) and their antisymmetrized products |
+| $\gamma^{\rm ch}_{\rm LL}$ | the chirality matrix $i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}$ (minus Lord's $\gamma^5$) |
+| $C_{\rm LL}$ | the charge-conjugation matrix $\mathrm{diag}(\mathsf E_{\rm LL},-\mathsf E_{\rm LL})$ (Lord's $C$) |
+| $\sigma^{\mu\nu}_{\rm LG}$ | $\tfrac12(\sigma^{\rm LL}_\mu\bar\sigma^{\rm LL}_\nu-\sigma^{\rm LL}_\nu\bar\sigma^{\rm LL}_\mu)$ (Lord's $\sigma^{\mu\nu}$) |
+| $\epsilon^{\rm LG}_{\mu\nu\rho\sigma}$ | the Levi-Civita symbol, $\epsilon^{\rm LG}_{0123}=+1$ |
+| $f_{\bar\mu\bar\nu}$ | the dual $\tfrac12i\,\epsilon^{\rm LG}_{\mu\nu\rho\sigma}f^{\rho\sigma}$ of an antisymmetric tensor |
+| $\mathrm{tr}$, $\mathrm{tr}_{\rm N}$ | the trace, and the trace of a $4\times4$ matrix normalized to $\mathrm{tr}_{\rm N}\mathsf 1_4=1$ |
+| $N_{\rm LG}(X,Y)$ | the polarized determinant $\tfrac12(\det(X+Y)-\det X-\det Y)$, the Minkowski product of two Hermitian matrices (2.7) |
+| $\Lambda_{\rm Lord}$, $\lambda^{\rm Lord}_{\mu\nu}$ | a Lorentz matrix of Lord's (2.3), and the parameters of an infinitesimal one |
+| $L_{\rm Lord}$, $\mathsf L_{\rm Lord}$ | its spinor matrices of $SL(2,\mathbb C)$ ($2\times2$) and on Dirac spinors ($4\times4$) |
+| $\psi^{\rm Lord}_{A_1\dots A_{2s}}$ | a Bargmann-Wigner field of spin $s$; capital Latin letters are Dirac spinor indices |
+| $m$ | the rest mass of a Bargmann-Wigner field |
+| $S_{\rm Lord}$, $\mathsf S_{\rm Lord}$ | a change of representation (2.6): a unimodular $2\times2$ matrix, and its $4\times4$ form (5.1) |
+| $\mathsf T$ | a matrix field by which a spinor index is transformed, in (5.5) and (5.6) |
+| $\sigma^a_{\rm Lord}(x)$, $\gamma^a_{\rm Lord}(x)$ | the Pauli-type matrices and the Dirac matrices as fields (5.2) |
+| $d^{\rm Lord}_a$, $X^{\rm Lord}_{ab}{}^c$ | Lord's derivative operators and the coefficients of their commutators |
+| $D^{\rm Lord}_a$ | Lord's generalized derivative (5.3) |
+| $\Gamma^{\rm Lord}_a$, $a^{\rm Lord}_{abc}$, $g_{\rm Lord}$ | the auxiliary fields of the spinors, their coefficients (5.4), and the universal coupling |
+| $C^{\rm Lord}_{ba}{}^e$ | the connection of the vectors (5.7), (5.8) |
+| $h^{\rm Lord}_a{}^\mu$, $g^{\rm Lord}_{\mu\nu}$ | the reference vectors (tetrad) and the metric |
+| $\Gamma^{\rm Lord}_{\mu\nu}{}^\rho$, $T^{\rm Lord}_{\mu\nu}{}^\rho$, $R^{\rm Lord}_{\mu\nu\rho}{}^\sigma$ | the affine connection, its torsion and its curvature (5.9) |
+| $W_\mu$, $W_{\mu\,ab}$ | a connection of the vectors as a matrix $(W_\mu)_b{}^e$ and with both indices lowered (5.11) |
+| $R_{\mu\nu\alpha\beta}$ | the curvature of a connection of the vectors, with its last two indices lowered (5.11) |
+| $A^{\rm Lord}_{\mu\nu\rho\sigma}$, $A^{\rm Lord}_{\rho\sigma\lambda}$, $A^{\rm Lord}_{\mu\nu}$ | the real spin-2 tensor, its potentials and its secondary potentials |
+| $B^{\rm Lord}_{\mu\nu\rho\sigma}$ | the tensor of Lord's Section 3 that has the symmetries of the Riemann tensor |
+| $j^{\rm Lord}_{\nu\rho\sigma}$, $j^{\rm Lord}_{\mu\nu}$, $j^{\rm Lord}$, $f_{\rm Lord}$ | the current of the spin-2 field, the symmetric tensor from which it derives, its trace, and the coupling of Lord's Section 3 |
+| $f_{\mu\nu}$, $A_\mu$, $e$ | the electromagnetic field strength, its potential and the electric charge (Lord's Sections 1 and 2) |
+| $\mathbf b$, $\xi^{\rm LL}_p(\mathbf b)$, $\mathbf e_p$ | a bi-quaternion, its four complex coefficients, and the units |
+| $\bar{\mathbf b}$, $\mathbf b^*$, $\mathbf b^\dagger$ | the conjugate, the complex conjugate and the Hermitian conjugate of a bi-quaternion |
+| $M_{\rm LL}(\mathbf b)$ | the $2\times2$ matrix of a bi-quaternion (9.1) |
+| $N_{\rm LL}(\mathbf b)$, $N_{\rm LL}(\mathbf b,\mathbf b')$ | the complex norm $\det M_{\rm LL}(\mathbf b)$ and its polarization |
+| $\mathbf g$, $\tilde{\mathbf g}$ | a unit bi-quaternion ($N_{\rm LL}(\mathbf g)=1$), an element of $SL(2,\mathbb C)$, and $\tilde{\mathbf g}=\mathbf g^*$ |
+| M31, $\mathbf x$, $x^p$ | the space-time of the Hermitian bi-quaternions, a point, and its coordinates |
+| $\mathbf f_p$ | a frame: four Hermitian bi-quaternions with $N_{\rm LL}(\mathbf f_p,\mathbf f_q)=\eta^{\rm LL}_{pq}$ |
+| $\mathsf L_{\rm LL}(\mathbf g)$ | the Lorentz matrix of a unit bi-quaternion (9.2) |
+| $\mathsf S_{\rm LL}(\mathbf g)$ | the spinor matrix of a unit bi-quaternion (9.3) |
+| $\gamma^p_{\rm LL}[\mathbf f]$ | the Dirac matrices of a frame (9.4) |
+| $\Psi_{\rm LL}$, $m_{\rm LL}$ | the brochon (eight components: Dirac index and isospin index) and its mass |
+| GEE | the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ of the brochon model (B.3) |
+| $\mathsf U_{\rm LL}$, $\theta^{\rm F}_{\rm LL}$ | an isospin rotation and a phase of the fermion number (a local GEE transformation with $\mathbf g$) |
+| $\nabla^{\rm GEE}_p$ | the GEE covariant derivative of the brochon (9.5) |
+| $\Gamma^{\rm LL}_p$, $\Gamma^{\rm LL}_\mu$ | the spin connection of GEE, the gauge field of its $SL(2,\mathbb C)$ factor; in a curved space-time $\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$ (14.7) |
+| $\mathsf W_{{\rm SF},p}$, $W^\iota_{{\rm SF},p}$, $\tau^{\rm LL}_\iota$ | the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index |
+| $B_{{\rm SF},p}$ | the gauge field of $U(1)^{\rm F}_{\rm LL}$ |
+| $g^{\rm v}_{\rm LL}$, $g^{\rm F}_{\rm LL}$ | the couplings of $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$ |
+| $T^3_{\rm LL}$, $Q_{\rm LL}$, $\vec n$ | the third isospin generator, the charge $Q_{\rm LL}=T^3_{\rm LL}$ of the zeugon, and the direction of the polar condensate |
+| $\mathsf A_{\rm LG}$, $\mathsf B_{\rm LG}$, $\kappa_{\rm LG}$ | the blocks of a change of representation that keeps the chirality matrix, and the real factor of Theorem L1 |
+| $\mathsf C$, $X_r$ | the unknown matrix and the basis of the Hermitian matrices in the proof of Theorem L1 |
+| $a,b,c,d$ (Part III) | frame (Lorentz) indices, raised and lowered with $\eta^{\rm LL}$ |
+| $x^\mu$ | the coordinates of a curved space-time; Greek indices are raised and lowered with $g^{\rm LG}_{\mu\nu}$ in Part III |
+| $e^{\rm LG}_a{}^\mu$, $e^{{\rm LG}\,a}{}_\mu$ | the tetrad (Lord's reference vectors $h^{\rm Lord}_a{}^\mu$) and the coframe, its inverse (13.1) |
+| $g^{\rm LG}_{\mu\nu}$, $g_{\rm LG}^{\mu\nu}$, $e_{\rm LG}$ | the metric of the tetrad and its inverse (13.2) (Lord's $g^{\rm Lord}$), and the volume element $\det e^{{\rm LG}\,a}{}_\mu$ |
+| $\gamma^\mu_{\rm LG}$, $\gamma^{\rm LG}_\mu$, $\gamma^{\mu\nu}_{\rm LG}$ | the Dirac matrices of the curved space-time (13.3), with the index lowered, and their antisymmetrized products |
+| $\sigma^\mu_{\rm LG}$, $\mathbf e^\mu_{\rm LG}$ | the Hermitian blocks of $\gamma^\mu_{\rm LG}$ and the four Hermitian bi-quaternions with $M_{\rm LL}(\mathbf e^\mu_{\rm LG})=\sigma^\mu_{\rm LG}$ (13.4) |
+| $\mathsf S$ | shorthand for the spinor matrix $\mathsf S_{\rm LL}(\mathbf g(x))$ of a local transformation (Sections 9.3, 13.2) |
+| $\Lambda_{\rm LG}{}^a{}_b$ | the Lorentz matrix of $\mathsf S$, $\mathsf S^{-1}\gamma^a_{\rm LL}\mathsf S=\Lambda_{\rm LG}{}^a{}_b\gamma^b_{\rm LL}$ (13.6) |
+| $\Gamma^{{\rm LG}\,\rho}{}_{\mu\nu}$, $\nabla^{\rm LG}_\mu$ | the Christoffel symbols (14.1) and the covariant derivative on coordinate indices |
+| $\zeta^\rho$, $\zeta_\nu$, $\zeta\cdot\zeta'$ | a vector field and a one-form in (14.1), (14.2); the Minkowski product of two frame vectors (Section 15.3) |
+| $R^{{\rm LG}\,\rho}{}_{\sigma\mu\nu}$, $R^{\rm LG}_{\rho\sigma\mu\nu}$, $R^{{\rm LG}\,a}{}_{b\mu\nu}$ | the Riemann tensor (14.2), with all indices lowered, and in the frame (14.11) |
+| $R^{\rm LG}_{\sigma\nu}$, $R^{\rm LG}$, $G^{\rm LG}_{\mu\nu}$ | the Ricci tensor, the scalar curvature and the Einstein tensor (14.3) |
+| $\omega^{\rm LG}_\mu{}^a{}_b$, $\omega^{\rm LG}_{\mu\,ab}$, $\omega^{\rm LG}_{c\,ab}$ | the spin connection of the tetrad (14.4), with the first frame index lowered, and its frame components (14.6) |
+| $C^{\rm LG}_{a\,cd}$ | the anholonomy coefficients of the coframe (14.6) |
+| $\Omega^{\rm L}_{{\rm SF},\mu\nu}$ | the curvature of the Lorentz connection, $\tfrac14R^{\rm LG}_{ab\mu\nu}\gamma^{ab}_{\rm LL}$ (14.11) |
+| $M_{\rm LG}$, $\mathcal M_{\rm LG}$ | the mass of a black hole (or of the Vaidya space-time), and $G_{\rm N}M_{\rm LG}$, the mass in units of length |
+| $t$, $r$, $\theta$, $\varphi$, $d\Omega^2$ | the coordinates of Schwarzschild and the metric of the unit sphere |
+| $h_{\rm LG}(r)$ | an arbitrary function in the static, spherically symmetric coframe of check WG-1 |
+| $f_{\rm LG}$, $w_{\rm LG}$, $\tau_{\rm LG}$ | $1-2\mathcal M_{\rm LG}/r$; the speed $(2\mathcal M_{\rm LG}/r)^{1/2}$ and the proper time of the observers falling freely from rest at infinity (Painlevé-Gullstrand) |
+| $v_{\rm LG}$, $u_{\rm LG}$, $l^{\rm LG}$, $\rho_{\rm LG}$ | the advanced and the retarded time of the Vaidya space-times, their null one-form, and the energy density of the null dust |
+| $G_{\rm N}$, $M_{\rm Pl}$ | Newton's constant and the Planck mass, $G_{\rm N}=M_{\rm Pl}^{-2}$ |
+| $\mathcal L^{\rm LG}$, $\mathcal L^\Psi_{\rm LG}$, $S^{\rm LG}$ | the Lagrangian density (15.2) in a curved space-time, its Dirac part (15.3), and the action |
+| $V^{(n)}_{\rm SF}$, $G^{\rm S}_{\rm SF}$, $G^{\rm V}_{\rm SF}$, $G_{\rm LL}$ | the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings |
+| $\Pi^\iota_{\rm LL}$, $\mathsf K^\iota_{\rm LL}$ | the pair operators of spin zero and their matrices $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ |
+| $T^\iota_{\rm LL}$, $\epsilon^{\rm LL}_{\iota\iota'\iota''}$ | the isospin generators $\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2$ and the Levi-Civita symbol of three indices |
+| $j^{{\rm F},\mu}_{\rm SF}$, $j^{\iota,\mu}_{\rm SF}$, $j^{{\rm F},a}$ | the fermion-number current and the isospin currents (Section 15.1); frame components of the first |
+| $W^\iota_{{\rm SF},\mu\nu}$, $\mathsf W_{{\rm SF},\mu\nu}$, $B_{{\rm SF},\mu\nu}$ | the field strengths of $SU(2)_{\rm v}$ (components and matrix) and of $U(1)^{\rm F}_{\rm LL}$ |
+| $\mathcal E_{\rm LG}$ | the left side $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}-m_{\rm LL}\Psi_{\rm LL}$ of the free field equation (15.6) |
+| $\Box_{\rm LG}$ | $g_{\rm LG}^{\mu\nu}\nabla^{\rm LG}_\mu\nabla^{\rm GEE}_\nu$ (15.7) |
+| $\gamma_{\rm LL}(\zeta)$ | $\gamma^a_{\rm LL}\eta^{\rm LL}_{ab}\zeta^b$ for a vector $\zeta$ (Section 15.3) |
+| $\Omega_{\rm LG}$ | a conformal factor, $g^{\rm LG}=\Omega_{\rm LG}^2\eta^{\rm LL}$ (15.9) |
+| $A_{{\rm SF},\mu}$, $A_{{\rm SF},\mu\nu}$ | the zeugon $W^3_{{\rm SF},\mu}$ and its field strength |
+| $k_{\rm LG}$, $\mathsf a_{\rm LG}$ | the wave vector and the polarization of a plane wave of the zeugon (15.10) |
+| $s$, $Q^{\rm LG}_s$, $\chi^{\rm LG}_s$ | the isospin component of the brochon, its charge $\pm\tfrac12$ of $Q_{\rm LL}$, and its isospin vector |
+| $p^{\rm LG}_s$, $\xi^{\rm LG}_s$, $\psi^{\rm LG}_s$, $\Sigma^{\rm LG}_s$ | the momentum, the constant spinor, the Volkov solution and its phase (15.10) |
+| $M^{\rm CJT,D}_{\rm SF}$, $D^{\rm CJT}_{\rm SF}$, $E^{\rm CJT,gap}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state of the brochon model (method CJT, Appendix B.5) |
+| $\mathcal E^{\rm CJT}_{\rm SF}$ | the energy density of that ground state relative to the normal vacuum |
+| $M^{\rm CJT}_{W,{\rm SF}}$ | the mass of the massive gauge bosons $W^1$, $W^2$ in that ground state |
+| $\vec q_{\rm LL}$, $\varepsilon_{\rm LL}$ | a momentum and the energy of a plane wave |
+| $\mathcal C_{\rm LG}$, $\mathsf P_{\rm LG}$ | the antilinear map of the pairing term and its matrix $(\gamma^0_{\rm LL}\otimes\mathsf 1_2)(\mathsf K^3_{\rm LL})^\dagger$ (15.11) |
+| $M$, $D$ | shorthands for $M^{\rm CJT,D}_{\rm SF}$ and $D^{\rm CJT}_{\rm SF}$ in Theorem L2 |
+| $w^{\rm LG}_{ab}$ | the real coefficients of an element of the Lorentz algebra (proof of Theorem L2) |
+| $U(1)^{\rm Q}_{\rm LL}$ | the unbroken group of the charge $Q_{\rm LL}$ in the superfluid |
+| $\Theta^{\rm LG}_{\mu\nu}$ | the response of the action to the tetrad (16.1) |
+| $T^{\Psi,{\rm LG}}_{\mu\nu}$, $T^{\rm self,LG}_{\mu\nu}$, $T^{\rm YM,LG}_{\mu\nu}$, $T^{\rm Z,LG}_{\mu\nu}$, $T^{\rm LG}_{\mu\nu}$ | the energy-momentum tensors of the brochon (16.2), of the self-interaction (16.4), of the gauge fields (16.5), of the zeugon, and their sum (16.8) |
+| $x_0$ | the point of a local solution (Section 16.1) |
+| $Y^{\iota,\lambda}_{\rm LG}$, $Y^{{\rm F},\lambda}_{\rm LG}$ | the left sides of the Yang-Mills equations in a curved space-time (16.7) |
+| $\mathbf g_{\rm boost}$ | the boost $\tfrac54\mathbf e_0+\tfrac34i\,\mathbf e_3$ of Appendix A.3, used in the examples of Sections 2.4 and 11.1 |
+| $P_{\rm LG}$ | the momentum $(\tfrac{17}8,0,0,\tfrac{15}8)$ of the plane wave of the examples (Appendix B.1, Section 16.1) |
+| $y_{\rm LG}$ | $\mathcal M_{\rm LG}m_{\rm LL}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, the coupling of the gravitational atom (18.1) |
+| $\chi_{\rm LG}$, $b^{\rm qp}_{\rm LG}$ | a solution of the Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$, and the coefficient $-D/(E+M)$ of Theorem L3 (18.2) |
+| $E$ | shorthand for $E^{\rm CJT,gap}_{\rm SF}$ in Theorem L3 |
+| $\omega^{\rm S}_{\rm LG}$ | the frequency of a partial wave in the Schwarzschild field (time dependence $e^{-i\omega^{\rm S}_{\rm LG}\tau_{\rm LG}}$), complex for a quasi-bound state |
+| $j_{\rm LG}$, $m_{j,{\rm LG}}$ | the total angular momentum of a partial wave and its component along the axis |
+| $\mathsf H_{\rm LG}$, $\mathsf S^{\rm H}_{\rm LG}$ | the constant matrix $i(\sigma^{\rm LL}_1+\sigma^{\rm LL}_3)/\sqrt2$ and $\mathrm{diag}(\mathsf H_{\rm LG},\mathsf H_{\rm LG})$ (18.3) |
+| $\alpha_{\rm LG}(\theta)$, $\beta_{\rm LG}(\theta)$ | the angular functions of a partial wave (18.4) |
+| $\mathcal P_{\rm LG}(r)$, $\mathcal Q_{\rm LG}(r)$ | the radial functions in the freely falling tetrad (18.5) |
+| $\lambda_{\rm LG}$ | the separation constant, $\pm(j_{\rm LG}+\tfrac12)$, equal to $-\kappa^{\rm H}_{\rm LG}$ |
+| $\kappa^{\rm H}_{\rm LG}$ | the number of Dirac's theory of the hydrogen atom that tells apart the two states of the same $j$ |
+| $n_{\rm LG}$, $\ell_{\rm LG}$ | the principal quantum number and the orbital angular momentum of a state (Section 18.4) |
+| $\mathcal U_{\rm LG}(r)$, $\mathcal V_{\rm LG}(r)$ | the radial functions in the static tetrad (18.7) |
+| $\varsigma_{\rm LG}$ | an exponent of the radial equations at a regular singular point (19.1) |
+| $J_{\rm LG}$ | the radial current (19.2): the flux into the sphere of radius $r$, per unit of the angular integral |
+| $\mathcal N^{\rm S}_{\rm LG}$ | the integral of $\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2$ outside the horizon (20.3) |
+| $F^{\rm H}_{\rm LG}$, $c^{\rm H}_{\rm LG}$ | the coefficients of the fine structure (20.4) and of the decay rate (20.5) at small $y_{\rm LG}$ |
+| $\mathcal T_{\rm LG}$ | the greybody factor of a partial wave, the fraction of an incoming wave that the black hole absorbs (21.1) |
+| $M_\odot$ | the mass of the Sun (Section 20.5) |

@@ -6,8 +6,8 @@ program lg_schw, the Python program python/lg_schw.py and the Wolfram script wol
 numbers that the record quotes from them, read from the data files that lg_schw writes (data/lg_schw_qbs.csv,
 data/lg_schw_grey.csv, data/lg_schw_values.csv) and from the reports of the two independent checks.
 
-Every number that the record states about stage 5 is written here from the data, so that the record and the data cannot
-differ.  The program stops if a report is missing, has no verdict line, or does not pass completely, and if a quantity
+Every number that the record and Part IV of lord_gravity.md state about stage 5 is written here from the data, so that
+the text and the data cannot differ.  The program stops if a report is missing, has no verdict line, or does not pass completely, and if a quantity
 that the record quotes is missing from the data.
 
 Units: G_N = c = hbar = 1 and the mass of the black hole 1; Mm is the product of the mass of the black hole and the mass
@@ -17,6 +17,7 @@ Usage (from the folder Revision_Lord_Gravity):   python3 code/scripts/write_lg_s
 Output: provenance/generated/lg_schw.md
 """
 import csv
+import math
 import os
 import re
 import sys
@@ -70,8 +71,17 @@ def omega(row, nre=10):
     """omega/m = Re + i Im as a formula; an imaginary part below the resolution 1e-12 of the computation is stated so"""
     re_, im_ = float(row["Re_omega_over_m"]), float(row["Im_omega_over_m"])
     if abs(im_) < 1e-12:
-        return "%.*f\\ (|{\\rm Im}|<10^{-12})" % (nre, re_)
+        return "%.*f\\ (\\lvert{\\rm Im}\\rvert<10^{-12})" % (nre, re_)
     return "%.*f-%s\\,i" % (nre, re_, sci(-im_, 2))
+
+
+def omega_table(row, nre=10):
+    """omega/m for Table IV.1: as omega(), but an imaginary part below the resolution 1e-12 is marked by an asterisk, which
+    the caption of the table explains (the full remark would not fit into the column)"""
+    re_, im_ = float(row["Re_omega_over_m"]), float(row["Im_omega_over_m"])
+    if abs(im_) < 1e-12:
+        return "%.*f^{\\,*}" % (nre, re_)
+    return omega(row, nre)
 
 
 def main():
@@ -95,12 +105,29 @@ def main():
 
     for mm, key in ((0.1, "lgs_qbs_01"), (0.3, "lgs_qbs_03")):
         frags[key] = "; ".join("$%s$: $%s$" % (label(s), omega(row(s, mm))) for s in STATES)
+    # Table IV.1 of the manuscript: the six states at Mm = 0.1 and 0.3, with the hydrogen-like levels 1 - (Mm)^2/(2 n^2)
+    lam_of = {"1S1/2": 1, "2S1/2": 1, "2P1/2": -1, "2P3/2": 2, "3P3/2": 2, "3D3/2": -2}
+    lines = ["| state | $\\lambda_{\\rm LG}$ | $\\omega^{\\rm S}_{\\rm LG}/m_{\\rm LL}$ at $y_{\\rm LG}=0.1$ | hydrogen | "
+             "$\\omega^{\\rm S}_{\\rm LG}/m_{\\rm LL}$ at $y_{\\rm LG}=0.3$ | hydrogen |",
+             "|:---|:---:|:---|:---|:---|:---|"]
+    for st in STATES:
+        a, b = row(st, 0.1), row(st, 0.3)
+        if int(round(float(a["lambda"]))) != lam_of[st]:
+            sys.exit("lg_schw_qbs.csv: lambda of %s is %s" % (st, a["lambda"]))
+        lines.append("| $%s$ | $%+d$ | $%s$ | $%.4f$ | $%s$ | $%.4f$ |" % (
+            label(st), lam_of[st], omega_table(a), float(a["hydrogen_like"]), omega_table(b), float(b["hydrogen_like"])))
+    frags["lgs_qbs_table"] = "\n".join(lines)
     r04 = row("1S1/2", 0.4)
     frags["lgs_1s_04"] = "$%s$" % omega(r04, 6)
     frags["lgs_1s_04_hyd"] = "$%.4f$" % float(r04["hydrogen_like"])
     # the decay time of the state 1S1/2 at Mm = 0.1, in units of G_N M / c^3: 1/|Im omega| = 1/(|Im omega/m| m)
     r01 = row("1S1/2", 0.1)
+    # the example of Section 20.2: the frequency of 1S1/2 at Mm = 0.1 and its distance below the rest energy
+    frags["lgs_1s_01"] = "$%s$" % omega(r01)
+    frags["lgs_1s_01_bind"] = "$%.4f$" % (1.0 - float(r01["Re_omega_over_m"]))
     frags["lgs_tau_1s_01"] = "$%s$" % sci(1.0 / (abs(float(r01["Im_omega_over_m"])) * 0.1), 2)
+    # the same decay time in periods of the oscillation e^{-i Re omega tau}: Re omega / (2 pi |Im omega|)
+    frags["lgs_periods_1s_01"] = "$%s$" % sci(float(r01["Re_omega_over_m"]) / (2 * math.pi * abs(float(r01["Im_omega_over_m"]))), 1)
 
     vals = {r["name"]: r["value"] for r in csv.DictReader(open(os.path.join(DATA, "lg_schw_values.csv"), encoding="utf-8"))}
     for q in ("ls8c_largest_dev_over_Mm4", "ls8_local_power_of_Im_omega"):
@@ -135,6 +162,18 @@ def main():
     frags["lgs_dev_wl_qbs"] = "$%s$" % sci(deviation(texts["lgs_verdict_wolfram"], "WS-7", "wolfram"), 1)
     frags["lgs_dev_wl_grey"] = "$%s$" % sci(deviation(texts["lgs_verdict_wolfram"], "WS-8", "wolfram"), 1)
     frags["lgs_dev_conv"] = "$%s$" % sci(deviation(texts["lgs_verdict_rust"], "LS-8b", "rust"), 1)
+    # the separation, the horizon series, the current, the flux of the scattering (checks LS-2, LS-4, LS-5, LS-7, LS-9a)
+    for cid in ("LS-2", "LS-4", "LS-5", "LS-7", "LS-9a", "LS-9b"):
+        frags["lgs_dev_" + cid.lower().replace("-", "")] = "$%s$" % sci(deviation(texts["lgs_verdict_rust"], cid, "rust"), 1)
+    # the quasi-particle of the superfluid (check LS-14): the residual with the right and with the wrong sign
+    frags["lgs_dev_ls14"] = "$%s$" % sci(deviation(texts["lgs_verdict_rust"], "LS-14a", "rust"), 1)
+    frags["lgs_dev_ls14c"] = "$%s$" % sci(deviation(texts["lgs_verdict_rust"], "LS-14c", "rust"), 1)
+    if "ls14_smallest_residual_wrong_sign" not in vals:
+        sys.exit("lg_schw_values.csv: no row for ls14_smallest_residual_wrong_sign")
+    frags["lgs_ls14_wrong"] = "$%s$" % sci(float(vals["ls14_smallest_residual_wrong_sign"]), 1)
+    if "ls14_b_qp_squared" not in vals:
+        sys.exit("lg_schw_values.csv: no row for ls14_b_qp_squared")
+    frags["lgs_bqp2"] = "$%.3f$" % float(vals["ls14_b_qp_squared"])
 
     # ---- the decay rate from the charge and the small masses (checks LS-10 to LS-13, YS-10 to YS-12, WS-9)
     frags["lgs_dev_ls10a"] = "$%s$" % sci(deviation(texts["lgs_verdict_rust"], "LS-10a", "rust"), 1)
@@ -162,12 +201,23 @@ def main():
         sys.exit("lg_schw_small.csv: no row for %s at Mm = %g" % (state, x))
 
     frags["lgs_small_1s_0005"] = "$%s$" % sci(float(srow("1S1/2", 0.005)["Im_omega_over_m_from_charge"]), 2)
+    # the decay time of 3D3/2 at Mm = 0.01 in periods of its oscillation, Re omega / (2 pi |Im omega|)
+    r3 = srow("3D3/2", 0.01)
+    frags["lgs_periods_3d_001"] = "$%s$" % sci(float(r3["Re_omega_over_m"]) / (2 * math.pi * abs(float(r3["Im_omega_over_m_from_charge"]))), 0)
     frags["lgs_small_3d_001"] = "$%s$" % sci(float(srow("3D3/2", 0.01)["Im_omega_over_m_from_charge"]), 2)
     frags["lgs_small_ratio_1s_0005"] = "$%.4f$" % float(srow("1S1/2", 0.005)["ratio_decay"])
     frags["lgs_small_ratio_3d_0005"] = "$%.4f$" % float(srow("3D3/2", 0.005)["ratio_decay"])
     frags["lgs_small_ratio_1s_005"] = "$%.3f$" % float(srow("1S1/2", 0.05)["ratio_decay"])
     frags["lgs_small_rf_1s_005"] = "$%.3f$" % float(srow("1S1/2", 0.05)["ratio_F"])
     frags["lgs_small_rf_3d_005"] = "$%.4f$" % float(srow("3D3/2", 0.05)["ratio_F"])
+
+    # the particle mass at which a black hole of one solar mass has Mm = 0.1: Mm = (G_N M / c^2) (m c^2) / (hbar c), so
+    # m c^2 = 0.1 hbar c / r_g with r_g = G_N M_sun / c^2 (the nominal solar mass parameter G_N M_sun = 1.3271244e20
+    # m^3 s^-2 of the IAU, 2015, resolution B3; c = 299792458 m/s; hbar c = 197.3269804 MeV fm, CODATA 2018)
+    r_g = 1.3271244e20 / 299792458.0 ** 2
+    hbarc_ev_m = 197.3269804e6 * 1e-15
+    frags["lgs_m_sun_01"] = "$%s$" % sci(0.1 * hbarc_ev_m / r_g, 1)
+    frags["lgs_rg_sun"] = "$%.0f$" % r_g
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:

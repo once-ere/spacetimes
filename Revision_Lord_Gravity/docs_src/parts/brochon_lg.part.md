@@ -287,7 +287,7 @@ self-energy is $D^{\rm CJT}_{\rm SF}(\mathsf K^3_{\rm LL})^\dagger$ with $|D^{\r
 the non-zero entries {{GEN:ex10_k3_entries}} (rows and columns numbered from 0 to 7, the component number minus 1), so each
 condensed pair joins an isospin-up with an isospin-down component of the same chirality and of opposite spin. Built with these self-energies,
 the $16\times16$ matrix (B.14) has, at every momentum the program tried, the eigenvalues $\pm E(\vec q)$ of (B.18) eight times
-each (check LW-6a of the program `lg_worked` of this folder, Section 18). A quasi-particle at rest has the
+each (check LW-6a of the program `lg_worked` of this folder, Appendix C.4). A quasi-particle at rest has the
 energy $E(0)={{GENM:lgw_lw6_e_q0}}$, the gap; one with $|\vec q|=0.3$ has $E={{GENM:lgw_lw6_e_q0_3}}$, and one at the cutoff
 $E={{GENM:lgw_lw6_e_q1}}$. The gap equation (B.19) holds: $I^{(1)}_{\rm SF}(E^{\rm CJT,gap}_{\rm SF})={{GENM:lgw_lw7_i1_gap}}$ by the
 closed form (A.19), equal to $\pi^2/23.7={{GENM:lgw_lw7_pi2_over_gp}}$ (check LW-7b).

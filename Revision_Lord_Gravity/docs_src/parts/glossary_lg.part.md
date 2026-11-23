@@ -110,3 +110,43 @@ brochon comes, with an example of every object, and Appendix B states the brocho
   polarization of the gauge bosons of the broken generators, which become massive: the Higgs mechanism (Section B.6).
 * *Momentum cutoff $\Lambda_{\rm LL}$.* The largest momentum of the brochon model; it is the unit of energy of its numbers, and its
   value in physical units is not fixed by the model.
+
+**Waves around a black hole (Part IV)**
+
+* *Test particle.* A particle that moves in a given field and is too light to change it: its own gravitational field is
+  neglected. The brochon of Part IV is a test particle in the field of the black hole.
+* *Separation of variables, partial wave.* A solution of a partial differential equation written as a product of functions of
+  one variable each, so that the equation splits into ordinary differential equations; the constants that link them are
+  *separation constants*. Around a black hole that does not change in time and looks the same in every direction, a solution
+  can be chosen with a definite frequency and a definite angular momentum: a *partial wave*.
+* *Total angular momentum $j$, its component $m_j$, the notation $nL_j$.* The angular momentum of a particle with spin is the
+  sum of its orbital angular momentum $\ell$ and its spin; for a Dirac particle $j=\ell\pm\tfrac12$. A level of the hydrogen
+  atom is written $nL_j$: the principal quantum number $n$, the letter S, P, D for $\ell=0,1,2$, and $j$ as the index; for example
+  $2P_{3/2}$ has $n=2$, $\ell=1$, $j=\tfrac32$.
+* *Fine structure.* The splitting of the levels of the hydrogen atom that have the same $n$ but different $\ell$ or $j$, smaller
+  than the distances of the levels by the square of the coupling; around a black hole the coupling is $y_{\rm LG}$ (Section 20.4).
+* *Analytic function, power series, radius of convergence.* A function is analytic at a point if near it it equals a
+  convergent power series in the distance to the point; the series converges inside a circle whose radius, the radius of
+  convergence, reaches to the nearest point where the function is not analytic.
+* *Regular singular point, exponents (the method of Frobenius).* A point where the coefficients of a linear differential
+  equation have a simple pole. Near it the solutions behave as powers of the distance to it, times analytic functions; the
+  powers, the *exponents*, are the eigenvalues of the residue matrix, the limit of the distance times the matrix of the
+  coefficients (Section 19.1).
+* *Quasi-bound state, complex frequency, decay rate.* A bound state that leaks, here into the horizon: a solution that falls into
+  the horizon and decays far away. It exists only at a complex frequency $\omega$; the real part is the energy of the level, and
+  the amplitude decays in time as $e^{-\lvert{\rm Im}\,\omega\rvert t}$, at the *decay rate* $\lvert{\rm Im}\,\omega\rvert$ (Section 20).
+* *Wronskian.* For two solutions of a linear system of two first-order equations, the determinant of the matrix whose columns are
+  the two solution vectors; it vanishes exactly when one solution is a multiple of the other.
+* *Secant method, Muller's method.* Ways of finding a zero of a function from its values alone: the secant method draws the line
+  through the last two points, Muller's method the parabola through the last three, and each takes the zero of the curve as the
+  next point.
+* *Greybody factor.* The fraction of an incoming wave that a black hole absorbs (Section 21). The name comes from Hawking's
+  radiation of a black hole, whose spectrum is that of a black body multiplied by this fraction.
+* *Richardson extrapolation.* The estimate of the limit of a quantity that is known at a few values of a small parameter and
+  approaches its limit by known powers of it: combinations of the values that cancel the leading powers.
+* *CVODE, SUNDIALS.* SUNDIALS is a library of numerical solvers of the Lawrence Livermore National Laboratory; CVODE is its
+  integrator of ordinary differential equations, which chooses its steps so that the estimated error stays below a set
+  tolerance. Every integration of this manuscript uses it.
+* *Planck mass, gravitational radius, Compton wavelength.* The Planck mass $M_{\rm Pl}=(\hbar c/G_{\rm N})^{1/2}$ (about 22
+  micrograms); the gravitational radius $G_{\rm N}M/c^2$ of a mass $M$, half the radius of its horizon; and the reduced Compton
+  wavelength $\hbar/(mc)$ of a particle of mass $m$, the length below which its position cannot be fixed without creating pairs.

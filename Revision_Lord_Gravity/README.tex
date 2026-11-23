@@ -325,9 +325,10 @@ of 5)). The check HCK-H2 of
 manuscript relies on the earlier hypotheses or the earlier work without
 stating them.
 
-\textbf{Stage 5} (22 November 2026), computed and checked, not written
-up: the brochon in the Schwarzschild field. In the freely falling tetrad
-of Painlevé and Gullstrand (the frame of observers who fall freely from
+\textbf{Stage 5} (22 November 2026), computed and checked, and written
+up as Part IV of the manuscript (Sections 18 to 22, with two figures):
+the brochon in the Schwarzschild field. In the freely falling tetrad of
+Painlevé and Gullstrand (the frame of observers who fall freely from
 rest at infinity), which is regular at the horizon, the Dirac equation
 separates into two angular and two radial equations of the first order.
 At the horizon the solution that falls in is analytic and continues
@@ -350,12 +351,17 @@ angular momentum \(\ell_{\rm LG}\) and spin projection
 fifth power for the ground state; it is computed from the conservation
 of the charge of the brochon, which resolves rates as small as
 \(10^{-27}\) of the mass. The Rust program \texttt{lg\_schw} computes
-all this with CVODE (ALL PASS (18 of 18)); the Python program
-\texttt{python/lg\_schw.py} (ALL PASS (12 of 12)) and the Wolfram script
+all this with CVODE (ALL PASS (21 of 21)); the Python program
+\texttt{python/lg\_schw.py} (ALL PASS (14 of 14)) and the Wolfram script
 \texttt{wolfram/source/lg\_schw.wls} (ALL PASS (9 of 9), exact algebra
 and arithmetic of 32 digits) check them. The task record gives the
 results with their numbers (entries E7 to E14); the data are in
-\texttt{data/lg\_schw\_*.csv}.
+\texttt{data/lg\_schw\_*.csv}. Writing Part IV added Theorem L3: every
+solution of the Dirac equation of the mass of the gap gives a solution
+of the equation of the quasi-particle of the superfluid, with the same
+complex frequency and the same averaged currents, so that every result
+of stage 5 holds for the quasi-particle (checks LS-14a to LS-14c and
+YS-13; entry E26).
 
 \textbf{Stage 6} (22 November 2026), computed and checked, not written
 up: the brochon in the field of a black hole whose mass changes. The
@@ -409,9 +415,10 @@ record, decision D11 and entries E20 and E21; the data in
 author means, and the value of \(\Lambda_{\rm LL}\) in physical units,
 are questions put to him.
 
-Next (the task record, Section 6): Parts IV to VI of the manuscript,
-written from stages 5 to 7 in the same style; then the provenance of the
-remarks, the registry of the symbols and the notebook.
+Next (the task record, Section 6): Part V of the manuscript, written
+from stage 6 in the same style; then the rest of stage 7 (decision D12
+of the task record) and Part VI; then the provenance of the remarks, the
+registry of the symbols and the notebook.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -457,9 +464,12 @@ Appendix B) & written \\
 \texttt{lord\_gravity.md}, \texttt{.tex}, \texttt{.pdf} & the manuscript
 of the task: Part I (Lord's paper read and checked), Part II (the
 association of the project's \(SL(2,\mathbb C)\) with Lord's gauge
-group), Part III (the gravitational coupling of the brochon) & Parts I
-to III written and, since 22 November 2026, complete in themselves, with
-the word list and Appendices A and B; Parts IV to VI next \\
+group), Part III (the gravitational coupling of the brochon), Part IV
+(the brochon in the Schwarzschild field); Appendices A (the algebra of
+the Lorentz super-loop), B (the brochon model), C (the provenance, with
+the complete reports of the checks) and D (the symbols) & Parts I to IV
+written, complete in themselves, with the word list and Appendices A to
+D; Parts V and VI next \\
 \texttt{provenance/generated/} & the fragments that the programs write
 for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
 \texttt{lg\_schw.md}, \texttt{lg\_vaidya.md}, \texttt{lg\_pair.md} and
@@ -496,9 +506,10 @@ differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_curved}), \texttt{lgsundials.py} (CVODE through
 \texttt{lgsundials\_c}), \texttt{lg\_schw.py} and \texttt{lg\_vaidya.py}
 (the independent checks of \texttt{lg\_schw} and \texttt{lg\_vaidya}),
-\texttt{lg\_pair.py} (the exact levels of the pair of stage 7a), and
+\texttt{lg\_pair.py} (the exact levels of the pair of stage 7a),
 \texttt{lg\_worked.py} (the worked examples, exact where they are
-rational) & written for Parts I to III and stages 5 to 7a \\
+rational), and \texttt{lg\_schw\_figures.py} (the figures of Part IV) &
+written for Parts I to IV and stages 5 to 7a \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
 Lord's identities, signs and factors; \texttt{lg\_curved.wls}: the exact
 checks of Part III; \texttt{lg\_schw.wls}: the exact checks of stage 5
@@ -529,7 +540,11 @@ reports \texttt{hck\_lg\_vaidya\_checks*.txt}), of stage 7a
 (\texttt{lg\_worked\_values.csv}; reports
 \texttt{hck\_lg\_worked\_checks*.txt}), and the report of the check
 whether a document sends its reader elsewhere & written \\
-\texttt{figures/} & the figures & planned \\
+\texttt{figures/} & the figures of the manuscript:
+\texttt{fig\_lg\_schw\_interior} and \texttt{fig\_lg\_schw\_decay}
+(Figures IV.1 and IV.2; \texttt{.pdf} and \texttt{.png}), drawn by
+\texttt{python/lg\_schw\_figures.py} from the data of \texttt{lg\_schw}
+& written for Part IV \\
 \end{longtable}
 
 \hypertarget{how-to-build-the-documents}{%
@@ -546,7 +561,8 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_vaidya}\KeywordTok{)}        \CommentTok{\# stage 6 (CVODE; about 5 minutes)}
 \ExtensionTok{python3}\NormalTok{ python/lg\_lord.py                      }\CommentTok{\# the independent checks}
 \ExtensionTok{python3}\NormalTok{ python/lg\_curved.py}
-\ExtensionTok{python3}\NormalTok{ python/lg\_schw.py                      }\CommentTok{\# uses rust/target/release/liblgsundials\_c (about 20 s)}
+\ExtensionTok{python3}\NormalTok{ python/lg\_schw.py                      }\CommentTok{\# uses rust/target/release/liblgsundials\_c (about 45 s)}
+\ExtensionTok{python3}\NormalTok{ python/lg\_schw\_figures.py              }\CommentTok{\# the figures of Part IV, from the data of lg\_schw}
 \ExtensionTok{python3}\NormalTok{ python/lg\_vaidya.py                    }\CommentTok{\# after lg\_vaidya, whose data it checks (about 30 s)}
 \ExtensionTok{python3}\NormalTok{ python/lg\_pair.py                      }\CommentTok{\# stage 7a, exact levels (about 16 s); then (cd rust \&\& ./target/release/lg\_pair)}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
@@ -560,7 +576,7 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_vaidya\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_pair\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
-\ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (HCK{-}H2 fails, Section 2)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (checks HCK{-}H1, HCK{-}H2)}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}
 \end{Highlighting}
 \end{Shaded}

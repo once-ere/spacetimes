@@ -29,12 +29,16 @@ written in parts, each pushed when it is complete:
   derivative: the tetrad (Lord's reference vectors), the spin connection and the curvature, the field equations of the
   brochon and of the quasi-particles of the superfluid in a curved space-time, the energy-momentum tensor, and Einstein's
   equations with the brochon and the gauge fields, the zeugon among them, as sources.
-* **Parts IV to VI** (planned): the brochon in the Schwarzschild field; the brochon in the Vaidya metric; the brochon pair
-  bound by the zeugon and the predictions.
+* **Part IV** (Sections 18 to 22, this version): the brochon in the Schwarzschild field, on both sides of the horizon: the
+  separation of its Dirac equation, the horizon and the inside of the black hole, the quasi-bound states (the levels of a
+  gravitational atom that decay by falling into the black hole) and the greybody factors; and Theorem L3, which makes every
+  result a result for the quasi-particle of the superfluid.
+* **Parts V and VI** (planned): the brochon in the Vaidya space-time of a black hole whose mass changes; the brochon pair bound
+  by the zeugon, and the predictions.
 
-Section 18 gives the provenance of Parts I to III: the programs that check them and their complete reports; Section 19
-lists the symbols of the main text. Appendix A builds the algebra of the Lorentz super-loop, with an example of every
-object, and Appendix B states the brochon model; each appendix lists its own symbols.
+Appendix A builds the algebra of the Lorentz super-loop, with an example of every object, and Appendix B states the brochon
+model; each lists its own symbols. Appendix C gives the provenance of the main text: the programs that compute and check
+it, and their complete reports. Appendix D lists the symbols of the main text.
 
 *How to read this manuscript.* The manuscript is written for a graduate student who knows special relativity, the Dirac
 equation and the elements of general relativity and of group theory; everything else is explained where it is used. The
@@ -68,8 +72,12 @@ before the equations do it.
    (Part III).
 5. In the superfluid vacuum of the brochon model the quasi-particle of the brochon is, in every gravitational field, a
    particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}={{GENM:p2_gap_V2_CJT}}\,\Lambda_{\rm LL}$ that couples to the zeugon
-   with the charges $\pm\tfrac12$ (Theorem L2 of Section 15.4): its gravitational problems are those of a Dirac particle of
-   this mass.
+   with the charges $\pm\tfrac12$ (Theorem L2 of Section 15.4); conversely, every solution of the Dirac equation of this mass
+   gives a solution for the quasi-particle (Theorem L3 of Section 18.1). Its gravitational problems are therefore those of a
+   Dirac particle of this mass.
+6. Around a black hole that does not rotate, the brochon has quasi-bound states: the levels of a hydrogen atom whose
+   coupling is $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, which decay by falling into the black hole at rates that fall as
+   $y_{\rm LG}^5$ and faster. The wave that falls in crosses the horizon smoothly and reaches the centre (Part IV).
 
 # 1. Conventions, units and notation
 
@@ -79,7 +87,7 @@ $\eta^{{\rm LL}\,\mu\nu}$ (the same numbers). A repeated index is summed. The su
 LL for the objects of the Lorentz super-loop and of its fields (Appendix A), SF for those of the brochon model (Appendix
 B), LG for those that this manuscript introduces, and **Lord** for the objects of Lord's paper that the project does not
 otherwise have. Where an object of Lord's paper is the same as an object of the project, the project's symbol is used;
-Part II proves each such identity (checks P-1 to P-4 of Section 18).
+Part II proves each such identity (checks P-1 to P-4 of Appendix C).
 
 **The matrices of Lord's Section 1.** The four $2\times2$ matrices $\sigma^{\rm LL}_\mu$ are the unit matrix and the
 Pauli matrices, $\sigma^{\rm LL}_0=\mathsf 1_2$, $\sigma^{\rm LL}_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$,
@@ -106,7 +114,7 @@ Section 4 must be read as $\mathrm{tr}_{\rm N}$.
 
 **Equation numbers.** An equation number without a name, such as (5.3), refers to this manuscript; Lord's equations are
 cited as "Lord (4.13)". Lord's paper is not in the repository; the copy that was read is identified by its SHA-256
-checksum in Section 18.
+checksum in Appendix C.1.
 
 # Part I. Lord's paper, read and understood
 
@@ -140,7 +148,7 @@ $$\Lambda_{{\rm Lord}\,\nu}{}^\mu\,L_{\rm Lord}\,\sigma^{\rm LL}_\nu\,L_{\rm Lor
 A Weyl spinor $\phi$ of the kind $(\tfrac12,0)$ transforms as $\phi\mapsto L_{\rm Lord}\phi$, one of the kind $(0,\tfrac12)$
 as $\chi\mapsto(L_{\rm Lord}^\dagger)^{-1}\chi$; a Dirac spinor is the pair $(\phi,\chi)$.
 
-*Checks* (Section 18): L1-1 to L1-6 (Rust), YL-1, YL-2 (Python), WL-1, WL-4 (Wolfram, exact): the relations (2.1),
+*Checks* (Appendix C): L1-1 to L1-6 (Rust), YL-1, YL-2 (Python), WL-1, WL-4 (Wolfram, exact): the relations (2.1),
 (2.2), the self-duality, the infinitesimal solution of (2.3), and for random matrices $L_{\rm Lord}$ that the
 $\Lambda_{\rm Lord}$ of (2.3) is a proper orthochronous Lorentz matrix.
 
@@ -209,7 +217,7 @@ matrices $\sigma^{\rm LL}_0$, $\sigma^{\rm LL}_1$, $\sigma^{\rm LL}_2$ and $\sig
 coefficients is ${{GENM:lgw_lw4_det}}$) are not a representation: $N_{\rm LG}(\sigma^{\rm LL}_0,\sigma^{\rm LL}_3+\tfrac12\sigma^{\rm LL}_0)={{GENM:lgw_lw4_n03}}$
 instead of $\eta^{\rm LL}_{03}=0$, and the anticommutator of the Dirac matrices built from the first and the last of them is
 $\tfrac12\mathsf 1_4$ instead of zero. (Checks LW-1 to LW-4 of the program `lg_worked`, with YW-1 to YW-4 in exact arithmetic and
-WW-1, WW-2 in the Wolfram Language; Section 18.)
+WW-1, WW-2 in the Wolfram Language; Appendix C.)
 
 ## 2.5 The difficulty of the minimal coupling, and Lord's remedy
 
@@ -550,7 +558,7 @@ zeugon couples to the isospin charge $Q_{\rm LL}=T^3_{\rm LL}$, $\pm\tfrac12$ on
 # 10. The dictionary
 
 Table 10.1 lists every object of Lord's construction with its counterpart in the project; each line is proved by the
-check named in its last column (Section 18).
+check named in its last column (Appendix C).
 
 Table 10.1. Lord's objects and the project's.
 
@@ -669,7 +677,7 @@ connection enters the covariant derivative of the brochon, and the energy-moment
 fields becomes the source of Einstein's equations. In the superfluid vacuum of the brochon model, the quasi-particle of the
 brochon then behaves in every gravitational field as a Dirac particle whose mass is the gap.
 
-Every statement of Part III is checked by three programs (Section 18): the Rust program `lg_curved`
+Every statement of Part III is checked by three programs (Appendix C.3): the Rust program `lg_curved`
 ({{GEN:lgc_verdict_rust}}); the Python program `python/lg_curved.py` ({{GEN:lgc_verdict_python}}), written
 independently, with other formulas where the subject allows and with finite differences in place of automatic
 differentiation; and the Wolfram script `wolfram/source/lg_curved.wls` ({{GEN:lgc_verdict_wolfram}}), in exact arithmetic
@@ -982,7 +990,9 @@ space-times, and the square for local solutions of (15.11), Section 16.1.)
 
 The theorem has two consequences for the rest of the task. First, in every gravitational field the quasi-particle of the
 superfluid is a particle of spin $\tfrac12$ and mass $E^{\rm CJT,gap}_{\rm SF}$ that couples to the zeugon with the charges $\pm\tfrac12$
-times $g^{\rm v}_{\rm LL}$: its gravitational problems (Parts IV and V) are those of a Dirac particle of this mass. Second, the
+times $g^{\rm v}_{\rm LL}$: its gravitational problems (Parts IV and V) are those of a Dirac particle of this mass (Theorem L3 of
+Section 18.1 proves the converse that this needs: every solution of the Dirac equation of this mass gives a solution of
+(15.11)). Second, the
 statement fails for the massive gauge fields: with $W^1$, $W^2$ or $B$ the anticommutation (a) fails (relative deviation
 {{GEN:lgc_g17b}}, G-17b; exactly, WG-6). The pairing term is covariant only under the unbroken group $U(1)^{\rm Q}_{\rm LL}$ of
 the charge $Q_{\rm LL}$, which is why the zeugon alone remains a field of long range in the superfluid.
@@ -1125,16 +1135,451 @@ units in which it does not appear.
 6. The printed coefficients of Lord's (4.20) and (4.47), (4.48) would halve the connection and double the coupling to the
    curvature; the corrected relations are used throughout.
 
-# 18. Provenance of Parts I to III
+# Part IV. The brochon in the Schwarzschild field
 
-**The input.** E. A. Lord, "General relativity from gauge invariance", Proc. Camb. Phil. Soc. 69, 423 (1971): twenty pages
+Part IV solves the field equation of Part III for one brochon in the space-time of a black hole that neither rotates nor
+carries a charge: the Schwarzschild space-time of a mass $M_{\rm LG}$, outside the horizon and inside it. The field of the
+zeugon and the self-interaction are left out, and the brochon is a *test particle*: it feels the gravitational field and
+does not change it (the field it would produce is smaller than that of the black hole by the ratio of the two masses,
+Section 15.4). Section 18.1 shows that every result holds, unchanged, for the quasi-particle of the superfluid vacuum, with
+the mass of the brochon replaced by the gap.
+
+*In words.* The gravity of a black hole binds a brochon as a proton binds the electron of a hydrogen atom, with the number
+$y_{\rm LG}$ of (18.1) in the place of the fine-structure constant. But a black hole also swallows what comes close to it,
+so its bound states are not stationary: they leak into the horizon and decay, slowly when $y_{\rm LG}$ is small. Seen by an
+observer who falls freely, the wave of the brochon crosses the horizon without noticing it and goes on to the centre. Part
+IV computes the wave on both sides of the horizon (Sections 18 and 19), the decaying bound states (Section 20) and the
+fraction of an incoming wave that the black hole absorbs (Section 21); Section 22 states what Part IV establishes.
+
+Every statement of Part IV is checked by three programs (Appendix C.5): the Rust program `lg_schw`
+({{GEN:lgs_verdict_rust}}), which computes every number of Part IV; the Python program `python/lg_schw.py`
+({{GEN:lgs_verdict_python}}), which derives the equations again by computer algebra, with the spin connection as printed in
+Section 14.3, and recomputes a part of the numbers with its own starting values, root finder and integrals; and the Wolfram
+script `wolfram/source/lg_schw.wls` ({{GEN:lgs_verdict_wolfram}}), which derives the equations again in exact arithmetic,
+with the spin connection computed from the tetrad, and recomputes a part of the numbers with another integrator in
+arithmetic of 32 digits. Every differential equation is integrated with CVODE, the integrator of ordinary differential
+equations of the library SUNDIALS (Appendix C.5). The reports of the programs, reproduced in Appendix C.5, call the
+equations (18.4), (18.5) and (18.7) below (A), (PG) and (S), write Mm for $y_{\rm LG}$, Gamma for the greybody factor
+$\mathcal T_{\rm LG}$, A and B for the angular functions $\alpha_{\rm LG}$, $\beta_{\rm LG}$, u and w for the static radial functions
+$\mathcal U_{\rm LG}$, $\mathcal V_{\rm LG}$, W for the speed $w_{\rm LG}$, and $q_0$ for $\mathcal Q_{\rm LG}(2)$.
+
+# 18. The particle, the tetrads and the separation of the Dirac equation
+
+*In words.* Because the black hole does not change in time and looks the same in every direction, the Dirac equation of
+the brochon, an equation in four variables, splits into two ordinary differential equations of the first order in the
+angle $\theta$ and two in the radius $r$. Section 18.1 first explains why the solutions serve the quasi-particle of the
+superfluid as well.
+
+**Units.** In Part IV $G_{\rm N}=c=\hbar=1$, and lengths and times are measured in units of
+$\mathcal M_{\rm LG}=G_{\rm N}M_{\rm LG}$ (Section 14.3), so that the horizon is at $r=2$. Masses and frequencies are then measured in
+units of $1/\mathcal M_{\rm LG}$, and the mass of the brochon in these units is the number
+$$y_{\rm LG}=\mathcal M_{\rm LG}\,m_{\rm LL}=\frac{G_{\rm N}M_{\rm LG}\,m_{\rm LL}}{\hbar c}\quad\text{(in ordinary units)}.\tag{18.1}$$
+Every result depends on the two masses only through $y_{\rm LG}$: in the units of Part IV the equations below contain the mass
+of the black hole not at all and the mass of the brochon as the number $y_{\rm LG}$. A frequency $\omega^{\rm S}_{\rm LG}$ is quoted
+as the ratio $\omega^{\rm S}_{\rm LG}/m_{\rm LL}$, which is the same in every system of units.
+
+## 18.1 The particle, and why the results hold for the quasi-particle
+
+Part IV solves the field equation (15.4) without gauge fields and without self-interaction,
+$i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}=m_{\rm LL}\Psi_{\rm LL}$, in the Schwarzschild space-time. Without gauge fields
+the two isospin components of the brochon do not mix, and each obeys the same Dirac equation for four components;
+Sections 18 to 21 solve it for one of them (the programs put it into the upper isospin component).
+
+The zeugon exists only in the superfluid vacuum of the brochon model, and there the excitation of the brochon is the
+quasi-particle of Section 15.4, whose equation (15.11) contains the pair amplitude through the antilinear map
+$\mathcal C_{\rm LG}$. Theorem L2 showed that every solution of (15.11) solves the equation of the second order (15.12) of a
+Dirac particle of mass $E^{\rm CJT,gap}_{\rm SF}$. For the states of Part IV the converse is needed as well, that every
+solution of the Dirac equation of that mass gives a solution of (15.11). It holds:
+
+**Theorem L3 (the quasi-particle has the solutions of a Dirac particle).** Let the tetrad be real and the zeugon be the only
+gauge field, as in Theorem L2, and write $M=M^{\rm CJT,D}_{\rm SF}$, $D=D^{\rm CJT}_{\rm SF}$,
+$E=E^{\rm CJT,gap}_{\rm SF}=(M^2+\lvert D\rvert^2)^{1/2}$ and $\mathcal C=\mathcal C_{\rm LG}$. If $\chi_{\rm LG}$ solves the Dirac equation
+$i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\chi_{\rm LG}=E\,\chi_{\rm LG}$, then
+$$\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\,\mathcal C\chi_{\rm LG},\qquad b^{\rm qp}_{\rm LG}=-\frac{D}{E+M},\tag{18.2}$$
+solves the quasi-particle equation (15.11). Moreover, $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$ have, at every point, the same
+current $\bar\Psi\gamma^\mu_{\rm LG}\Psi$ and the same scalar density $\bar\Psi\Psi$.
+
+*Proof.* Write $\chi=\chi_{\rm LG}$, $b=b^{\rm qp}_{\rm LG}$ and $i\gamma\nabla$ for $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu$. By Theorem L2 (a),
+$i\gamma\nabla(\mathcal C\chi)=-\mathcal C(i\gamma\nabla\chi)=-\mathcal C(E\chi)=-E\,\mathcal C\chi$, since $E$ is real; by (b) and the
+antilinearity, $\mathcal C(b\,\mathcal C\chi)=b^*\mathcal C^2\chi=-b^*\chi$. Hence
+$$i\gamma\nabla\Psi-M\Psi-D\,\mathcal C\Psi=(E-M+D\,b^*)\,\chi-\big((E+M)\,b+D\big)\,\mathcal C\chi .$$
+The second bracket vanishes by the choice of $b$, and the first is $E-M-\lvert D\rvert^2/(E+M)=(E^2-M^2-\lvert D\rvert^2)/(E+M)=0$.
+For the second statement, the matrix $\mathsf P_{\rm LG}$ of $\mathcal C\Psi=\mathsf P_{\rm LG}\Psi^*$ obeys
+$\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}=(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)^T$ for
+$a=0,\dots,3$ (for $a=0$ this says that $\mathsf P_{\rm LG}$ is unitary) and
+$\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}=(\gamma^0_{\rm LL}\otimes\mathsf 1_2)^T$. Since the number
+$\bar\chi\gamma^a_{\rm LL}\chi=\chi^\dagger(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)\chi$ equals its transpose
+$\chi^T(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)^T\chi^*$, the first identity gives
+$\overline{\mathcal C\chi}\gamma^a_{\rm LL}\mathcal C\chi=\chi^T\mathsf P_{\rm LG}^\dagger(\gamma^0_{\rm LL}\gamma^a_{\rm LL}\otimes\mathsf 1_2)\mathsf P_{\rm LG}\chi^*=\bar\chi\gamma^a_{\rm LL}\chi$,
+and the second the same for the scalar density. $\square$
+
+(Checks LS-14a to LS-14c: the separated spinor (18.3) below with the mass $E$ and complex frequencies, at 40 random points
+outside and 40 inside the horizon, solves (15.11) in the form (18.2) to {{GEN:lgs_dev_ls14}} (relative); with the wrong sign of
+$b^{\rm qp}_{\rm LG}$ the residual is at least {{GEN:lgs_ls14_wrong}}, so that the check can fail; the currents and the scalar densities of
+$\chi$ and $\mathcal C\chi$ agree to {{GEN:lgs_dev_ls14c}}. Check YS-13: the same exactly, by computer algebra, for symbolic $M$, $\lvert D\rvert$,
+phase of $D$, frequency and angular quantum numbers, together with the two matrix identities.)
+
+*What it means.* The quasi-particle (18.2) is a superposition of a solution $\chi_{\rm LG}$ of the Dirac equation and of its
+image $\mathcal C\chi_{\rm LG}$, which contains the complex conjugate of $\chi_{\rm LG}$ and lies in the other isospin component. If
+$\chi_{\rm LG}$ depends on the time as $e^{-i\omega\tau_{\rm LG}}$, then $\mathcal C\chi_{\rm LG}$ depends on it as $e^{+i\omega^*\tau_{\rm LG}}$: it
+oscillates with the opposite frequency. This is the structure of every quasi-particle of a superfluid, a mixture of a
+particle and of a missing partner of a pair (Section 0.1); here the second part has the weight
+$\lvert b^{\rm qp}_{\rm LG}\rvert^2=(E-M)/(E+M)={{GENM:lgs_bqp2}}$ relative to the first.
+
+*Why it matters.* Three consequences make every result of Part IV a result for the quasi-particle as well.
+
+1. A *quasi-bound state* $\chi_{\rm LG}$ of complex frequency $\omega$ (Section 20), a solution that falls into the horizon and
+   decays at large distances, gives the quasi-particle state (18.2), which does the same, because $\mathcal C\chi_{\rm LG}$ is
+   smooth at the horizon and decays at large distances wherever $\chi_{\rm LG}$ does; and both parts decay in time at the same
+   rate, because $\lvert e^{i\omega^*\tau}\rvert=\lvert e^{-i\omega\tau}\rvert=e^{({\rm Im}\,\omega)\tau}$.
+2. For a real frequency $\omega$, the current of $\Psi_{\rm LL}$ averaged over a period $2\pi/\omega$ is
+   $1+\lvert b^{\rm qp}_{\rm LG}\rvert^2$ times the current of $\chi_{\rm LG}$: the cross terms between $\chi_{\rm LG}$ and $\mathcal C\chi_{\rm LG}$
+   oscillate as $e^{\pm2i\omega\tau}$ and average to zero, and the currents of the two parts are equal. (At each instant the
+   current of the quasi-particle is not conserved: by (15.6), a solution of (15.11) has
+   $\nabla^{\rm LG}_\mu j^{{\rm F},\mu}_{\rm SF}=2\,{\rm Im}\big(D\,\bar\Psi_{\rm LL}\mathcal C\Psi_{\rm LL}\big)$, which oscillates; the condensate takes
+   up and gives back pairs. Its average over a period vanishes.) The fraction of an incoming wave that the black hole absorbs,
+   a ratio of two such averaged currents (Section 21), is therefore the same for the quasi-particle as for the Dirac
+   particle.
+3. Every number of Part IV therefore holds for the quasi-particle at the same value of
+   $y_{\rm LG}=\mathcal M_{\rm LG}E^{\rm CJT,gap}_{\rm SF}$.
+
+## 18.2 The two tetrads
+
+Section 14.3 gave two tetrads of the Schwarzschild space-time. The *static tetrad*, in the coordinates $(t,r,\theta,\varphi)$
+of Schwarzschild, belongs to observers who stay at a fixed radius; it is singular at the horizon, where no observer can stay
+at rest. The *freely falling tetrad* of Painlevé and Gullstrand, in the coordinates $(\tau_{\rm LG},r,\theta,\varphi)$, belongs to
+observers who fall from rest at infinity: $\tau_{\rm LG}$ is their proper time, and their radius shrinks at the rate
+$dr/d\tau_{\rm LG}=-w_{\rm LG}$, $w_{\rm LG}=(2/r)^{1/2}$. Its components, its spin connection (14.13), and therefore the Dirac
+equation written with it, are finite at the horizon: Part IV uses it on both sides, and the static tetrad outside, far from
+the black hole.
+
+## 18.3 The separation of the Dirac equation
+
+To *separate the variables* of a partial differential equation means to write its solutions as products of functions of one
+variable each, so that the equation splits into ordinary differential equations. The black hole is *static* (nothing
+depends on $\tau_{\rm LG}$) and *spherically symmetric* (nothing depends on the direction), so a solution can be chosen with a
+definite **frequency** $\omega^{\rm S}_{\rm LG}$, a time dependence $e^{-i\omega^{\rm S}_{\rm LG}\tau_{\rm LG}}$, with a definite **total angular
+momentum** $j_{\rm LG}=\tfrac12,\tfrac32,\dots$ (orbital angular momentum and spin together) and with a definite component
+$m_{j,{\rm LG}}$ of it along the axis $\theta=0$. Such a solution is a **partial wave**. The frequency may be complex: a
+solution with ${\rm Im}\,\omega^{\rm S}_{\rm LG}<0$ decays in time.
+
+Let $\mathsf H_{\rm LG}=i(\sigma^{\rm LL}_1+\sigma^{\rm LL}_3)/\sqrt2$, a unitary matrix of determinant 1, and
+$\mathsf S^{\rm H}_{\rm LG}=\mathrm{diag}(\mathsf H_{\rm LG},\mathsf H_{\rm LG})$. In the language of Section 9.2, $\mathsf S^{\rm H}_{\rm LG}$ is the spinor
+matrix $\mathsf S_{\rm LL}(\mathbf g)$ of a constant rotation: the rotation by the angle $\pi$ about the axis halfway between the
+first and the third frame vectors, which exchanges them, so that the Pauli matrix of the radial direction becomes diagonal,
+$\mathsf H_{\rm LG}\sigma^{\rm LL}_1\mathsf H_{\rm LG}^\dagger=\sigma^{\rm LL}_3$. The partial waves of one isospin component are
+$$\psi=\frac{e^{-i\omega^{\rm S}_{\rm LG}\tau_{\rm LG}+im_{j,{\rm LG}}\varphi}}{r\,(\sin\theta)^{1/2}}\;\mathsf S^{\rm H}_{\rm LG}\begin{pmatrix}-i\,\mathcal Q_{\rm LG}(r)\,\alpha_{\rm LG}(\theta)\\i\,\mathcal P_{\rm LG}(r)\,\beta_{\rm LG}(\theta)\\\mathcal P_{\rm LG}(r)\,\alpha_{\rm LG}(\theta)\\\mathcal Q_{\rm LG}(r)\,\beta_{\rm LG}(\theta)\end{pmatrix},\tag{18.3}$$
+with two angular functions $\alpha_{\rm LG}$, $\beta_{\rm LG}$ and two radial functions $\mathcal P_{\rm LG}$, $\mathcal Q_{\rm LG}$. The Dirac
+equation then holds exactly when the angular functions solve the **angular equations**
+$$\alpha_{\rm LG}'=\frac{m_{j,{\rm LG}}}{\sin\theta}\,\alpha_{\rm LG}-\lambda_{\rm LG}\,\beta_{\rm LG},\qquad\beta_{\rm LG}'=-\frac{m_{j,{\rm LG}}}{\sin\theta}\,\beta_{\rm LG}+\lambda_{\rm LG}\,\alpha_{\rm LG},\tag{18.4}$$
+with a constant $\lambda_{\rm LG}$ (the prime is the derivative with respect to the argument), and the radial functions the
+**radial equations**
+$$\mathcal P_{\rm LG}'=\frac{\big(i\omega^{\rm S}_{\rm LG}-\frac{w_{\rm LG}}{4r}\big)\mathcal P_{\rm LG}-\big(\frac{i\lambda_{\rm LG}}r+m_{\rm LL}\big)\mathcal Q_{\rm LG}}{1-w_{\rm LG}},\qquad\mathcal Q_{\rm LG}'=\frac{\big(\frac{i\lambda_{\rm LG}}r-m_{\rm LL}\big)\mathcal P_{\rm LG}-\big(i\omega^{\rm S}_{\rm LG}-\frac{w_{\rm LG}}{4r}\big)\mathcal Q_{\rm LG}}{1+w_{\rm LG}}.\tag{18.5}$$
+The angle $\varphi$ and the time have dropped out, and the radius and the polar angle are coupled only through the constant
+$\lambda_{\rm LG}$, the *separation constant*.
+
+*Why the prefactor.* The factor $r^{-1}(\sin\theta)^{-1/2}$ cancels the terms in which the spin connection (14.13) acts without a
+derivative. The frame vectors $e^{\rm LG}_2$ and $e^{\rm LG}_3$ point along the directions of $\theta$ and $\varphi$ and turn as one
+moves over the sphere, and in $\gamma^\theta_{\rm LG}(\partial_\theta+\Gamma^{\rm LL}_\theta)+\gamma^\varphi_{\rm LG}(\partial_\varphi+\Gamma^{\rm LL}_\varphi)$, with
+$\gamma^\theta_{\rm LG}=\gamma^2_{\rm LL}/r$ and $\gamma^\varphi_{\rm LG}=\gamma^3_{\rm LL}/(r\sin\theta)$, the connection contributes
+$\gamma^r_{\rm LG}/r+\cot\theta\,\gamma^2_{\rm LL}/(2r)$, where $\gamma^r_{\rm LG}=-w_{\rm LG}\gamma^0_{\rm LL}+\gamma^1_{\rm LL}$. The derivative
+$\gamma^r_{\rm LG}\partial_r$ acting on $r^{-1}$ gives $-\gamma^r_{\rm LG}/r$, and $\gamma^\theta_{\rm LG}\partial_\theta$ acting on $(\sin\theta)^{-1/2}$ gives
+$-\cot\theta\,\gamma^2_{\rm LL}/(2r)$: the two pairs cancel.
+
+*The checks.* The Rust program puts the spinor (18.3), with random values of the four functions and their derivatives taken
+from (18.4) and (18.5), into the Dirac operator of Part III, whose spin connection it computes from the tetrad, at 40 random
+points outside and 40 inside the horizon, for $\lambda_{\rm LG}=\pm1,\pm2,\pm3$, $m_{j,{\rm LG}}=\pm\tfrac12,\pm\tfrac32$ and complex
+frequencies: the largest residual is {{GEN:lgs_dev_ls2}} of the spinor (check LS-2). The Python program simplifies the residual to
+zero by computer algebra with the spin connection (14.13) as printed (YS-2), and the Wolfram script does so with the spin
+connection computed from the tetrad (WS-2).
+
+## 18.4 The angular functions and the labels of the states
+
+The angular equations (18.4) have solutions that are finite at both poles, $\theta=0$ and $\theta=\pi$, exactly when
+$\lambda_{\rm LG}=\pm(j_{\rm LG}+\tfrac12)$ and $\lvert m_{j,{\rm LG}}\rvert\le j_{\rm LG}$, as for the Dirac equation in flat
+space-time.
+
+**Example: $j_{\rm LG}=m_{j,{\rm LG}}=\tfrac12$.** For $\lambda_{\rm LG}=\pm1$ the solutions are
+$$\alpha_{\rm LG}=\sin^{1/2}\tfrac\theta2\,\cos^{3/2}\tfrac\theta2,\qquad\beta_{\rm LG}=\lambda_{\rm LG}\,\sin^{3/2}\tfrac\theta2\,\cos^{1/2}\tfrac\theta2.\tag{18.6}$$
+One checks them by differentiating: with $s=\sin\tfrac\theta2$, $c=\cos\tfrac\theta2$ and $\sin\theta=2sc$,
+$\alpha_{\rm LG}'=\tfrac14s^{-1/2}c^{5/2}-\tfrac34s^{3/2}c^{1/2}$, while $\alpha_{\rm LG}/(2\sin\theta)-\lambda_{\rm LG}\beta_{\rm LG}
+=\tfrac14s^{-1/2}c^{1/2}-s^{3/2}c^{1/2}$, and the two agree because $c^{5/2}=c^{1/2}(1-s^2)$. Divided by $(\sin\theta)^{1/2}$,
+as in (18.3), they become $\cos\tfrac\theta2/\sqrt2$ and $\lambda_{\rm LG}\sin\tfrac\theta2/\sqrt2$, finite at both poles. (Check WS-6, exactly,
+for $\lambda_{\rm LG}=\pm1$ and $m_{j,{\rm LG}}=\pm\tfrac12$.)
+
+**The labels.** In Dirac's theory of the hydrogen atom the two states of the same $j$ are told apart by the integer
+$\kappa^{\rm H}_{\rm LG}$, which is $-(j+\tfrac12)$ when the orbital angular momentum is $\ell=j-\tfrac12$ and $+(j+\tfrac12)$ when
+$\ell=j+\tfrac12$. The separation constant is $\lambda_{\rm LG}=-\kappa^{\rm H}_{\rm LG}$. A state is written $n\,L_j$ as in the hydrogen
+atom: the **principal quantum number** $n_{\rm LG}$, the **orbital angular momentum** $\ell_{\rm LG}$ written S, P, D for 0, 1, 2,
+and $j_{\rm LG}$ as the index. The six states computed below are
+$$1S_{1/2},\ 2S_{1/2}\ (\lambda_{\rm LG}=1),\qquad2P_{1/2}\ (\lambda_{\rm LG}=-1),\qquad2P_{3/2},\ 3P_{3/2}\ (\lambda_{\rm LG}=2),\qquad3D_{3/2}\ (\lambda_{\rm LG}=-2).$$
+The relation $\lambda_{\rm LG}=-\kappa^{\rm H}_{\rm LG}$ was found from the levels at small $y_{\rm LG}$ (Section 20): $\lambda_{\rm LG}=1$ has a
+level with $n_{\rm LG}=1$ and $\lambda_{\rm LG}=-1$ has none, as in the hydrogen atom, where $1S_{1/2}$ exists and $1P_{1/2}$ does not; it is
+confirmed by the small-mass formulas of Section 20.4, which depend on $\ell_{\rm LG}$ and $j_{\rm LG}$ separately and agree with the
+computed states.
+
+## 18.5 The radial equations in the static tetrad
+
+Far from the black hole the static tetrad is the natural one: there the radial equations become those of a free particle,
+and the waves that come in and go out can be told apart. With $f_{\rm LG}=1-2/r$, the prefactor $f_{\rm LG}^{-1/4}$ added to that
+of (18.3), the time $t$ in place of $\tau_{\rm LG}$, and $\mathcal P_{\rm LG}$, $\mathcal Q_{\rm LG}$ replaced by
+$(\mathcal U_{\rm LG}-i\mathcal V_{\rm LG})/2$ and $(\mathcal U_{\rm LG}+i\mathcal V_{\rm LG})/2$, the Dirac equation is equivalent to
+$$\begin{aligned}f_{\rm LG}\,\mathcal U_{\rm LG}'&=-m_{\rm LL}f_{\rm LG}^{1/2}\,\mathcal U_{\rm LG}+\Big(\omega^{\rm S}_{\rm LG}+\frac{\lambda_{\rm LG}f_{\rm LG}^{1/2}}r\Big)\mathcal V_{\rm LG},\\f_{\rm LG}\,\mathcal V_{\rm LG}'&=-\Big(\omega^{\rm S}_{\rm LG}-\frac{\lambda_{\rm LG}f_{\rm LG}^{1/2}}r\Big)\mathcal U_{\rm LG}+m_{\rm LL}f_{\rm LG}^{1/2}\,\mathcal V_{\rm LG}\end{aligned}\tag{18.7}$$
+(checks LS-1, YS-1, WS-1). The two descriptions are the same field (LS-3, YS-3, WS-3): if $\mathcal U_{\rm LG}$, $\mathcal V_{\rm LG}$
+solve (18.7), then
+$$\mathcal P_{\rm LG}=\frac{\mathcal U_{\rm LG}-i\mathcal V_{\rm LG}}{2\,(1-w_{\rm LG})^{1/2}}\,e^{i\omega^{\rm S}_{\rm LG}(\tau_{\rm LG}-t)},\qquad\mathcal Q_{\rm LG}=\frac{\mathcal U_{\rm LG}+i\mathcal V_{\rm LG}}{2\,(1+w_{\rm LG})^{1/2}}\,e^{i\omega^{\rm S}_{\rm LG}(\tau_{\rm LG}-t)},\qquad\frac{d(\tau_{\rm LG}-t)}{dr}=\frac{w_{\rm LG}}{f_{\rm LG}},\tag{18.8}$$
+solve (18.5). The factor $(1-w_{\rm LG})^{-1/2}$ is infinite at the horizon: a solution that is smooth in the freely falling tetrad
+looks singular in the static one, which is why the static tetrad is used only outside. As $r\to\infty$, $f_{\rm LG}\to1$ and
+(18.7) become the radial equations of a free Dirac particle of mass $m_{\rm LL}$ in flat space-time.
+
+# 19. The horizon and the inside of the black hole
+
+*In words.* The radial equations (18.5) have a pole at the horizon, where $w_{\rm LG}=1$. Of their two independent solutions,
+one is smooth there and the other oscillates infinitely fast as it approaches the horizon. The smooth one is the wave that
+falls in; it continues through the horizon unchanged and reaches the centre, and what flows in at the horizon arrives
+there.
+
+## 19.1 The exponents at the horizon
+
+A point at which the coefficients of a linear differential equation have a simple pole is a **regular singular point**.
+Near it, $r=r_0$, the solutions behave as powers $(r-r_0)^{\varsigma}$ times functions that are smooth at $r_0$, and the possible
+powers, the **exponents** $\varsigma_{\rm LG}$, are the eigenvalues of the *residue matrix*, the limit of $(r-r_0)$ times the matrix of
+the coefficients (this is the method of Frobenius). The horizon $r=2$ is a regular singular point of (18.5), and the exponents
+there are
+$$\varsigma_{\rm LG}=0\qquad\text{and}\qquad\varsigma_{\rm LG}=4i\omega^{\rm S}_{\rm LG}-\tfrac12\tag{19.1}$$
+(in ordinary units $4i\mathcal M_{\rm LG}\omega^{\rm S}_{\rm LG}-\tfrac12$; checks YS-4 and WS-4, by the limit of the residue matrix).
+
+* The exponent 0 belongs to a solution that is *analytic* at the horizon: a power series in $r-2$ that converges for
+  $\lvert r-2\rvert<2$, out to the next singular point $r=0$. It is the same function on both sides of the horizon. It is the wave
+  that falls in: the freely falling observer sees nothing special at the horizon, and neither does this solution. The
+  program computes the series to order 90; it satisfies (18.5) on both sides of the horizon to {{GEN:lgs_dev_ls4}} (relative; LS-4),
+  and it agrees with the solution that CVODE integrates from it to {{GEN:lgs_dev_ls5}} (LS-5).
+* The exponent $4i\omega^{\rm S}_{\rm LG}-\tfrac12$ belongs to a solution that behaves as
+  $(r-2)^{4i\omega^{\rm S}_{\rm LG}-1/2}=(r-2)^{-1/2}e^{4i\omega^{\rm S}_{\rm LG}\ln(r-2)}$ for a real frequency: its modulus grows without bound
+  and its phase turns infinitely often as $r\to2$. It is the wave that would come out of the horizon, which no physical
+  solution contains. (Check LS-4b: a solution that is not analytic, integrated toward the horizon, has the modulus
+  $\lvert\mathcal P_{\rm LG}\rvert\propto(r-2)^{-1/2}$.)
+
+The *boundary condition at the horizon* of every solution below is therefore: the solution is analytic there.
+
+## 19.2 Inside the horizon
+
+Inside the horizon the radius decreases along the path of every particle, as along the path of the observer who falls,
+and the solution that fell in is carried to $r=0$, where the curvature diverges (the Kretschmann invariant is
+$48\mathcal M_{\rm LG}^2/r^6$, Section 14.3). The point $r=0$ is again a regular singular point of (18.5), with the residue
+matrix $\tfrac14$ times the unit matrix (YS-4, WS-4): both radial functions behave as $r^{1/4}$, and the spinor (18.3), which
+has the factor $r^{-1}$, grows as $r^{-3/4}$. The program follows the solution that fell in from $r=1.5$ down to
+$r=1.5\times10^{-12}$ and finds $r\mathcal P_{\rm LG}'/\mathcal P_{\rm LG}$ and $r\mathcal Q_{\rm LG}'/\mathcal Q_{\rm LG}$ equal to $\tfrac14$ up to
+corrections of the order $(r/2)^{1/2}$ (LS-6; the Python program to $r=10^{-10}$, YS-8).
+
+![](figures/fig_lg_schw_interior.png){width=92%}
+
+**Figure IV.1.** The two radial functions of a wave that falls into the black hole, on both sides of the horizon:
+$\lvert\mathcal P_{\rm LG}\rvert$ and $\lvert\mathcal Q_{\rm LG}\rvert$ for the frequency $\omega^{\rm S}_{\rm LG}=0.7$, the mass $m_{\rm LL}=0.3$
+(units of $1/\mathcal M_{\rm LG}$, so $y_{\rm LG}=0.3$) and $\lambda_{\rm LG}=1$, normalized by $\mathcal Q_{\rm LG}(2)=1$, on logarithmic axes from
+$r=1.5\times10^{-12}$ to $r=2500$. The wave passes the horizon $r=2$ smoothly; inside, both functions fall as $r^{1/4}$ (the grey
+line has the slope $\tfrac14$); far outside, where the frequency exceeds the mass, the solution is a travelling wave and its
+moduli vary only slowly. (Data `data/lg_schw_interior.csv` of the program `lg_schw`; figure drawn by
+`python/lg_schw_figures.py`.)
+
+## 19.3 The radial current
+
+The Dirac equation conserves the current $j^{{\rm F},\mu}_{\rm SF}=\bar\Psi\gamma^\mu_{\rm LG}\Psi$ of the brochon (15.6). For a partial wave of
+real frequency the flux of this current *into* the sphere of radius $r$ is
+$$J_{\rm LG}\int\!\!\int\big(\lvert\alpha_{\rm LG}\rvert^2+\lvert\beta_{\rm LG}\rvert^2\big)\,d\theta\,d\varphi,\qquad J_{\rm LG}=(1+w_{\rm LG})\,\lvert\mathcal Q_{\rm LG}\rvert^2-(1-w_{\rm LG})\,\lvert\mathcal P_{\rm LG}\rvert^2\tag{19.2}$$
+(check YS-14: the volume element times the radial component of the current is $-J_{\rm LG}(\lvert\alpha_{\rm LG}\rvert^2+\lvert\beta_{\rm LG}\rvert^2)$
+at every point). Since the angular functions do not depend on $r$, conservation means that $J_{\rm LG}$ is the same at every
+radius, inside the horizon as outside: exactly by computer algebra (YS-5, WS-5), and to {{GEN:lgs_dev_ls7}} (relative) along the
+computed solution of Figure IV.1 from $r=2500$ down to $r=1.5\times10^{-12}$ (LS-7). At the horizon $J_{\rm LG}=2\lvert\mathcal Q_{\rm LG}(2)\rvert^2$,
+which is positive: the solution analytic at the horizon carries the current inward, as the wave that falls in must. What
+flows in at the horizon arrives at the centre.
+
+# 20. The quasi-bound states
+
+*In words.* A hydrogen atom has bound states of real energy. Around a black hole the bound states leak: the part of the wave
+near the horizon falls in. Such a state is a *quasi-bound state*. It exists only at a complex frequency, whose real part is
+the energy of the level and whose imaginary part, which is negative, is the rate at which the black hole absorbs the
+particle. For small $y_{\rm LG}$ the levels approach those of a hydrogen atom, and the decay is very slow.
+
+## 20.1 What is computed, and how
+
+A **quasi-bound state** is a solution of (18.5) that is analytic at the horizon (the exponent 0 of (19.1)) and decays at
+large $r$. Such solutions exist only for discrete complex frequencies $\omega^{\rm S}_{\rm LG}$, with
+${\rm Re}\,\omega^{\rm S}_{\rm LG}<m_{\rm LL}$ (a bound state) and ${\rm Im}\,\omega^{\rm S}_{\rm LG}<0$; the amplitude decays in time as
+$e^{-\lvert{\rm Im}\,\omega^{\rm S}_{\rm LG}\rvert\tau_{\rm LG}}$ and the probability, the square of the amplitude, twice as fast.
+
+For a trial frequency the program computes two solutions: the one that falls in, from the power series at the horizon,
+integrated outward by CVODE; and the one that decays at large $r$, started at the radius
+$45/{\rm Re}\,\big(m_{\rm LL}^2-(\omega^{\rm S}_{\rm LG})^2\big)^{1/2}$, about 45 decay lengths of the bound state, where the coefficients of
+(18.5) change slowly and the decaying solution starts along the eigenvector of the matrix of the coefficients that belongs
+to the decaying eigenvalue, and integrated inward. It compares them at the radius $r=n^2/y_{\rm LG}^2$ of the orbit of the hydrogen-like state by their normalized
+**Wronskian**, the determinant of the two solution vectors $(\mathcal P_{\rm LG},\mathcal Q_{\rm LG})$ divided by their lengths, which
+vanishes exactly when the two are multiples of each other, that is, when one solution both falls in and decays. A complex
+secant iteration (Newton's method with the derivative replaced by a difference quotient) finds the zeros. Each state is found
+first at $y_{\rm LG}=0.05$, starting from its hydrogen level, and is then followed to $y_{\rm LG}=0.4$ in steps of 0.05, each start
+extrapolated from the previous roots (LS-8a: 48 roots, all with ${\rm Re}\,\omega^{\rm S}_{\rm LG}<m_{\rm LL}$ and, where it exceeds the
+resolution $10^{-12}m_{\rm LL}$ of the computation, ${\rm Im}\,\omega^{\rm S}_{\rm LG}<0$; a starting radius 1.3 times larger changes no
+frequency by more than {{GEN:lgs_dev_conv}}, LS-8b). The Python program finds the states at $y_{\rm LG}=0.3$ again with its own
+start and Muller's method of finding roots, to {{GEN:lgs_dev_py_qbs}} of $m_{\rm LL}$ (YS-6), and the Wolfram script three of them in
+arithmetic of 32 digits, to {{GEN:lgs_dev_wl_qbs}} (WS-7).
+
+## 20.2 The levels
+
+For small $y_{\rm LG}$ the levels approach those of a hydrogen atom with the coupling $y_{\rm LG}$,
+$$\frac{{\rm Re}\,\omega^{\rm S}_{\rm LG}}{m_{\rm LL}}\approx1-\frac{y_{\rm LG}^2}{2n_{\rm LG}^2},\tag{20.1}$$
+the rest energy minus the binding energy $m_{\rm LL}y_{\rm LG}^2/(2n_{\rm LG}^2)$; the attraction of the black hole is Newton's
+$-G_{\rm N}M_{\rm LG}m_{\rm LL}/r$ far from it, which is the Coulomb potential of the hydrogen atom with $y_{\rm LG}$ in the place of the
+fine-structure constant. At $y_{\rm LG}=0.05$ every computed level lies within {{GEN:lgs_hyd_dev}}$\,y_{\rm LG}^4\,m_{\rm LL}$ of (20.1) (LS-8c).
+Table IV.1 gives the six states at two masses.
+
+**Table IV.1.** The frequencies $\omega^{\rm S}_{\rm LG}/m_{\rm LL}$ of the six quasi-bound states at $y_{\rm LG}=0.1$ and $0.3$, and the
+hydrogen-like levels (20.1) (data `data/lg_schw_qbs.csv`). The asterisk marks an imaginary part below the resolution
+$10^{-12}$ of the computation.
+
+{{GEN:lgs_qbs_table}}
+
+**Example: the state $1S_{1/2}$ at $y_{\rm LG}=0.1$.** Its frequency is {{GEN:lgs_1s_01}} times $m_{\rm LL}$. The level lies
+{{GEN:lgs_1s_01_bind}} $m_{\rm LL}$ below the rest energy, close to the hydrogen value $y_{\rm LG}^2/2=0.005$ of (20.1). The amplitude decays by
+the factor $e$ in the time $1/\lvert{\rm Im}\,\omega^{\rm S}_{\rm LG}\rvert$ = {{GEN:lgs_tau_1s_01}} $G_{\rm N}M_{\rm LG}/c^3$, which is
+{{GEN:lgs_periods_1s_01}} periods of the oscillation $e^{-i{\rm Re}\,\omega\,\tau}$: the state is long-lived on the scale of its own
+oscillation. At $y_{\rm LG}=0.4$ the frequency of $1S_{1/2}$ is {{GEN:lgs_1s_04}}, far from the hydrogen value {{GEN:lgs_1s_04_hyd}}: the
+particle then spends much of its time near the horizon and is absorbed within a few periods.
+
+## 20.3 The decay rate from the charge
+
+For a complex frequency the current $J_{\rm LG}$ of (19.2) is no longer the same at every radius: the radial equations give
+exactly (YS-10, WS-9)
+$$\frac{dJ_{\rm LG}}{dr}=2\,{\rm Im}\,\omega^{\rm S}_{\rm LG}\,\big(\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2\big).\tag{20.2}$$
+In words: the charge between two spheres changes in time only through the fluxes through the two spheres; its density per
+unit of $r$ is $\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2$ times the integral of $\lvert\alpha_{\rm LG}\rvert^2+\lvert\beta_{\rm LG}\rvert^2$
+over the angles, as $J_{\rm LG}$ times that integral is the flux (YS-14). A quasi-bound state decays at
+large $r$, where $J_{\rm LG}$ therefore vanishes, and $J_{\rm LG}=2$ at the horizon for the normalization $\mathcal Q_{\rm LG}(2)=1$.
+Integrating (20.2) from the horizon to infinity gives
+$${\rm Im}\,\omega^{\rm S}_{\rm LG}=-\frac1{\mathcal N^{\rm S}_{\rm LG}},\qquad\mathcal N^{\rm S}_{\rm LG}=\int_2^\infty\big(\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2\big)\,dr:\tag{20.3}$$
+the charge outside the horizon decreases at the rate $2\lvert{\rm Im}\,\omega^{\rm S}_{\rm LG}\rvert$, which is the flux into the horizon
+divided by that charge. At the 30 quasi-bound states whose decay rate
+exceeds $10^{-7}m_{\rm LL}$ the two sides of (20.3) agree to {{GEN:lgs_dev_ls10a}} (relative; LS-10a), and at the others to
+{{GEN:lgs_dev_ls10b}} of $m_{\rm LL}$ (LS-10b).
+
+Formula (20.3) also gives decay rates that the root finder cannot resolve. Evaluated with the solution at the real frequency
+${\rm Re}\,\omega^{\rm S}_{\rm LG}$, it gives the decay rate with a relative error of the order of the ratio of the decay rate to the
+distance of the neighbouring levels, which is tiny for a slowly decaying state, and without the limit $10^{-12}m_{\rm LL}$ of the
+root finder. At $y_{\rm LG}=0.05$, where both methods work, they agree to {{GEN:lgs_dev_ls13}} (relative; LS-13); the Python program
+recomputes the rates at $y_{\rm LG}=0.01$ with its own start and integrals to {{GEN:lgs_dev_ys11}} (YS-11).
+
+## 20.4 Small masses: the fine structure and the decay rates
+
+For small $y_{\rm LG}$ the levels and the decay rates follow formulas that S. R. Dolan and D. Dempsey derived for a Dirac field
+around a rotating black hole, of which the Schwarzschild black hole is the case without rotation ("Bound states of the Dirac
+equation on Kerr spacetime", arXiv:1504.03190, their equations (94) to (96); the last two after Ternov and co-workers).
+Writing $n$, $\ell$, $j$ for $n_{\rm LG}$, $\ell_{\rm LG}$, $j_{\rm LG}$,
+$$\frac{{\rm Re}\,\omega^{\rm S}_{\rm LG}}{m_{\rm LL}}=1-\frac{y_{\rm LG}^2}{2n^2}+F^{\rm H}_{\rm LG}\,y_{\rm LG}^4+\dots,\qquad F^{\rm H}_{\rm LG}=\frac1{n^4}\Big(\frac{15}8-\frac{3n}{2j+1}-\frac{3n}{2\ell+1}\Big),\tag{20.4}$$
+the gravitational counterpart of the fine structure of the hydrogen atom: the levels of the same $n$ split by $\ell$ and by $j$.
+And
+$$-\frac{{\rm Im}\,\omega^{\rm S}_{\rm LG}}{m_{\rm LL}}=c^{\rm H}_{\rm LG}\,y_{\rm LG}^{2\ell+2j+4},\qquad c^{\rm H}_{\rm LG}=\frac{(n+\ell)!\,(2\ell+1)^{2\ell-2j}}{n^{4+2\ell}\,(2\ell)!\,(2\ell+1)!\,(n-\ell-1)!}\prod_{p=1}^{j+1/2}\Big(1+\frac{16\,y_{\rm LG}^2}{(p-\frac12)^2}\Big).\tag{20.5}$$
+The decay rate falls with a high power of $y_{\rm LG}$: the fifth for the states $S_{1/2}$, the seventh for $P_{1/2}$, the ninth for
+$P_{3/2}$ and the eleventh for $D_{3/2}$. The reason is that a state of larger angular momentum keeps farther from the horizon,
+behind its centrifugal barrier.
+
+*Example.* For $1S_{1/2}$ ($n=1$, $\ell=0$, $j=\tfrac12$): $F^{\rm H}_{\rm LG}=\tfrac{15}8-\tfrac32-3=-\tfrac{21}8$, and
+$c^{\rm H}_{\rm LG}=\tfrac{1!}{1\cdot0!\cdot1!\cdot0!}\,(1+64y_{\rm LG}^2)=1+64y_{\rm LG}^2$, so that at $y_{\rm LG}=0.005$ the decay rate is
+$(1+0.0016)\times(0.005)^5\,m_{\rm LL}=3.13\times10^{-12}\,m_{\rm LL}$; the computed rate is {{GEN:lgs_small_1s_0005}} $m_{\rm LL}$ (with the sign of
+${\rm Im}\,\omega$), {{GEN:lgs_small_ratio_1s_0005}} times (20.5).
+
+*The comparison.* The program computes the six states at $y_{\rm LG}=0.005$, $0.01$, $0.02$, $0.04$ and $0.05$, the decay rates from
+the charge (20.3). Between $y_{\rm LG}=0.005$ and $0.01$ the local powers of the decay rate, $d\ln\lvert{\rm Im}\,\omega\rvert/d\ln y_{\rm LG}$,
+are {{GEN:lgs_small_powers}}. The computed rate of $3D_{3/2}$ at $y_{\rm LG}=0.005$ is {{GEN:lgs_small_ratio_3d_0005}} times (20.5), and
+${\rm Im}\,\omega^{\rm S}_{\rm LG}/m_{\rm LL}=$ {{GEN:lgs_small_3d_001}} for $3D_{3/2}$ at $y_{\rm LG}=0.01$: its amplitude decays by the factor $e$ only
+after about {{GEN:lgs_periods_3d_001}} periods of its oscillation. Extrapolated to
+$y_{\rm LG}=0$ (by Richardson's rule, which removes the leading corrections of a known power, and by a fit of a quadratic in
+$y_{\rm LG}$; the larger deviation of the two is quoted), the ratios of the computed energies and decay rates to (20.4) and
+(20.5) are 1 for all six states, to {{GEN:lgs_dev_ls11}} and {{GEN:lgs_dev_ls12}} (LS-11, LS-12). This agreement is an independent
+confirmation of the computed states and of their labels (Section 18.4). At larger masses the corrections are large: between
+$y_{\rm LG}=0.05$ and the next masses the local powers are {{GEN:lgs_powers}}.
+
+![](figures/fig_lg_schw_decay.png){width=92%}
+
+**Figure IV.2.** The decay rate $-{\rm Im}\,\omega^{\rm S}_{\rm LG}/m_{\rm LL}$ of the six quasi-bound states as a function of $y_{\rm LG}$, on
+logarithmic axes. Markers: computed, from the charge (20.3) for $y_{\rm LG}\le0.05$ and from the complex roots for larger
+$y_{\rm LG}$ (where the decay rate exceeds the resolution $10^{-12}$); lines: the small-mass formula (20.5). The slopes of the lines
+are the powers 5, 7, 9 and 11; the markers leave the lines where the corrections of relative order $y_{\rm LG}^2$ become large.
+(Data `data/lg_schw_small.csv` and `data/lg_schw_qbs.csv`; figure drawn by `python/lg_schw_figures.py`, which evaluates (20.5)
+again.)
+
+## 20.5 What $y_{\rm LG}$ means in physical units
+
+In ordinary units $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)=M_{\rm LG}m_{\rm LL}/M_{\rm Pl}^2$, with the Planck mass
+$M_{\rm Pl}=(\hbar c/G_{\rm N})^{1/2}$; equivalently $y_{\rm LG}$ is the ratio of the gravitational radius
+$G_{\rm N}M_{\rm LG}/c^2$ of the black hole to the reduced Compton wavelength $\hbar/(m_{\rm LL}c)$ of the particle. The states of Table
+IV.1 have $y_{\rm LG}$ between 0.05 and 0.4: the two lengths are comparable, and the particle is a wave that surrounds the
+black hole. The Sun has the gravitational radius {{GEN:lgs_rg_sun}} m, and a black hole of one solar mass has $y_{\rm LG}=0.1$ for a
+particle of rest energy {{GEN:lgs_m_sun_01}} eV (Appendix C.5 gives the constants). For a heavier particle the same $y_{\rm LG}$ needs a
+proportionally lighter black hole. Around a black hole much heavier than that, $y_{\rm LG}\gg1$: the wavelength of the particle is
+short compared with the black hole, and the particle moves like a classical body, on orbits that this part does not compute.
+Which black holes matter for the brochon depends on the value of $\Lambda_{\rm LL}$ in physical units, which the brochon model
+does not fix (Section 16.3); Part VI takes up this question.
+
+# 21. Scattering: the greybody factors
+
+*In words.* A wave of the brochon that comes in from far away is partly absorbed by the black hole and partly scattered
+back. The absorbed fraction is the *greybody factor*: a black hole absorbs like a body that is not perfectly black, and the
+name comes from Hawking's radiation, whose spectrum is that of a black body multiplied by this factor.
+
+For a real frequency above the mass, $\omega^{\rm S}_{\rm LG}>m_{\rm LL}$, a partial wave can come in from infinity. The program takes
+the solution that is analytic at the horizon (the only physical one), integrates it outward with CVODE to $r=4000$, writes it
+there, in the functions of (18.7), as the sum of a wave that goes out and a wave that comes in (the two local solutions of
+(18.7) far from the black hole), and divides the flux that falls into the horizon by the flux that comes in:
+$$\mathcal T_{\rm LG}=\frac{\text{flux into the horizon}}{\text{incoming flux}},\qquad1-\mathcal T_{\rm LG}=\text{the fraction scattered back}.\tag{21.1}$$
+The two fractions add to 1 to {{GEN:lgs_dev_ls9a}} (the global error of the integration; LS-9a), and moving the outer radius from
+2000 to 4000 changes $\mathcal T_{\rm LG}$ by at most {{GEN:lgs_dev_ls9b}} (LS-9b). The Python program finds the greybody factors again to
+{{GEN:lgs_dev_py_grey}} (YS-7), and the Wolfram script three of them in arithmetic of 32 digits to {{GEN:lgs_dev_wl_grey}} (WS-8).
+
+**Examples.** For the massless brochon at $\mathcal M_{\rm LG}\omega^{\rm S}_{\rm LG}=0.25$, $0.4$ and $0.6$: $\mathcal T_{\rm LG}=$ {{GEN:lgs_grey_m0_l1}} for
+$\lambda_{\rm LG}=\pm1$ ($j_{\rm LG}=\tfrac12$), and {{GEN:lgs_grey_m0_l2}} for $\lambda_{\rm LG}=2$ ($j_{\rm LG}=\tfrac32$). At the lowest of these
+frequencies the black hole absorbs most of the wave of $j_{\rm LG}=\tfrac12$ but scatters back almost all of the wave of
+$j_{\rm LG}=\tfrac32$, which its centrifugal barrier keeps away from the horizon; at the highest, both pass over the barrier. For
+the massless brochon the two signs of $\lambda_{\rm LG}$ agree to {{GEN:lgs_grey_m0_sym}}, as they must: for $m_{\rm LL}=0$ the substitution
+$(\mathcal U_{\rm LG},\mathcal V_{\rm LG})\to(\mathcal V_{\rm LG},-\mathcal U_{\rm LG})$ turns the equations (18.7) of $\lambda_{\rm LG}$ into those of
+$-\lambda_{\rm LG}$ and keeps the current (YS-9). With the mass, $y_{\rm LG}=0.2$ at $\mathcal M_{\rm LG}\omega^{\rm S}_{\rm LG}=0.25$, the two signs
+differ: $\mathcal T_{\rm LG}=$ {{GEN:lgs_grey_m02_l1}} for $\lambda_{\rm LG}=1$ and {{GEN:lgs_grey_m02_lm1}} for $\lambda_{\rm LG}=-1$; the mass
+couples the two chiralities, and the states $S_{1/2}$ and $P_{1/2}$ that the two signs describe feel different barriers.
+
+# 22. What Part IV establishes
+
+1. In the freely falling tetrad of Painlevé and Gullstrand the Dirac equation of the brochon separates on both sides of the
+   horizon into the angular equations (18.4) and the radial equations (18.5). The physical solution is analytic at the
+   horizon, continues through it unchanged, and grows as $r^{-3/4}$ at the centre; the current that falls in at the horizon
+   arrives at the centre (Sections 18 and 19).
+2. The black hole has quasi-bound states that approach the levels of a hydrogen atom with the coupling
+   $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, with the gravitational fine structure (20.4), and decay at the rates (20.5), which fall
+   as $y_{\rm LG}^5$ for the states $S_{1/2}$ and faster for larger angular momenta; twice the decay rate is the flux into the
+   horizon divided by the charge outside it (20.3) (Section 20).
+3. The greybody factors of the partial waves follow from the same solutions (Section 21).
+4. By Theorem L3 every solution of the Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$ gives a solution of the equation of the
+   quasi-particle of the superfluid, with the same complex frequency and the same averaged currents: every result of Part IV
+   holds for the quasi-particle, with $m_{\rm LL}$ replaced by $E^{\rm CJT,gap}_{\rm SF}$ (Section 18.1).
+
+{{PART:algebra_lg}}
+
+{{PART:brochon_lg}}
+
+# C. Provenance of the main text
+
+This appendix names, for every part of the main text, the programs that compute and check it, the commands that run them,
+and their complete reports. The input of Part I, Lord's paper, is identified by its checksum.
+
+## C.1 The input
+
+E. A. Lord, "General relativity from gauge invariance", Proc. Camb. Phil. Soc. 69, 423 (1971): twenty pages
 (the journal pages 423 to 442), a scan with recognized text; all pages were read. The file is not in the repository;
 its SHA-256 checksum:
 ```
 c928b11e5721bb37093f9b19b19e8e9d4a743fcd3f8f4779e804845fcaff2275  General relativity from gauge invariance.pdf
 ```
 
-**The programs of Parts I and II.** Three programs check Part I and Part II, each independently of the others:
+## C.2 The programs of Parts I and II
+
+Three programs check Part I and Part II, each independently of the others:
 
 * the Rust program `lg_lord` (`rust/lglord/src/main.rs`, with the library `rust/lgcore`, whose module `lord.rs` builds
   Lord's matrices from his definitions): {{GEN:lgl_verdict_rust}}. Its local checks use fields of the four coordinates built
@@ -1173,7 +1618,9 @@ python3 code/scripts/write_lg_lord_fragments.py                  # the numbers o
 {{FILE:data/hck_lg_lord_checks_wolfram.txt}}
 ```
 
-**The programs of Part III.** Three programs check Part III, each independently of the others:
+## C.3 The programs of Part III
+
+Three programs check Part III, each independently of the others:
 
 * the Rust program `lg_curved` (`rust/lgcurved/src/main.rs`, with the module `curved.rs` of the library `rust/lgcore`,
   which computes the geometry of a tetrad, the Dirac operator, the currents and the energy-momentum tensors, the local
@@ -1217,7 +1664,9 @@ python3 code/scripts/write_lg_curved_fragments.py                # the numbers o
 {{FILE:data/hck_lg_curved_checks_wolfram.txt}}
 ```
 
-**The programs of the worked examples.** The examples of Sections 2.4, 11.1, 16.1 and of Appendix B (Lord's change of
+## C.4 The programs of the worked examples
+
+The examples of Sections 2.4, 11.1, 16.1 and of Appendix B (Lord's change of
 representation by a boost and its frame, a set of four Hermitian matrices that is not a representation, the plane wave of the
 brochon with its current and its energy-momentum tensor, and the quasi-particles and the gap equation of the polar ground
 state) are computed and checked by three programs, each independently of the others:
@@ -1263,10 +1712,63 @@ python3 code/scripts/write_lg_worked_fragments.py                # the fragments
 {{FILE:data/hck_lg_worked_checks_wolfram.txt}}
 ```
 
-# 19. The symbols of this manuscript
+## C.5 The programs of Part IV
 
-The table lists the symbols of the main text; the symbols of Appendix A are listed in its Section A.7, and those of Appendix B
-in its Section B.7.
+Three programs compute and check Part IV, each independently of the others:
+
+* the Rust program `lg_schw` (`rust/lgschw/src/main.rs`, with the library `rust/lgcore` for the tetrads and the Dirac operator
+  of Part III, and the crate `rust/lgsundials`, the integrator CVODE of SUNDIALS 7.8.0 written in Rust): {{GEN:lgs_verdict_rust}}.
+  It checks the separation at random points, sums the power series at the horizon to order 90, integrates the solutions on both
+  sides of the horizon, finds the quasi-bound states by a complex secant iteration on the normalized Wronskian, computes the
+  decay rates from the charge (20.3), the greybody factors and the check of Theorem L3, and writes the data files
+  `data/lg_schw_qbs.csv` (the quasi-bound states), `lg_schw_small.csv` (the small masses), `lg_schw_grey.csv` (the greybody
+  factors), `lg_schw_interior.csv` (the solution of Figure IV.1) and `lg_schw_values.csv` (single values);
+* the Python program `python/lg_schw.py`: {{GEN:lgs_verdict_python}}. It derives the separation, the exponents, the conservation
+  laws, Theorem L3 and the meaning of the radial current by computer algebra (sympy), with the spin connections (14.12) and
+  (14.13) as printed, and recomputes quasi-bound states, greybody factors and decay rates with its own start (a Taylor polynomial
+  of order 6 at $r=2.002$), its own root finder (Muller's method) and its own integrals; its integrations use the same
+  integrator CVODE, through the C interface `rust/lgsundials_c`;
+* the Wolfram script `wolfram/source/lg_schw.wls`: {{GEN:lgs_verdict_wolfram}}, exactly for the separation (with the spin connection
+  computed from the tetrad), the exponents, the conservation laws and the angular functions of $j_{\rm LG}=\tfrac12$, and in arithmetic
+  of 32 digits, with the integrator NDSolve of the Wolfram Language, for three quasi-bound states and three greybody factors.
+
+The figures of Part IV are drawn by `python/lg_schw_figures.py` from the data files, and the numbers of the text are written
+from the data files and the reports by `code/scripts/write_lg_schw_fragments.py`. The physical constants of Section 20.5 are
+the nominal solar mass parameter $G_{\rm N}M_\odot=1.3271244\times10^{20}$ m$^3$ s$^{-2}$ of the International Astronomical Union
+(2015, resolution B3), $c=299\,792\,458$ m/s and $\hbar c=197.3269804$ MeV fm (CODATA 2018). To reproduce, from the folder
+`Revision_Lord_Gravity`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+(cd rust && cargo build --release && ./target/release/lg_schw)   # data/hck_lg_schw_checks.txt and the data files
+python3 python/lg_schw.py                                         # data/hck_lg_schw_checks_python.txt
+wolframscript -file wolfram/source/lg_schw.wls data/lg_schw_qbs.csv data/lg_schw_grey.csv data/hck_lg_schw_checks_wolfram.txt
+python3 python/lg_schw_figures.py                                 # figures/fig_lg_schw_interior, fig_lg_schw_decay
+python3 code/scripts/write_lg_schw_fragments.py                  # the numbers of Part IV
+```
+
+**The report of the Rust program** (`data/hck_lg_schw_checks.txt`):
+
+```
+{{FILE:data/hck_lg_schw_checks.txt}}
+```
+
+**The report of the Python program** (`data/hck_lg_schw_checks_python.txt`):
+
+```
+{{FILE:data/hck_lg_schw_checks_python.txt}}
+```
+
+**The report of the Wolfram script** (`data/hck_lg_schw_checks_wolfram.txt`):
+
+```
+{{FILE:data/hck_lg_schw_checks_wolfram.txt}}
+```
+
+# D. The symbols of the main text
+
+The table lists the symbols of the main text, Parts I to IV, in the order of their first use; the symbols of Appendix A are
+listed in its Section A.7, and those of Appendix B in its Section B.7.
 
 | symbol | meaning |
 |:---|:---|
@@ -1372,7 +1874,21 @@ in its Section B.7.
 | $Y^{\iota,\lambda}_{\rm LG}$, $Y^{{\rm F},\lambda}_{\rm LG}$ | the left sides of the Yang-Mills equations in a curved space-time (16.7) |
 | $\mathbf g_{\rm boost}$ | the boost $\tfrac54\mathbf e_0+\tfrac34i\,\mathbf e_3$ of Appendix A.3, used in the examples of Sections 2.4 and 11.1 |
 | $P_{\rm LG}$ | the momentum $(\tfrac{17}8,0,0,\tfrac{15}8)$ of the plane wave of the examples (Appendix B.1, Section 16.1) |
-
-{{PART:algebra_lg}}
-
-{{PART:brochon_lg}}
+| $y_{\rm LG}$ | $\mathcal M_{\rm LG}m_{\rm LL}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, the coupling of the gravitational atom (18.1) |
+| $\chi_{\rm LG}$, $b^{\rm qp}_{\rm LG}$ | a solution of the Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$, and the coefficient $-D/(E+M)$ of Theorem L3 (18.2) |
+| $E$ | shorthand for $E^{\rm CJT,gap}_{\rm SF}$ in Theorem L3 |
+| $\omega^{\rm S}_{\rm LG}$ | the frequency of a partial wave in the Schwarzschild field (time dependence $e^{-i\omega^{\rm S}_{\rm LG}\tau_{\rm LG}}$), complex for a quasi-bound state |
+| $j_{\rm LG}$, $m_{j,{\rm LG}}$ | the total angular momentum of a partial wave and its component along the axis |
+| $\mathsf H_{\rm LG}$, $\mathsf S^{\rm H}_{\rm LG}$ | the constant matrix $i(\sigma^{\rm LL}_1+\sigma^{\rm LL}_3)/\sqrt2$ and $\mathrm{diag}(\mathsf H_{\rm LG},\mathsf H_{\rm LG})$ (18.3) |
+| $\alpha_{\rm LG}(\theta)$, $\beta_{\rm LG}(\theta)$ | the angular functions of a partial wave (18.4) |
+| $\mathcal P_{\rm LG}(r)$, $\mathcal Q_{\rm LG}(r)$ | the radial functions in the freely falling tetrad (18.5) |
+| $\lambda_{\rm LG}$ | the separation constant, $\pm(j_{\rm LG}+\tfrac12)$, equal to $-\kappa^{\rm H}_{\rm LG}$ |
+| $\kappa^{\rm H}_{\rm LG}$ | the number of Dirac's theory of the hydrogen atom that tells apart the two states of the same $j$ |
+| $n_{\rm LG}$, $\ell_{\rm LG}$ | the principal quantum number and the orbital angular momentum of a state (Section 18.4) |
+| $\mathcal U_{\rm LG}(r)$, $\mathcal V_{\rm LG}(r)$ | the radial functions in the static tetrad (18.7) |
+| $\varsigma_{\rm LG}$ | an exponent of the radial equations at a regular singular point (19.1) |
+| $J_{\rm LG}$ | the radial current (19.2): the flux into the sphere of radius $r$, per unit of the angular integral |
+| $\mathcal N^{\rm S}_{\rm LG}$ | the integral of $\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2$ outside the horizon (20.3) |
+| $F^{\rm H}_{\rm LG}$, $c^{\rm H}_{\rm LG}$ | the coefficients of the fine structure (20.4) and of the decay rate (20.5) at small $y_{\rm LG}$ |
+| $\mathcal T_{\rm LG}$ | the greybody factor of a partial wave, the fraction of an incoming wave that the black hole absorbs (21.1) |
+| $M_\odot$ | the mass of the Sun (Section 20.5) |

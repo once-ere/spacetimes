@@ -54,6 +54,9 @@
 //! the black hole absorbs) from the flux of the solution that falls in, decomposed at a large radius into the local
 //! outgoing and incoming waves of (S).
 //!
+//! THE QUASI-PARTICLE (check LS-14): every result holds for the quasi-particle of the superfluid with the mass E_gap,
+//! because Psi = chi - D/(E_gap + M) C chi solves its equation when chi solves the Dirac equation with the mass E_gap.
+//!
 //! Every integration uses CVODE (SUNDIALS 7.8.0, pure Rust; crate lgsundials), Adams formulas, complex error weights.
 //!
 //! Output (folder data/): hck_lg_schw_checks.txt (the report), lg_schw_qbs.csv (the quasi-bound states), lg_schw_grey.csv
@@ -62,7 +65,7 @@
 //! Build and run (from the folder rust/): cargo build --release && ./target/release/lg_schw
 use lgcore::c64::{c, C64};
 use lgcore::cmat::CMat;
-use lgcore::curved::{dirac_resid, vmax0, Gauge, Geom, M4};
+use lgcore::curved::{bar8, bdg_resid, cmap, currents, dirac_resid, vadd, vmax0, vscale, Gauge, Geom, M4};
 use lgcore::dirac::sigma;
 use lgcore::dual::D4;
 use lgcore::report::{data_dir, f, write_csv, Report};
@@ -70,6 +73,11 @@ use lgcore::rng::Rng;
 use lgsundials::cvode::{integrate, CvodeSettings, Weights};
 
 const I: C64 = C64::I;
+// the polar ground state of the brochon model (method CJT, potential V^(2); the same constants as in the program
+// lg_curved of Part III): the Dirac mass M and the modulus |D| of the pair amplitude, units of the cutoff; the gap of the
+// quasi-particle is E_gap = (M^2 + |D|^2)^(1/2)  (check LS-14)
+const M_CJT: f64 = 0.1622929325;
+const D_CJT: f64 = 0.3284861084;
 
 fn cr(x: f64) -> C64 {
     c(x, 0.0)
@@ -210,6 +218,20 @@ fn resid_pg(x: &[f64; 4], om: C64, m: f64, lam: f64, mj: f64, p0: C64, q0: C64, 
     let psi = to8(&assemble(d1(p0, 1, dp), d1(q0, 1, dq), aa, bb, pref * phase));
     let res = dirac_resid(&geo, &Gauge::zero(0.0, 0.0), &psi, m);
     vmax0(&res) / vmax0(&psi).max(1e-300)
+}
+
+/// the separated spinor of the freely falling tetrad at the point x (eight components, isospin up), for the radial
+/// values (P0, Q0) and the angular values (a0, b0), with its first derivatives from (PG) and (A) (check LS-14)
+fn spinor_pg(x: &[f64; 4], om: C64, m: f64, lam: f64, mj: f64, p0: C64, q0: C64, a0: C64, b0: C64) -> Vec<D4> {
+    let t = D4::coord(x, 0);
+    let r = D4::coord(x, 1);
+    let th = D4::coord(x, 2);
+    let ph = D4::coord(x, 3);
+    let pref = r.inv() * th.sin().sqrt().inv();
+    let phase = (t.scale(c(om.im, -om.re)) + ph.scale(c(0.0, mj))).exp();
+    let (dp, dq) = rhs_pg(x[1], p0, q0, om, m, lam);
+    let (aa, bb) = angular(x[2], a0, b0, lam, mj);
+    to8(&assemble(d1(p0, 1, dp), d1(q0, 1, dq), aa, bb, pref * phase))
 }
 
 // ================================================================================================ the horizon series
@@ -1104,6 +1126,91 @@ fn main() {
     vals.push(vec!["ls12_local_power_0005_001".into(), powers.join("; ")]);
     println!("  limits: {}", lims.join("; "));
     println!("  local powers of the decay rate between Mm = 0.005 and 0.01: {}", powers.join("; "));
+
+    // ------------------------------------------------------------------ LS-14: the quasi-particle of the superfluid
+    // Theorem L2 of Part III: every solution of the quasi-particle equation i Dslash Psi = M Psi + D C Psi (the
+    // Bogoliubov-de Gennes equation of the polar superfluid, with the antilinear map C Psi = (gamma^0 (x) 1_2)
+    // (K^3_LL)^dag Psi^*) solves the equation of the second order of a Dirac particle of mass E_gap = (M^2 + |D|^2)^(1/2).
+    // The converse makes every result of this program a result for the quasi-particle: if chi solves the Dirac equation
+    // with the mass E_gap, then Psi = chi + beta C chi with beta = -D/(E_gap + M) solves the quasi-particle equation.
+    // (Proof: C anticommutes with i Dslash, C^2 = -1 and C is antilinear, so i Dslash Psi - M Psi - D C Psi =
+    // (E_gap - M + D beta^*) chi - ((E_gap + M) beta + D) C chi, and both brackets vanish because E_gap^2 = M^2 + |D|^2.)
+    // The check: the separated spinor of the freely falling tetrad with the mass E_gap, random values of the functions
+    // (as in LS-2) and complex omega, at 40 random points outside and 40 inside the horizon; the same with the wrong
+    // sign of beta must leave a residual, so that the check can fail.  The random numbers come from a generator of their
+    // own, so that the checks LS-1 to LS-13 are unchanged.
+    let mut rng14 = Rng(20261124);
+    let dpair = c(D_CJT * 0.7f64.cos(), D_CJT * 0.7f64.sin()); // the phase of D does not matter
+    let egap = (M_CJT * M_CJT + D_CJT * D_CJT).sqrt();
+    let beta = -dpair / cr(egap + M_CJT);
+    let mut dev14 = 0.0f64;
+    let mut dev14w = f64::INFINITY;
+    let mut dev14c = 0.0f64;
+    // the scalar density Psi-bar Psi at the point
+    let scal = |p: &[D4]| -> C64 {
+        let b = bar8(p);
+        (0..8).fold(C64::ZERO, |acc, i| acc + (b[i] * p[i]).v)
+    };
+    for k in 0..80 {
+        let lam = lams[k % 6];
+        let mj = mjs[k % 4];
+        let om = c(0.1 + 1.9 * (0.5 + 0.5 * rng14.unit()), 0.3 * rng14.unit());
+        let rnd = |rng: &mut Rng| c(rng.unit(), rng.unit());
+        let (p0, q0, a0, b0) = (rnd(&mut rng14), rnd(&mut rng14), rnd(&mut rng14), rnd(&mut rng14));
+        let r = if k % 2 == 0 { 2.2 + 17.8 * (0.5 + 0.5 * rng14.unit()) } else { 0.3 + 1.6 * (0.5 + 0.5 * rng14.unit()) };
+        let x = [3.0 * rng14.unit(), r, 0.2 + 2.7 * (0.5 + 0.5 * rng14.unit()), 6.0 * rng14.unit()];
+        let geo = Geom::new(coframe_pg(&x));
+        let gau = Gauge::zero(0.0, 0.0);
+        let chi = spinor_pg(&x, om, egap, lam, mj, p0, q0, a0, b0);
+        let cchi = cmap(&chi);
+        let psi = vadd(&chi, &vscale(&cchi, D4::cst(beta)));
+        dev14 = dev14.max(vmax0(&bdg_resid(&geo, &gau, &psi, M_CJT, dpair)) / vmax0(&psi));
+        let psiw = vadd(&chi, &vscale(&cchi, D4::cst(-beta)));
+        dev14w = dev14w.min(vmax0(&bdg_resid(&geo, &gau, &psiw, M_CJT, dpair)) / vmax0(&psiw));
+        // the currents and the scalar densities of chi and of C chi are the same at every point: the current of Psi,
+        // averaged over a period of a real frequency, is (1 + |beta|^2) times that of chi (the cross terms oscillate as
+        // e^{+-2 i omega tau}), and the average of its divergence vanishes, so that the greybody factors are those of chi
+        let (j1, _) = currents(&geo, &chi);
+        let (j2, _) = currents(&geo, &cchi);
+        let n2 = vmax0(&chi) * vmax0(&chi);
+        for mu in 0..4 {
+            dev14c = dev14c.max((j1[mu].v - j2[mu].v).abs() / n2);
+        }
+        dev14c = dev14c.max((scal(&chi) - scal(&cchi)).abs() / n2);
+    }
+    rep.add(
+        "LS-14a",
+        &format!(
+            "the quasi-particle of the superfluid (the converse of Theorem L2 of Part III): if chi is the separated spinor of \
+             the freely falling tetrad with the mass E_gap = (M^2 + |D|^2)^(1/2) = {:.10} (M = {}, |D| = {}, the polar \
+             ground state of CJT), then Psi = chi - D/(E_gap + M) C chi solves the quasi-particle equation i Dslash Psi = \
+             M Psi + D C Psi, C Psi = (gamma^0 (x) 1_2)(K^3_LL)^dag Psi^*, at 40 random points outside and 40 inside the \
+             horizon (random values of the functions, complex omega; the largest residual relative to the field)",
+            egap, M_CJT, D_CJT
+        ),
+        dev14,
+        1e-12,
+    );
+    rep.add_bool(
+        "LS-14b",
+        "the check LS-14a can fail: with the wrong sign, Psi = chi + D/(E_gap + M) C chi, the residual is not small",
+        dev14w > 0.01,
+        &format!("smallest relative residual with the wrong sign: {:.3e}", dev14w),
+    );
+    rep.add(
+        "LS-14c",
+        "the currents Psi-bar gamma^mu Psi and the scalar densities Psi-bar Psi of chi and of C chi are equal at the \
+         same points (largest difference relative to the square of the field): averaged over a period of a real \
+         frequency, the current of Psi = chi - D/(E_gap + M) C chi is (1 + |D|^2/(E_gap + M)^2) times that of chi and \
+         its divergence vanishes, so that the quasi-particle has the greybody factors of the Dirac particle of mass \
+         E_gap",
+        dev14c,
+        1e-13,
+    );
+    vals.push(vec!["ls14_largest_residual".into(), f(dev14)]);
+    vals.push(vec!["ls14_smallest_residual_wrong_sign".into(), f(dev14w)]);
+    // the weight |beta|^2 = |D|^2/(E_gap + M)^2 = (E_gap - M)/(E_gap + M) of the part C chi of the quasi-particle
+    vals.push(vec!["ls14_b_qp_squared".into(), f(beta.norm_sqr())]);
 
     // ------------------------------------------------------------------ the output
     write_csv(&data.join("lg_schw_values.csv"), &["name", "value"], &vals);

@@ -40,6 +40,10 @@ Checks (the counterparts in the Rust report data/hck_lg_schw_checks.txt in brack
   YS-11 the decay rate from the charge at the six states and Mm = 0.01 of data/lg_schw_small.csv, recomputed
         (own start, own integrals)                                                                            [LS-12]
   YS-12 at two quasi-bound states of data/lg_schw_qbs.csv (Mm = 0.3), Im omega = -1/N                         [LS-10]
+  YS-13 the quasi-particle of the superfluid: Psi = chi - D/(E_gap + M) C chi solves the quasi-particle equation
+        when chi is the separated Dirac spinor of the mass E_gap (exact, sympy)                               [LS-14]
+  YS-14 the radial current J times the integral of |A|^2 + |B|^2 over the angles is the flux of the current into
+        the sphere of radius r, and (|P|^2 + |Q|^2) times it the density (exact, sympy)                      [LS-7]
 
 Run (from the folder Revision_Lord_Gravity, after rust/target/release/lg_schw):   python3 python/lg_schw.py
 Output: data/hck_lg_schw_checks_python.txt.  Requires: Python 3, numpy, sympy, mpmath, and the library
@@ -224,6 +228,106 @@ def symbolic_checks(rep):
                  "identically, J = (1 + W)|Q|^2 - (1 - W)|P|^2 (sympy, with the conjugates as independent functions); for a "
                  "quasi-bound state, which decays at infinity, it gives Im omega = -J(2)/(2 N) = -1/N with N the integral of "
                  "|P|^2 + |Q|^2 from the horizon to infinity and q_0 = 1", out10 == 0, "dJ/dr - 2 b (|P|^2 + |Q|^2) = %s" % out10)
+
+    # ---- YS-13: the quasi-particle of the superfluid (the converse of Theorem L2 of Part III).  If chi solves the Dirac
+    # equation with the mass E_gap = (M^2 + |D|^2)^(1/2), then Psi = chi + beta C chi, beta = -D/(E_gap + M), solves the
+    # quasi-particle equation i Dslash Psi = M Psi + D C Psi with the antilinear map C Psi = Pm Psi^*, Pm = (gamma^0 (x) 1_2)
+    # (K^3)^dag, K^3 = C_LL gamma^ch (x) E_LL tau_3 (the matrices of Part III and of Appendix A of lord_gravity.md).  Here chi
+    # is the separated spinor of the freely falling tetrad (isospin up) with a complex frequency omega = a + i b; its complex
+    # conjugate is written with the conjugate functions Pb, Qb (which obey the conjugate of (PG)) and Ab, Bb (which obey (A),
+    # a real system).  The residual of the quasi-particle equation is linear in the two phases e^{-i omega tau + i m_j phi}
+    # (symbol X) and e^{i omega^* tau - i m_j phi} (symbol Y); sympy simplifies both coefficients to zero, for symbolic M,
+    # |D|, the phase of D, a, b, lambda and m_j.  With the wrong sign of beta the residual does not vanish.
+    def kron(x, y):
+        return sp.Matrix(x.rows * y.rows, x.cols * y.cols, lambda i, j: x[i // y.rows, j // y.cols] * y[i % y.rows, j % y.cols])
+
+    s0, s3 = sp.eye(2), sp.Matrix([[1, 0], [0, -1]])
+    el = sp.Matrix([[0, 1], [-1, 0]])                                   # E_LL
+    gch = I * g[0] * g[1] * g[2] * g[3]                                # gamma^ch
+    cll = sp.diag(el, -el)                                             # C_LL
+    pm = kron(g[0], s0) * kron(cll * gch, el * s3).H                   # (gamma^0 (x) 1_2)(K^3)^dag
+    mq, dmod = sp.symbols('M_D d', positive=True)                      # Dirac mass and |D| of the polar state
+    dph = sp.symbols('delta', real=True)                               # the phase of D
+    egap = sp.sqrt(mq ** 2 + dmod ** 2)
+    dpair = dmod * sp.exp(I * dph)
+    Ab = sp.Function('Ab')(th)
+    Bb = sp.Function('Bb')(th)
+    X, Y = sp.symbols('X Y')
+    ex1 = sp.exp(-I * omc * t + I * mj * ph)
+    ex2 = sp.exp(I * omb * t - I * mj * ph)
+    pre = 1 / r / sp.sqrt(sp.sin(th))
+    eup = sp.Matrix([1, 0])
+    chi8 = kron(pre * ex1 * (sh * sp.Matrix([-I * Q * A, I * P * B, P * A, Q * B])), eup)
+    chi8b = kron(pre * ex2 * (sh.conjugate() * sp.Matrix([I * Qb * Ab, -I * Pb * Bb, Pb * Ab, Qb * Bb])), eup)
+    sub13 = {sp.Derivative(P, r): ((I * omc - W / (4 * r)) * P - (I * lam / r + egap) * Q) / (1 - W),
+             sp.Derivative(Q, r): ((I * lam / r - egap) * P + (-I * omc + W / (4 * r)) * Q) / (1 + W),
+             sp.Derivative(Pb, r): ((-I * omb - W / (4 * r)) * Pb - (-I * lam / r + egap) * Qb) / (1 - W),
+             sp.Derivative(Qb, r): ((-I * lam / r - egap) * Pb + (I * omb + W / (4 * r)) * Qb) / (1 + W),
+             sp.Derivative(A, th): mj / sp.sin(th) * A - lam * B, sp.Derivative(B, th): -mj / sp.sin(th) * B + lam * A,
+             sp.Derivative(Ab, th): mj / sp.sin(th) * Ab - lam * Bb, sp.Derivative(Bb, th): -mj / sp.sin(th) * Bb + lam * Ab}
+
+    def dslash8(psi):
+        out = sp.zeros(8, 1)
+        for mu in range(4):
+            gm = sp.zeros(4)
+            for a in range(4):
+                gm += frame[a][mu] * g[a]
+            out += kron(gm, s0) * (sp.diff(psi, (t, r, th, ph)[mu]) + kron(conn[mu], s0) * psi)
+        return out
+
+    def qp_residual(beta):
+        psi = chi8 + beta * (pm * chi8b)
+        psib = chi8b + sp.conjugate(beta) * (pm.conjugate() * chi8)
+        res = (I * dslash8(psi) - mq * psi - dpair * (pm * psib)).subs(sub13).subs({ex1: X, ex2: Y})
+        cx = (res.diff(X) / pre).applyfunc(lambda e: sp.simplify(sp.expand(e)))
+        cy = (res.diff(Y) / pre).applyfunc(lambda e: sp.simplify(sp.expand(e)))
+        lin = all(sp.simplify(e.diff(X, 2)) == 0 and sp.simplify(e.diff(Y, 2)) == 0 for e in res)
+        return cx, cy, lin, (t not in res.free_symbols and ph not in res.free_symbols)
+
+    ppc = sp.simplify(pm * pm.conjugate() + sp.eye(8)) == sp.zeros(8)
+    # the currents and the scalar densities of chi and of C chi are equal: chi-bar gamma^a chi = chi^T (gamma^0 gamma^a)^T
+    # chi^* and (C chi)-bar gamma^a (C chi) = chi^T Pm^dag gamma^0 gamma^a Pm chi^*, so the identities are
+    # Pm^dag (gamma^0 gamma^a (x) 1_2) Pm = (gamma^0 gamma^a (x) 1_2)^T (a = 0..3) and the same with gamma^0 alone; then the
+    # current of Psi averaged over a period of a real frequency is (1 + |beta|^2) times that of chi
+    curid = all(sp.simplify(pm.H * kron(g[0] * g[a], s0) * pm - kron(g[0] * g[a], s0).T) == sp.zeros(8) for a in range(4))
+    scid = sp.simplify(pm.H * kron(g[0], s0) * pm - kron(g[0], s0).T) == sp.zeros(8)
+    cx13, cy13, lin13, nophase13 = qp_residual(-dpair / (egap + mq))
+    cxw, cyw, _, _ = qp_residual(dpair / (egap + mq))
+    ok13 = ppc and curid and scid and lin13 and nophase13 and cx13 == sp.zeros(8, 1) and cy13 == sp.zeros(8, 1)
+    wrong13 = not (cxw == sp.zeros(8, 1) and cyw == sp.zeros(8, 1))
+    rep.add_bool("YS-13", "the quasi-particle of the superfluid (the converse of Theorem L2 of Part III): if chi is the separated "
+                 "spinor of the freely falling tetrad with the mass E_gap = (M^2 + |D|^2)^(1/2) and a complex frequency, then "
+                 "Psi = chi - D/(E_gap + M) C chi solves i Dslash Psi = M Psi + D C Psi, C Psi = (gamma^0 (x) 1_2)(K^3)^dag "
+                 "Psi^*, with the connection (14.13) as printed (sympy simplifies the coefficients of both phases to 0, for "
+                 "symbolic M, |D|, the phase of D, omega, lambda, m_j); with the wrong sign of the coefficient the residual "
+                 "does not vanish; and chi and C chi have the same currents and scalar densities (exact matrix identities), so "
+                 "that the quasi-particle has the greybody factors of the Dirac particle", ok13 and wrong13,
+                 "Pm Pm^* = -1: %s; currents %s and scalar densities %s equal; residual linear in the two phases: %s; "
+                 "coefficients %s, %s; wrong sign leaves a residual: %s"
+                 % (ppc, curid, scid, lin13, list(cx13), list(cy13), wrong13))
+
+    # ---- YS-14: what the radial current J means.  With the separated spinor of the freely falling tetrad at a real
+    # frequency (the phases cancel in the bilinear), the volume element e = r^2 sin(theta) of the coframe and the coordinate
+    # component j^r = Psi-bar gamma^r Psi of the current, gamma^r = e_a^r gamma^a = -W gamma^0 + gamma^1:
+    #     e j^r = -J (|A|^2 + |B|^2),
+    # so that J times the integral of |A|^2 + |B|^2 over the angles is the flux of the conserved current into the sphere of
+    # radius r (the conservation law (15.6) reads d_mu (e j^mu) = 0).  Values at a point as symbols, conjugates independent.
+    Pv, Qv, Av, Bv, Pw, Qw, Aw, Bw = sp.symbols('Pv Qv Av Bv Pw Qw Aw Bw')
+    chi4 = sh * sp.Matrix([-I * Qv * Av, I * Pv * Bv, Pv * Av, Qv * Bv])
+    chi4b = sh.conjugate() * sp.Matrix([I * Qw * Aw, -I * Pw * Bw, Pw * Aw, Qw * Bw])
+    gam_r = -W * g[0] + g[1]
+    ejr = (r ** 2 * sp.sin(th)) * (chi4b.T * g[0] * gam_r * chi4)[0] / (r ** 2 * sp.sin(th))
+    jflux = (1 + W) * Qv * Qw - (1 - W) * Pv * Pw
+    out14 = sp.simplify(sp.expand(ejr + jflux * (Av * Aw + Bv * Bw)))
+    # and the density: gamma^tau = e_a^tau gamma^a = gamma^0, so e j^tau = e Psi^dag Psi = (|P|^2 + |Q|^2)(|A|^2 + |B|^2)
+    ejt = (chi4b.T * g[0] * g[0] * chi4)[0]
+    out14t = sp.simplify(sp.expand(ejt - (Pv * Pw + Qv * Qw) * (Av * Aw + Bv * Bw)))
+    rep.add_bool("YS-14", "the meaning of the radial current: for the separated spinor of the freely falling tetrad at a real "
+                 "frequency, e j^r = -J (|A|^2 + |B|^2) with the volume element e = r^2 sin(theta) and j^r = Psi-bar gamma^r Psi, "
+                 "gamma^r = -W gamma^0 + gamma^1; J times the integral of |A|^2 + |B|^2 over the angles is therefore the flux of "
+                 "the conserved current into the sphere of radius r; and the density is e j^tau = (|P|^2 + |Q|^2)(|A|^2 + |B|^2) "
+                 "(sympy)", out14 == 0 and out14t == 0,
+                 "e j^r + J (|A|^2 + |B|^2) = %s; e j^tau - (|P|^2 + |Q|^2)(|A|^2 + |B|^2) = %s" % (out14, out14t))
 
 
 # ================================================================================================ the numerical part
