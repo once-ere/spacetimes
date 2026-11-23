@@ -86,8 +86,8 @@ def main():
         frags["lgq_my01sun_%s" % tag] = "$%s$" % sci(float(r["M_y01_solar"]), 1)
         frags["lgq_force_%s" % tag] = "$%s$" % sci(float(r["zeugon_over_gravity"]), 1)
     # the scan as a table, one line per decade of Lambda_LL
-    lines = ["| $\\Lambda_{\\rm LL}$ | quasi-particle mass | $\\mathcal Q^{\\rm acc}/\\mathcal M$ | change of the shadow | "
-             "black hole with $y=0.1$ | pair: Bohr radius | pair: binding | black hole that tears the pair apart |",
+    lines = ["| $\\Lambda_{\\rm LL}$ | quasi-particle mass | $\\mathcal Q^{\\rm Z}_{\\rm LG}/\\mathcal M_{\\rm LG}$ at the accretion limit | change of the shadow | "
+             "black hole with $y^{\\rm qp}_{\\rm LG}=0.1$ | pair: Bohr radius | pair: binding | pair: classical tidal mass (E20; corrected in E32) |",
              "|:---|:---|:---|:---|:---|:---|:---|:---|"]
     for r in rows:
         lam = float(r["Lambda_eV"])

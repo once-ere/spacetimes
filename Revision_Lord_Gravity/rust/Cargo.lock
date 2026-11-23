@@ -64,6 +64,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "lgtidal"
+version = "0.1.0"
+dependencies = [
+ "lgcore",
+ "lgsundials",
+]
+
+[[package]]
 name = "lgvaidya"
 version = "0.1.0"
 dependencies = [

@@ -54,7 +54,7 @@ $3.0\times10^{-16}$
 $3.0\times10^{-28}$
 <!-- END lgq_qacc_1eV -->
 <!-- BEGIN lgq_scan_table -->
-| $\Lambda_{\rm LL}$ | quasi-particle mass | $\mathcal Q^{\rm acc}/\mathcal M$ | change of the shadow | black hole with $y=0.1$ | pair: Bohr radius | pair: binding | black hole that tears the pair apart |
+| $\Lambda_{\rm LL}$ | quasi-particle mass | $\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG}$ at the accretion limit | change of the shadow | black hole with $y^{\rm qp}_{\rm LG}=0.1$ | pair: Bohr radius | pair: binding | pair: classical tidal mass (E20; corrected in E32) |
 |:---|:---|:---|:---|:---|:---|:---|:---|
 | 1 eV | $0.366$ eV | $3.0\times10^{-28}$ | $-1.5\times10^{-56}$ | $3.6\times10^{-11}\,M_\odot$ | $1.1\times10^{-4}$ m | $8.7\times10^{-6}$ eV | $2.0\times10^{-5}\,M_\odot$ |
 | $10^{1}$ eV | $3.66$ eV | $3.0\times10^{-27}$ | $-1.5\times10^{-54}$ | $3.6\times10^{-12}\,M_\odot$ | $1.1\times10^{-5}$ m | $8.7\times10^{-5}$ eV | $2.0\times10^{-6}\,M_\odot$ |

@@ -864,9 +864,10 @@ decision D12. Parts I to III were rewritten in entries E22 to E24, and
 Part IV was written from stage 5 in entries E26 and E27, Theorem L3
 completed in E28, and Part V written from stage 6 in entry E29. Stage 7b
 (the zeugon charge of a black hole and the scan over the cutoff, D12
-(1), (2)) was computed in entry E30. Next: the rest of stage 7 (the
-tidal break-up of the pair with tunnelling, and the annihilation of the
-pair) and Part VI.
+(1), (2)) was computed in entry E30, and stage 7c (the tidal break-up of
+the pair along a real fall, D12 (2)) in entries E31 to E33. Next: stage
+7d (whether two quasi-particles of opposite charge can annihilate into
+zeugons, D12 (5)) and Part VI.
 
 The plan is changed only with a record in Section 7.
 
@@ -1680,7 +1681,10 @@ units (D11 (iii)), only illustrative values can be given: the critical
 mass is \(3.97\times10^{25}\) kg (\(1.99\times10^{-5}\) solar masses)
 for \(\Lambda_{\rm LL}=1\) eV, \(3.97\times10^{16}\) kg for 1 GeV and
 \(3.97\times10^{13}\) kg for 1 TeV; for any \(\Lambda_{\rm LL}\) above
-about 1 eV, black holes of stellar mass swallow the pairs whole \\
+about 1 eV, black holes of stellar mass swallow the pairs whole
+\emph{Corrected in E32:} the statement that lighter black holes tear the
+pair apart before it reaches the horizon is false for a real fall,
+because the field is not static; E32 gives the numbers along the fall \\
 E21 & 22 Nov 2026, 11:39 to 11:54 & the programs of E20. Python:
 \texttt{python/lg\_pair.py} (ALL PASS (3 of 3); exact, sympy; 16 s):
 YP-1 Dirac's fine structure, YP-2 Ferrell's formula, YP-3 the radial
@@ -1909,71 +1913,232 @@ zeugon charge, and the scan over the cutoff (D12 (1), (2)), computed
 with checks; no manuscript text yet (it goes into Part VI). \emph{The
 geometry.} By Theorems L2 and L3 the quasi-particle is, in every
 gravitational field and field of the zeugon, a Dirac particle of mass
-\(E^{\rm CJT,gap}_{\rm SF}\) and charge \(q=\pm g^{\rm v}_{\rm LL}/2\).
-A black hole that absorbs more quasi-particles of one charge than of the
-other carries a zeugon charge \(Q\); the zeugon is massless, and the
-space-time is that of Reissner and Nordström,
-\(f=1-2\mathcal M_{\rm LG}/r+\mathcal Q^2/r^2\) with
-\(\mathcal Q^2=G_{\rm N}Q^2/(4\pi)\) in the units of the Lagrangian
-(15.2) (checked exactly with the curvature of Part III and the tensor
-(16.5) of the zeugon, YC-1 and WC-1; with \(G_{\rm N}Q^2\) in place of
-\(G_{\rm N}Q^2/(4\pi)\) the equations fail). \emph{The limit by
-selective accretion.} A particle of mass \(m\) and charge \(q\) of the
-same sign, at rest far away, reaches the horizon exactly when
-\(qQ\le4\pi G_{\rm N}M_{\rm LG}m\) (the square of its radial velocity
-times \(r^2\) is \(2(\mathcal M_{\rm LG}-x)r+x^2-\mathcal Q^2\) with
-\(x=qQ/(4\pi m)\), and equals \((r_+-x)^2\ge0\) at the horizon; LC-1,
-YC-2, WC-2). A black hole among slow quasi-particles of both charges
-therefore cannot gain more than
-\(\mathcal Q/\mathcal M_{\rm LG}=(4\pi)^{1/2}m/(qM_{\rm Pl})\), which is
-\(3.711\) \(\Lambda_{\rm LL}/M_{\rm Pl}\) for the quasi-particles:
-\(3.0\times10^{-28}\) for \(\Lambda_{\rm LL}=1\) eV,
+\(m^{\rm qp}_{\rm LG}=E^{\rm CJT,gap}_{\rm SF}\Lambda_{\rm LL}\) and
+charge \(q^{\rm qp}_{\rm LG}=\pm g^{\rm v}_{\rm LL}/2\). A black hole
+that absorbs more quasi-particles of one charge than of the other
+carries a zeugon charge \(Q^{\rm Z}_{\rm LG}\); the zeugon is massless,
+and the space-time is that of Reissner and Nordström,
+\(f^{\rm RN}_{\rm LG}=1-2\mathcal M_{\rm LG}/r+(\mathcal Q^{\rm Z}_{\rm LG})^2/r^2\)
+with
+\((\mathcal Q^{\rm Z}_{\rm LG})^2=G_{\rm N}(Q^{\rm Z}_{\rm LG})^2/(4\pi)\)
+in the units of the Lagrangian (15.2) (checked exactly with the
+curvature of Part III and the tensor (16.5) of the zeugon, YC-1 and
+WC-1; with \(G_{\rm N}(Q^{\rm Z}_{\rm LG})^2\) in place of
+\(G_{\rm N}(Q^{\rm Z}_{\rm LG})^2/(4\pi)\) the equations fail).
+\emph{The limit by selective accretion.} A quasi-particle whose charge
+has the sign of \(Q^{\rm Z}_{\rm LG}\), at rest far away, reaches the
+horizon exactly when
+\(q^{\rm qp}_{\rm LG}Q^{\rm Z}_{\rm LG}\le4\pi G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}\)
+(the square of its radial velocity times \(r^2\) is
+\(2(\mathcal M_{\rm LG}-x^{\rm acc}_{\rm LG})r+(x^{\rm acc}_{\rm LG})^2-(\mathcal Q^{\rm Z}_{\rm LG})^2\)
+with
+\(x^{\rm acc}_{\rm LG}=q^{\rm qp}_{\rm LG}Q^{\rm Z}_{\rm LG}/(4\pi m^{\rm qp}_{\rm LG})\),
+and equals \((r_{+,\rm LG}-x^{\rm acc}_{\rm LG})^2\ge0\) at the horizon
+\(r_{+,\rm LG}\); LC-1, YC-2, WC-2). A black hole among slow
+quasi-particles of both charges therefore cannot gain more than
+\(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG}=(4\pi)^{1/2}m^{\rm qp}_{\rm LG}/(\lvert q^{\rm qp}_{\rm LG}\rvert M_{\rm Pl})\),
+which is \(3.711\) \(\Lambda_{\rm LL}/M_{\rm Pl}\) for the
+quasi-particles: \(3.0\times10^{-28}\) for \(\Lambda_{\rm LL}=1\) eV,
 \(3.0\times10^{-19}\) for 1 GeV and \(3.0\times10^{-16}\) for 1 TeV, as
 small as the electric charge of astrophysical black holes and for the
 same reason: the zeugon force between two quasi-particles exceeds their
 gravitational attraction by the factor
-\(\alpha^{\rm Z}_{\rm LG}(M_{\rm Pl}/m)^2\), \(1.1\times10^{31}\) for 1
-TeV. \emph{The shadow and the ringing.} The shadow radius is
-\(b_c=r_{\rm ph}f(r_{\rm ph})^{-1/2}\) with the photon sphere
-\(r_{\rm ph}=(3\mathcal M_{\rm LG}+(9\mathcal M_{\rm LG}^2-8\mathcal Q^2)^{1/2})/2\),
-\(3\sqrt3\mathcal M_{\rm LG}(1-(\mathcal Q/\mathcal M_{\rm LG})^2/6+\dots)\)
+\(\alpha^{\rm Z}_{\rm LG}(M_{\rm Pl}/m^{\rm qp}_{\rm LG})^2\),
+\(1.1\times10^{31}\) for 1 TeV. \emph{The shadow and the ringing.} The
+shadow radius is
+\(b^{\rm sh}_{\rm LG}=r^{\rm ph}_{\rm LG}f^{\rm RN}_{\rm LG}(r^{\rm ph}_{\rm LG})^{-1/2}\)
+with the photon sphere
+\(r^{\rm ph}_{\rm LG}=(3\mathcal M_{\rm LG}+(9\mathcal M_{\rm LG}^2-8(\mathcal Q^{\rm Z}_{\rm LG})^2)^{1/2})/2\),
+\(3\sqrt3\mathcal M_{\rm LG}(1-(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2/6+\dots)\)
 for a small charge and \(4\mathcal M_{\rm LG}\) for the extremal one
 (LC-2, LC-3: the coefficient \(-0.166666666666\) by Richardson's
 extrapolation; YC-3 and WC-3 exactly, with the next term
-\(-7(\mathcal Q/\mathcal M_{\rm LG})^4/216\)); in the limit of large
-angular momentum the frequencies of the ringing are multiples of
-\(1/b_c\) and change by \(+(\mathcal Q/\mathcal M_{\rm LG})^2/6\),
-relative. At the accretion limit the shadow therefore changes by
+\(-7(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^4/216\)); in the
+limit of large angular momentum the frequencies of the ringing are
+multiples of \(1/b^{\rm sh}_{\rm LG}\) and change by
+\(+(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2/6\), relative. At
+the accretion limit the shadow therefore changes by
 \(-1.5\times10^{-32}\) for \(\Lambda_{\rm LL}=1\) TeV and less for
 smaller \(\Lambda_{\rm LL}\): the zeugon charge of a black hole is not
 detectable through its geometry unless \(\Lambda_{\rm LL}\) is close to
 the Planck mass. \emph{The limit by the creation of pairs.} The field
-\(Q/(4\pi r_+^2)\) at the horizon creates pairs of quasi-particles
-efficiently when it reaches the scale \(m^2/q\) of Schwinger's critical
-field (by Theorem L3 the quasi-particles obey, in a field of the zeugon,
-the Dirac equation of the mass of the gap, so that the estimate carries
-over to them); the charge at which it does, divided by the accretion
-limit, is \(4y_{\rm LG}\) with
-\(y_{\rm LG}=G_{\rm N}M_{\rm LG}m/(\hbar c)\) (LC-4, YC-4): for black
-holes with \(y_{\rm LG}<\tfrac14\) the creation of pairs is the stronger
-limit, for heavier ones the accretion. \emph{The scan} (D12 (1)):
-\texttt{data/lg\_charge\_scan.csv} gives, for \(\Lambda_{\rm LL}=1\) eV
-to 1 TeV, the quasi-particle mass, the accretion limit and the change of
-the shadow, the masses of the black holes with \(y_{\rm LG}=0.1\) (for
-example \(3.6\times10^{-11}\) solar masses for 1 eV and
-\(3.6\times10^{-23}\) for 1 TeV) and \(y_{\rm LG}=\tfrac14\), the ratio
-of the zeugon force to gravity, and the Bohr radius, the binding energy
-and the classical tidal mass of the pair of stage 7a (equal to those of
-\texttt{lg\_pair} at 1 eV, 1 GeV and 1 TeV, LC-5). Programs: the new
-crate \texttt{rust/lgcharge}, program \texttt{lg\_charge} (ALL PASS (6
-of 6)); \texttt{python/lg\_charge.py} (ALL PASS (5 of 5); sympy and
-mpmath); \texttt{wolfram/source/lg\_charge.wls} (ALL PASS (3 of 3);
-request 348, exact); fragments
-\texttt{code/scripts/write\_lg\_charge\_fragments.py}. Correction on the
-way: the first run of the Python program failed its check YC-3 because
-the expected series was compared before it was expanded (a coefficient
-of an unexpanded product reads 0); the series itself was right, and the
-check now expands it \\
+\(Q^{\rm Z}_{\rm LG}/(4\pi r_{+,\rm LG}^2)\) at the horizon creates
+pairs of quasi-particles efficiently when it reaches the scale
+\((m^{\rm qp}_{\rm LG})^2/\lvert q^{\rm qp}_{\rm LG}\rvert\) of
+Schwinger's critical field (by Theorem L3 the quasi-particles obey, in a
+field of the zeugon, the Dirac equation of the mass of the gap, so that
+the estimate carries over to them); the charge at which it does, divided
+by the accretion limit, is \(4y^{\rm qp}_{\rm LG}\) with
+\(y^{\rm qp}_{\rm LG}=G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}/(\hbar c)\)
+(LC-4, YC-4): for black holes with \(y^{\rm qp}_{\rm LG}<\tfrac14\) the
+creation of pairs is the stronger limit, for heavier ones the accretion.
+\emph{The scan} (D12 (1)): \texttt{data/lg\_charge\_scan.csv} gives, for
+\(\Lambda_{\rm LL}=1\) eV to 1 TeV, the quasi-particle mass, the
+accretion limit and the change of the shadow, the masses of the black
+holes with \(y^{\rm qp}_{\rm LG}=0.1\) (for example
+\(3.6\times10^{-11}\) solar masses for 1 eV and \(3.6\times10^{-23}\)
+for 1 TeV) and \(y^{\rm qp}_{\rm LG}=\tfrac14\), the ratio of the zeugon
+force to gravity, and the Bohr radius, the binding energy and the
+classical tidal mass of the pair of stage 7a (the last corrected in E32)
+(equal to those of \texttt{lg\_pair} at 1 eV, 1 GeV and 1 TeV, LC-5).
+Programs: the new crate \texttt{rust/lgcharge}, program
+\texttt{lg\_charge} (ALL PASS (6 of 6)); \texttt{python/lg\_charge.py}
+(ALL PASS (5 of 5); sympy and mpmath);
+\texttt{wolfram/source/lg\_charge.wls} (ALL PASS (3 of 3); request 348,
+exact); fragments \texttt{code/scripts/write\_lg\_charge\_fragments.py}.
+Correction on the way: the first run of the Python program failed its
+check YC-3 because the expected series was compared before it was
+expanded (a coefficient of an unexpanded product reads 0); the series
+itself was right, and the check now expands it \\
+E31 & 22 Nov 2026, 16:56 to 19:05 & stage 7c, the tidal break-up of the
+pair of D11 along a real fall (D12 (2)), computed with checks; no
+manuscript text yet (it goes into Part VI). \emph{The tidal field along
+the fall.} The centre of mass of the pair falls from rest far away along
+a radial geodesic of the Schwarzschild space-time; in the freely falling
+frame the curvature acts on the relative coordinate as
+\(-k^{\rm tid}_{\rm LG}(z^2-\rho^2/2)\),
+\(k^{\rm tid}_{\rm LG}=\mu^{\rm pair}_{\rm LG}\mathcal M_{\rm LG}/r^3\)
+(\(z\) the radial direction, \(\rho\) the distance from it; the
+eigenvalues of the tidal tensor do not change under a radial boost), and
+along the fall \(r^3=\tfrac92\mathcal M_{\rm LG}(\tau_0-\tau)^2\)
+exactly. In the atomic units of the pair (lengths in its Bohr radius,
+energies in \(\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2\),
+times in its inverse) the strength is
+\(\kappa^{\rm tid}_{\rm LG}=2/(9(T^{\rm fall}_{\rm LG})^2)\), with
+\(T^{\rm fall}_{\rm LG}\) the proper time that the pair has left before
+it would reach \(r=0\): the same function for every black hole. The mass
+decides only when the pair crosses the horizon: at
+\(T^{\rm fall}_{\rm LG}=\tfrac43\tilde{\mathcal M}_{\rm LG}\), with
+\(\tilde{\mathcal M}_{\rm LG}=\mathcal M_{\rm LG}\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2\)
+(for the quasi-particles
+\(\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2=\)
+\(1.741\times10^{-5}\) \(\Lambda_{\rm LL}\); all exact: YT-2, WT-2). The
+classical estimate of E20 (the barrier sinks below the level at
+\(\kappa^{\rm tid}_{\rm LG}=1/54\), that is
+\(T^{\rm fall}_{\rm LG}=2\sqrt3\) and
+\(\tilde{\mathcal M}_{\rm LG}=3\sqrt3/2=\) \(2.598\)) assumed a static
+field. \emph{The static rate.} In a constant tidal field the ground
+state of the pair decays by tunnelling at the rate
+\(\Gamma^{\rm tid}_{\rm LG}(\kappa^{\rm tid}_{\rm LG})\). Computed by
+complex rotation (the radius \(r\) replaced by
+\(re^{i\theta^{\rm cr}_{\rm LG}}\) turns the decaying state into an
+eigenvector whose eigenvalue has the energy as its real part and
+\(-\Gamma^{\rm tid}_{\rm LG}/2\) as its imaginary part) in a basis of
+Coulomb-Sturmian functions: independent of the angle
+\(\theta^{\rm cr}_{\rm LG}\) and converged in the basis within
+\(9.3\times10^{-5}\) (YT-4a); its real part reproduces the exact
+perturbation series
+\(E^{\rm tid}_{\rm LG}=-\tfrac12-\tfrac{15}2(\kappa^{\rm tid}_{\rm LG})^2-\tfrac{153}2(\kappa^{\rm tid}_{\rm LG})^3+O((\kappa^{\rm tid}_{\rm LG})^4)\)
+(Dalgarno and Lewis; YT-3, WT-3); \(\Gamma^{\rm tid}_{\rm LG}=\)
+\(2.461\times10^{-3}\) at \(\kappa^{\rm tid}_{\rm LG}=0.0185\) (the
+classical threshold), \(2.013\times10^{-4}\) at 0.01 and
+\(3.123\times10^{-6}\) at 0.005. The time-dependent computation in a
+constant field (LT-3) gives the same rates within \(6.0\times10^{-3}\)
+(YT-4b). For a weak field
+\(\Gamma^{\rm tid}_{\rm LG}=8(\kappa^{\rm tid}_{\rm LG})^{-1/2}\exp(-\pi/(2(2\kappa^{\rm tid}_{\rm LG})^{1/2}))/\sinh(\pi/\sqrt2)\)
+(both exits \(z>0\) and \(z<0\); derived by Landau's method with a
+Gaussian profile across the axis, which for a uniform field of strength
+\(F^{\rm u}_{\rm LG}\) gives exactly Landau's
+\((4/F^{\rm u}_{\rm LG})e^{-2/(3F^{\rm u}_{\rm LG})}\): YT-5a, YT-5b,
+WT-4); the complex-rotation rates approach it as
+\(\kappa^{\rm tid}_{\rm LG}\to0\) (ratio \(0.893\) at
+\(\kappa^{\rm tid}_{\rm LG}=0.002\) and \(0.671\) at 0.0185;
+extrapolated to \(\kappa^{\rm tid}_{\rm LG}=0\) the ratio is 1 within
+\(7.9\times10^{-3}\), YT-5c). \\
+E32 & 22 Nov 2026, 16:56 to 19:05 & stage 7c, the pair along the real
+fall (E31), computed with checks; no manuscript text yet. \emph{The real
+fall.} The Schrödinger equation of the relative motion,
+\(i\partial_t\psi^{\rm pair}_{\rm LG}=[-\tfrac12\nabla^2-1/r-\kappa^{\rm tid}_{\rm LG}r^2P_2(\cos\theta)]\psi^{\rm pair}_{\rm LG}\)
+(\(t\) the proper time of the fall, \(\theta\) the angle from the radial
+direction), integrated from \(T^{\rm fall}_{\rm LG}=30\) to \(0.3\)
+(Rust program \texttt{lg\_tidal}: partial waves \(l=0,2,\dots,40\), a
+radial grid of spacing 0.05, CVODE with Newton's iteration and a banded
+LU solver; the norm is conserved up to the absorbed probability within
+\(2.2\times10^{-6}\), LT-4). Three probabilities at the crossing of the
+horizon: \(P^{\rm esc}_{\rm LG}\), beyond the barrier (beyond the outer
+turning point of the energy \(-\tfrac12\), or beyond the ridge where the
+ridge is lower);
+\(P^{\rm exc}_{\rm LG}=1-\lvert\langle1s\vert\psi^{\rm pair}_{\rm LG}\rangle\rvert^2\),
+no longer in the ground state; \(P^{\rm sep}_{\rm LG}\), more than 10
+Bohr radii apart. \(P^{\rm esc}_{\rm LG}\) reaches 0.01 at
+\(\tilde{\mathcal M}_{\rm LG}=\) \(2.374\), 0.1 at \(1.167\) and 1/2
+only at \(0.244\); \(P^{\rm exc}_{\rm LG}\) reaches 1/2 at \(0.227\);
+\(P^{\rm sep}_{\rm LG}\) is only \(5.2\times10^{-4}\) at the end
+(\(\tilde{\mathcal M}_{\rm LG}=\) \(0.225\)), where the root mean
+squares of the separation along and across the radius are \(1.78\) and
+\(0.77\) Bohr radii. Where the field changes slowly the fall agrees with
+the static rates integrated along it (\(P^{\rm esc}_{\rm LG}=\)
+\(1.8\times10^{-5}\) against \(1.8\times10^{-5}\) at
+\(T^{\rm fall}_{\rm LG}=5.5\)); nearer to the end the fall breaks the
+binding faster than the static rates (\(0.014\) against
+\(3.1\times10^{-3}\) at \(T^{\rm fall}_{\rm LG}=3\), \(0.058\) against
+\(0.019\) at 2), but far slower than the classical estimate. \emph{Why
+the classical estimate fails.} (i) Along the fall the field doubles
+while \(T^{\rm fall}_{\rm LG}\) shrinks by the factor \(2^{-1/2}\),
+whereas the path under the barrier takes the Euclidean time
+\(\tfrac34\pi T^{\rm fall}_{\rm LG}\) (the turning point is at
+\(\tfrac32T^{\rm fall}_{\rm LG}\)): the field is never static on the
+time scale of the tunnelling. (ii) Even above the barrier the escape
+takes time: the complex-rotation rate is only \(0.0349\) at
+\(T^{\rm fall}_{\rm LG}=2\), where the time left is 2. (iii) Two
+particles that are no longer bound separate in this field only as
+\((T^{\rm fall}_{\rm LG})^{-1/3}\) (the classical solutions \(T^{4/3}\)
+and \(T^{-1/3}\) of LT-2, WT-5). \emph{Correction of E20} (a false
+statement, recorded with its source): E20 says that black holes lighter
+than \(1.492\times10^{5}\) \(M_{\rm Pl}^2/\Lambda_{\rm LL}\) tear the
+pair apart before it reaches the horizon and heavier ones swallow it
+whole; along the real fall the pair is beyond its barrier with
+probability 1/2 only for black holes lighter than \(1.40\times10^{4}\)
+\(M_{\rm Pl}^2/\Lambda_{\rm LL}\) (\(3.7\times10^{15}\) kg for
+\(\Lambda_{\rm LL}=1\) GeV), and even then the two quasi-particles are
+still within a few Bohr radii of each other when they cross the horizon:
+in the range where the pair is small compared with the black hole, the
+black hole swallows it whole. The scan of E30 (the column of the
+classical tidal mass) is labelled as the classical estimate of E20. \\
+E33 & 22 Nov 2026, 16:56 to 19:05 & the programs of E31 and E32 and the
+corrections on the way. The new crate \texttt{rust/lgtidal}, program
+\texttt{lg\_tidal} (ALL PASS (8 of 8); about 40 minutes): LT-0 the
+angular coupling, LT-1 the ground state without field (norm and state
+kept within \(10^{-9}\)), LT-2 a Gaussian packet without the Coulomb
+potential against the closed forms of the quadratic Hamiltonian
+(difference \(2.0\times10^{-4}\) on the grid 0.025, falling as the
+square of the spacing), LT-3 the static rates, LT-4 the fall, LT-5
+convergence (finer grid, more partial waves, a larger box with a weaker
+flattening of the tidal potential far out, an earlier start); the crate
+\texttt{lgsundials} gained the module \texttt{cvode\_band} (Newton's
+iteration with the banded LU solver of SUNDIALS, Adams-Moulton formulas
+of the orders 1 and 2, which conserve the norm of a Hermitian problem).
+\texttt{python/lg\_tidal.py} (ALL PASS (10 of 10); sympy and complex
+rotation, about 1 minute); \texttt{wolfram/source/lg\_tidal.wls} (ALL
+PASS (5 of 5); request 349, exact); fragments
+\texttt{code/scripts/write\_lg\_tidal\_fragments.py}; figures
+\texttt{python/lg\_tidal\_figures.py}. Corrections on the way: (a) the
+symbols of E30 were written without the suffix LG (\(Q\),
+\(\mathcal Q\), \(q\), \(m\), \(f\), \(x\), \(r_+\), \(r_{\rm ph}\),
+\(b_c\)) or with a symbol already used for another object
+(\(y_{\rm LG}\), the abbreviation of \(\mathcal M_{\rm LG}m_{\rm LL}\)
+in E13 to E19); they are now \(Q^{\rm Z}_{\rm LG}\),
+\(\mathcal Q^{\rm Z}_{\rm LG}\), \(q^{\rm qp}_{\rm LG}\),
+\(m^{\rm qp}_{\rm LG}\), \(f^{\rm RN}_{\rm LG}\),
+\(x^{\rm acc}_{\rm LG}\), \(r_{+,\rm LG}\), \(r^{\rm ph}_{\rm LG}\),
+\(b^{\rm sh}_{\rm LG}\), \(y^{\rm qp}_{\rm LG}\), and the symbols of
+stage 7 are listed in Section 8; (b) the first Python run failed YT-2
+(sympy could not simplify \(((\tau_0-\tau)^2)^{1/3}\) without knowing
+the sign; the remaining time is now a positive symbol) and YT-5 (an
+integral returned as a piecewise expression; the antiderivatives are now
+given and checked by differentiation); (c) the first test of LT-2
+stopped at \(T=1\) with a difference that did not fall as the square of
+the spacing below \(T=1.5\) (the velocity of the packet grows in
+proportion to \(z\) and puts probability at its edges into high
+momenta); the check now covers \(T\ge1.5\) and reports the rest; (d) the
+first form of the computation took steps of \(10^{-5}\) because of the
+centrifugal energy of the high partial waves near the origin; the
+partial wave \(l\) is now kept only where \(l(l+1)/(2r^2)\le100\), a
+classically forbidden region for every energy of the problem; (e) the
+probability outside \(r=10\) depends, below \(T^{\rm fall}_{\rm LG}=1\),
+on the flattening of the tidal potential (which then lies inside
+\(r=10\)), and its convergence is checked only above (LT-5b), with the
+spread of the five computations reported \\
 \end{longtable}
 
 \hypertarget{the-symbols-of-this-document}{%
@@ -2125,6 +2290,45 @@ potential on the relative coordinate of the pair (E20) \\
 \(r^{\rm ion}_{\rm LG}\) & the radius at which the tidal field frees the
 pair (classical estimate, E20) \\
 \(M_{\rm Pl}\) & the Planck mass \((\hbar c/G_{\rm N})^{1/2}\) \\
+\(m^{\rm qp}_{\rm LG}\), \(q^{\rm qp}_{\rm LG}\) & the mass
+\(E^{\rm CJT,gap}_{\rm SF}\Lambda_{\rm LL}\) and the zeugon charge
+\(\pm g^{\rm v}_{\rm LL}/2\) of a quasi-particle (E30) \\
+\(Q^{\rm Z}_{\rm LG}\), \(\mathcal Q^{\rm Z}_{\rm LG}\) & the zeugon
+charge of a black hole, and the same as a length,
+\((G_{\rm N}/4\pi)^{1/2}Q^{\rm Z}_{\rm LG}\) (E30) \\
+\(f^{\rm RN}_{\rm LG}\), \(r_{+,\rm LG}\) & the metric function of
+Reissner and Nordström,
+\(1-2\mathcal M_{\rm LG}/r+(\mathcal Q^{\rm Z}_{\rm LG})^2/r^2\), and
+its outer horizon (E30) \\
+\(x^{\rm acc}_{\rm LG}\) & the length
+\(q^{\rm qp}_{\rm LG}Q^{\rm Z}_{\rm LG}/(4\pi m^{\rm qp}_{\rm LG})\)
+that decides the accretion of a charged quasi-particle (E30) \\
+\(r^{\rm ph}_{\rm LG}\), \(b^{\rm sh}_{\rm LG}\) & the radius of the
+photon sphere and the radius of the shadow (E30) \\
+\(y^{\rm qp}_{\rm LG}\) &
+\(G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}/(\hbar c)\) (E30) \\
+\(\kappa^{\rm tid}_{\rm LG}\), \(T^{\rm fall}_{\rm LG}\) & the strength
+of the tidal potential in the atomic units of the pair,
+\(2/(9(T^{\rm fall}_{\rm LG})^2)\) along the fall, and the proper time
+that the pair has left before \(r=0\), in the same units (E31) \\
+\(\tilde{\mathcal M}_{\rm LG}\) &
+\(\mathcal M_{\rm LG}\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2\):
+the gravitational radius of the black hole in the atomic unit of time of
+the pair; the horizon is crossed at
+\(T^{\rm fall}_{\rm LG}=\tfrac43\tilde{\mathcal M}_{\rm LG}\) (E31) \\
+\(\Gamma^{\rm tid}_{\rm LG}\), \(E^{\rm tid}_{\rm LG}\) & the rate of
+tunnelling and the energy of the ground state of the pair in a static
+tidal field (E31) \\
+\(\theta^{\rm cr}_{\rm LG}\) & the angle of the complex rotation
+(E31) \\
+\(F^{\rm u}_{\rm LG}\) & the strength of a uniform field, in atomic
+units, in Landau's rate (E31) \\
+\(\psi^{\rm pair}_{\rm LG}\) & the wave function of the relative motion
+of the pair (E32) \\
+\(P^{\rm esc}_{\rm LG}\), \(P^{\rm exc}_{\rm LG}\),
+\(P^{\rm sep}_{\rm LG}\) & the probabilities that the pair is beyond its
+barrier, not in its ground state, and more than 10 Bohr radii apart
+(E32) \\
 \end{longtable}
 
 \end{document}

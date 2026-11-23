@@ -1,0 +1,14 @@
+lg_tidal.wls: the exact checks of stage 7c of task C23, the pair bound by the zeugon in the tidal field of a black hole (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WT and a number), the statement and, in brackets, the
+facts that decide it.  All checks are exact.
+
+PASS WT-1     (Rust LT-0; Python YT-1) <Y_l0|P_2|Y_l'0> = ((2l+1)(2l'+1))^(1/2) (l 2 l'; 0 0 0)^2 equals the closed forms for l = 0, 2, ..., 30 and l' = l, l + 2 [0 of 32 differ]
+PASS WT-2     (Python YT-2) the Painleve-Gullstrand observers u = d_t - (2M/r)^(1/2) d_r are unit and geodesic; the geodesic deviation -R^a_{b c d} u^b u^d in their frame is diag(2M/r^3, -M/r^3, -M/r^3); r = ((9M/2)(tau0 - tau)^2)^(1/3) solves (dr/dtau)^2 = 2M/r; kappa = (mu M/r^3)/(mu^3 alpha^4) = 2/(9 T^2) with T = (tau0 - tau) mu alpha^2; r = 2M at T_h = (4/3) M mu alpha^2 [frame True (A_rr = (2*mm)/rr^3, A_thth = -(mm/rr^3)), radius True, kappa 2/(9*T^2), horizon True]
+PASS WT-3     (Python YT-3) f = kappa (r^3/3 + r^2/2) solves the equation of Dalgarno and Lewis for psi_1 = f P_2 psi_0, and E = -1/2 - (15/2) kappa^2 - (153/2) kappa^3 + O(kappa^4) (E_2 = <psi_0|V|psi_1>, E_3 = <psi_1|V|psi_1>) [solves: True; E_2/kappa^2 = -15/2; E_3/kappa^3 = -153/2]
+PASS WT-4     (Python YT-5a, YT-5b) the method of the weak-field rate gives Landau's (4/F) exp(-2/(3F)) for a uniform field F and 8 kappa^(-1/2) exp(-pi/(2 (2 kappa)^(1/2)))/sinh(pi/2^(1/2)) for the tidal field (both exits) [uniform: 4/(E^(2/(3*F))*F) (antiderivative True, logarithm 0); tidal: ratio to the formula 1 (antiderivative True, logarithm 0, Jacobi True)]
+PASS WT-5     (Rust LT-2; Python YT-6) in the field kappa = 2/(9 T^2) the closed forms X1, X2 (z'' = 2 kappa z: powers T^(4/3), T^(-1/3)) and Y1, Y2 (x'' = -kappa x: powers T^(2/3), T^(1/3)) solve their equations and have the values (1, 0) and (0, -1) of (value, d/dT) at T0; DSolve gives the same powers [equations True, initial values {1, 0, 0, -1, 1, 0, 0, -1}; DSolve: z = (C[1] + T^(5/3)*C[2])/T^(1/3), x = T^(1/3)*(C[1] + T^(1/3)*C[2])]
+
+Notes:
+  Wolfram Language 15.0.1; run time 1 s
+
+VERDICT: ALL PASS (5 of 5)

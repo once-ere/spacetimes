@@ -10,4 +10,9 @@
 //!
 //! The variable called the time t by the interface is any independent variable that increases: the radius r for an
 //! integration outward, minus the radius or minus its logarithm for an integration inward.
+//!
+//! The module `cvode_band` (added in stage 7c of task C23) integrates with Newton's iteration and the banded LU solver of
+//! SUNDIALS, for problems whose Jacobian matrix is banded and whose fastest eigenvalues are far faster than the motion that
+//! is followed (the Schroedinger equation of the pair of quasi-particles on a radial grid).
 pub mod cvode;
+pub mod cvode_band;

@@ -405,10 +405,11 @@ with the coupling \(0.00975\); the pair is hydrogen-like, of size
 \(560\)\(/\Lambda_{\rm LL}\) and binding energy \(8.70\times10^{-6}\)
 \(\Lambda_{\rm LL}\). Its fine and hyperfine structure is computed
 exactly to the next order, without and with the possible annihilation of
-the two quasi-particles into zeugons, which is an open question. A black
-hole tears the pair apart before it reaches the horizon only if its mass
-is below \(1.492\times10^{5}\) \(M_{\rm Pl}^2/\Lambda_{\rm LL}\) (a
-classical estimate of the tidal dissociation). Programs:
+the two quasi-particles into zeugons, which is an open question. A
+classical estimate of the tidal dissociation said that a black hole
+tears the pair apart before it reaches the horizon if its mass is below
+\(1.492\times10^{5}\) \(M_{\rm Pl}^2/\Lambda_{\rm LL}\); stage 7c
+(below) showed that this is false for a real fall. Programs:
 \texttt{python/lg\_pair.py} (ALL PASS (3 of 3), exact), the Rust program
 \texttt{lg\_pair} (ALL PASS (2 of 2)) and
 \texttt{wolfram/source/lg\_pair.wls} (ALL PASS (2 of 2)); the task
@@ -422,26 +423,55 @@ not yet written up: a black hole that carries zeugon charge, and the
 scan of the predictions over the cutoff \(\Lambda_{\rm LL}\) from 1 eV
 to 1 TeV. The space-time is that of Reissner and Nordström with the
 zeugon charge. A black hole among slow quasi-particles of both charges
-cannot gain a zeugon charge \(Q\) beyond the ratio
-\(\mathcal Q/\mathcal M_{\rm LG}\) = \(3.711\)
+cannot gain a zeugon charge \(Q^{\rm Z}_{\rm LG}\) beyond the ratio
+\(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG}\) = \(3.711\)
 \(\Lambda_{\rm LL}/M_{\rm Pl}\), where
 \(\mathcal M_{\rm LG}=G_{\rm N}M_{\rm LG}\) and
-\(\mathcal Q=(G_{\rm N}/4\pi)^{1/2}Q\) are its mass and its charge in
-units of length (the ratio is at most \(3.0\times10^{-16}\) for 1 TeV),
-because the zeugon repels like charges far more strongly than gravity
-attracts them; its shadow and its ringing then change by about
-\((\mathcal Q/\mathcal M_{\rm LG})^2/6\), which no observation can see
-unless \(\Lambda_{\rm LL}\) is near the Planck mass. Programs: the Rust
-program \texttt{lg\_charge} (ALL PASS (6 of 6)),
+\(\mathcal Q^{\rm Z}_{\rm LG}=(G_{\rm N}/4\pi)^{1/2}Q^{\rm Z}_{\rm LG}\)
+are its mass and its charge in units of length (the ratio is at most
+\(3.0\times10^{-16}\) for 1 TeV), because the zeugon repels like charges
+far more strongly than gravity attracts them; its shadow and its ringing
+then change by about
+\((\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2/6\), which no
+observation can see unless \(\Lambda_{\rm LL}\) is near the Planck mass.
+Programs: the Rust program \texttt{lg\_charge} (ALL PASS (6 of 6)),
 \texttt{python/lg\_charge.py} (ALL PASS (5 of 5)) and
 \texttt{wolfram/source/lg\_charge.wls} (ALL PASS (3 of 3), exact); the
 task record, entry E30; the data in \texttt{data/lg\_charge\_scan.csv}
 and \texttt{data/lg\_charge\_values.csv}.
 
-Next (the task record, Section 6): the rest of stage 7 (the tidal
-break-up of the pair with tunnelling, and the annihilation of the pair;
-decision D12 of the task record) and Part VI of the manuscript; then the
-provenance of the remarks, the registry of the symbols and the notebook.
+\textbf{Stage 7, third part} (22 November 2026), computed and checked,
+not yet written up: the pair falls into a black hole. Its centre of mass
+falls freely from rest far away, and in its falling frame the curvature
+stretches the pair along the radius and squeezes it across, with a
+strength that grows as \(2/(9T^2)\) in the atomic units of the pair,
+\(T\) being the proper time it has left before it would reach the centre
+(the same for every black hole; the mass decides only when the horizon
+is crossed, at \(T=\tfrac43\tilde{\mathcal M}_{\rm LG}\) with
+\(\tilde{\mathcal M}_{\rm LG}\) the gravitational radius in the atomic
+unit of time of the pair). Two computations: the rate at which the pair
+tunnels apart in a constant tidal field (by complex rotation, a method
+that turns a decaying state into an eigenvector with a complex energy,
+with a formula for weak fields derived and checked), and the Schrödinger
+equation of the pair along the real fall. The fall breaks the binding
+much later than the classical estimate of stage 7a: the pair is beyond
+its barrier with probability 1/2 only at
+\(\tilde{\mathcal M}_{\rm LG}=\) \(0.244\) instead of \(2.598\), and
+even then its two quasi-particles are still within a few Bohr radii of
+each other (the probability of a separation beyond 10 Bohr radii is
+\(5.2\times10^{-4}\) at the end of the computation). The reason: the
+field grows on the time scale of the remaining fall, faster than the
+pair can tunnel or move apart. Programs: the Rust program
+\texttt{lg\_tidal} (ALL PASS (8 of 8); CVODE with Newton's iteration and
+a banded solver), \texttt{python/lg\_tidal.py} (ALL PASS (10 of 10)) and
+\texttt{wolfram/source/lg\_tidal.wls} (ALL PASS (5 of 5), exact); the
+task record, entries E31 to E33; the data in
+\texttt{data/lg\_tidal\_*.csv}.
+
+Next (the task record, Section 6): stage 7d (whether two quasi-particles
+of opposite charge can annihilate into zeugons; decision D12 of the task
+record) and Part VI of the manuscript; then the provenance of the
+remarks, the registry of the symbols and the notebook.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -496,19 +526,22 @@ complete in themselves, with the word list and Appendices A to D; Part
 VI next \\
 \texttt{provenance/generated/} & the fragments that the programs write
 for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
-\texttt{lg\_schw.md}, \texttt{lg\_vaidya.md}, \texttt{lg\_pair.md} and
+\texttt{lg\_schw.md}, \texttt{lg\_vaidya.md}, \texttt{lg\_pair.md},
+\texttt{lg\_charge.md}, \texttt{lg\_tidal.md} and
 \texttt{lg\_worked.md}, written by
 \texttt{code/scripts/write\_lg\_lord\_fragments.py},
 \texttt{write\_lg\_curved\_fragments.py},
 \texttt{write\_lg\_schw\_fragments.py},
 \texttt{write\_lg\_vaidya\_fragments.py},
-\texttt{write\_lg\_pair\_fragments.py} and
+\texttt{write\_lg\_pair\_fragments.py},
+\texttt{write\_lg\_charge\_fragments.py},
+\texttt{write\_lg\_tidal\_fragments.py} and
 \texttt{write\_lg\_worked\_fragments.py}), and \texttt{lg\_examples.md},
 the numbers of the appendices copied by
 \texttt{write\_lg\_examples\_fragments.py} from the fragment files of
 the folder \texttt{Revision\_SM\_Higgs} (with the SHA-256 checksums of
 the files that it reads) & written for Parts I to III, the appendices
-and stages 5 to 7a \\
+and stages 5 to 7c \\
 \texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
 (complex matrices, bi-quaternions, Dirac matrices, automatic
 differentiation, \texttt{lord.rs}, Lord's matrices from his definitions,
@@ -523,9 +556,12 @@ brochon in the Vaidya space-time, crate \texttt{lgvaidya}) and the
 program \texttt{lg\_pair} (stage 7a: the pair bound by the zeugon, crate
 \texttt{lgpair}); the program \texttt{lg\_charge} (stage 7b: a black
 hole with zeugon charge and the scan over the cutoff, crate
-\texttt{lgcharge}); and the program \texttt{lg\_worked} (the worked
-examples of the manuscript, crate \texttt{lgworked}) & written for Parts
-I to V and stages 5 to 7b \\
+\texttt{lgcharge}); the program \texttt{lg\_tidal} (stage 7c: the pair
+in the tidal field along a fall, crate \texttt{lgtidal}, with the module
+\texttt{cvode\_band} of \texttt{lgsundials}: Newton's iteration and a
+banded solver); and the program \texttt{lg\_worked} (the worked examples
+of the manuscript, crate \texttt{lgworked}) & written for Parts I to V
+and stages 5 to 7c \\
 \texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
 differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_curved.py} (the independent checks of \texttt{lg\_lord} and
@@ -534,8 +570,10 @@ differences, the report), \texttt{lg\_lord.py} and
 (the independent checks of \texttt{lg\_schw} and \texttt{lg\_vaidya}),
 \texttt{lg\_pair.py} (the exact levels of the pair of stage 7a),
 \texttt{lg\_charge.py} (the independent check of \texttt{lg\_charge}),
-\texttt{lg\_worked.py} (the worked examples, exact where they are
-rational), \texttt{lg\_schw\_figures.py} and
+\texttt{lg\_tidal.py} (the static rates by complex rotation, and the
+exact checks of \texttt{lg\_tidal}), \texttt{lg\_tidal\_figures.py} (its
+figures), \texttt{lg\_worked.py} (the worked examples, exact where they
+are rational), \texttt{lg\_schw\_figures.py} and
 \texttt{lg\_vaidya\_figures.py} (the figures of Parts IV and V) &
 written for Parts I to V and stages 5 to 7a \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
@@ -545,6 +583,7 @@ and some of its numbers in arithmetic of 32 digits;
 \texttt{lg\_vaidya.wls}: the exact checks of stage 6;
 \texttt{lg\_pair.wls}: the exact checks of stage 7a;
 \texttt{lg\_charge.wls}: the exact checks of stage 7b;
+\texttt{lg\_tidal.wls}: the exact checks of stage 7c;
 \texttt{lg\_worked.wls}: the symbolic checks of the worked examples &
 written \\
 \texttt{data/} & the reports of the checks
@@ -570,15 +609,25 @@ reports \texttt{hck\_lg\_vaidya\_checks*.txt}), of stage 7a
 \texttt{hck\_lg\_worked\_checks*.txt}), of stage 7b
 (\texttt{lg\_charge\_scan.csv}, the scan over the cutoff;
 \texttt{lg\_charge\_values.csv}; reports
-\texttt{hck\_lg\_charge\_checks*.txt}), and the report of the check
-whether a document sends its reader elsewhere & written \\
+\texttt{hck\_lg\_charge\_checks*.txt}), of stage 7c
+(\texttt{lg\_tidal\_fall.csv}, the fall;
+\texttt{lg\_tidal\_convergence.csv}; \texttt{lg\_tidal\_static.csv},
+\texttt{lg\_tidal\_cr.csv} and \texttt{lg\_tidal\_quasistatic.csv}, the
+static rates; \texttt{lg\_tidal\_gauss.csv};
+\texttt{lg\_tidal\_snapshots.csv}; \texttt{lg\_tidal\_values.csv};
+reports \texttt{hck\_lg\_tidal\_checks*.txt}), and the report of the
+check whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures of the manuscript:
 \texttt{fig\_lg\_schw\_interior} and \texttt{fig\_lg\_schw\_decay}
 (Figures IV.1 and IV.2), drawn by \texttt{python/lg\_schw\_figures.py}
-from the data of \texttt{lg\_schw}, and \texttt{fig\_lg\_vaidya\_charge}
+from the data of \texttt{lg\_schw}, \texttt{fig\_lg\_vaidya\_charge}
 (Figure V.1), drawn by \texttt{python/lg\_vaidya\_figures.py} from the
-data of \texttt{lg\_vaidya}; each as \texttt{.pdf} and \texttt{.png} &
-written for Parts IV and V \\
+data of \texttt{lg\_vaidya}, and \texttt{fig\_lg\_tidal\_fall} and
+\texttt{fig\_lg\_tidal\_density} (for Part VI), drawn by
+\texttt{python/lg\_tidal\_figures.py} from the data of
+\texttt{lg\_tidal} and \texttt{lg\_tidal.py}; each as \texttt{.pdf} and
+\texttt{.png} & written for Parts IV and V, and for Part VI (stage
+7c) \\
 \end{longtable}
 
 \hypertarget{how-to-build-the-documents}{%
@@ -602,18 +651,23 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{python3}\NormalTok{ python/lg\_pair.py                      }\CommentTok{\# stage 7a, exact levels (about 16 s); then (cd rust \&\& ./target/release/lg\_pair)}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_charge}\KeywordTok{)}        \CommentTok{\# stage 7b, after lg\_curved and lg\_pair, whose data it reads}
 \ExtensionTok{python3}\NormalTok{ python/lg\_charge.py                    }\CommentTok{\# its independent check (about 2 s)}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_tidal}\KeywordTok{)}         \CommentTok{\# stage 7c (CVODE; about 40 minutes)}
+\ExtensionTok{python3}\NormalTok{ python/lg\_tidal.py                     }\CommentTok{\# the static rates and the exact checks (about 1 minute), after lg\_tidal}
+\ExtensionTok{python3}\NormalTok{ python/lg\_tidal\_figures.py             }\CommentTok{\# the figures of stage 7c}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_curved.wls data/hck\_lg\_curved\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_schw.wls data/lg\_schw\_qbs.csv data/lg\_schw\_grey.csv data/hck\_lg\_schw\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_vaidya.wls data/hck\_lg\_vaidya\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_pair.wls data/lg\_pair\_levels.csv data/hck\_lg\_pair\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_charge.wls data/hck\_lg\_charge\_checks\_wolfram.txt}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_tidal.wls data/hck\_lg\_tidal\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_lord\_fragments.py   }\CommentTok{\# the numbers of the documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_curved\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_schw\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_vaidya\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_pair\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_charge\_fragments.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_tidal\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (checks HCK{-}H1, HCK{-}H2)}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}
@@ -622,9 +676,10 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 
 The programs need Rust (cargo), Python 3 with numpy, sympy and mpmath,
 and the Wolfram Language (wolframscript); the Rust programs
-\texttt{lg\_schw} and \texttt{lg\_vaidya} use the pure-Rust SUNDIALS
-vendored in the folder \texttt{vendor/sundials\_rs-7.8.0} of the
-repository. The pipeline needs pandoc (2.11 or later), XeLaTeX and
-latexmk (TeX Live), the DejaVu fonts and the Latin Modern Math font.
+\texttt{lg\_schw}, \texttt{lg\_vaidya} and \texttt{lg\_tidal} use the
+pure-Rust SUNDIALS vendored in the folder
+\texttt{vendor/sundials\_rs-7.8.0} of the repository. The pipeline needs
+pandoc (2.11 or later), XeLaTeX and latexmk (TeX Live), the DejaVu fonts
+and the Latin Modern Math font.
 
 \end{document}

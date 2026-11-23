@@ -1,0 +1,17 @@
+# lgtidal: the program lg_tidal of the folder Revision_Lord_Gravity (PROJECT spacetimes): stage 7c of task C23, the pair
+# of two quasi-particles bound by the zeugon, falling into a black hole: its break-up by the tidal field before it
+# reaches the horizon, computed with the time-dependent Schroedinger equation along the fall (decision D12 of the task
+# record).
+[package]
+name = "lgtidal"
+version = "0.1.0"
+edition = "2021"
+description = "The pair bound by the zeugon in the tidal field of a black hole along a radial fall: the Schroedinger equation with CVODE"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+lgsundials = { path = "../lgsundials" }
+
+[[bin]]
+name = "lg_tidal"
+path = "src/main.rs"

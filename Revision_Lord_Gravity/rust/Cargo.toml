@@ -9,11 +9,11 @@
 #
 # Build everything (from this folder, Revision_Lord_Gravity/rust):
 #     cargo build --release
-# The programs are then in target/release/ (lg_lord, lg_curved, lg_schw, lg_vaidya, lg_pair, lg_worked, lg_charge), with the library liblgsundials_c.so (Linux)
+# The programs are then in target/release/ (lg_lord, lg_curved, lg_schw, lg_vaidya, lg_pair, lg_worked, lg_charge, lg_tidal), with the library liblgsundials_c.so (Linux)
 # or liblgsundials_c.dylib (macOS).  Each program writes its data files and the report of its checks into the folder
 # data/ of Revision_Lord_Gravity.
 [workspace]
-members = ["lgcore", "lglord", "lgcurved", "lgsundials", "lgsundials_c", "lgschw", "lgvaidya", "lgpair", "lgworked", "lgcharge"]
+members = ["lgcore", "lglord", "lgcurved", "lgsundials", "lgsundials_c", "lgschw", "lgvaidya", "lgpair", "lgworked", "lgcharge", "lgtidal"]
 resolver = "2"
 
 [profile.release]
