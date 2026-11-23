@@ -468,10 +468,30 @@ a banded solver), \texttt{python/lg\_tidal.py} (ALL PASS (10 of 10)) and
 task record, entries E31 to E33; the data in
 \texttt{data/lg\_tidal\_*.csv}.
 
-Next (the task record, Section 6): stage 7d (whether two quasi-particles
-of opposite charge can annihilate into zeugons; decision D12 of the task
-record) and Part VI of the manuscript; then the provenance of the
-remarks, the registry of the symbols and the notebook.
+\textbf{Stage 7, fourth part} (22 November 2026), computed and checked,
+not yet written up: can two quasi-particles of opposite zeugon charge
+annihilate into zeugons? The pairing breaks the conservation of the
+fermion number of the brochon, so the usual rule (a particle and an
+antiparticle annihilate, two particles do not) seems to be gone. It is
+not: the quantized quasi-particle field is the field of a Dirac particle
+of the mass of the gap (Theorem L3 holds as an identity of operators),
+and its zeugon current contains no term that destroys two
+quasi-particles (such terms vanish because fermion operators
+anticommute), so the zeugon conserves the number of quasi-particles. Two
+particles of opposite charge cannot annihilate; a particle and its
+antiparticle annihilate as the electron and the positron do, and
+selection rules decide which combinations decay into two or three
+zeugons (lifetimes \(2.0\times10^{-14}\) s and \(1.7\times10^{-11}\) s
+for \(\Lambda_{\rm LL}=1\) GeV) and which cannot decay into zeugons at
+all. Programs: the Rust program \texttt{lg\_annih} (ALL PASS (6 of 6)),
+\texttt{python/lg\_annih.py} (ALL PASS (5 of 5)) and
+\texttt{wolfram/source/lg\_annih.wls} (ALL PASS (3 of 3), exact); the
+task record, entries E34 and E35; the data in
+\texttt{data/lg\_annih\_*.csv}.
+
+Next (the task record, Section 6): Part VI of the manuscript, from
+stages 7a to 7d; then the provenance of the remarks, the registry of the
+symbols and the notebook.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -527,7 +547,7 @@ VI next \\
 \texttt{provenance/generated/} & the fragments that the programs write
 for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
 \texttt{lg\_schw.md}, \texttt{lg\_vaidya.md}, \texttt{lg\_pair.md},
-\texttt{lg\_charge.md}, \texttt{lg\_tidal.md} and
+\texttt{lg\_charge.md}, \texttt{lg\_tidal.md}, \texttt{lg\_annih.md} and
 \texttt{lg\_worked.md}, written by
 \texttt{code/scripts/write\_lg\_lord\_fragments.py},
 \texttt{write\_lg\_curved\_fragments.py},
@@ -535,13 +555,14 @@ for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
 \texttt{write\_lg\_vaidya\_fragments.py},
 \texttt{write\_lg\_pair\_fragments.py},
 \texttt{write\_lg\_charge\_fragments.py},
-\texttt{write\_lg\_tidal\_fragments.py} and
+\texttt{write\_lg\_tidal\_fragments.py},
+\texttt{write\_lg\_annih\_fragments.py} and
 \texttt{write\_lg\_worked\_fragments.py}), and \texttt{lg\_examples.md},
 the numbers of the appendices copied by
 \texttt{write\_lg\_examples\_fragments.py} from the fragment files of
 the folder \texttt{Revision\_SM\_Higgs} (with the SHA-256 checksums of
 the files that it reads) & written for Parts I to III, the appendices
-and stages 5 to 7c \\
+and stages 5 to 7d \\
 \texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
 (complex matrices, bi-quaternions, Dirac matrices, automatic
 differentiation, \texttt{lord.rs}, Lord's matrices from his definitions,
@@ -559,9 +580,11 @@ hole with zeugon charge and the scan over the cutoff, crate
 \texttt{lgcharge}); the program \texttt{lg\_tidal} (stage 7c: the pair
 in the tidal field along a fall, crate \texttt{lgtidal}, with the module
 \texttt{cvode\_band} of \texttt{lgsundials}: Newton's iteration and a
-banded solver); and the program \texttt{lg\_worked} (the worked examples
-of the manuscript, crate \texttt{lgworked}) & written for Parts I to V
-and stages 5 to 7c \\
+banded solver); the program \texttt{lg\_annih} (stage 7d: the
+quasi-particles as Dirac particles and the annihilation of the pair,
+crate \texttt{lgannih}); and the program \texttt{lg\_worked} (the worked
+examples of the manuscript, crate \texttt{lgworked}) & written for Parts
+I to V and stages 5 to 7d \\
 \texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
 differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_curved.py} (the independent checks of \texttt{lg\_lord} and
@@ -572,8 +595,9 @@ differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_charge.py} (the independent check of \texttt{lg\_charge}),
 \texttt{lg\_tidal.py} (the static rates by complex rotation, and the
 exact checks of \texttt{lg\_tidal}), \texttt{lg\_tidal\_figures.py} (its
-figures), \texttt{lg\_worked.py} (the worked examples, exact where they
-are rational), \texttt{lg\_schw\_figures.py} and
+figures), \texttt{lg\_annih.py} (the exact checks of
+\texttt{lg\_annih}), \texttt{lg\_worked.py} (the worked examples, exact
+where they are rational), \texttt{lg\_schw\_figures.py} and
 \texttt{lg\_vaidya\_figures.py} (the figures of Parts IV and V) &
 written for Parts I to V and stages 5 to 7a \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
@@ -584,6 +608,7 @@ and some of its numbers in arithmetic of 32 digits;
 \texttt{lg\_pair.wls}: the exact checks of stage 7a;
 \texttt{lg\_charge.wls}: the exact checks of stage 7b;
 \texttt{lg\_tidal.wls}: the exact checks of stage 7c;
+\texttt{lg\_annih.wls}: the exact checks of stage 7d;
 \texttt{lg\_worked.wls}: the symbolic checks of the worked examples &
 written \\
 \texttt{data/} & the reports of the checks
@@ -615,8 +640,11 @@ reports \texttt{hck\_lg\_vaidya\_checks*.txt}), of stage 7a
 \texttt{lg\_tidal\_cr.csv} and \texttt{lg\_tidal\_quasistatic.csv}, the
 static rates; \texttt{lg\_tidal\_gauss.csv};
 \texttt{lg\_tidal\_snapshots.csv}; \texttt{lg\_tidal\_values.csv};
-reports \texttt{hck\_lg\_tidal\_checks*.txt}), and the report of the
-check whether a document sends its reader elsewhere & written \\
+reports \texttt{hck\_lg\_tidal\_checks*.txt}), of stage 7d
+(\texttt{lg\_annih\_values.csv}; \texttt{lg\_annih\_scan.csv}, the
+lifetimes over the cutoff; reports
+\texttt{hck\_lg\_annih\_checks*.txt}), and the report of the check
+whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures of the manuscript:
 \texttt{fig\_lg\_schw\_interior} and \texttt{fig\_lg\_schw\_decay}
 (Figures IV.1 and IV.2), drawn by \texttt{python/lg\_schw\_figures.py}
@@ -654,6 +682,8 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_tidal}\KeywordTok{)}         \CommentTok{\# stage 7c (CVODE; about 40 minutes)}
 \ExtensionTok{python3}\NormalTok{ python/lg\_tidal.py                     }\CommentTok{\# the static rates and the exact checks (about 1 minute), after lg\_tidal}
 \ExtensionTok{python3}\NormalTok{ python/lg\_tidal\_figures.py             }\CommentTok{\# the figures of stage 7c}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_annih}\KeywordTok{)}         \CommentTok{\# stage 7d, after lg\_pair, whose data it reads (under a second)}
+\ExtensionTok{python3}\NormalTok{ python/lg\_annih.py                     }\CommentTok{\# its exact checks (a few seconds)}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_curved.wls data/hck\_lg\_curved\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_schw.wls data/lg\_schw\_qbs.csv data/lg\_schw\_grey.csv data/hck\_lg\_schw\_checks\_wolfram.txt}
@@ -661,6 +691,7 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_pair.wls data/lg\_pair\_levels.csv data/hck\_lg\_pair\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_charge.wls data/hck\_lg\_charge\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_tidal.wls data/hck\_lg\_tidal\_checks\_wolfram.txt}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_annih.wls data/hck\_lg\_annih\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_lord\_fragments.py   }\CommentTok{\# the numbers of the documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_curved\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_schw\_fragments.py}
@@ -668,6 +699,7 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_pair\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_charge\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_tidal\_fragments.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_annih\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (checks HCK{-}H1, HCK{-}H2)}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}

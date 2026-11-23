@@ -10,6 +10,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "lgannih"
+version = "0.1.0"
+dependencies = [
+ "lgcore",
+]
+
+[[package]]
 name = "lgcharge"
 version = "0.1.0"
 dependencies = [

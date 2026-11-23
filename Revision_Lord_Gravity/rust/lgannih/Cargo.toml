@@ -1,0 +1,15 @@
+# lgannih: the program lg_annih of the folder Revision_Lord_Gravity (PROJECT spacetimes): stage 7d of task C23, can two
+# quasi-particles of the superfluid with opposite zeugon charges annihilate into zeugons? (decision D12 (5) of the task
+# record).
+[package]
+name = "lgannih"
+version = "0.1.0"
+edition = "2021"
+description = "The quasi-particles of the superfluid as Dirac particles: the conserved quasi-particle number and the annihilation of the pair"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+
+[[bin]]
+name = "lg_annih"
+path = "src/main.rs"

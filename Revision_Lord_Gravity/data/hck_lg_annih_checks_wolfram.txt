@@ -1,0 +1,12 @@
+lg_annih.wls: the exact checks of stage 7d of task C23, the quasi-particles as Dirac particles and the annihilation of the pair (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WA and a number), the statement and, in brackets, the
+facts that decide it.  All checks are exact.
+
+PASS WA-1     (Rust AN-1; Python YA-1) P is real, antisymmetric and unitary; P (gamma^a)^* = gamma^a P; P (i T^3)^* = i T^3 P; F = 1_4 (x) tau_1 commutes with C and with the gamma^a, and F T^3 F = -T^3 (exact) [all identities: True]
+PASS WA-2     (Rust AN-2; Python YA-2) [i gamma d - M - D C](1 + b C) = (1 - b C)[i gamma d - E], b = -D/(E + M), on a plane wave with a symbolic spinor (16 real symbols) and four-momentum (off the mass shell), symbolic M, |D| and phase of D; with -b it fails (control) [16 components vanish: True; control fails: True]
+PASS WA-3     (Rust AN-3; Python YA-3) gamma^0 gamma^mu T^3 P is symmetric and P^dag (gamma^0 gamma^mu T^3) P = -(gamma^0 gamma^mu T^3)^T; in the Fock space of eight modes (exact, b = 3/7 + 2i/5) {Psi_i, Psi_j^dag} = (1 + |b|^2) delta_ij, {Psi_i, Psi_j} = 0 and J[Psi] = (1 + |b|^2) J[chi] up to a multiple of the identity [symmetric True, normal part True, anticommutators True, currents True]
+
+Notes:
+  Wolfram Language 15.0.1; run time 0 s
+
+VERDICT: ALL PASS (3 of 3)

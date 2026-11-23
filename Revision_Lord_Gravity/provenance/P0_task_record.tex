@@ -864,10 +864,10 @@ decision D12. Parts I to III were rewritten in entries E22 to E24, and
 Part IV was written from stage 5 in entries E26 and E27, Theorem L3
 completed in E28, and Part V written from stage 6 in entry E29. Stage 7b
 (the zeugon charge of a black hole and the scan over the cutoff, D12
-(1), (2)) was computed in entry E30, and stage 7c (the tidal break-up of
-the pair along a real fall, D12 (2)) in entries E31 to E33. Next: stage
-7d (whether two quasi-particles of opposite charge can annihilate into
-zeugons, D12 (5)) and Part VI.
+(1), (2)) was computed in entry E30, stage 7c (the tidal break-up of the
+pair along a real fall, D12 (2)) in entries E31 to E33, and stage 7d
+(the annihilation of the pair, D12 (5)) in entries E34 and E35. Next:
+Part VI of the manuscript, from stages 7a to 7d.
 
 The plan is changed only with a record in Section 7.
 
@@ -1401,11 +1401,11 @@ where \(\Delta_{\rm LG}(r)=v-\tau_{\rm LG}\) has the derivative
 \(1+w_{\rm LG}\) fail). The reason: the coframe of D10 with a constant
 mass is the freely falling coframe of stage 5 boosted in the radial
 direction (a Lorentz transformation of the frame, with the velocity
-\(\tanh\chi_{\rm LG}\)) with the rapidity
-\(\chi_{\rm LG}=-\ln(1+w_{\rm LG})\) (WV-4b). The quasi-bound states of
-stage 5 are therefore found again: \(1S_{1/2}\), \(2P_{1/2}\) and
-\(2P_{3/2}\) at \(\mathcal M_{\rm LG}m_{\rm LL}=0.3\) to
-\(2.1\times10^{-13}\) of \(m_{\rm LL}\) (LV-2), and \(1S_{1/2}\) in
+\(\tanh\vartheta^{\rm V}_{\rm LG}\)) with the rapidity
+\(\vartheta^{\rm V}_{\rm LG}=-\ln(1+w_{\rm LG})\) (WV-4b). The
+quasi-bound states of stage 5 are therefore found again: \(1S_{1/2}\),
+\(2P_{1/2}\) and \(2P_{3/2}\) at \(\mathcal M_{\rm LG}m_{\rm LL}=0.3\)
+to \(2.1\times10^{-13}\) of \(m_{\rm LL}\) (LV-2), and \(1S_{1/2}\) in
 Python, with its own start and Muller's method of finding roots, to
 \(8.7\times10^{-14}\) (YV-5) \\
 E16 & 22 Nov 2026, 10:22 to 11:39 & stage 6, the evolution in time: the
@@ -2139,6 +2139,97 @@ probability outside \(r=10\) depends, below \(T^{\rm fall}_{\rm LG}=1\),
 on the flattening of the tidal potential (which then lies inside
 \(r=10\)), and its convergence is checked only above (LT-5b), with the
 spread of the five computations reported \\
+E34 & 22 Nov 2026, 19:08 to 19:16 & stage 7d, whether two
+quasi-particles of opposite zeugon charge can annihilate into zeugons
+(D12 (5)), computed with checks; no manuscript text yet (it goes into
+Part VI). \emph{The question.} The quasi-particle equation (15.11) does
+not conserve the fermion number of the brochon (the pairing joins
+\(\Psi_{\rm LL}\) to its complex conjugate), so the reason why a
+particle and an antiparticle annihilate and two particles do not seems
+to be gone. \emph{The answer.} (1) Theorem L3 holds as an identity of
+operators, also off the mass shell:
+\([i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu-M^{\rm CJT,D}_{\rm SF}-D^{\rm CJT}_{\rm SF}\mathcal C_{\rm LG}](1+b^{\rm qp}_{\rm LG}\mathcal C_{\rm LG})=(1-b^{\rm qp}_{\rm LG}\mathcal C_{\rm LG})[i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu-E^{\rm CJT,gap}_{\rm SF}]\)
+(AN-2, YA-2, WA-2; on plane waves of arbitrary four-momenta, largest
+difference \(3.3\times10^{-15}\)). (2) The matrix \(\mathsf P_{\rm LG}\)
+is real, antisymmetric and unitary (AN-1, YA-1, WA-1). Therefore, if
+\(\chi_{\rm LG}\) is the operator of a free Dirac field of the mass
+\(E^{\rm CJT,gap}_{\rm SF}\), the operator
+\(\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\mathsf P_{\rm LG}\chi_{\rm LG}^{\dagger\,T}\)
+(the antilinear map acts on operators by turning the complex conjugate
+into the adjoint) solves (15.11) and has the anticommutators of a
+canonical field times \(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2\) (the
+antisymmetry of \(\mathsf P_{\rm LG}\) makes the anticommutator of two
+components of \(\Psi_{\rm LL}\) vanish; AN-3a, WA-3): the
+quasi-particles are the particles and the antiparticles of the Dirac
+field
+\(\chi'_{\rm LG}=(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)^{1/2}\chi_{\rm LG}\)
+of the mass of the gap. (3) The zeugon current is
+\(J^\mu_{\rm LG}[\Psi_{\rm LL}]=(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)J^\mu_{\rm LG}[\chi_{\rm LG}]=J^\mu_{\rm LG}[\chi'_{\rm LG}]\)
+exactly, as an identity of operators: the terms that would destroy or
+create two quasi-particles,
+\(b^{\rm qp}_{\rm LG}\chi_{\rm LG}^\dagger(\gamma^0_{\rm LL}\gamma^\mu_{\rm LL}T^3_{\rm LL}\mathsf P_{\rm LG})\chi_{\rm LG}^{\dagger\,T}\)
+and its adjoint, vanish because the matrices
+\(\gamma^0_{\rm LL}\gamma^\mu_{\rm LL}T^3_{\rm LL}\mathsf P_{\rm LG}\)
+are symmetric and fermion operators anticommute (checked in the Fock
+space of eight fermion modes, dimension 256: \(4.5\times10^{-16}\),
+AN-3b, YA-3, and exactly WA-3). So the zeugon conserves the number
+\(N^{\rm qp}_{\rm LG}\) of \(\chi'_{\rm LG}\) quanta (particles minus
+antiparticles), besides the charge \(Q_{\rm LL}\). (4) The pairs of
+opposite charge: \emph{two particles}, one of the upper isospin
+component (\(Q_{\rm LL}=+\tfrac12\)) and one of the lower
+(\(-\tfrac12\)), or two antiparticles (\(N^{\rm qp}_{\rm LG}=\pm2\)),
+cannot annihilate into zeugons; their levels are those of two
+distinguishable particles, the values without annihilation of E20
+(hyperfine splitting \(1.103\times10^{-9}\) \(\Lambda_{\rm LL}\)).
+\emph{A particle and its antiparticle} (\(N^{\rm qp}_{\rm LG}=0\),
+\(Q_{\rm LL}=0\): up with anti-up, or down with anti-down) annihilate as
+the electron and the positron do, with the mass of the gap and
+\(\alpha^{\rm Z}_{\rm LG}\); the two kinds are degenerate and mix
+through the annihilation. The amplitude into \(n\) zeugons is
+proportional to the \(n\)-th power of the charge of the kind
+(\(+\tfrac12\) or \(-\tfrac12\)), so only the even combination of the
+two kinds decays into two zeugons, at twice the rate of one kind,
+\(3.225\times10^{-11}\) \(\Lambda_{\rm LL}\), and only the odd
+combination into three, \(3.868\times10^{-14}\) \(\Lambda_{\rm LL}\);
+the virtual annihilation into one zeugon shifts only the odd triplet, by
+twice the shift
+\(\tfrac14E^{\rm CJT,gap}_{\rm SF}(\alpha^{\rm Z}_{\rm LG})^4\) of one
+kind (its hyperfine splitting becomes
+\(\tfrac56E^{\rm CJT,gap}_{\rm SF}(\alpha^{\rm Z}_{\rm LG})^4=\)
+\(2.757\times10^{-9}\) \(\Lambda_{\rm LL}\)). The even triplet and the
+odd singlet cannot decay into zeugons at all: charge conjugation of
+\(\chi'_{\rm LG}\) requires \((-1)^n=(-1)^{L+S}\), the reflection
+\(\mathsf F^{\rm v}_{\rm LG}=\mathsf 1_4\otimes\tau_1\) (the element of
+\(O(2)\) that turns \(T^3\) into \(-T^3\); it commutes with
+\(\mathcal C_{\rm LG}\), AN-1) requires \((-1)^n=\pm1\) for the even and
+odd combinations, and the zeugon is odd under both (AN-4, YA-4).
+\emph{Lifetimes:} the even singlet lives \(2.0\times10^{-14}\) s and the
+odd triplet \(1.7\times10^{-11}\) s for \(\Lambda_{\rm LL}=1\) GeV
+(inversely proportional to \(\Lambda_{\rm LL}\): \(2.0\times10^{-5}\) s
+and \(0.017\) s for 1 eV). \emph{What this does not cover:} the part of
+the four-fermion interaction of the brochons that the mean field does
+not keep is invariant under the phase of \(\Psi_{\rm LL}\), not under
+\(N^{\rm qp}_{\rm LG}\), and can change it by 2 at a higher order; the
+massive gauge bosons \(W^1\), \(W^2\), \(B\) are not considered. This
+answers the open question of E20 and E21 \\
+E35 & 22 Nov 2026, 19:08 to 19:16 & the programs of E34. The new crate
+\texttt{rust/lgannih}, program \texttt{lg\_annih} (ALL PASS (6 of 6);
+under a second): AN-1 the matrices, AN-2 the identity of operators on
+200 random plane waves (with the wrong sign of \(b^{\rm qp}_{\rm LG}\)
+as the control), AN-3a/b the Fock space of eight modes built by the
+Jordan-Wigner construction, AN-4 the selection rules, AN-5 the rates and
+levels from the formulas of positronium (data of E20) and the lifetimes
+over \(\Lambda_{\rm LL}\) (\texttt{data/lg\_annih\_scan.csv}).
+\texttt{python/lg\_annih.py} (ALL PASS (5 of 5); exact with sympy, the
+Fock space built again in the opposite order of the modes, the numbers
+in arithmetic of 30 digits); \texttt{wolfram/source/lg\_annih.wls} (ALL
+PASS (3 of 3); request 350, exact, the Fock space in rational
+arithmetic); fragments
+\texttt{code/scripts/write\_lg\_annih\_fragments.py}. Correction: the
+rapidity of the boost of stage 6 was written \(\chi_{\rm LG}\) in E15
+and in Section 8; it is now \(\vartheta^{\rm V}_{\rm LG}\), as in the
+manuscript, so that \(\chi_{\rm LG}\) names the Dirac field of Theorem
+L3 in this record too \\
 \end{longtable}
 
 \hypertarget{the-symbols-of-this-document}{%
@@ -2256,8 +2347,9 @@ for a constant mass,
 \(\mathcal Q^{\rm V}_{\rm LG}=e^{-i\omega^{\rm S}_{\rm LG}v}q^{\rm V}_{\rm LG}\) \\
 \(\Delta_{\rm LG}(r)\) & for a constant mass, \(v-\tau_{\rm LG}\):
 \(\Delta_{\rm LG}'=1/(1+w_{\rm LG})\) \\
-\(\chi_{\rm LG}\) & the rapidity \(-\ln(1+w_{\rm LG})\) of the boost
-that turns the freely falling coframe into that of D10 \\
+\(\vartheta^{\rm V}_{\rm LG}\) & the rapidity \(-\ln(1+w_{\rm LG})\) of
+the boost that turns the freely falling coframe into that of D10
+(written \(\chi_{\rm LG}\) in E15 until E35) \\
 \(N^{\rm V}_{\rm LG}(v)\) & the charge of the brochon on the slice
 \(v=\text{const}\): the integral of
 \(2\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2\) over \(r\) \\
@@ -2329,6 +2421,27 @@ of the pair (E32) \\
 \(P^{\rm sep}_{\rm LG}\) & the probabilities that the pair is beyond its
 barrier, not in its ground state, and more than 10 Bohr radii apart
 (E32) \\
+\(\chi_{\rm LG}\), \(\chi'_{\rm LG}\) & the Dirac field of the mass of
+the gap of Theorem L3 (manuscript (18.2)), with
+\(\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\mathcal C_{\rm LG}\chi_{\rm LG}\),
+and the same normalized as a canonical field,
+\((1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)^{1/2}\chi_{\rm LG}\) (E34) \\
+\(b^{\rm qp}_{\rm LG}\) &
+\(-D^{\rm CJT}_{\rm SF}/(E^{\rm CJT,gap}_{\rm SF}+M^{\rm CJT,D}_{\rm SF})\),
+the coefficient of Theorem L3 (E27, E34) \\
+\(\mathcal C_{\rm LG}\), \(\mathsf P_{\rm LG}\) & the antilinear map of
+the pairing, \(\mathcal C_{\rm LG}\Psi=\mathsf P_{\rm LG}\Psi^*\), and
+its matrix
+\((\gamma^0\otimes\mathsf 1_2)(\mathsf K^3_{\rm LL})^\dagger\)
+(manuscript (15.11); E34) \\
+\(J^\mu_{\rm LG}[\Psi]\) & the zeugon current
+\(\Psi^\dagger\gamma^0\gamma^\mu T^3_{\rm LL}\Psi\) of a field (E34) \\
+\(N^{\rm qp}_{\rm LG}\) & the number of quasi-particles: the particles
+minus the antiparticles of \(\chi'_{\rm LG}\), conserved by the zeugon
+(E34) \\
+\(\mathsf F^{\rm v}_{\rm LG}\) & the reflection
+\(\mathsf 1_4\otimes\tau_1\) of the residual group \(O(2)\), which turns
+\(T^3_{\rm LL}\) into \(-T^3_{\rm LL}\) (E34) \\
 \end{longtable}
 
 \end{document}
