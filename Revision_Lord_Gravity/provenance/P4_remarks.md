@@ -1,0 +1,385 @@
+---
+title: "The remarks of the manuscript on Lord's gauge theory of gravitation and the brochon: what they mean, why they hold and why they matter"
+subtitle: "Provenance document of the remarks, PROJECT spacetimes, folder Revision_Lord_Gravity (task C23, stage 4b)"
+author: "Prepared for Patrick Lee Nash, Ph.D."
+date: "November 22, 2026"
+---
+
+<!-- This file is generated from docs_src/P4_remarks.src.md by code/scripts/assemble_docs.py; edit the source. -->
+
+# 1. What this document is
+
+The author's standing instruction (here in my words) asks that every qualifying remark about a result, a remark that says that a
+result is an approximation, an estimate, a limit, of a stated accuracy, or restricted in some way, be explained clearly: what it
+means, why it holds, and why it matters. This document keeps these explanations for the manuscript of the folder,
+`lord_gravity.md`: one section for each remark, sixteen in all, in the order of the manuscript. Each section says where the remark
+is made, states it, and gives the three explanations, the numbers (written by the programs through the same machine-written
+fragments as the manuscript, so that no number is typed twice) and the checks that decide it. Section 2 explains, once, the objects
+that the remarks talk about, so that the document can be read without the manuscript; Section 19 lists its symbols.
+
+Every statement of this document is a restatement of a statement of the manuscript or of its programs; it adds no result. "I" is the
+assistant that did the work.
+
+# 2. The objects
+
+* *Units.* $\hbar=c=1$. The *cutoff* $\Lambda_{\rm LL}$ is the largest momentum of the brochon model; energies are given in units of
+  $\Lambda_{\rm LL}$ unless another unit is named. Newton's constant is $G_{\rm N}=M_{\rm Pl}^{-2}$, with the Planck mass $M_{\rm Pl}$.
+* *The brochon* $\Psi_{\rm LL}$ is a Dirac field with an internal index, the isospin, that takes two values (*up* and *down*): eight
+  complex components at each point, a Dirac spinor of four components for each value of the isospin. Its mass in the normal vacuum
+  is $m_{\rm LL}=0.2$.
+* *The brochon model* is a field theory of the brochon with the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$
+  (Lorentz transformations of the frame, isospin rotations, phases of the fermion number), a contact interaction of four brochon
+  fields, and a vacuum in which pairs of brochons of spin zero condense: the *superfluid* vacuum. The vacuum without the condensate
+  is the *normal vacuum*.
+* *The quasi-particle* is the excitation of the brochon in the superfluid, a mixture of a brochon and of the complex conjugate of a
+  brochon. In the mean-field approximation (each product of field operators replaced by its average where the pairs are concerned)
+  it has the *Dirac mass* $M^{\rm CJT,D}_{\rm SF}$ and the *pair amplitude* $D^{\rm CJT}_{\rm SF}$, and the *gap*
+  $E^{\rm CJT,gap}_{\rm SF}=((M^{\rm CJT,D}_{\rm SF})^2+\lvert D^{\rm CJT}_{\rm SF}\rvert^2)^{1/2}=0.3664$, the smallest energy of an excitation.
+  The manuscript proves (its Theorems L2 and L3) that in every gravitational field and every field of the zeugon the quasi-particle
+  behaves exactly as a Dirac particle of the mass of the gap.
+* *The zeugon* $A_{{\rm SF},\mu}$ is the gauge boson of $SU(2)_{\rm v}$ that stays massless in the superfluid; it couples to the charge
+  $T^3_{\rm LL}$ (the third isospin generator, $\pm\tfrac12$ for the brochon) with the coupling $g^{\rm v}_{\rm LL}=0.7$. It is not the photon:
+  nothing in the brochon model carries electric charge. The other gauge bosons, $W^1$, $W^2$ and $B$, are massive in the superfluid.
+* *Gravitation.* The gravitational field is described by a *tetrad*, four orthonormal vectors at each point (Lord's *reference
+  vectors*); the metric, the curvature and the spin connection follow from it. The *Schwarzschild* space-time is that of a black hole
+  of constant mass $M_{\rm LG}$ that does not rotate, with the *gravitational radius* $\mathcal M_{\rm LG}=G_{\rm N}M_{\rm LG}$ and the horizon
+  $r=2\mathcal M_{\rm LG}$; the *Vaidya* space-time is that of a black hole whose mass changes because radiation falls in.
+* *The gravitational atom.* Around a black hole a brochon has *quasi-bound states*: the levels of a hydrogen atom with the coupling
+  $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, which decay by falling into the black hole. A state is labelled as in hydrogen by
+  its principal number $n_{\rm LG}$, its orbital angular momentum $\ell_{\rm LG}$ (the letters $S$, $P$, $D$ for 0, 1, 2) and its total angular
+  momentum $j_{\rm LG}$, for example $1S_{1/2}$.
+* *The pair* is the atom of two quasi-particles of opposite zeugon charge, bound by the zeugon with the potential
+  $-\alpha^{\rm Z}_{\rm LG}/r$, $\alpha^{\rm Z}_{\rm LG}=(g^{\rm v}_{\rm LL})^2/(16\pi)=0.00975$: a positronium of the mass of the gap.
+
+# 3. R1: the coupling to the scalar curvature
+
+*Where.* `lord_gravity.md`, Section 15.2, after the square of the Dirac operator in a curved space-time.
+
+*The remark.* The square of the Dirac operator of the brochon contains the scalar curvature $R^{\rm LG}$ as a term $-\tfrac14R^{\rm LG}$ added
+to the mass squared, and the field strengths of the gauge fields through a magnetic moment of gyromagnetic ratio 2.
+
+*What it means.* A brochon in a curved space-time behaves, to second order in its derivatives, as a particle whose mass squared is
+shifted by a quarter of the scalar curvature: $(\Box_{\rm LG}+m_{\rm LL}^2-\tfrac14R^{\rm LG}+\dots)\Psi_{\rm LL}=0$, with the covariant wave
+operator $\Box_{\rm LG}$.
+
+*Why it holds.* Squaring the Dirac operator produces the commutator of two covariant derivatives, which is the curvature of the spin
+connection; contracted with the Dirac matrices it gives $-\tfrac14R^{\rm LG}$, with the factor $\tfrac14$ of the representation of the
+Lorentz algebra on spinors (the spin connection acts on a spinor as $\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$). Lord printed the spinor curvature with $\tfrac12$ in place of $\tfrac14$; with
+his factor the term would be $-\tfrac12R^{\rm LG}$, and the checks exclude it: the deviation from the identity is then as large as the
+term itself (relative deviation $1.000000$, checks G-10b and WG-4).
+
+*Why it matters.* The term acts wherever the scalar curvature is not zero, inside matter and in the early universe. It does not act in
+the space-times of the black holes of the manuscript: the Schwarzschild space-time has no Ricci curvature, and the Vaidya space-times
+have $R^{\rm LG}=0$ because the energy-momentum tensor of radiation falling in at the speed of light has no trace (checks WG-1 to
+WG-3).
+
+# 4. R2: a constant Dirac mass and pair amplitude
+
+*Where.* Section 15.4 of `lord_gravity.md`, after Theorem L2.
+
+*The remark.* Theorem L2 assumes that the Dirac mass and the pair amplitude of the quasi-particle are the same everywhere.
+
+*What it means.* The condensate is taken to be that of flat space-time, unchanged by the gravitational field.
+
+*Why it holds, and when.* The condensate is a property of the vacuum with the single scale $\Lambda_{\rm LL}$. A gravitational field changes
+it through the curvature, and the relative change is of the order of the curvature divided by $\Lambda_{\rm LL}^2$. Near a black hole of mass
+$M_{\rm LG}$ the curvature is at most of the order $\mathcal M_{\rm LG}^{-2}$: the invariant $R^{\rm LG}_{\mu\nu\rho\sigma}R^{{\rm LG}\,\mu\nu\rho\sigma}$
+of the Schwarzschild space-time is $48\mathcal M_{\rm LG}^2/r^6$, which at the horizon is $3/(4\mathcal M_{\rm LG}^4)$. The corrections are therefore of the
+order $(\Lambda_{\rm LL}\mathcal M_{\rm LG})^{-2}$.
+
+*Why it matters.* They are negligible unless the black hole is as small as the length $1/\Lambda_{\rm LL}$ of the model. For such a black hole
+the condensate itself would have to be computed in the curved space-time, which this work does not do.
+
+# 5. R3: the energy of the condensed vacuum
+
+*Where.* Section 15.4 of `lord_gravity.md`; the comparison with observation in its Section 31.2.
+
+*The remark.* The condensation changes the energy density of the vacuum, relative to the normal vacuum, by
+$\mathcal E^{\rm CJT}_{\rm SF}\Lambda_{\rm LL}^4$ with $\mathcal E^{\rm CJT}_{\rm SF}=-2.422\times10^{-4}$; the brochon model does not fix the energy of the vacuum
+to which gravitation responds.
+
+*What it means.* Gravitation responds to a constant energy density of the vacuum as to a cosmological constant. The model measures every
+energy from the normal vacuum (the normal order of its interaction); the energy that gravitates is this condensation energy plus a
+constant of the gravitational theory, which nothing in the model determines.
+
+*Why it holds.* A constant energy density of the vacuum has an energy-momentum tensor proportional to the metric $g^{\rm LG}_{\mu\nu}$, the
+form of a cosmological constant. Adding a constant to the Lagrangian changes no field equation of the brochon model, so the model cannot fix
+it; only gravitation sees it.
+
+*Why it matters.* The observed energy density of the vacuum is $\rho^\Lambda_{\rm LG}=2.52\times10^{-11}$ eV$^4$ $=(2.24$ meV$)^4$ (the
+Planck satellite, 2018: $H_0=67.4$ km/s/Mpc, $\Omega_{\rm m}=0.315$, a flat universe). The condensation energy has this size at the
+cutoff $\Lambda^*_{\rm LG}=18.0$ meV and exceeds it by $(\Lambda_{\rm LL}/\Lambda^*_{\rm LG})^4$ above it ($9.6\times10^{6}$ for 1 eV,
+$9.6\times10^{42}$ for 1 GeV), with the opposite sign. The constant of the gravitational theory must therefore cancel the condensation
+energy to one part in $(\Lambda_{\rm LL}/\Lambda^*_{\rm LG})^4$, as it must cancel the energies of the condensates of particle physics: the
+cosmological constant problem. (Checks LC-6 and YC-6: the observed density by two routes, with the Planck mass and with Newton's
+constant in SI units, agreeing to $2.1\times10^{-7}$.)
+
+# 6. R4: operators, normal order and semiclassical gravitation
+
+*Where.* Section 15.4 of `lord_gravity.md`.
+
+*The remark.* The brochon is a quantum field whose interaction is normal-ordered with respect to the normal vacuum of flat space-time
+and whose momenta are cut off at $\Lambda_{\rm LL}$; in a curved space-time neither has a unique generalization. The manuscript states the
+field equations of the operators and of the mean field, and Einstein's equations with the expectation value of the energy-momentum
+tensor as the source (*semiclassical gravitation*).
+
+*What it means.* Gravitation is treated classically, the brochon quantum mechanically, and the gravitational field responds to the
+average energy and momentum of the brochon.
+
+*Why it holds.* The split of a field into particles and antiparticles, which defines the normal vacuum, depends on the time of an
+observer when the space-time has no symmetry in time (as the Vaidya space-times), and a cutoff of momenta must be imposed in a local
+frame. Parts IV and V of the manuscript, however, solve one-particle equations in a given geometry: the brochon is a *test particle*,
+which needs neither the normal order nor a renormalized energy-momentum tensor.
+
+*Why it matters.* The results of Parts IV to VI do not depend on the open questions of quantum fields in curved space-time. The effect
+of one brochon on the geometry is smaller than the effects computed by the ratio of its mass to the mass of the black hole.
+
+# 7. R5: the massive gauge fields
+
+*Where.* Section 16.2 of `lord_gravity.md`.
+
+*The remark.* In the superfluid $W^1$, $W^2$ and $B$ are massive; their energy-momentum tensors and that of the pair field add to the
+source of Einstein's equations, but the manuscript needs only the tensor of the zeugon.
+
+*What it means.* Of the four gauge bosons only the zeugon reaches to infinity. The massive ones act only over a distance of the order of
+their inverse masses, $1/M^{\rm CJT}_{W,{\rm SF}}\approx23/\Lambda_{\rm LL}$ ($M^{\rm CJT}_{W,{\rm SF}}=0.04302319693$).
+
+*Why it holds.* A massive vector field falls off as $e^{-Mr}/r$ around its source; the zeugon, massless, falls off as $1/r$.
+
+*Why it matters.* Every effect of the gauge fields on the scale of a black hole, many times $1/\Lambda_{\rm LL}$, is that of the zeugon:
+the charged black hole and the pair of Part VI of the manuscript. The conservation of the number of quasi-particles (R16) is proved only
+without the massive bosons, for which the identity of operators behind it fails.
+
+# 8. R6: the formulas of the gravitational atom for small masses are asymptotic
+
+*Where.* Section 20.4 of `lord_gravity.md`.
+
+*The remark.* For small $y_{\rm LG}$ the levels and decay rates follow formulas of S. R. Dolan and D. Dempsey (arXiv:1504.03190, after
+Ternov and co-workers): the fine structure $F^{\rm H}_{\rm LG}y_{\rm LG}^4$ and the decay rate $c^{\rm H}_{\rm LG}y_{\rm LG}^{2\ell_{\rm LG}+2j_{\rm LG}+4}$ (the power 5 for
+$S_{1/2}$, 7 for $P_{1/2}$, 9 for $P_{3/2}$, 11 for $D_{3/2}$). They are the leading terms of expansions in $y_{\rm LG}$, and at larger
+$y_{\rm LG}$ the corrections are large.
+
+*What it means.* The formulas describe the computed states only when the black hole is small compared with the wavelength of the brochon,
+$y_{\rm LG}\ll1$.
+
+*Why it holds.* The formulas come from matching the hydrogen-like wave function far from the black hole to the solution near the
+horizon, an expansion in the ratio of the two lengths, $y_{\rm LG}$. The program computes the states at $y_{\rm LG}=0.005$ to 0.05 and
+extrapolates the ratios of the computed energies and decay rates to the formulas to $y_{\rm LG}=0$: they are 1 for all six states, to
+$3.4\times10^{-4}$ and $7.2\times10^{-4}$ (checks LS-11, LS-12). Between $y_{\rm LG}=0.05$ and the next masses the local powers of the decay
+rate are $1S_{1/2}$: 6.03 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2S_{1/2}$: 6.03 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2P_{1/2}$: 7.92 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.05 to 0.1); $2P_{3/2}$: 10.87 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.1 to 0.15); $3P_{3/2}$: 10.90 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.1 to 0.15); $3D_{3/2}$: 14.79 ($\mathcal M_{\rm LG}m_{\rm LL}$ from 0.2 to 0.25), far from the asymptotic ones.
+
+*Why it matters.* The agreement confirms the computed states and their labels independently. For the states of the gravitational atom
+that matter most, near $y_{\rm LG}\approx0.1$ to 0.4, only the computed values hold; the formulas only give their trend.
+
+# 9. R7: the shrinking black hole is a model
+
+*Where.* Section 23.1 of `lord_gravity.md`.
+
+*The remark.* A black hole that shrinks by Hawking's evaporation is described by the ingoing Vaidya space-time with an inflow of
+*negative* energy (the model of W. A. Hiscock, Physical Review D 23, 2813 (1981)); the radiation that leaves the black hole is not
+modelled, only its effect at the horizon.
+
+*What it means.* The geometry near the horizon of a shrinking black hole is represented, the outgoing radiation far away is not.
+
+*Why it holds.* The negative energy that falls in represents the reaction of the black hole to the emission of Hawking radiation; like
+evaporation itself it violates the condition, true for ordinary matter, that every observer measures a positive energy density. The
+outgoing Vaidya space-time, which describes the radiation far away, has coordinates that are singular at the horizon, so that the field
+of the brochon could not be followed across it.
+
+*Why it matters.* The runs with a shrinking mass describe the brochon near and inside the horizon, where it decays; they do not describe
+what a distant observer receives.
+
+# 10. R8: the projections on the states of a leaking atom are not probabilities
+
+*Where.* Section 27 of `lord_gravity.md`.
+
+*The remark.* Around a black hole the quasi-bound states leak and overlap; the charge of the brochon can be divided among them only
+approximately, to about 10 % when the levels are nearly as broad as they are apart.
+
+*What it means.* The *occupation* of a state, the squared cosine of the angle between the field and the state in the charge product, is
+not a probability: the occupations of different states need not add up to at most 1, and the decomposition into states depends on how
+it is fitted.
+
+*Why it holds.* The quasi-bound states lose charge into the black hole, the evolution does not conserve the charge product, and the
+states are not orthogonal: the normalized overlap of $1S_{1/2}$ and $2S_{1/2}$ is $0.135$ at $y_{\rm LG}=0.2$ and $0.292$
+at 0.25. At $y_{\rm LG}=0.25$ the decay rate of $1S_{1/2}$ is $0.433$ of the distance of the levels $1S_{1/2}$ and $2S_{1/2}$.
+
+*Why it matters.* The adiabatic and the sudden behaviour of the runs (Table V.1 of the manuscript) rests on the total charge and on the
+fits that agree within 2 %; the share of a single state is quoted with this uncertainty.
+
+# 11. R9: the polarization of the condensate is not computed
+
+*Where.* Section 29.1 of `lord_gravity.md`.
+
+*The remark.* The potential $-\alpha^{\rm Z}_{\rm LG}/r$ of two quasi-particles is that of the empty vacuum; the superfluid could weaken it at
+long distances by the polarization of its condensate, which is not computed.
+
+*What it means.* The pair and the charged black hole of Part VI are computed with the coupling of the vacuum without matter.
+
+*Why it holds.* A medium of charged excitations screens a static charge. The zeugon stays massless in the superfluid because the
+condensate carries no charge $T^3_{\rm LL}$ and its quasi-particles have a gap, so that a constant potential of the zeugon changes no charge
+(the susceptibility of $T^3_{\rm LL}$ vanishes); the superfluid therefore does not screen a static charge completely, as a conductor would,
+but it can weaken the field by a dielectric constant different from 1. Computing it needs the response of the condensate to the zeugon at
+small momenta, which this work has not done.
+
+*Why it matters.* A dielectric constant $\epsilon^{\rm d}_{\rm LG}$ would replace $\alpha^{\rm Z}_{\rm LG}$ by $\alpha^{\rm Z}_{\rm LG}/\epsilon^{\rm d}_{\rm LG}$ in
+the pair: its size would grow by the factor $\epsilon^{\rm d}_{\rm LG}$ and its binding shrink by $1/(\epsilon^{\rm d}_{\rm LG})^2$. The conclusions of Part VI about the size of the effects (orders of magnitude) would not change
+for $\epsilon^{\rm d}_{\rm LG}$ of order 1.
+
+# 12. R10: the limit of the charge by the creation of pairs is an estimate
+
+*Where.* Section 30.3 of `lord_gravity.md`.
+
+*The remark.* The charge at which the field at the horizon reaches the critical field $(m^{\rm qp}_{\rm LG})^2/\lvert q^{\rm qp}_{\rm LG}\rvert$ of
+Schwinger's pair creation ($m^{\rm qp}_{\rm LG}$ and $q^{\rm qp}_{\rm LG}$ the mass and the zeugon charge of a quasi-particle),
+$4y^{\rm qp}_{\rm LG}$ times the limit by accretion (with $y^{\rm qp}_{\rm LG}=G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}/(\hbar c)$, $m^{\rm qp}_{\rm LG}$ the mass of the
+gives the scale of the limit, not a sharp value.
+
+*What it means.* Pair creation does not switch on at a threshold; its rate grows continuously with the field, as
+$\exp(-\pi(m^{\rm qp}_{\rm LG})^2/(\lvert q^{\rm qp}_{\rm LG}\rvert\mathcal F))$ in a uniform field of strength $\mathcal F$.
+
+*Why it holds.* The exponent is about $\pi$ at the critical field and grows without limit for weaker fields; the discharge becomes efficient
+around the critical field, and how efficient depends on the time available, which the estimate does not fix. (Checks LC-4, YC-4: the ratio
+$4y^{\rm qp}_{\rm LG}$.)
+
+*Why it matters.* The comparison of the two limits, which one is stronger for $y^{\rm qp}_{\rm LG}<\tfrac14$, holds within a factor of order 1;
+both limits make the charge far too small to be seen.
+
+# 13. R11: the ringing is computed in the limit of large angular number
+
+*Where.* Section 30.4 of `lord_gravity.md`.
+
+*The remark.* The frequencies of the ringing of a black hole are related to its shadow by
+$\omega^{\rm QNM}_{\rm LG}\approx(\ell^{\rm QNM}_{\rm LG}+\tfrac12)/b^{\rm sh}_{\rm LG}-i(n^{\rm QNM}_{\rm LG}+\tfrac12)\lambda^{\rm ph}_{\rm LG}$ only for a large angular
+number $\ell^{\rm QNM}_{\rm LG}$ (the *eikonal* limit; V. Cardoso and co-workers, Physical Review D 79, 064016 (2009)); $n^{\rm QNM}_{\rm LG}=0,1,\dots$
+numbers the modes of one angular number.
+
+*What it means.* The relative change of the frequencies, $+\tfrac16(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2$ for a small zeugon charge
+$\mathcal Q^{\rm Z}_{\rm LG}$, is exact for large $\ell^{\rm QNM}_{\rm LG}$ and approximate for the modes of small angular number that dominate a real
+ringing.
+
+*Why it holds.* For a large angular number a wave circling the black hole behaves as a ray of light on the photon sphere, whose angular
+velocity seen from far away is $1/b^{\rm sh}_{\rm LG}$; for a small one the wave is not a ray.
+
+*Why it matters.* For a small angular number the coefficient of $(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2$ in the change of the frequencies need not be
+exactly $\tfrac16$; it was not computed. At the largest charge the relative change of the shadow is $-1.5\times10^{-32}$ for $\Lambda_{\rm LL}=1$
+TeV, so the conclusion, not detectable, does not depend on the coefficient.
+
+# 14. R12: the quadratic tidal potential and the nonrelativistic pair
+
+*Where.* Section 32.1 of `lord_gravity.md`.
+
+*The remark.* The tidal potential of the falling pair is the first term of the expansion of the tidal field in the size of the pair divided
+by the radius, and the relative motion is nonrelativistic.
+
+*What it means.* The pair is treated as a small body: its size, a few Bohr radii $a^{\rm pair}_{\rm LG}=2/(E^{\rm CJT,gap}_{\rm SF}\alpha^{\rm Z}_{\rm LG})$, is small
+compared with the radius of the black hole, and its internal velocities are small compared with the speed of light.
+
+*Why it holds.* At the horizon the ratio of the radius $2\mathcal M_{\rm LG}$ to the Bohr radius is $2\tilde{\mathcal M}_{\rm LG}/\alpha^{\rm Z}_{\rm LG}$, with
+the gravitational radius $\tilde{\mathcal M}_{\rm LG}$ in the atomic unit of time of the pair; it exceeds 40 for all the black holes computed
+($\tilde{\mathcal M}_{\rm LG}\ge0.2$), so the next term of the expansion is of relative order $1/40$ or less. The velocities are of the order
+$\alpha^{\rm Z}_{\rm LG}\approx0.01$.
+
+*Why it matters.* For much lighter black holes the pair would be as large as the black hole, and the computation would no longer apply;
+the conclusion that black holes swallow the pair whole is stated for the range in which the pair is small.
+
+# 15. R13: the classical estimate of the tidal break-up is false for a real fall
+
+*Where.* Sections 32.2 and 32.5 of `lord_gravity.md`.
+
+*The remark.* The estimate that black holes lighter than $1.492\times10^{5}$ $M_{\rm Pl}^2/\Lambda_{\rm LL}$ tear the pair apart before the horizon, from
+the moment at which the tidal barrier sinks below the ground level, assumes a static field and fails for a real fall.
+
+*What it means.* Along the real fall the pair is beyond its barrier with probability $\tfrac12$ only for black holes lighter than
+$1.40\times10^{4}$ $M_{\rm Pl}^2/\Lambda_{\rm LL}$, and even then its two members cross the horizon within a few Bohr radii of each other (the
+probability of a separation beyond 10 Bohr radii is $5.2\times10^{-4}$ at the end of the computation).
+
+*Why it holds.* The tidal strength doubles while the remaining time shrinks by $2^{-1/2}$, faster than the pair can tunnel (the path under
+the barrier takes the imaginary time $\tfrac34\pi$ times the remaining time); even without a barrier the escape takes time (rate
+$0.0349$ in the atomic unit when the remaining time is 2); and two particles that are no longer bound separate only as the
+remaining time to the power $-\tfrac13$. (Checks LT-2 to LT-5, YT-4 to YT-7, WT-5.)
+
+*Why it matters.* The estimate was first recorded as a result. It is corrected wherever it appears, and the scan over the cutoff no longer
+prints it as a prediction.
+
+# 16. R14: the probability of separation late in the fall depends on a numerical device
+
+*Where.* Section 32.4 of `lord_gravity.md` and the report of the program `lg_tidal` (check LT-5b).
+
+*The remark.* Below the remaining time 1 (in the atomic unit of the pair) the probability that the two quasi-particles are more than 10 Bohr
+radii apart depends on the flattening of the tidal potential far out, which then lies inside the radius 10; at the end of the computation it
+lies between $5.16\times10^{-4}$ and $7.21\times10^{-4}$ in five computations with different numerical parameters.
+
+*What it means.* That probability is known there only to some tens of per cent; the probabilities beyond the barrier and outside the ground
+state are not affected (they agree within $3\times10^{-3}$ among the computations, check LT-5a).
+
+*Why it holds.* The tidal potential accelerates the escaping waves without limit; to keep them on the grid the program flattens it to a
+constant far beyond the barrier, and the radius of the flattening shrinks as the field grows. Once it lies inside the radius 10, the
+separation beyond 10 measures partly the device.
+
+*Why it matters.* The conclusion, that the members stay within a few Bohr radii, rests on the root mean squares of the separation
+($1.78$ Bohr radii along the radius and $0.77$ across it at the end) and holds for every one of the five computations.
+
+# 17. R15: the energy of the vacuum and the values of the cosmological parameters
+
+*Where.* Section 31.2 of `lord_gravity.md`.
+
+*The remark.* The observed energy density of the vacuum is computed from the Hubble constant and the matter density of the Planck
+satellite in the flat model, with the radiation neglected.
+
+*What it means.* The number $\rho^\Lambda_{\rm LG}=2.52\times10^{-11}$ eV$^4$ carries the uncertainties of these parameters, about 1.5 % for
+$H_0^2$ and 1 % for $1-\Omega_{\rm m}$ (Planck 2018: $H_0=67.4\pm0.5$ km/s/Mpc, $\Omega_{\rm m}=0.315\pm0.007$); the radiation, about
+$10^{-4}$ of the critical density, changes $\Omega_\Lambda$ by less.
+
+*Why it holds.* $\rho^\Lambda_{\rm LG}=(1-\Omega_{\rm m})\,3H_0^2/(8\pi G_{\rm N})$ in the flat model.
+
+*Why it matters.* An uncertainty of a few per cent in $\rho^\Lambda_{\rm LG}$ changes $\Lambda^*_{\rm LG}$ by its fourth root, less than 1 %. The
+comparison of the condensation energy with the observed one is a comparison of orders of magnitude, and it is unaffected.
+
+# 18. R16: the conservation of the number of quasi-particles holds in the mean field
+
+*Where.* Section 33.4 of `lord_gravity.md`.
+
+*The remark.* The proof that the zeugon conserves the number of quasi-particles $N^{\rm qp}_{\rm LG}$ (the particles minus the antiparticles of
+the Dirac field of the mass of the gap), and with it the rule that two quasi-particles of opposite charge cannot annihilate into zeugons,
+holds for the mean-field equation of the superfluid and for the zeugon alone.
+
+*What it means.* Two corrections are left out: the part of the four-fermion interaction that the mean field does not keep, which conserves
+the number of brochons but not $N^{\rm qp}_{\rm LG}$ and can change it by 2 at a higher order; and the massive gauge bosons $W^1$, $W^2$ and
+$B$, for which the identity of operators behind the proof fails.
+
+*Why it holds.* The quasi-particle field is $\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\mathsf P_{\rm LG}\chi_{\rm LG}^{\dagger T}$ with a Dirac field $\chi_{\rm LG}$
+of the mass of the gap (a consequence of the mean-field equation); its zeugon current is $(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)$ times that of
+$\chi_{\rm LG}$, plus a constant, because the terms that would change $N^{\rm qp}_{\rm LG}$ are symmetric combinations of anticommuting operators
+(checks AN-3a, AN-3b, YA-3, WA-3, to $4.5\times10^{-16}$). The interaction beyond the mean field contains products of four brochon fields that
+need not have this property.
+
+*Why it matters.* The pairs of two particles ($N^{\rm qp}_{\rm LG}=\pm2$) are stable against annihilation into zeugons only to the order
+computed; their annihilation through the residual interaction is suppressed by a higher power of the couplings, at a rate not computed.
+
+# 19. The symbols of this document
+
+The symbols are those of the manuscript `lord_gravity.md`; this table lists those that this document uses.
+
+| symbol | meaning |
+|:---|:---|
+| $\hbar$, $c$, $G_{\rm N}$, $M_{\rm Pl}$ | Planck's constant, the speed of light, Newton's constant and the Planck mass $(\hbar c/G_{\rm N})^{1/2}$ |
+| $\Lambda_{\rm LL}$ | the momentum cutoff of the brochon model, the unit of energy |
+| $\Psi_{\rm LL}$, $m_{\rm LL}$ | the brochon and its mass in the normal vacuum |
+| $M^{\rm CJT,D}_{\rm SF}$, $D^{\rm CJT}_{\rm SF}$, $E^{\rm CJT,gap}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the superfluid (method CJT) |
+| $A_{{\rm SF},\mu}$, $W^1$, $W^2$, $B$ | the zeugon and the massive gauge bosons |
+| $g^{\rm v}_{\rm LL}$, $T^3_{\rm LL}$ | the coupling of the zeugon and the charge to which it couples |
+| $M_{\rm LG}$, $\mathcal M_{\rm LG}$, $r$ | the mass of a black hole, its gravitational radius $G_{\rm N}M_{\rm LG}$, and the radius (or, for the pair, the distance of its members) |
+| $y_{\rm LG}$, $y^{\rm qp}_{\rm LG}$ | $G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$ and $G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}/(\hbar c)$, the couplings of the gravitational atom of the brochon and of the quasi-particle |
+| $m^{\rm qp}_{\rm LG}$, $q^{\rm qp}_{\rm LG}$, $\mathcal F$ | the mass and the zeugon charge of a quasi-particle, and the strength of a uniform field in Schwinger's rate |
+| $n_{\rm LG}$, $\ell_{\rm LG}$, $j_{\rm LG}$ | the principal number, the orbital and the total angular momentum of a state of the gravitational atom |
+| $F^{\rm H}_{\rm LG}$, $c^{\rm H}_{\rm LG}$ | the coefficients of the fine structure and of the decay rate of the gravitational atom at small $y_{\rm LG}$ |
+| $R^{\rm LG}$, $R^{\rm LG}_{\mu\nu\rho\sigma}$, $g^{\rm LG}_{\mu\nu}$, $\Box_{\rm LG}$, $\omega^{\rm LG}_{\mu\,ab}$, $\gamma^{ab}_{\rm LL}$ | the scalar curvature, the Riemann tensor, the metric, the covariant wave operator, the spin connection and the antisymmetrized Dirac matrices |
+| $\alpha^{\rm Z}_{\rm LG}$, $a^{\rm pair}_{\rm LG}$ | the coupling of the zeugon between two quasi-particles and the Bohr radius of the pair |
+| $\tilde{\mathcal M}_{\rm LG}$ | the gravitational radius of a black hole in the atomic unit of time of the pair |
+| $\mathcal E^{\rm CJT}_{\rm SF}$ | the condensation energy per volume in units of $\Lambda_{\rm LL}^4$ |
+| $\rho^\Lambda_{\rm LG}$, $\Lambda^*_{\rm LG}$, $H_0$, $\Omega_{\rm m}$, $\Omega_\Lambda$ | the observed energy density of the vacuum, the cutoff at which the condensation energy has its size, the Hubble constant and the density parameters |
+| $\mathcal Q^{\rm Z}_{\rm LG}$, $b^{\rm sh}_{\rm LG}$, $\lambda^{\rm ph}_{\rm LG}$ | the zeugon charge of a black hole as a length, the radius of its shadow, and the rate at which rays leave the photon sphere |
+| $\omega^{\rm QNM}_{\rm LG}$, $\ell^{\rm QNM}_{\rm LG}$, $n^{\rm QNM}_{\rm LG}$ | the complex frequency, the angular number and the number of a mode of the ringing |
+| $\epsilon^{\rm d}_{\rm LG}$ | a dielectric constant of the condensate (Section 11 of this document) |
+| $N^{\rm qp}_{\rm LG}$, $\chi_{\rm LG}$, $b^{\rm qp}_{\rm LG}$, $\mathsf P_{\rm LG}$ | the number of quasi-particles, the Dirac field of the mass of the gap, the coefficient $-D/(E+M)$, and the matrix of the antilinear map of the pairing |

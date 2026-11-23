@@ -3158,13 +3158,13 @@ in flat space-time.
 \textbf{Example: \(j_{\rm LG}=m_{j,{\rm LG}}=\tfrac12\).} For
 \(\lambda_{\rm LG}=\pm1\) the solutions are
 \[\alpha_{\rm LG}=\sin^{1/2}\tfrac\theta2\,\cos^{3/2}\tfrac\theta2,\qquad\beta_{\rm LG}=\lambda_{\rm LG}\,\sin^{3/2}\tfrac\theta2\,\cos^{1/2}\tfrac\theta2.\tag{18.6}\]
-One checks them by differentiating: with \(s=\sin\tfrac\theta2\),
-\(c=\cos\tfrac\theta2\) and \(\sin\theta=2sc\),
-\(\alpha_{\rm LG}'=\tfrac14s^{-1/2}c^{5/2}-\tfrac34s^{3/2}c^{1/2}\),
-while
-\(\alpha_{\rm LG}/(2\sin\theta)-\lambda_{\rm LG}\beta_{\rm LG} =\tfrac14s^{-1/2}c^{1/2}-s^{3/2}c^{1/2}\),
-and the two agree because \(c^{5/2}=c^{1/2}(1-s^2)\). Divided by
-\((\sin\theta)^{1/2}\), as in (18.3), they become
+One checks them by differentiating, with
+\(\sin\theta=2\sin\tfrac\theta2\cos\tfrac\theta2\):
+\[\begin{gathered}\alpha_{\rm LG}'=\tfrac14\sin^{-1/2}\tfrac\theta2\,\cos^{5/2}\tfrac\theta2-\tfrac34\sin^{3/2}\tfrac\theta2\,\cos^{1/2}\tfrac\theta2,\\
+\frac{\alpha_{\rm LG}}{2\sin\theta}-\lambda_{\rm LG}\beta_{\rm LG}=\tfrac14\sin^{-1/2}\tfrac\theta2\,\cos^{1/2}\tfrac\theta2-\sin^{3/2}\tfrac\theta2\,\cos^{1/2}\tfrac\theta2,\end{gathered}\]
+and the two agree because
+\(\cos^{5/2}\tfrac\theta2=\cos^{1/2}\tfrac\theta2\,\big(1-\sin^2\tfrac\theta2\big)\).
+Divided by \((\sin\theta)^{1/2}\), as in (18.3), they become
 \(\cos\tfrac\theta2/\sqrt2\) and
 \(\lambda_{\rm LG}\sin\tfrac\theta2/\sqrt2\), finite at both poles.
 (Check WS-6, exactly, for \(\lambda_{\rm LG}=\pm1\) and
@@ -5554,32 +5554,34 @@ charge:
 The two kinds of the last case have the same mass and charges of the
 same size, so their states are degenerate, and the annihilation mixes
 them: a pair of one kind can annihilate into virtual zeugons from which
-a pair of the other kind is created. The amplitude of a pair into \(n\)
-zeugons is proportional to the \(n\)-th power of the charge of its
-particle, \((+\tfrac12)^n\) or \((-\tfrac12)^n\). For the \emph{even}
-combination (the sum of the two kinds, with equal amplitudes) the
-amplitudes into two zeugons add and those into three cancel; for the
-\emph{odd} combination (the difference) the opposite. The even
-combination therefore decays into two zeugons at twice the rate of one
-kind, the odd one into three zeugons at twice the rate, and the virtual
-annihilation into one zeugon, which shifts the triplet S states, acts
-only on the odd combination, with twice the shift of one kind (checks
-AN-4, YA-4).
+a pair of the other kind is created. The amplitude of a pair into
+\(n^{\rm Z}_{\rm LG}\) zeugons is proportional to the
+\(n^{\rm Z}_{\rm LG}\)-th power of the charge of its particle,
+\((+\tfrac12)^{n^{\rm Z}_{\rm LG}}\) or
+\((-\tfrac12)^{n^{\rm Z}_{\rm LG}}\). For the \emph{even} combination
+(the sum of the two kinds, with equal amplitudes) the amplitudes into
+two zeugons add and those into three cancel; for the \emph{odd}
+combination (the difference) the opposite. The even combination
+therefore decays into two zeugons at twice the rate of one kind, the odd
+one into three zeugons at twice the rate, and the virtual annihilation
+into one zeugon, which shifts the triplet S states, acts only on the odd
+combination, with twice the shift of one kind (checks AN-4, YA-4).
 
 Two symmetries decide which states can decay into zeugons at all.
 \emph{Charge conjugation}, which exchanges the particles and the
 antiparticles of \(\chi'_{\rm LG}\), multiplies a state of the pair by
 \((-1)^{\ell+S}\), with \(\ell\) its orbital angular momentum and \(S\)
-its total spin, as for positronium, and a state of \(n\) zeugons by
-\((-1)^n\), because the zeugon couples to a current that changes sign.
-The \emph{reflection}
+its total spin, as for positronium, and a state of
+\(n^{\rm Z}_{\rm LG}\) zeugons by \((-1)^{n^{\rm Z}_{\rm LG}}\), because
+the zeugon couples to a current that changes sign. The \emph{reflection}
 \(\mathsf F^{\rm v}_{\rm LG}=\mathsf1_4\otimes\tau^{\rm LL}_1\), the
 element of the unbroken group \(O(2)\) of the superfluid that exchanges
 up and down and turns \(T^3_{\rm LL}\) into \(-T^3_{\rm LL}\) (the
 element \(\mathsf r\) of (B.24), acting on the brochon; it commutes with
 \(\mathcal C_{\rm LG}\), check AN-1), multiplies the even combination by
-\(+1\), the odd one by \(-1\), and \(n\) zeugons by \((-1)^n\). A decay
-into \(n\) zeugons needs both factors to agree:
+\(+1\), the odd one by \(-1\), and \(n^{\rm Z}_{\rm LG}\) zeugons by
+\((-1)^{n^{\rm Z}_{\rm LG}}\). A decay into \(n^{\rm Z}_{\rm LG}\)
+zeugons needs both factors to agree:
 
 \textbf{Table VI.5.} The ground states of a particle and an antiparticle
 (\(N^{\rm qp}_{\rm LG}=0\)). Rates in units of \(\Lambda_{\rm LL}\);
@@ -8925,7 +8927,7 @@ zeugon \\
 \(\mathsf 1_4\otimes\tau^{\rm LL}_1\) of the unbroken group \(O(2)\),
 which exchanges the isospin components and turns \(T^3_{\rm LL}\) into
 \(-T^3_{\rm LL}\) \\
-\(n\) (Section 33.3) & a number of zeugons \\
+\(n^{\rm Z}_{\rm LG}\) & a number of zeugons (Section 33.3) \\
 \end{longtable}
 
 \end{document}

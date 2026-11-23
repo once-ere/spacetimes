@@ -870,9 +870,10 @@ pair along a real fall, D12 (2)) in entries E31 to E33, and stage 7d
 (the energy of the condensed vacuum against the observed energy of the
 vacuum, which Section 15.4 of the manuscript announced) was computed in
 entry E36, and Part VI of the manuscript was written from stages 7a to
-7e in entry E37. Next: the manuscript \texttt{superfluid.md} of the
-folder Revision\_SM\_Higgs is rewritten in the same style (C5); then
-stage 4b and stage 8 of this folder.
+7e in entry E37. The manuscript \texttt{superfluid.md} of the folder
+Revision\_SM\_Higgs was then rewritten in the same style (C5; entry E82
+of the task record of that folder), and stage 4b was carried out in
+entry E38. Next: stage 8.
 
 The plan is changed only with a record in Section 7.
 
@@ -1258,8 +1259,8 @@ of the brochon between the horizon and a sphere changes in time only
 through the fluxes through the two. A quasi-bound state decays at
 infinity, where \(J_{\rm LG}\) therefore vanishes, and \(J_{\rm LG}=2\)
 at the horizon for the normalization \(\mathcal Q_{\rm LG}(2)=1\); hence
-\({\rm Im}\,\omega^{\rm S}_{\rm LG}=-1/N_{\rm LG}\), where
-\(N_{\rm LG}\) is the integral of
+\({\rm Im}\,\omega^{\rm S}_{\rm LG}=-1/\mathcal N^{\rm S}_{\rm LG}\),
+where \(\mathcal N^{\rm S}_{\rm LG}\) is the integral of
 \(\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2\)
 from \(r=2\) to infinity. At the 30 quasi-bound states of E9 with
 \(\lvert{\rm Im}\,\omega^{\rm S}_{\rm LG}\rvert\ge10^{-7}m_{\rm LL}\)
@@ -2323,6 +2324,62 @@ Ferrell (corrected in the manuscript, and noted in E20); (b) equation
 two lines; (c) the first form of Table VI.2 repeated the unit in every
 cell, which broke the cells into two lines; the units are now in the
 header \\
+E38 & 22 Nov 2026, 20:01 to 20:29 & stage 4b for Parts I to VI (Section
+6): the provenance of the remarks and the registry of the symbols.
+\emph{The remarks.} \texttt{provenance/P4\_remarks.md} (\texttt{.tex},
+\texttt{.pdf}, from \texttt{docs\_src/P4\_remarks.src.md}) takes the
+sixteen qualifying remarks R1 to R16 of the manuscript (the places where
+it says that a result is an approximation, an estimate, a model or
+restricted), and gives for each where it is made, what it says, what it
+means, why it holds and why it matters, with its numbers from the same
+fragment files as the manuscript and the checks that decide it; its
+Section 2 explains the objects once, and its Section 19 lists its
+symbols. \emph{The registry.} The new program
+\texttt{code/scripts/write\_lg\_symbols.py} reads the tables of symbols
+of the manuscript (Appendix D, A.7, B.7), of the remarks document and of
+this record (Section 8), and the registries of Revision\_SM\_Higgs and
+Revision\_SuperLoop, and writes \texttt{data/lg\_symbols.csv}, the
+report \texttt{data/hck\_lg\_symbols\_checks.txt} and the fragments of
+\texttt{provenance/P1\_symbols.md} (\texttt{.tex}, \texttt{.pdf}, from
+\texttt{docs\_src/P1\_symbols.src.md}): 457 symbol texts in the
+manuscript, 162 with the suffix LG, none of which another registry
+lists; checks LY-1 to LY-8, ALL PASS (7 of 7). Whether two tables that
+list the same symbol mean the same object a program cannot decide; I
+compared the meanings by hand for the remarks document and this record.
+\emph{Symbols changed on the way.} The number of zeugons of Section
+33.3, written \(n\), is now \(n^{\rm Z}_{\rm LG}\) (\(n\) is also the
+number density of the author's Kohn-Sham ansatz in Appendix B); the
+check of the angular functions in Section 18.4 used \(s\) and \(c\) for
+\(\sin\tfrac\theta2\) and \(\cos\tfrac\theta2\), letters that name the
+isospin index and the component number of the brochon, and now writes
+the sines and cosines (the identity checked again at three angles with
+sympy; check WS-6 of \texttt{lg\_schw.wls} checks the functions
+exactly); this record wrote \(N_{\rm LG}\) for the integral of (20.3),
+also the letter of the polarized determinant \(N_{\rm LG}(X,Y)\), and
+now writes the manuscript's \(\mathcal N^{\rm S}_{\rm LG}\) (E13 and
+Section 8); the symbols of the remarks document were aligned with the
+manuscript. Two collisions remain, declared with their remedies: the
+letter \(c\) (the component number of the brochon and the speed of
+light, which the units set to 1), and the advanced time \(v\) of this
+record (the vacuum value of the Higgs field in Revision\_SM\_Higgs; the
+manuscript writes \(v_{\rm LG}\)). \emph{Errors on the way, corrected
+before this commit.} My first draft of the registry document said that
+the suffix LL marks objects that the project named before this folder
+and that LG marks every object that this folder introduces; the program
+shows 46 symbols with the suffix LL or SF that neither other registry
+lists in that text, so the document now states the convention of Section
+1 of the manuscript (the suffix names the theory of the object). The
+declaration of the collision of \(L\) had no remedy. Four declared
+symbols of the remarks document only (\(c\), \(\mathcal F\),
+\(\Box_{\rm LG}\), \(\omega^{\rm LG}_{\mu\,ab}\)) are listed by the
+manuscript, and the report stated the opposite; for \(c\) the review
+found two objects (above). Every check now fails on a declaration that
+is no longer needed. \emph{The README.} Its list of build steps lacked
+the worked examples (\texttt{write\_lg\_examples\_fragments.py},
+\texttt{lg\_worked}, \texttt{python/lg\_worked.py},
+\texttt{wolfram/source/lg\_worked.wls},
+\texttt{write\_lg\_worked\_fragments.py}) since they were added; they
+are now listed, with \texttt{write\_lg\_symbols.py} \\
 \end{longtable}
 
 \hypertarget{the-symbols-of-this-document}{%
@@ -2414,9 +2471,11 @@ singular point \\
 of an incoming partial wave that the black hole absorbs \\
 \(S_{\rm LG}\) & \(j_{\rm LG}-\ell_{\rm LG}=\pm\tfrac12\), the
 projection of the spin of a hydrogen-like level \\
-\(N_{\rm LG}\) & the integral of
+\(\mathcal N^{\rm S}_{\rm LG}\) & the integral of
 \(\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2\)
-from the horizon to infinity, for \(\mathcal Q_{\rm LG}(2)=1\) \\
+from the horizon to infinity, for \(\mathcal Q_{\rm LG}(2)=1\) (written
+\(N_{\rm LG}\) in E13 until E38, which was also the symbol of the
+polarized determinant of the manuscript) \\
 \(F^{\rm H}_{\rm LG}\), \(a^{\rm H}_{\rm LG}\) & the coefficients of the
 small-mass formulas of the energy and of the decay rate of a quasi-bound
 state (E13) \\
@@ -2549,6 +2608,14 @@ the size of \(\rho^\Lambda_{\rm LG}\) (E36) \\
 falling pair, the time at which it would reach \(r=0\), and the matrices
 \(\gamma^0\gamma^\mu T^3_{\rm LL}\) of the zeugon current (the symbols
 of the manuscript, E37) \\
+\(n^{\rm Z}_{\rm LG}\), \(N_{\rm LG}(X,Y)\), \(\mathcal F\),
+\(\Box_{\rm LG}\), \(v_{\rm LG}\), \(s\), \(c\) & in E38: a number of
+zeugons (manuscript, Section 33.3), the polarized determinant of two
+Hermitian matrices (2.7), the strength of a uniform field in Schwinger's
+rate (Section 30.3), the covariant wave operator (15.7), the advanced
+time as the manuscript writes it, the isospin index of the brochon, and
+the letter \(c\): the number of a component of the brochon (Appendix
+B.1) and the speed of light \\
 \end{longtable}
 
 \end{document}

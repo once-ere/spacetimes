@@ -1,0 +1,145 @@
+PROJECT spacetimes, Revision_Lord_Gravity: the registry of the symbols and its checks (stage 4b of task C23; code/scripts/write_lg_symbols.py)
+
+PASS LY-1  every row of the four tables (249 rows of the manuscript in Appendix D, A.7 and B.7, and 20 of the remarks document) has a symbol cell with at least one symbol and a meaning: 457 symbol texts in the manuscript
+PASS LY-2  none of the 162 symbol texts with the suffix LG occurs in the registries of Revision_SM_Higgs (503 symbol texts) and Revision_SuperLoop (559)
+PASS LY-3  of the 48 symbol texts that the tables of the manuscript list in more than one row, every one is declared with its reason (48 declared)
+PASS LY-4  every one of the 55 symbol texts of the remarks document occurs in a table of the manuscript, except the 7 declared symbols of the remarks document only; whether a shared symbol names the same object in both was reviewed by hand (one collision, $c$, declared under LY-6)
+PASS LY-6  every one of the 32 symbol texts without a suffix that the tables of the manuscript share with the two other registries is declared as the same object or as a collision with its remedy (32 declared, 5 collisions)
+PASS LY-7  every one of the 127 symbol texts of the table of the task record (84 rows) occurs in a table of the manuscript (101; whether each names the same object in both was reviewed by hand, with no difference found), or is declared as a notation of the task record (26 declared, most of them earlier names of objects that the manuscript writes otherwise); of these, the 2 that another registry lists are declared as the same object or as a collision with its remedy
+PASS LY-8  of the symbols of the three tables (the manuscript, the remarks document, the task record), 11 are written with different trailing arguments or with and without one; every one is declared as one object or as two related objects (11 declared)
+NOTE  LY-5  of the 132 symbol texts of the manuscript with the suffix LL or SF, 82 occur with the same text in the registry of Revision_SM_Higgs and 51 in that of Revision_SuperLoop (47 in both, 86 in at least one); the other 46 are forms or objects that neither registry lists in that text; the registry document lists the meanings of the 86 in the three registries
+
+Declared repetitions (LY-3):
+  $B_{{\rm SF},p}$: the same object, listed in the table of each part that uses it
+  $C_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $D$: shorthand for the pair amplitude of the superfluid, defined in Theorems L2 and L3 and in Section 33, the same object
+  $E$: shorthand for the gap of the superfluid, defined in Theorem L3 and in Section 33, the same object
+  $GEE$: the same object, listed in the table of each part that uses it
+  $G^{\rm S}_{\rm SF}$: the same object, listed in the table of each part that uses it
+  $G^{\rm V}_{\rm SF}$: the same object, listed in the table of each part that uses it
+  $G_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $M$: shorthand for the Dirac mass of the superfluid, defined in Theorems L2 and L3 and in Section 33, the same object
+  $M^{\rm CJT}_{W,{\rm SF}}$: the same object, listed in the table of each part that uses it
+  $M_{\rm LL}(\mathbf b)$: the same object, listed in the table of each part that uses it
+  $P_{\rm LG}$: the same object, listed in the table of each part that uses it
+  $Q_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $T^3_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $T^\iota_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $U(1)^{\rm Q}_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $V^{(n)}_{\rm SF}$: the same object, listed in the table of each part that uses it
+  $W^\iota_{{\rm SF},p}$: the same object, listed in the table of each part that uses it
+  $\Gamma^{\rm LL}_p$: the same object, listed in the table of each part that uses it
+  $\Pi^\iota_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\Psi_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\alpha^{\rm Z}_{\rm LG}$: the same object, listed in the table of each part that uses it
+  $\ell$: the orbital angular momentum number: of a level of the pair (Section 29.3) and of a spherical harmonic (Section 32)
+  $\epsilon^{\rm LL}_{\iota\iota'\iota''}$: the same object, listed in the table of each part that uses it
+  $\gamma^{\rm ch}_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\mathbf g$: the same object, listed in the table of each part that uses it
+  $\mathbf g_{\rm boost}$: the same object, listed in the table of each part that uses it
+  $\mathsf 1_2$: the same object, listed in the table of each part that uses it
+  $\mathsf 1_4$: the same object, listed in the table of each part that uses it
+  $\mathsf E_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\mathsf K^\iota_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\mathsf L_{\rm LL}(\mathbf g)$: the same object, listed in the table of each part that uses it
+  $\mathsf S$: the same object: the spinor matrix $\mathsf S_{\rm LL}(\mathbf g)$, written short in Part II
+  $\mathsf U_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\mathsf W_{{\rm SF},p}$: the same object, listed in the table of each part that uses it
+  $\nabla^{\rm GEE}_p$: the same object, listed in the table of each part that uses it
+  $\theta$: a local notation of Part VI, declared at its beginning: there $\theta$ is the angle of the relative coordinate of the pair from the radius of the black hole
+  $\varepsilon_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\vec n$: the same object, listed in the table of each part that uses it
+  $e$: the same object: the elementary electric charge (Lord's Sections 1 and 2, and the electron in Section 30.3)
+  $g^{\rm F}_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $g^{\rm v}_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $m$: a rest mass: of a Bargmann-Wigner field in Part I, and the shorthand for the mass of one particle of the pair in Sections 29.3 and 33.3, defined there
+  $m_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $r$: a local notation of Part VI, declared at its beginning: there $r$ is the distance of the two quasi-particles of the pair, and the Schwarzschild radius of their centre of mass is $r^{\rm cm}_{\rm LG}$
+  $s$: the same object: the isospin index (1 up, 2 down) of the brochon
+  $u_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $x^\mu$: the same object: the coordinates, of M31 in Appendix A and of a curved space-time in the main text
+Symbols without a suffix shared with the other registries (LY-6):
+  $A_\mu$: the same object: the electromagnetic potential (Lord's Sections 1 and 2; the photon of the Standard Model)
+  $D$: a collision: in Revision_SuperLoop $D$ is a number of space dimensions; in this folder $D$ is a shorthand for the pair amplitude of the superfluid, defined in Theorems L2 and L3 and in Section 33 where it is used (remedy: the shorthand is defined at each use)
+  $GEE$: the same object: the gauge group of the brochon model
+  $G_S$: the same object: the author's scalar coupling of his Kohn-Sham ansatz
+  $G_V$: the same object: the author's vector coupling of his Kohn-Sham ansatz
+  $L$: a collision: in Revision_SuperLoop the letter L labels a family of machine checks; in this folder $L$ is the spectroscopic letter of the orbital angular momentum ($S$, $P$, $D$) of a level of the pair, defined in Section 29.3 (remedy: the letter and its values are defined there; the values $S,P,D,\dots$ are the labels of the standard notation of a level, such as $1\,{}^3S_1$ or the triplet S states, and not symbols of objects: as symbols, $S$ is the total spin and $D$ the shorthand for the pair amplitude)
+  $M$: a collision: in Revision_SuperLoop the letter M labels a family of machine checks; in this folder $M$ is a shorthand for the Dirac mass of the superfluid, defined in Theorems L2 and L3 and in Section 33 where it is used (remedy: the shorthand is defined at each use)
+  $M31$: the same object: the space-time of the Hermitian bi-quaternions
+  $O(2)$: the same object: the group of the rotations and reflections of a plane
+  $S$: the same object: the total spin of a state of two spin-1/2 particles
+  $SU(2)_{\rm v}$: the same object: the isospin group
+  $X$: the same object: the label of a method (HS, KS or CJT)
+  $[\mathbf x,\mathbf y,\mathbf z]$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\alpha$: a collision: in Revision_SM_Higgs $\alpha$ is an index over the two components of a Weyl spinor; in this folder $\alpha$ is a shorthand for $\alpha^{\rm Z}_{\rm LG}$ in Sections 29.3 and 33.3, defined there (remedy: the shorthand is defined at each use)
+  $\bar{\mathbf x}$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf b$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf e_0,\dots,\mathbf e_7$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf e_p$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf f_p$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf g$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf u$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf x$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf x^\dagger$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathrm{tr}$: the same object (the trace); the manuscript adds the normalized trace $\mathrm{tr}_{\rm N}$
+  $\mathsf 1_2$: the same object (a unit matrix)
+  $\mathsf 1_4$: the same object (a unit matrix)
+  $\nabla^{\rm GEE}_p$: the same object: the GEE covariant derivative
+  $\tilde{\mathbf g}$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $c$: a collision: in this folder $c$ is the number of a component of the brochon (1 to 8, Appendix B.1), the same object as in the two other registries, and also the speed of light, common notation that the units set to 1 (remedy: each is defined where it is used; the speed of light appears only in $\hbar=c=1$ and in formulas written in ordinary units, such as $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$; the letter is also one of the frame indices $a,b,c,d$, which mean nothing outside their formula)
+  $e$: the same object: the elementary electric charge
+  $n$: the same object in the table: the number density of the author's Kohn-Sham ansatz
+  $n_S$: the same object: the scalar density of the author's Kohn-Sham ansatz
+Symbols of the remarks document only (LY-4):
+  $B$: the massive gauge boson $B_{{\rm SF},p}$, written without its index
+  $R^{\rm LG}_{\mu\nu\rho\sigma}$: the Riemann tensor with all indices lowered; the manuscript lists the same tensor with the index letters $\rho\sigma\mu\nu$, $R^{\rm LG}_{\rho\sigma\mu\nu}$
+  $W^1$: the massive gauge boson $W^1$, the component $\iota=1$ of $W^\iota_{{\rm SF},p}$
+  $W^2$: the massive gauge boson $W^2$, the component $\iota=2$ of $W^\iota_{{\rm SF},p}$
+  $\epsilon^{\rm d}_{\rm LG}$: a dielectric constant of the condensate, used only in remark R9
+  $\gamma^{ab}_{\rm LL}$: the antisymmetrized Dirac matrices; the manuscript lists them as $\gamma^{\mu\nu}_{\rm LL}$
+  $\hbar$: Planck's constant, common notation (set to 1 in the manuscript)
+Notations of the task record (LY-7):
+  $H_{\rm LG}$: its block (entries E7 and E15); the manuscript writes it $\mathsf H_{\rm LG}$ (18.3)
+  $LG$: the suffix itself, which the task record lists to explain it; not a symbol of an object
+  $N^{\rm V}_{\rm LG}(v)$: the charge on a slice of constant advanced time (entries of stage 6); the manuscript writes it $\mathcal N^{\rm V}_{\rm LG}(v_{\rm LG})$ (24.5)
+  $R^{\rm LG}_{ab\mu\nu}$: the Riemann tensor with two frame indices; the manuscript lists $R^{{\rm LG}\,a}{}_{b\mu\nu}$
+  $SL(2,\mathbb C)$: a standard group, the unit bi-quaternions; the manuscript names it in its text and in the meaning of GEE
+  $S_{\rm H}$: the matrix of the separated spinor (entries E7 and E15); the manuscript writes it $\mathsf S^{\rm H}_{\rm LG}$ (18.3)
+  $S_{\rm LG}$: $j_{\rm LG}-\ell_{\rm LG}$, the projection of the spin of a hydrogen-like level (entries of stage 5); not used in the manuscript
+  $W_{n,{\rm LG}}$: the charge that the decomposition assigns to the state $n$ (entry E18); the manuscript writes it $\mathcal W_{n,{\rm LG}}$
+  $Z$: the nuclear charge of a hydrogen atom before a sudden change (entry E17); the manuscript writes it $Z_{\rm H}$ (Section 26.1)
+  $Z'$: the nuclear charge after the change (entry E17); the manuscript writes it $Z'_{\rm H}$ (Section 26.1)
+  $\eta^{\rm LL}$: the Minkowski metric written without its indices (as in Section 1 of the manuscript); the tables of the manuscript list it with its indices, $\eta^{\rm LL}_{\mu\nu}$
+  $\gamma^a_{\rm LL}$: the Dirac matrices with a frame index $a$; the tables of the manuscript list them with the index $\mu$ and, in Appendix A, with the index $p$
+  $\gamma^{ab}_{\rm LL}$: their antisymmetrized products with frame indices; the manuscript lists $\gamma^{\mu\nu}_{\rm LL}$
+  $\mathcal A_{\rm LG}$: the greybody factor (entries of stage 5); the manuscript writes it $\mathcal T_{\rm LG}$ (21.1)
+  $\mathcal M_{\rm LG}(v)$: the mass as a function of the advanced time (entries of stage 6); the manuscript writes $\mathcal M_{\rm LG}(v_{\rm LG})$
+  $\mathcal P^{\rm V}_{\rm LG}(v,r)$: a radial function in the Vaidya space-time (entries of stage 6); the manuscript writes the argument $v_{\rm LG}$
+  $\mathcal Q^{\rm V}_{\rm LG}(v,r)$: the other radial function in the Vaidya space-time (entries of stage 6); the manuscript writes the argument $v_{\rm LG}$
+  $\sigma_1$: a Pauli matrix (entries E7 and E15); the manuscript writes it $\sigma^{\rm LL}_1$
+  $\sigma_3$: a Pauli matrix (entries E7 and E15); the manuscript writes it $\sigma^{\rm LL}_3$
+  $a^{\rm H}_{\rm LG}$: the coefficient of the decay rate at small masses (entry E13); the manuscript writes it $c^{\rm H}_{\rm LG}$ (20.5)
+  $c_{n,{\rm LG}}$: the coefficient of the state $n$ in the decomposition of the field (entry E18); not used in the manuscript
+  $p_n$: the profile of the state $n$ on a slice (entry E18); the manuscript writes it $\mathcal P^{(n)}_{\rm LG}(r)$
+  $r^{\rm ion}_{\rm LG}$: the radius at which the tidal field frees the pair in the classical estimate (entry E20); not used in the manuscript
+  $r_*$: the tortoise coordinate (entries of stage 5); not used in the manuscript
+  $s_{\rm LG}$: an exponent of the radial equations at a regular singular point (entries of stage 5); the manuscript writes it $\varsigma_{\rm LG}$ (19.1)
+  $v$: the advanced time of the Vaidya space-time (decision D10 and the entries of stage 6); the manuscript writes it $v_{\rm LG}$
+Notations of the task record that another registry lists (LY-7):
+  $SL(2,\mathbb C)$: the same object as in the registries of Revision_SM_Higgs and Revision_SuperLoop
+  $v$: a collision: in Revision_SM_Higgs $v$ is the vacuum value of the Higgs field of the Standard Model; in the task record of this folder $v$ is the advanced time of the Vaidya space-time (remedy: the task record defines it in decision D10 and in its table of symbols, and the manuscript writes $v_{\rm LG}$)
+Symbols written with different arguments (LY-8):
+  $E$ ($E$, $E(\vec q)$): two related objects: the energy $E(\vec q)$ of a quasi-particle of momentum $\vec q$ (B.18) and its smallest value, the gap, written $E$ in Theorem L3 and in Section 33: $E=E(\vec 0)$ for the method CJT
+  $N_{\rm LL}$ ($N_{\rm LL}(\mathbf b)$, $N_{\rm LL}(\mathbf b,\mathbf b')$, $N_{\rm LL}(\mathbf x)$): one object and its polarization: the complex norm of a bi-octonion, $N_{\rm LL}(\mathbf x)$, of a bi-quaternion, $N_{\rm LL}(\mathbf b)$, and its polarized form $N_{\rm LL}(\mathbf b,\mathbf b')$
+  $\gamma^p_{\rm LL}$ ($\gamma^p_{\rm LL}$, $\gamma^p_{\rm LL}[\mathbf f]$): one family: the Dirac matrices $\gamma^p_{\rm LL}[\mathbf f]$ of a frame $\mathbf f$ (9.4) and those of the canonical frame, $\gamma^p_{\rm LL}$
+  $\mathbf g$ ($\mathbf g$, $\mathbf g(x)$): one object: a unit bi-quaternion, and $\mathbf g(x)$ the same as a function of the point (a local transformation, (B.4))
+  $\mathcal M_{\rm LG}$ ($\mathcal M_{\rm LG}$, $\mathcal M_{\rm LG}(0)$, $\mathcal M_{\rm LG}(v)$, $\mathcal M_{\rm LG}(v_{\rm LG})$): one object: the mass of the black hole in units of length, as a function of the advanced time ($\mathcal M_{\rm LG}(v_{\rm LG})$, in the task record $\mathcal M_{\rm LG}(v)$) and at the start ($\mathcal M_{\rm LG}(0)$)
+  $\mathcal P^{\rm V}_{\rm LG}$ ($\mathcal P^{\rm V}_{\rm LG}(v,r)$, $\mathcal P^{\rm V}_{\rm LG}(v_{\rm LG},r)$): one object: a radial function in the Vaidya space-time, with the argument $v_{\rm LG}$ in the manuscript and $v$ in the task record
+  $\mathcal Q^{\rm V}_{\rm LG}$ ($\mathcal Q^{\rm V}_{\rm LG}(v,r)$, $\mathcal Q^{\rm V}_{\rm LG}(v_{\rm LG},r)$): one object: the other radial function in the Vaidya space-time, with the argument $v_{\rm LG}$ in the manuscript and $v$ in the task record
+  $\mathsf U_{\rm LL}$ ($\mathsf U_{\rm LL}$, $\mathsf U_{\rm LL}(x)$): one object: a local isospin rotation, written with or without its argument $x$
+  $\mathsf h_{\rm LL}$ ($\mathsf h_{\rm LL}$, $\mathsf h_{\rm LL}(\vec q)$): one object: the free Dirac Hamiltonian, written with or without the momentum $\vec q$
+  $\theta^{\rm F}_{\rm LL}$ ($\theta^{\rm F}_{\rm LL}$, $\theta^{\rm F}_{\rm LL}(x)$): one object: the phase of a local transformation of the fermion number, written with or without its argument $x$
+  $\xi^{\rm LL}_p$ ($\xi^{\rm LL}_p$, $\xi^{\rm LL}_p(\mathbf b)$): one object: the complex coefficients of a bi-quaternion or a bi-octonion, written with or without the element as argument
+
+VERDICT: ALL PASS (7 of 7)

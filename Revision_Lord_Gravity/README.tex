@@ -507,11 +507,36 @@ task record, entry E36; the data in
 \texttt{data/lg\_charge\_vacuum.csv}.
 
 Part VI of the manuscript (Sections 29 to 35), written from these five
-parts, also says what gravitation can detect (Section 34). Next (the
-task record, Section 6): the manuscript \texttt{superfluid.md} of the
-folder Revision\_SM\_Higgs is rewritten in the same style; then the
-provenance of the remarks, the registry of the symbols and the notebook
-of this folder.
+parts, also says what gravitation can detect (Section 34). The
+manuscript \texttt{superfluid.md} of the folder Revision\_SM\_Higgs was
+then rewritten in the same style (22 November 2026).
+
+\textbf{Stage 4b} (22 November 2026): two provenance documents for Parts
+I to VI. The first, \texttt{provenance/P4\_remarks.md} (\texttt{.tex},
+\texttt{.pdf}), takes the sixteen qualifying remarks of the manuscript,
+the places where it says that a result is an approximation, an estimate,
+a model or restricted in some way (for example: the coupling
+\(- frac14R\) to the scalar curvature; a constant Dirac mass and pair
+amplitude in Theorem L2; the shrinking black hole as a model; the
+polarization of the condensate, which is not computed; the classical
+estimate of the tidal break-up, which is false for a real fall), and
+explains each: where it is made, what it means, why it holds and why it
+matters, with its numbers and the checks that decide it. It explains the
+objects that the remarks talk about once, at its beginning, so that it
+can be read by itself. The second, \texttt{provenance/P1\_symbols.md}
+(\texttt{.tex}, \texttt{.pdf}), is the registry of the symbols: every
+one of the 457 symbols of the manuscript with its meaning and the tables
+that list it, the suffixes by which the folder keeps the author's rule
+\emph{one symbol, one object}, and the symbols that the registries of
+the folders Revision\_SM\_Higgs and Revision\_SuperLoop list as well,
+with their meanings in the three registries. The program
+\texttt{code/scripts/write\_lg\_symbols.py} writes it from the tables of
+symbols of the documents and checks the rule (ALL PASS (7 of 7)); the
+task record, entry E38; the data in \texttt{data/lg\_symbols.csv} and
+the report \texttt{data/hck\_lg\_symbols\_checks.txt}.
+
+Next (the task record, Section 6): stage 8, the notebook of the folder
+in the Wolfram Language with its provenance.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -537,6 +562,16 @@ state
 \texttt{provenance/P0\_task\_record.md}, \texttt{.tex}, \texttt{.pdf} &
 the task (in my words), the rules, the starting point, the decisions,
 the plan, the log & written; grows with the work \\
+\texttt{provenance/P4\_remarks.md}, \texttt{.tex}, \texttt{.pdf} & the
+sixteen qualifying remarks of the manuscript, each with where it is
+made, what it means, why it holds and why it matters, its numbers and
+its checks (stage 4b) & written for Parts I to VI \\
+\texttt{provenance/P1\_symbols.md}, \texttt{.tex}, \texttt{.pdf} & the
+registry of the symbols: every symbol of the manuscript with its
+meaning, the suffixes, the symbols shared with the registries of
+Revision\_SM\_Higgs and Revision\_SuperLoop, and the report of the
+checks of the rule one symbol, one object (stage 4b) & written for Parts
+I to VI \\
 \texttt{provenance/inputs\_sha256.txt} & the SHA-256 checksum of the
 copy of Lord's paper that is read (the paper is not in the repository) &
 written \\
@@ -546,9 +581,12 @@ written \\
 \texttt{build\_docs.sh} (the \texttt{.tex} and the \texttt{.pdf} of
 every document, with a check of the layout of every page),
 \texttt{doc\_header.tex}, \texttt{keep\_tables.py},
-\texttt{check\_layout.py}, \texttt{check\_pages.py}, and
+\texttt{check\_layout.py}, \texttt{check\_pages.py},
 \texttt{check\_self\_contained.py} (does a document send its reader
-elsewhere?) & written \\
+elsewhere?), the writers of the fragments
+(\texttt{write\_lg\_*\_fragments.py}), and
+\texttt{write\_lg\_symbols.py} (the registry of the symbols and its
+checks) & written \\
 \texttt{docs\_src/} & the hand-edited sources of the documents;
 \texttt{docs\_src/parts/} holds the parts that the manuscript includes
 in full (\texttt{glossary\_lg.part.md}, the word list;
@@ -580,8 +618,10 @@ for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
 \texttt{write\_lg\_charge\_fragments.py},
 \texttt{write\_lg\_tidal\_fragments.py},
 \texttt{write\_lg\_annih\_fragments.py} and
-\texttt{write\_lg\_worked\_fragments.py}), and \texttt{lg\_examples.md},
-the numbers of the appendices copied by
+\texttt{write\_lg\_worked\_fragments.py}), \texttt{lg\_symbols.md} (the
+tables and counts of the registry of the symbols, written by
+\texttt{code/scripts/write\_lg\_symbols.py}), and
+\texttt{lg\_examples.md}, the numbers of the appendices copied by
 \texttt{write\_lg\_examples\_fragments.py} from the fragment files of
 the folder \texttt{Revision\_SM\_Higgs} (with the SHA-256 checksums of
 the files that it reads) & written for Parts I to VI and the
@@ -667,7 +707,9 @@ static rates; \texttt{lg\_tidal\_gauss.csv};
 reports \texttt{hck\_lg\_tidal\_checks*.txt}), of stage 7d
 (\texttt{lg\_annih\_values.csv}; \texttt{lg\_annih\_scan.csv}, the
 lifetimes over the cutoff; reports
-\texttt{hck\_lg\_annih\_checks*.txt}), and the report of the check
+\texttt{hck\_lg\_annih\_checks*.txt}), the registry of the symbols
+(\texttt{lg\_symbols.csv}, one row per symbol of the manuscript; report
+\texttt{hck\_lg\_symbols\_checks.txt}), and the report of the check
 whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures of the manuscript:
 \texttt{fig\_lg\_schw\_interior} and \texttt{fig\_lg\_schw\_decay}
@@ -707,6 +749,9 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{python3}\NormalTok{ python/lg\_tidal\_figures.py             }\CommentTok{\# the figures of stage 7c}
 \KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_annih}\KeywordTok{)}         \CommentTok{\# stage 7d, after lg\_pair, whose data it reads (under a second)}
 \ExtensionTok{python3}\NormalTok{ python/lg\_annih.py                     }\CommentTok{\# its exact checks (a few seconds)}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_examples\_fragments.py   }\CommentTok{\# the numbers of the appendices, from Revision\_SM\_Higgs (before lg\_worked)}
+\KeywordTok{(}\BuiltInTok{cd}\NormalTok{ rust }\KeywordTok{\&\&} \ExtensionTok{./target/release/lg\_worked}\KeywordTok{)}        \CommentTok{\# the worked examples (under a second), after the line above}
+\ExtensionTok{python3}\NormalTok{ python/lg\_worked.py                    }\CommentTok{\# their second computation, exact where they are rational}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_curved.wls data/hck\_lg\_curved\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_schw.wls data/lg\_schw\_qbs.csv data/lg\_schw\_grey.csv data/hck\_lg\_schw\_checks\_wolfram.txt}
@@ -715,6 +760,7 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_charge.wls data/hck\_lg\_charge\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_tidal.wls data/hck\_lg\_tidal\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_annih.wls data/hck\_lg\_annih\_checks\_wolfram.txt}
+\ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_worked.wls provenance/generated/lg\_examples.md data/hck\_lg\_worked\_checks\_wolfram.txt}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_lord\_fragments.py   }\CommentTok{\# the numbers of the documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_curved\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_schw\_fragments.py}
@@ -723,6 +769,8 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_charge\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_tidal\_fragments.py}
 \ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_annih\_fragments.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_worked\_fragments.py}
+\ExtensionTok{python3}\NormalTok{ code/scripts/write\_lg\_symbols.py       }\CommentTok{\# the registry of the symbols, from the tables of the documents (checks LY)}
 \ExtensionTok{python3}\NormalTok{ code/scripts/assemble\_docs.py          }\CommentTok{\# docs\_src/*.src.md {-}\textgreater{} the .md documents}
 \ExtensionTok{python3}\NormalTok{ code/scripts/check\_self\_contained.py   }\CommentTok{\# does a document send its reader elsewhere? (checks HCK{-}H1, HCK{-}H2)}
 \FunctionTok{bash}\NormalTok{ code/scripts/build\_docs.sh                }\CommentTok{\# the .tex and .pdf of every document, with the layout check}

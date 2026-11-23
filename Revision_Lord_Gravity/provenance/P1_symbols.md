@@ -1,0 +1,1076 @@
+---
+title: "The registry of the symbols of the folder Revision_Lord_Gravity, and how they relate to the other folders of the project"
+subtitle: "Provenance document of the symbols, PROJECT spacetimes, folder Revision_Lord_Gravity (task C23, stage 4b)"
+author: "Prepared for Patrick Lee Nash, Ph.D."
+date: "November 22, 2026"
+---
+
+<!-- This file is generated from docs_src/P1_symbols.src.md by code/scripts/assemble_docs.py; edit the source. -->
+
+# 1. What this document is
+
+The author's rule for the whole of PROJECT spacetimes is *one symbol, one object*: a symbol names one object, in every folder
+of the project. This document is the registry of the symbols of the folder `Revision_Lord_Gravity`. It lists every symbol of the
+folder's manuscript with its meaning, says which of them the registries of two other folders of the project list with the same
+text, and reports the machine checks that keep the rule. It is written by the program `code/scripts/write_lg_symbols.py`, which
+reads the three documents of the folder that have a table of symbols (the manuscript, with Appendix D for the main text and
+Sections A.7 and B.7 for the two appendices; the remarks document, its Section 19; the task record, its Section 8) and the
+registries of the folders `Revision_SM_Higgs` (the symbols of the superfluid solution of the brochon model) and
+`Revision_SuperLoop` (the symbols of the work on the Lorentz super-loop). No row of the tables below is typed by hand.
+
+What a program can check is whether a symbol is listed, where, and with which text. Whether two tables that list the same symbol
+mean the same object by it, a program cannot decide; I compared these meanings by hand (the 86 symbols that
+another registry lists are printed in Section 4 for the reader to compare too), and every difference that I found is corrected
+or declared in the report of Section 5 with its remedy. ("I" is the assistant that did the work.)
+
+A *symbol text* is a symbol exactly as it is typed: $\gamma^p_{\rm LL}$ and $\gamma^\mu_{\rm LL}$ are two symbol texts (the Dirac
+matrices with a frame index $p$ and with a coordinate index $\mu$), and the registry counts them separately.
+
+# 2. The suffixes
+
+The folder keeps the rule with suffixes, written as a subscript, or as a superscript where the subscript holds an index. The
+manuscript states the convention in its Section 1; here it is with examples from the tables.
+
+* **LL**: an object of the Lorentz super-loop and of its fields: the algebra of the bi-quaternions and bi-octonions, the brochon
+  and its Dirac matrices (the manuscript's Appendix A). Examples: the brochon $\Psi_{\rm LL}$, its mass $m_{\rm LL}$, the Dirac
+  matrices $\gamma^p_{\rm LL}$, the momentum cutoff $\Lambda_{\rm LL}$.
+* **SF**: an object of the brochon model and of its superfluid ground state: the gauge fields, the zeugon, the masses and the
+  gap (the manuscript's Appendix B). Examples: the gauge fields $W^\iota_{{\rm SF},p}$ of the isospin group, the zeugon
+  $A_{{\rm SF},\mu}$, the gap $E^{\rm CJT,gap}_{\rm SF}$ (the lowest energy of one quasi-particle of the ground state in the method
+  CJT).
+* **LG**: an object that this folder introduces beyond these two theories: the gravitational field, the black holes and the
+  problems of the manuscript. Examples: the tetrad $e^{\rm LG}_a{}^\mu$, the coupling $y_{\rm LG}$ of the gravitational atom, the
+  strength $\alpha^{\rm Z}_{\rm LG}$ of the attraction of a pair of quasi-particles. The folder has 162 symbol texts with
+  this suffix, and neither of the two other registries lists one of them (check LY-2).
+* **Lord**: an object of the paper of E. A. Lord ("General relativity from gauge invariance", Proceedings of the Cambridge
+  Philosophical Society 69, 423 (1971)) in his notation, where the project has no symbol of its own for it. Examples: his
+  generalized derivative $D^{\rm Lord}_a$ and his reference vectors $h^{\rm Lord}_a{}^\mu$.
+* **no suffix**: common notation (indices, operations, the units of the algebras, coordinates, standard groups) and the
+  shorthands that a theorem or a section defines where it uses them, such as $M$, $D$ and $E$ for the Dirac mass, the pair
+  amplitude and the gap of the superfluid in Theorems L2 and L3 and in Section 33.
+
+Of the 132 symbol texts with the suffix LL or SF, 82 occur with the same text in the registry of
+`Revision_SM_Higgs` and 51 in that of `Revision_SuperLoop` (47 in both, 86 in at
+least one); Section 4 lists these 86 with their meanings in the three registries. Neither registry lists the other
+46 in the same text. They are of two kinds:
+
+* forms of objects that the registries list in another form: with the coordinate indices $\mu,\nu$ of a curved space-time where
+  the registries have the frame indices $p,p'$ (for example $\gamma^\mu_{\rm LL}$ for $\gamma^p_{\rm LL}$, and $A_{{\rm SF},\mu}$
+  for $A_{{\rm SF},p}$), with the label $X$ of a method that the registry of `Revision_SM_Higgs` writes in general set to CJT (for
+  example $E^{\rm CJT,gap}_{\rm SF}$ for $E^{X,{\rm gap}}_{\rm SF}$), or with another argument (for example
+  $\xi^{\rm LL}_p(\mathbf b)$ for $\xi^{\rm LL}_p(\mathbf x)$);
+* objects of the two theories that the two registries do not list, for example the Levi-Civita symbol
+  $\epsilon^{\rm LL}_{\iota\iota'\iota''}$ of the isospin indices and the Dirac spinor $u_{\rm LL}$ of the worked example of
+  Appendix A.
+
+Table 1 shows them with "--" in its last column.
+
+The manuscript has 457 symbol texts in all. 48 of them are listed in more than one row of its
+tables: an object that two parts use is listed in the table of each, so that each table is complete in itself, and a shorthand or
+a local notation is listed where it is defined. Every repetition is declared with its reason (check LY-3). Every symbol without a
+suffix that one of the other registries lists as well is declared as the same object or as a collision with its remedy (check
+LY-6). There are 5 collisions, $\alpha$, $c$, $D$, $L$ and $M$, all with symbols that the manuscript defines where it uses
+them: $M$ and $L$ are in `Revision_SuperLoop` the letters of two families of machine checks, $D$ is there a number of space
+dimensions, and $\alpha$ is in `Revision_SM_Higgs` an index of a two-component spinor. The letter $c$ names two objects in this
+folder itself: the number of a component of the brochon (Appendix B.1, as in the other registries) and the speed of light, which
+the units set to 1, so that it appears only in $\hbar=c=1$ and in formulas written in ordinary units, such as
+$y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$.
+
+The task record of the folder is a log, and the entries of stages 5 and 6 were written before Parts IV and V of the manuscript,
+which chose some symbols anew (for example $\varsigma_{\rm LG}$ for the exponent that the task record writes $s_{\rm LG}$, and
+$v_{\rm LG}$ for the advanced time that it writes $v$). The entries keep their notation and the table of the task record defines
+it. Of its 127 symbol texts, those that the manuscript's tables do not list (26) are declared with the
+symbol that the manuscript uses for the same object (check LY-7). One of them, $v$, is the vacuum value of the Higgs field in
+`Revision_SM_Higgs`: a collision, declared with its remedy.
+
+Finally, 11 symbols are written with different arguments in different rows, or with and without one, such as
+$\mathcal M_{\rm LG}$ and $\mathcal M_{\rm LG}(v_{\rm LG})$; each is declared as one object or as two related objects (check LY-8).
+The check found one symbol for two objects that had escaped the others: the task record wrote $N_{\rm LG}$ for the integral of
+(20.3), which is also the letter of the polarized determinant $N_{\rm LG}(X,Y)$ of Section 2; the task record now writes the
+manuscript's $\mathcal N^{\rm S}_{\rm LG}$.
+
+One more case is common notation that the student will meet in every book. A level of the pair is written
+$n_{\rm LG}\,{}^{2S+1}L_J$, with the letters $S,P,D,\dots$ for the orbital angular momentum $\ell=0,1,2,\dots$, as in $1\,{}^3S_1$
+(the ground level with parallel spins) or "the triplet S states". These letters are labels of the notation, not symbols of objects.
+As symbols, $S$ is the total spin of the pair and $D$ the shorthand for the pair amplitude; the manuscript defines both where it
+uses them.
+
+The checks: ALL PASS (7 of 7).
+
+# 3. The registry
+
+**Table 1.** Every symbol text of the manuscript, in alphabetical order of its letters: its meaning in this folder (as the first table
+that lists it gives it), the tables that list it (D: the main text; A.7 and B.7: the appendices), and the other registries that list the
+same text.
+
+| symbol | meaning in this folder | listed in | the same text in |
+|:---------|:-----------------------------|:-----|:--------|
+| $[\mathbf x,\mathbf y,\mathbf z]$ | the associator $(\mathbf x\mathbf y)\mathbf z-\mathbf x(\mathbf y\mathbf z)$ | A.7 | SuperLoop |
+| $a,b,c,d$ | frame (Lorentz) indices, raised and lowered with $\eta^{\rm LL}$ | D | -- |
+| $A^{\rm Lord}_{\mu\nu\rho\sigma}$ | the real spin-2 tensor, its potentials and its secondary potentials | D | -- |
+| $A^{\rm Lord}_{\mu\nu}$ | the real spin-2 tensor, its potentials and its secondary potentials | D | -- |
+| $A^{\rm Lord}_{\rho\sigma\lambda}$ | the real spin-2 tensor, its potentials and its secondary potentials | D | -- |
+| $a^{\rm Lord}_{abc}$ | the auxiliary fields of the spinors, their coefficients (5.4), and the universal coupling | D | -- |
+| $a^{\rm pair}_{\rm LG}$ | the Bohr radius of the pair (29.3) | D | -- |
+| $A_\mu$ | the electromagnetic field strength, its potential and the electric charge (Lord's Sections 1 and 2) | D | SM_Higgs |
+| $a_p$ | the complex and the real coefficients of a bi-octonion and of a quaternion | A.7 | -- |
+| $a_{\rm B}$ | the nuclear charges, the ground states and the Bohr radius of the example of Section 26.1 | D | -- |
+| $A_{{\rm SF},\mu\nu}$ | the zeugon $W^3_{{\rm SF},\mu}$ and its field strength | D | -- |
+| $A_{{\rm SF},\mu}$ | the zeugon $W^3_{{\rm SF},\mu}$ and its field strength | D | -- |
+| $A_{{\rm SF},p}$ | the massive charged bosons, the massive neutral boson and the zeugon | B.7 | SM_Higgs |
+| $\alpha$ | shorthands for the mass of one particle of the pair and for $\alpha^{\rm Z}_{\rm LG}$ | D | SM_Higgs |
+| $\alpha^j$ | $\gamma^0_{\rm LL}\otimes\mathsf 1_2$ and $\gamma^0_{\rm LL}\gamma^j_{\rm LL}\otimes\mathsf 1_2$ | B.7 | -- |
+| $\alpha^{\rm Z}_{\rm LG}$ | the potential energy of two quasi-particles of opposite charge, and its strength $(g^{\rm v}_{\rm LL})^2/(16\pi)$ (29.1) | B.7, D | -- |
+| $\alpha_{\rm LG}(\theta)$ | the angular functions of a partial wave (18.4) | D | -- |
+| $b$ | shorthands, as in Theorem L3 | D | -- |
+| $B^{\rm Lord}_{\mu\nu\rho\sigma}$ | the tensor of Lord's Section 3 that has the symmetries of the Riemann tensor | D | -- |
+| $b^{\rm qp}_{\rm LG}$ | a solution of the Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$, and the coefficient $-D/(E+M)$ of Theorem L3 (18.2) | D | -- |
+| $b^{\rm ray}_{\rm LG}$ | the impact parameter of a ray of light, and the distance of an observer (Section 30.4) | D | -- |
+| $b^{\rm sh}_{\rm LG}$ | the radius of the shadow and the radius of the photon sphere (30.6) | D | -- |
+| $B_{{\rm SF},\mu\nu}$ | the field strengths of $SU(2)_{\rm v}$ (components and matrix) and of $U(1)^{\rm F}_{\rm LL}$ | D | -- |
+| $B_{{\rm SF},pp'}$ | the field strengths (B.7) | B.7 | SM_Higgs |
+| $B_{{\rm SF},p}$ | the gauge field of $U(1)^{\rm F}_{\rm LL}$ | B.7, D | SM_Higgs |
+| $\bar X$ | the bar of a $2\times2$ matrix, $-\mathsf E_{\rm LL}X^T\mathsf E_{\rm LL}$, its adjugate (1.1) | D | -- |
+| $\bar\Psi_{\rm LL}$ | the brochon, its eight components, its Dirac adjoint | B.7 | SM_Higgs, SuperLoop |
+| $\bar{\mathbf b}$ | the conjugate, the complex conjugate and the Hermitian conjugate of a bi-quaternion | D | -- |
+| $\bar{\mathbf x}$ | the bar (the signs of the imaginary units changed) and the bar with the complex conjugation | A.7 | SM_Higgs, SuperLoop |
+| $\beta$ | $\gamma^0_{\rm LL}\otimes\mathsf 1_2$ and $\gamma^0_{\rm LL}\gamma^j_{\rm LL}\otimes\mathsf 1_2$ | B.7 | -- |
+| $\beta_{\rm LG}(\theta)$ | the angular functions of a partial wave (18.4) | D | -- |
+| $\Box_{\rm LG}$ | $g_{\rm LG}^{\mu\nu}\nabla^{\rm LG}_\mu\nabla^{\rm GEE}_\nu$ (15.7) | D | -- |
+| $c$ | the Dirac index, the isospin index (1 up, 2 down) and the component number $2(d-1)+s$ (indices of Section B.1) | B.7 | SM_Higgs |
+| $c^{\rm H}_{\rm LG}$ | the coefficients of the fine structure (20.4) and of the decay rate (20.5) at small $y_{\rm LG}$ | D | -- |
+| $C^{\rm LG}_{a\,cd}$ | the anholonomy coefficients of the coframe (14.6) | D | -- |
+| $C^{\rm Lord}_{ba}{}^e$ | the connection of the vectors (5.7), (5.8) | D | -- |
+| $C_{\rm LL}$ | the charge-conjugation matrix $\mathrm{diag}(\mathsf E_{\rm LL},-\mathsf E_{\rm LL})$ (Lord's $C$) | A.7, D | SM_Higgs, SuperLoop |
+| $c_{ij}$ | symmetric coefficients, in the example of Section 33.2 | D | -- |
+| $\chi'_{\rm LG}$ | the canonical Dirac field $(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)^{1/2}\chi_{\rm LG}$ of the mass of the gap, whose particles and antiparticles are the quasi-particles (Section 33.1) | D | -- |
+| $\chi^{\dagger T}$ | the components of the field operators, and the column of the adjoints of the components (Section 33.1) | D | -- |
+| $\chi^{\rm LG}_s$ | the isospin component of the brochon, its charge $\pm\tfrac12$ of $Q_{\rm LL}$, and its isospin vector | D | -- |
+| $\chi^{\rm S}_{\rm SF}$ | the scalar susceptibility (B.16) and the eigenvalues of the static response in the two channels | B.7 | SM_Higgs |
+| $\chi^{ab}_{\rm SF}$ | the chemical potentials of the four charges, their susceptibilities, the mass matrix (B.23), the four gauge fields and their couplings | B.7 | SM_Higgs |
+| $\chi_i$ | the components of the field operators, and the column of the adjoints of the components (Section 33.1) | D | -- |
+| $\chi_{\rm LG}$ | a solution of the Dirac equation of mass $E^{\rm CJT,gap}_{\rm SF}$, and the coefficient $-D/(E+M)$ of Theorem L3 (18.2) | D | -- |
+| D | shorthands for $M^{\rm CJT,D}_{\rm SF}$ and $D^{\rm CJT}_{\rm SF}$ in Theorem L2 | D | SuperLoop |
+| $d$ | the Dirac index, the isospin index (1 up, 2 down) and the component number $2(d-1)+s$ (indices of Section B.1) | B.7 | -- |
+| $d\Omega^2$ | the coordinates of Schwarzschild and the metric of the unit sphere | D | -- |
+| $d^\iota_{\rm LL}$ | the isovector order parameter | A.7 | SM_Higgs, SuperLoop |
+| $D^X_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state | B.7 | SM_Higgs |
+| $D^{\rm CJT}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state of the brochon model (method CJT, Appendix B.5) | D | -- |
+| $D^{\rm Lord}_a$ | Lord's generalized derivative (5.3) | D | -- |
+| $d^{\rm Lord}_a$ | Lord's derivative operators and the coefficients of their commutators | D | -- |
+| $d^{\rm obs}_{\rm LG}$ | the impact parameter of a ray of light, and the distance of an observer (Section 30.4) | D | -- |
+| $\delta M$ | a uniform scalar density and a shift of the Dirac mass | B.7 | -- |
+| $\delta r_{\rm LG}$ | the spacing of the grid and the strength of the dissipation of Kreiss and Oliger (Section 25.1) | D | -- |
+| $\delta\mathsf C^{\rm n}$ | the normal and the pair correlation matrix, that of the normal vacuum (B.2), and the local matrices of (B.13) | B.7 | -- |
+| $\Delta^\pm_{\rm LL}$ | a gap, the two gaps and the measure of non-unitarity (A.16) | A.7 | SM_Higgs, SuperLoop |
+| $\Delta_{\rm LG}(r)$ | the radial functions of one frequency for a constant mass (24.6), and $v_{\rm LG}-\tau_{\rm LG}$ (24.7) | D | -- |
+| $\Delta_{\rm LL}$ | a gap, the two gaps and the measure of non-unitarity (A.16) | A.7 | SM_Higgs, SuperLoop |
+| E | shorthand for $E^{\rm CJT,gap}_{\rm SF}$ in Theorem L3 | D | -- |
+| $e$ | the electromagnetic field strength, its potential and the electric charge (Lord's Sections 1 and 2) | D | SM_Higgs |
+| $E(\vec q)$ | the quasi-particle energy (B.18) | B.7 | -- |
+| $E^\pm_{\rm LL}$ | the quasi-particle energies and $(q^2+m_{\rm LL}^2)^{1/2}$ | A.7 | SM_Higgs, SuperLoop |
+| $E^{(2)}_{\rm LG}$ | the binding energy of a level of the pair (29.2) and its correction of the order $(\alpha^{\rm Z}_{\rm LG})^4$ (Table VI.1) | D | -- |
+| $E^{(4)}_{\rm LG}$ | the binding energy of a level of the pair (29.2) and its correction of the order $(\alpha^{\rm Z}_{\rm LG})^4$ (Table VI.1) | D | -- |
+| $E^{\rm CJT,gap}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state of the brochon model (method CJT, Appendix B.5) | D | -- |
+| $e^{\rm LG}_a{}^\mu$ | the tetrad (Lord's reference vectors $h^{\rm Lord}_a{}^\mu$) and the coframe, its inverse (13.1) | D | -- |
+| $E^{\rm tid}_{\rm LG}$ | the energy and the rate of tunnelling of the ground state of the pair in a static tidal field (Section 32.3) | D | -- |
+| $E^{X,{\rm gap}}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state | B.7 | SM_Higgs |
+| $e^{{\rm LG}\,a}{}_\mu$ | the tetrad (Lord's reference vectors $h^{\rm Lord}_a{}^\mu$) and the coframe, its inverse (13.1) | D | -- |
+| $e_{\rm LG}$ | the metric of the tetrad and its inverse (13.2) (Lord's $g^{\rm Lord}$), and the volume element $\det e^{{\rm LG}\,a}{}_\mu$ | D | -- |
+| $\ell$ | the orbital angular momentum, the total spin and the total angular momentum of a level of the pair, the letter $S,P,D,\dots$ for $\ell=0,1,2,\dots$; the notation of a level (Section 29.3) | D | -- |
+| $\ell^{\rm QNM}_{\rm LG}$ | the complex frequency, the angular number and the overtone number of a quasi-normal mode | D | -- |
+| $\ell_{\rm LG}$ | the principal quantum number and the orbital angular momentum of a state (Section 18.4) | D | -- |
+| $\epsilon^{\rm LG}_{\mu\nu\rho\sigma}$ | the Levi-Civita symbol, $\epsilon^{\rm LG}_{0123}=+1$ | D | -- |
+| $\epsilon^{\rm LL}_{\iota\iota'\iota''}$ | the isospin generators $\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2$ and the Levi-Civita symbol of three indices | B.7, D | -- |
+| $\eta^{\rm LL}_{\mu\nu}$ | the Minkowski metric $\mathrm{diag}(1,-1,-1,-1)$ and its inverse | D | -- |
+| $\eta^{{\rm LL}\,\mu\nu}$ | the Minkowski metric $\mathrm{diag}(1,-1,-1,-1)$ and its inverse | D | -- |
+| $F^{\rm H}_{\rm LG}$ | the coefficients of the fine structure (20.4) and of the decay rate (20.5) at small $y_{\rm LG}$ | D | -- |
+| $f^{\rm RN}_{\rm LG}$ | the metric function of Reissner and Nordström and its outer horizon (30.1) | D | -- |
+| $F^{\rm u}_{\rm LG}$ | the strength of a uniform field, in atomic units, in Landau's rate (Section 32.3) | D | -- |
+| $f_{\bar\mu\bar\nu}$ | the dual $\tfrac12i\,\epsilon^{\rm LG}_{\mu\nu\rho\sigma}f^{\rho\sigma}$ of an antisymmetric tensor | D | -- |
+| $f_{\mu\nu}$ | the electromagnetic field strength, its potential and the electric charge (Lord's Sections 1 and 2) | D | -- |
+| $f_{\rm LG}$ | $1-2\mathcal M_{\rm LG}/r$; the speed $(2\mathcal M_{\rm LG}/r)^{1/2}$ and the proper time of the observers falling freely from rest at infinity (Painlevé-Gullstrand) | D | -- |
+| $F_{\rm LL}$ | the isospin generators, the fermion number, and the charge $T^3_{\rm LL}$ | B.7 | SM_Higgs, SuperLoop |
+| $f_{\rm Lord}$ | the current of the spin-2 field, the symmetric tensor from which it derives, its trace, and the coupling of Lord's Section 3 | D | -- |
+| $G^{\rm crit}_{\rm LL}$ | the critical coupling and the integral (A.19) | A.7 | SM_Higgs, SuperLoop |
+| $g^{\rm F}_{\rm LL}$ | the couplings of $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$ | B.7, D | SM_Higgs, SuperLoop |
+| $G^{\rm LG}_{\mu\nu}$ | the Ricci tensor, the scalar curvature and the Einstein tensor (14.3) | D | -- |
+| $g^{\rm LG}_{\mu\nu}$ | the metric of the tetrad and its inverse (13.2) (Lord's $g^{\rm Lord}$), and the volume element $\det e^{{\rm LG}\,a}{}_\mu$ | D | -- |
+| $g^{\rm Lord}_{\mu\nu}$ | the reference vectors (tetrad) and the metric | D | -- |
+| $G^{\rm S}_{\rm SF}$ | the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings | B.7, D | SM_Higgs |
+| $g^{\rm v}_{\rm LL}$ | the couplings of $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$ | B.7, D | SM_Higgs, SuperLoop |
+| $G^{\rm V}_{\rm SF}$ | the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings | B.7, D | SM_Higgs |
+| $g^{X,{\rm P}}_{\rm SF}$ | the effective couplings of the scalar and of the pair channel (B.15) | B.7 | SM_Higgs |
+| $g^{X,{\rm S}}_{\rm SF}$ | the effective couplings of the scalar and of the pair channel (B.15) | B.7 | SM_Higgs |
+| $g_a$ | the chemical potentials of the four charges, their susceptibilities, the mass matrix (B.23), the four gauge fields and their couplings | B.7 | -- |
+| $G_S$ | the couplings and the densities of the author's Kohn-Sham ansatz | B.7 | SM_Higgs |
+| $G_V$ | the couplings and the densities of the author's Kohn-Sham ansatz | B.7 | SM_Higgs |
+| $g_{\rm LG}^{\mu\nu}$ | the metric of the tetrad and its inverse (13.2) (Lord's $g^{\rm Lord}$), and the volume element $\det e^{{\rm LG}\,a}{}_\mu$ | D | -- |
+| $G_{\rm LL}$ | the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings | A.7, B.7, D | SM_Higgs, SuperLoop |
+| $g_{\rm Lord}$ | the auxiliary fields of the spinors, their coefficients (5.4), and the universal coupling | D | -- |
+| $G_{\rm N}$ | Newton's constant and the Planck mass, $G_{\rm N}=M_{\rm Pl}^{-2}$ | D | -- |
+| $\gamma^\mu_{\rm LG}$ | the Dirac matrices of the curved space-time (13.3), with the index lowered, and their antisymmetrized products | D | -- |
+| $\gamma^\mu_{\rm LL}$ | the Dirac matrices in the Weyl form (the chiral basis) and their antisymmetrized products | D | -- |
+| $\gamma^a_{\rm Lord}(x)$ | the Pauli-type matrices and the Dirac matrices as fields (5.2) | D | -- |
+| $\gamma^p_{\rm LL}$ | the Dirac matrices of the chiral basis, the chirality matrix and the charge-conjugation matrix | A.7 | SM_Higgs, SuperLoop |
+| $\gamma^p_{\rm LL}[\mathbf f]$ | the Dirac matrices of a frame (9.4) | D | SM_Higgs, SuperLoop |
+| $\gamma^{\mu\nu}_{\rm LG}$ | the Dirac matrices of the curved space-time (13.3), with the index lowered, and their antisymmetrized products | D | -- |
+| $\gamma^{\mu\nu}_{\rm LL}$ | the Dirac matrices in the Weyl form (the chiral basis) and their antisymmetrized products | D | -- |
+| $\gamma^{\rm ch}_{\rm LL}$ | the chirality matrix $i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}$ (minus Lord's $\gamma^5$) | A.7, D | SM_Higgs, SuperLoop |
+| $\gamma^{\rm LG}_\mu$ | the Dirac matrices of the curved space-time (13.3), with the index lowered, and their antisymmetrized products | D | -- |
+| $\Gamma^{\rm LL}_\mu$ | the spin connection of GEE, the gauge field of its $SL(2,\mathbb C)$ factor; in a curved space-time $\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$ (14.7) | D | -- |
+| $\Gamma^{\rm LL}_p$ | the spin connection of GEE, the gauge field of its $SL(2,\mathbb C)$ factor; in a curved space-time $\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$ (14.7) | B.7, D | SM_Higgs, SuperLoop |
+| $\Gamma^{\rm Lord}_a$ | the auxiliary fields of the spinors, their coefficients (5.4), and the universal coupling | D | -- |
+| $\Gamma^{\rm Lord}_{\mu\nu}{}^\rho$ | the affine connection, its torsion and its curvature (5.9) | D | -- |
+| $\Gamma^{\rm tid}_{\rm LG}$ | the energy and the rate of tunnelling of the ground state of the pair in a static tidal field (Section 32.3) | D | -- |
+| $\Gamma^{{\rm LG}\,\rho}{}_{\mu\nu}$ | the Christoffel symbols (14.1) and the covariant derivative on coordinate indices | D | -- |
+| $\gamma_{\rm LL}(\zeta)$ | $\gamma^a_{\rm LL}\eta^{\rm LL}_{ab}\zeta^b$ for a vector $\zeta$ (Section 15.3) | D | -- |
+| GEE | the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ of the brochon model (B.3) | B.7, D | SM_Higgs |
+| $H^{\rm BF}_{\rm LG}$ | the Breit-Fermi Hamiltonian (29.4), the relative momentum and the unit vector $\vec r/r$ | D | -- |
+| $h^{\rm Lord}_a{}^\mu$ | the reference vectors (tetrad) and the metric | D | -- |
+| $H^{\rm vac}_{\rm SF}$ | the surviving group (B.21), its gauge part, its identity component and its charge conjugation | B.7 | SM_Higgs |
+| $H_0$ | the observed energy density of the vacuum (31.2), the Hubble constant, and the fractions of the critical density in the vacuum and in matter | D | -- |
+| $h_{\rm LG}(r)$ | an arbitrary function in the static, spherically symmetric coframe of check WG-1 | D | -- |
+| $\hat n$ | the Breit-Fermi Hamiltonian (29.4), the relative momentum and the unit vector $\vec r/r$ | D | -- |
+| $I^{(1)}_{\rm SF}$ | the critical coupling and the integral (A.19) | A.7 | SM_Higgs |
+| J | the orbital angular momentum, the total spin and the total angular momentum of a level of the pair, the letter $S,P,D,\dots$ for $\ell=0,1,2,\dots$; the notation of a level (Section 29.3) | D | -- |
+| $J^\mu_{\rm LG}[\Psi]$ | the matrices $\gamma^0_{\rm LL}\gamma^\mu_{\rm LL}T^3_{\rm LL}$ and the zeugon current $\Psi^\dagger\mathsf G^\mu_{\rm LG}\Psi$ of a field (Section 33.2) | D | -- |
+| $J^j_{\rm LL}$ | the rotation and boost generators; a Lorentz generator | A.7 | SM_Higgs, SuperLoop |
+| $j^{\iota,\mu}_{\rm SF}$ | the fermion-number current and the isospin currents (Section 15.1); frame components of the first | D | -- |
+| $j^{\iota,p}_{\rm SF}$ | the isospin currents and the fermion-number current (B.8) | B.7 | SM_Higgs |
+| $j^{\rm Lord}$ | the current of the spin-2 field, the symmetric tensor from which it derives, its trace, and the coupling of Lord's Section 3 | D | -- |
+| $j^{\rm Lord}_{\mu\nu}$ | the current of the spin-2 field, the symmetric tensor from which it derives, its trace, and the coupling of Lord's Section 3 | D | -- |
+| $j^{\rm Lord}_{\nu\rho\sigma}$ | the current of the spin-2 field, the symmetric tensor from which it derives, its trace, and the coupling of Lord's Section 3 | D | -- |
+| $j^{{\rm F},\mu}_{\rm SF}$ | the fermion-number current and the isospin currents (Section 15.1); frame components of the first | D | -- |
+| $j^{{\rm F},a}$ | the fermion-number current and the isospin currents (Section 15.1); frame components of the first | D | -- |
+| $j^{{\rm F},p}_{\rm SF}$ | the isospin currents and the fermion-number current (B.8) | B.7 | SM_Higgs |
+| $J_{\rm LG}$ | the radial current (19.2): the flux into the sphere of radius $r$, per unit of the angular integral | D | -- |
+| $j_{\rm LG}$ | the total angular momentum of a partial wave and its component along the axis | D | -- |
+| $k$ | the generalized Laguerre polynomials, the spherical harmonics without angular momentum about the axis, their order, and the index of a Coulomb-Sturmian function | D | -- |
+| $K^j_{\rm LL}$ | the rotation and boost generators; a Lorentz generator | A.7 | SM_Higgs, SuperLoop |
+| $k^{\rm F}_{\rm LL}$ | the Fermi momentum | A.7 | SuperLoop |
+| $k^{\rm tid}_{\rm LG}$ | the tidal potential on the relative coordinate of the pair, its strength (32.1), and the Legendre polynomial $\tfrac12(3u^2-1)$ | D | -- |
+| $k_{\rm LG}$ | the wave vector and the polarization of a plane wave of the zeugon (15.10) | D | -- |
+| $\kappa^{\rm H}_{\rm LG}$ | the number of Dirac's theory of the hydrogen atom that tells apart the two states of the same $j$ | D | -- |
+| $\kappa^{\rm tid}_{\rm LG}$ | the proper time that the pair has left before $r=0$, and the strength of the tidal potential, both in the atomic units of the pair (32.2) | D | -- |
+| $\kappa_{\rm LG}$ | the blocks of a change of representation that keeps the chirality matrix, and the real factor of Theorem L1 | D | -- |
+| L | the orbital angular momentum, the total spin and the total angular momentum of a level of the pair, the letter $S,P,D,\dots$ for $\ell=0,1,2,\dots$; the notation of a level (Section 29.3) | D | SuperLoop |
+| $L^{(a)}_k$ | the generalized Laguerre polynomials, the spherical harmonics without angular momentum about the axis, their order, and the index of a Coulomb-Sturmian function | D | -- |
+| $l^{\rm LG}$ | the advanced and the retarded time of the Vaidya space-times, their null one-form, and the energy density of the null dust | D | -- |
+| $L_{\rm Lord}$ | its spinor matrices of $SL(2,\mathbb C)$ ($2\times2$) and on Dirac spinors ($4\times4$) | D | -- |
+| $\Lambda^*_{\rm LG}$ | the cutoff at which the condensation energy has the size of $\rho^\Lambda_{\rm LG}$ (31.3) | D | -- |
+| $\lambda^{\rm Lord}_{\mu\nu}$ | a Lorentz matrix of Lord's (2.3), and the parameters of an infinitesimal one | D | -- |
+| $\lambda^{\rm ph}_{\rm LG}$ | the angular velocity of light on the photon sphere, and the rate at which neighbouring rays leave it | D | -- |
+| $\lambda^{\rm P}_{\rm SF}$ | the scalar susceptibility (B.16) and the eigenvalues of the static response in the two channels | B.7 | SM_Higgs |
+| $\lambda^{\rm St}_{\rm LG}$ | the angle of the complex rotation and the scale of the Coulomb-Sturmian functions | D | -- |
+| $\lambda^{\rm S}_{\rm SF}$ | the scalar susceptibility (B.16) and the eigenvalues of the static response in the two channels | B.7 | SM_Higgs |
+| $\lambda_{\rm LG}$ | the separation constant, $\pm(j_{\rm LG}+\tfrac12)$, equal to $-\kappa^{\rm H}_{\rm LG}$ | D | -- |
+| $\Lambda_{\rm LG}{}^a{}_b$ | the Lorentz matrix of $\mathsf S$, $\mathsf S^{-1}\gamma^a_{\rm LL}\mathsf S=\Lambda_{\rm LG}{}^a{}_b\gamma^b_{\rm LL}$ (13.6) | D | -- |
+| $\Lambda_{\rm LL}$ | the mass, the chemical potential, the coupling and the momentum cutoff | A.7 | SM_Higgs, SuperLoop |
+| $\Lambda_{\rm Lord}$ | a Lorentz matrix of Lord's (2.3), and the parameters of an infinitesimal one | D | -- |
+| $\langle a,b\rangle_{\rm LG}$ | the charge product $\int2\,a^*b\,dr$ of two radial functions on a slice (Section 27) | D | -- |
+| M | shorthands for $M^{\rm CJT,D}_{\rm SF}$ and $D^{\rm CJT}_{\rm SF}$ in Theorem L2 | D | SuperLoop |
+| $m$ | the rest mass of a Bargmann-Wigner field | D | -- |
+| M31 | the space-time of the Hermitian bi-quaternions, a point, and its coordinates | D | SM_Higgs |
+| $M^{\rm CJT,D}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state of the brochon model (method CJT, Appendix B.5) | D | -- |
+| $M^{\rm CJT}_{A,{\rm SF}}$ | their masses in CJT | B.7 | -- |
+| $M^{\rm CJT}_{W,{\rm SF}}$ | the mass of the massive gauge bosons $W^1$, $W^2$ in that ground state | B.7, D | -- |
+| $M^{\rm CJT}_{Z,{\rm SF}}$ | their masses in CJT | B.7 | -- |
+| $m^{\rm pair}_{\rm LG}$ | the mass of one particle of the pair and the reduced mass $m^{\rm pair}_{\rm LG}/2$ | D | -- |
+| $m^{\rm qp}_{\rm LG}$ | the zeugon charge $\pm\tfrac12g^{\rm v}_{\rm LL}$ and the mass $E^{\rm CJT,gap}_{\rm SF}\Lambda_{\rm LL}$ of a quasi-particle | D | -- |
+| $M^{X,{\rm D}}_{\rm SF}$ | the Dirac mass, the pair amplitude and the gap of the polar ground state | B.7 | SM_Higgs |
+| $m_1$ | the masses of two particles (Section 29.2) | D | -- |
+| $m_2$ | the masses of two particles (Section 29.2) | D | -- |
+| $M_\odot$ | the mass of the Sun (Section 20.5) | D | -- |
+| $m_e$ | the mass and the charge of the electron and the strength of a uniform electric field, in Schwinger's rate (Section 30.3) | D | -- |
+| $M_{\rm LG}$ | the mass of a black hole (or of the Vaidya space-time), and $G_{\rm N}M_{\rm LG}$, the mass in units of length | D | -- |
+| $m_{\rm LL}$ | the brochon (eight components: Dirac index and isospin index) and its mass | A.7, D | SM_Higgs, SuperLoop |
+| $M_{\rm LL}(\mathbf b)$ | the $2\times2$ matrix of a bi-quaternion (9.1) | A.7, D | SM_Higgs, SuperLoop |
+| $M_{\rm Pl}$ | Newton's constant and the Planck mass, $G_{\rm N}=M_{\rm Pl}^{-2}$ | D | -- |
+| $m_{j,{\rm LG}}$ | the total angular momentum of a partial wave and its component along the axis | D | -- |
+| $\mathbb L_{\rm LL}$ | the Lorentz super-loop (A.5) | A.7 | SM_Higgs, SuperLoop |
+| $\mathbf a,\mathbf b,\mathbf c,\mathbf d,\mathbf t$ | quaternions or bi-quaternions; $\mathbf t$ of norm 1 in the isospin rotations | A.7 | -- |
+| $\mathbf b$ | a bi-quaternion, its four complex coefficients, and the units | D | SM_Higgs, SuperLoop |
+| $\mathbf b^*$ | the conjugate, the complex conjugate and the Hermitian conjugate of a bi-quaternion | D | -- |
+| $\mathbf b^\dagger$ | the conjugate, the complex conjugate and the Hermitian conjugate of a bi-quaternion | D | -- |
+| $\mathbf e^\mu_{\rm LG}$ | the Hermitian blocks of $\gamma^\mu_{\rm LG}$ and the four Hermitian bi-quaternions with $M_{\rm LL}(\mathbf e^\mu_{\rm LG})=\sigma^\mu_{\rm LG}$ (13.4) | D | -- |
+| $\mathbf e_0,\dots,\mathbf e_7$ | the units of the octonions (A.1), (A.2); $\mathbf e_0=1$ | A.7 | SM_Higgs, SuperLoop |
+| $\mathbf e_p$ | a bi-quaternion, its four complex coefficients, and the units | D | SM_Higgs, SuperLoop |
+| $\mathbf f_p$ | a frame: four Hermitian bi-quaternions with $N_{\rm LL}(\mathbf f_p,\mathbf f_q)=\eta^{\rm LL}_{pq}$ | D | SM_Higgs, SuperLoop |
+| $\mathbf g$ | a unit bi-quaternion ($N_{\rm LL}(\mathbf g)=1$), an element of $SL(2,\mathbb C)$, and $\tilde{\mathbf g}=\mathbf g^*$ | A.7, D | SM_Higgs, SuperLoop |
+| $\mathbf g(x)$ | a local GEE transformation and its matrix (B.4) | B.7 | -- |
+| $\mathbf g_{\rm boost}$ | the boost $\tfrac54\mathbf e_0+\tfrac34i\,\mathbf e_3$ of Appendix A.3, used in the examples of Sections 2.4 and 11.1 | A.7, D | -- |
+| $\mathbf g_{\rm rot}$ | an element of $SL(2,\mathbb C)$; the rotation and the boost of the examples | A.7 | -- |
+| $\mathbf u$ | the rotation and boost generators; a Lorentz generator | A.7 | SM_Higgs, SuperLoop |
+| $\mathbf x$ | the space-time of the Hermitian bi-quaternions, a point, and its coordinates | D | SM_Higgs, SuperLoop |
+| $\mathbf x,\mathbf y,\mathbf z,\mathbf w,\mathbf s$ | octonions or bi-octonions, and the elements of the examples | A.7 | -- |
+| $\mathbf x^\dagger$ | the bar (the signs of the imaginary units changed) and the bar with the complex conjugation | A.7 | SM_Higgs, SuperLoop |
+| $\mathcal C$ | shorthands, as in Theorem L3 | D | -- |
+| $\mathcal C_{\rm LG}$ | the antilinear map of the pairing term and its matrix $(\gamma^0_{\rm LL}\otimes\mathsf 1_2)(\mathsf K^3_{\rm LL})^\dagger$ (15.11) | D | -- |
+| $\mathcal E$ | the energy per volume of a uniform state, and of the ground state of the method $X$ | B.7 | -- |
+| $\mathcal E^X_{\rm SF}$ | the energy per volume of a uniform state, and of the ground state of the method $X$ | B.7 | SM_Higgs |
+| $\mathcal E^{\rm CJT}_{\rm SF}$ | the energy density of that ground state relative to the normal vacuum | D | -- |
+| $\mathcal E_{\rm LG}$ | the left side $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu\Psi_{\rm LL}-m_{\rm LL}\Psi_{\rm LL}$ of the free field equation (15.6) | D | -- |
+| $\mathcal F$ | the mass and the charge of the electron and the strength of a uniform electric field, in Schwinger's rate (Section 30.3) | D | -- |
+| $\mathcal H^{\rm sf}_{\rm LL}$ | the Hamiltonian (A.13) and the free Dirac Hamiltonian | A.7 | SuperLoop |
+| $\mathcal K_{\rm LG}$ | shorthand for the operator $i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu$ in the proof of Theorem L3 | D | -- |
+| $\mathcal L^\Psi_{\rm LG}$ | the Lagrangian density (15.2) in a curved space-time, its Dirac part (15.3), and the action | D | -- |
+| $\mathcal L^{\rm LG}$ | the Lagrangian density (15.2) in a curved space-time, its Dirac part (15.3), and the action | D | -- |
+| $\mathcal L_{\rm SF}$ | the Lagrangian density (B.9) and the self-interaction of step $n$ | B.7 | SM_Higgs |
+| $\mathcal M_{\rm LG}$ | the mass of a black hole (or of the Vaidya space-time), and $G_{\rm N}M_{\rm LG}$, the mass in units of length | D | -- |
+| $\mathcal M_{\rm LG}(0)$ | the mass of the black hole (in units of length) as a function of the advanced time, and at the start (Part V) | D | -- |
+| $\mathcal M_{\rm LG}(v_{\rm LG})$ | the mass of the black hole (in units of length) as a function of the advanced time, and at the start (Part V) | D | -- |
+| $\mathcal N^{\rm ad}_{\rm LG}(v_{\rm LG})$ | the charge of a brochon that follows the mass adiabatically in the state $1S_{1/2}$ (Section 26.1) | D | -- |
+| $\mathcal N^{\rm S}_{\rm LG}$ | the integral of $\lvert\mathcal P_{\rm LG}\rvert^2+\lvert\mathcal Q_{\rm LG}\rvert^2$ outside the horizon (20.3) | D | -- |
+| $\mathcal N^{\rm V}_{\rm LG}(v_{\rm LG})$ | the charge of the brochon on the slice $v_{\rm LG}=\text{const}$ (24.5) | D | -- |
+| $\mathcal P^{(n)}_{\rm LG}(r)$ | the profile of the state $n$ on a slice, its occupation (27.1), and the charge that the decomposition assigns to it | D | -- |
+| $\mathcal P^{\rm V}_{\rm LG}(v_{\rm LG},r)$ | the radial functions in the Vaidya space-time (24.1) | D | -- |
+| $\mathcal P_{\rm LG}(r)$ | the radial functions in the freely falling tetrad (18.5) | D | -- |
+| $\mathcal Q^{\rm V}_{\rm LG}(v_{\rm LG},r)$ | the radial functions in the Vaidya space-time (24.1) | D | -- |
+| $\mathcal Q^{\rm Z}_{\rm LG}$ | the zeugon charge of a black hole, and the same as a length, $(G_{\rm N}/4\pi)^{1/2}Q^{\rm Z}_{\rm LG}$ (30.1) | D | -- |
+| $\mathcal Q_{\rm LG}(r)$ | the radial functions in the freely falling tetrad (18.5) | D | -- |
+| $\mathcal T_{\rm LG}$ | the greybody factor of a partial wave, the fraction of an incoming wave that the black hole absorbs (21.1) | D | -- |
+| $\mathcal U_{\rm LG}(r)$ | the radial functions in the static tetrad (18.7) | D | -- |
+| $\mathcal U_{\rm LL}$ | a local GEE transformation and its matrix (B.4) | B.7 | SM_Higgs, SuperLoop |
+| $\mathcal V_{\rm LG}(r)$ | the radial functions in the static tetrad (18.7) | D | -- |
+| $\mathcal W^a_p$ | the chemical potentials of the four charges, their susceptibilities, the mass matrix (B.23), the four gauge fields and their couplings | B.7 | -- |
+| $\mathcal W_{n,{\rm LG}}$ | the profile of the state $n$ on a slice, its occupation (27.1), and the charge that the decomposition assigns to it | D | -- |
+| $\mathrm{tr}$ | the trace, and the trace of a $4\times4$ matrix normalized to $\mathrm{tr}_{\rm N}\mathsf 1_4=1$ | D | SM_Higgs, SuperLoop |
+| $\mathrm{tr}_{\rm N}$ | the trace, and the trace of a $4\times4$ matrix normalized to $\mathrm{tr}_{\rm N}\mathsf 1_4=1$ | D | -- |
+| $\mathsf 1_2$ | the unit matrices | A.7, D | SM_Higgs, SuperLoop |
+| $\mathsf 1_4$ | the unit matrices | A.7, D | SM_Higgs, SuperLoop |
+| $\mathsf A_{\rm LG}$ | the blocks of a change of representation that keeps the chirality matrix, and the real factor of Theorem L1 | D | -- |
+| $\mathsf a_{\rm LG}$ | the wave vector and the polarization of a plane wave of the zeugon (15.10) | D | -- |
+| $\mathsf B_{\rm LG}$ | the blocks of a change of representation that keeps the chirality matrix, and the real factor of Theorem L1 | D | -- |
+| $\mathsf C$ | the unknown matrix and the basis of the Hermitian matrices in the proof of Theorem L1 | D | -- |
+| $\mathsf C^{\rm n}_{\rm LL}$ | the normal and the pair correlation matrix, that of the normal vacuum (B.2), and the local matrices of (B.13) | B.7 | SM_Higgs, SuperLoop |
+| $\mathsf C^{\rm p}$ | the normal and the pair correlation matrix, that of the normal vacuum (B.2), and the local matrices of (B.13) | B.7 | -- |
+| $\mathsf C^{\rm p}_{\rm LL}$ | the normal and the pair correlation matrix, that of the normal vacuum (B.2), and the local matrices of (B.13) | B.7 | SM_Higgs, SuperLoop |
+| $\mathsf C^{\rm vac}_{\rm LL}$ | the normal and the pair correlation matrix, that of the normal vacuum (B.2), and the local matrices of (B.13) | B.7 | SM_Higgs, SuperLoop |
+| $\mathsf D_{\rm LL}$ | the matrix of Bogoliubov and de Gennes (A.15), the pair self-energy and its isospin factor | A.7 | SuperLoop |
+| $\mathsf E_{\rm LL}$ | the matrix $\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ (Lord's $\epsilon$) | A.7, D | SM_Higgs, SuperLoop |
+| $\mathsf F^{\rm v}_{\rm LG}$ | the reflection $\mathsf 1_4\otimes\tau^{\rm LL}_1$ of the unbroken group $O(2)$, which exchanges the isospin components and turns $T^3_{\rm LL}$ into $-T^3_{\rm LL}$ | D | -- |
+| $\mathsf G^\mu_{\rm LG}$ | the matrices $\gamma^0_{\rm LL}\gamma^\mu_{\rm LL}T^3_{\rm LL}$ and the zeugon current $\Psi^\dagger\mathsf G^\mu_{\rm LG}\Psi$ of a field (Section 33.2) | D | -- |
+| $\mathsf H_{\rm LG}$ | the constant matrix $i(\sigma^{\rm LL}_1+\sigma^{\rm LL}_3)/\sqrt2$ and $\mathrm{diag}(\mathsf H_{\rm LG},\mathsf H_{\rm LG})$ (18.3) | D | -- |
+| $\mathsf H_{\rm LL}$ | the matrix of Bogoliubov and de Gennes (A.15), the pair self-energy and its isospin factor | A.7 | -- |
+| $\mathsf h_{\rm LL}$ | the Hamiltonian (A.13) and the free Dirac Hamiltonian | A.7 | -- |
+| $\mathsf h_{\rm LL}(\vec q)$ | the free Dirac Hamiltonian and $(q^2+m_{\rm LL}^2)^{1/2}$ | B.7 | -- |
+| $\mathsf H_{\rm SF}(\vec q)$ | the normal and the pair self-energy, and the Bogoliubov-de Gennes matrix (B.14) | B.7 | -- |
+| $\mathsf K$ | a pair matrix of two Dirac spinors and its isospin factor | A.7 | -- |
+| $\mathsf K^\iota_{\rm LL}$ | the pair operators of spin zero and their matrices $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ | A.7, D | SM_Higgs, SuperLoop |
+| $\mathsf L_{\rm LL}(\mathbf g)$ | the Lorentz matrix of a unit bi-quaternion (9.2) | A.7, D | SM_Higgs, SuperLoop |
+| $\mathsf L_{\rm Lord}$ | its spinor matrices of $SL(2,\mathbb C)$ ($2\times2$) and on Dirac spinors ($4\times4$) | D | -- |
+| $\mathsf M_{{\rm SF},ab}$ | the chemical potentials of the four charges, their susceptibilities, the mass matrix (B.23), the four gauge fields and their couplings | B.7 | -- |
+| $\mathsf N_{\rm SF}$ | the normal and the pair self-energy, and the Bogoliubov-de Gennes matrix (B.14) | B.7 | -- |
+| $\mathsf P_{\rm LG}$ | the antilinear map of the pairing term and its matrix $(\gamma^0_{\rm LL}\otimes\mathsf 1_2)(\mathsf K^3_{\rm LL})^\dagger$ (15.11) | D | -- |
+| $\mathsf P_{\rm LL}$ | the matrix of Bogoliubov and de Gennes (A.15), the pair self-energy and its isospin factor | A.7 | SM_Higgs, SuperLoop |
+| $\mathsf P_{\rm SF}$ | the normal and the pair self-energy, and the Bogoliubov-de Gennes matrix (B.14) | B.7 | -- |
+| $\mathsf r$ | the surviving group (B.21), its gauge part, its identity component and its charge conjugation | B.7 | -- |
+| $\mathsf R_{\rm LL}(\mathsf U_{\rm LL})$ | an isospin rotation and its $3\times3$ rotation matrix (A.12) | A.7 | -- |
+| $\mathsf S$ | shorthand for the spinor matrix $\mathsf S_{\rm LL}(\mathbf g(x))$ of a local transformation (Sections 9.3, 13.2) | B.7, D | -- |
+| $\mathsf S^{\rm H}_{\rm LG}$ | the constant matrix $i(\sigma^{\rm LL}_1+\sigma^{\rm LL}_3)/\sqrt2$ and $\mathrm{diag}(\mathsf H_{\rm LG},\mathsf H_{\rm LG})$ (18.3) | D | -- |
+| $\mathsf S_{\rm LL}(\mathbf g)$ | the spinor matrix of a unit bi-quaternion (9.3) | D | SM_Higgs, SuperLoop |
+| $\mathsf S_{\rm Lord}$ | a change of representation (2.6): a unimodular $2\times2$ matrix, and its $4\times4$ form (5.1) | D | -- |
+| $\mathsf T$ | a matrix field by which a spinor index is transformed, in (5.5) and (5.6) | D | -- |
+| $\mathsf U_{\rm LL}$ | an isospin rotation and a phase of the fermion number (a local GEE transformation with $\mathbf g$) | A.7, D | SM_Higgs, SuperLoop |
+| $\mathsf U_{\rm LL}(x)$ | a local GEE transformation and its matrix (B.4) | B.7 | -- |
+| $\mathsf W_{{\rm SF},\mu\nu}$ | the field strengths of $SU(2)_{\rm v}$ (components and matrix) and of $U(1)^{\rm F}_{\rm LL}$ | D | -- |
+| $\mathsf W_{{\rm SF},pp'}$ | the field strengths (B.7) | B.7 | -- |
+| $\mathsf W_{{\rm SF},p}$ | the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index | B.7, D | SM_Higgs |
+| $\mathsf X$ | matrices of two bilinears in (B.13) | B.7 | -- |
+| $\mathsf X_{\rm LL}$ | a pair matrix of two Dirac spinors and its isospin factor | A.7 | -- |
+| $\mathsf Y$ | matrices of two bilinears in (B.13) | B.7 | -- |
+| $\mu^a_{\rm SF}$ | the chemical potentials of the four charges, their susceptibilities, the mass matrix (B.23), the four gauge fields and their couplings | B.7 | SM_Higgs |
+| $\mu^{\rm pair}_{\rm LG}$ | the mass of one particle of the pair and the reduced mass $m^{\rm pair}_{\rm LG}/2$ | D | -- |
+| $\mu_{\rm LL}$ | the mass, the chemical potential, the coupling and the momentum cutoff | A.7 | SM_Higgs, SuperLoop |
+| $n$ | the couplings and the densities of the author's Kohn-Sham ansatz | B.7 | SM_Higgs |
+| $n^{\rm QNM}_{\rm LG}$ | the complex frequency, the angular number and the overtone number of a quasi-normal mode | D | -- |
+| $N^{\rm qp}_{\rm LG}$ | the number of quasi-particles: the particles minus the antiparticles of $\chi'_{\rm LG}$, conserved by the zeugon | D | -- |
+| $n^{\rm S}_{\rm SF}$ | a uniform scalar density and a shift of the Dirac mass | B.7 | SM_Higgs |
+| $n^{\rm Z}_{\rm LG}$ | a number of zeugons (Section 33.3) | D | -- |
+| $n_S$ | the couplings and the densities of the author's Kohn-Sham ansatz | B.7 | SM_Higgs |
+| $n_{\rm LG}$ | the principal quantum number and the orbital angular momentum of a state (Section 18.4) | D | -- |
+| $N_{\rm LG}(X,Y)$ | the polarized determinant $\tfrac12(\det(X+Y)-\det X-\det Y)$, the Minkowski product of two Hermitian matrices (2.7) | D | -- |
+| $n_{\rm LG}\,{}^{2S+1}L_J$ | the orbital angular momentum, the total spin and the total angular momentum of a level of the pair, the letter $S,P,D,\dots$ for $\ell=0,1,2,\dots$; the notation of a level (Section 29.3) | D | -- |
+| $N_{\rm LL}(\mathbf b)$ | the complex norm $\det M_{\rm LL}(\mathbf b)$ and its polarization | D | -- |
+| $N_{\rm LL}(\mathbf b,\mathbf b')$ | the complex norm $\det M_{\rm LL}(\mathbf b)$ and its polarization | D | -- |
+| $N_{\rm LL}(\mathbf x)$ | the norm, $\sum_p(\xi^{\rm LL}_p)^2$ | A.7 | SM_Higgs, SuperLoop |
+| $\nabla^{\rm GEE}_p$ | the GEE covariant derivative of the brochon (9.5) | B.7, D | SM_Higgs |
+| $\nabla^{\rm LG}_\mu$ | the Christoffel symbols (14.1) and the covariant derivative on coordinate indices | D | -- |
+| $O(2)$ | the surviving group (B.21), its gauge part, its identity component and its charge conjugation | B.7 | SM_Higgs, SuperLoop |
+| $O_{n,{\rm LG}}$ | the profile of the state $n$ on a slice, its occupation (27.1), and the charge that the decomposition assigns to it | D | -- |
+| $\omega^{\rm LG}_\mu{}^a{}_b$ | the spin connection of the tetrad (14.4), with the first frame index lowered, and its frame components (14.6) | D | -- |
+| $\omega^{\rm LG}_{\mu\,ab}$ | the spin connection of the tetrad (14.4), with the first frame index lowered, and its frame components (14.6) | D | -- |
+| $\omega^{\rm LG}_{c\,ab}$ | the spin connection of the tetrad (14.4), with the first frame index lowered, and its frame components (14.6) | D | -- |
+| $\Omega^{\rm L}_{{\rm SF},\mu\nu}$ | the curvature of the Lorentz connection, $\tfrac14R^{\rm LG}_{ab\mu\nu}\gamma^{ab}_{\rm LL}$ (14.11) | D | -- |
+| $\Omega^{\rm L}_{{\rm SF},pp'}$ | the field strengths (B.7) | B.7 | SM_Higgs |
+| $\Omega^{\rm ph}_{\rm LG}$ | the angular velocity of light on the photon sphere, and the rate at which neighbouring rays leave it | D | -- |
+| $\omega^{\rm QNM}_{\rm LG}$ | the complex frequency, the angular number and the overtone number of a quasi-normal mode | D | -- |
+| $\omega^{\rm S}_{\rm LG}$ | the frequency of a partial wave in the Schwarzschild field (time dependence $e^{-i\omega^{\rm S}_{\rm LG}\tau_{\rm LG}}$), complex for a quasi-bound state | D | -- |
+| $\Omega_\Lambda$ | the observed energy density of the vacuum (31.2), the Hubble constant, and the fractions of the critical density in the vacuum and in matter | D | -- |
+| $\Omega_{\rm LG}$ | a conformal factor, $g^{\rm LG}=\Omega_{\rm LG}^2\eta^{\rm LL}$ (15.9) | D | -- |
+| $\Omega_{\rm LL}$ | the grand potential per volume (A.17) | A.7 | SuperLoop |
+| $\Omega_{\rm m}$ | the observed energy density of the vacuum (31.2), the Hubble constant, and the fractions of the critical density in the vacuum and in matter | D | -- |
+| $P^{\rm esc}_{\rm LG}$ | the probabilities that the pair is beyond its barrier, no longer in its ground state $1s$, and more than 10 Bohr radii apart (Section 32.4) | D | -- |
+| $P^{\rm exc}_{\rm LG}$ | the probabilities that the pair is beyond its barrier, no longer in its ground state $1s$, and more than 10 Bohr radii apart (Section 32.4) | D | -- |
+| $p^{\rm LG}_s$ | the momentum, the constant spinor, the Volkov solution and its phase (15.10) | D | -- |
+| $P^{\rm sep}_{\rm LG}$ | the probabilities that the pair is beyond its barrier, no longer in its ground state $1s$, and more than 10 Bohr radii apart (Section 32.4) | D | -- |
+| $p^{\rm V}_{\rm LG}(r)$ | the radial functions of one frequency for a constant mass (24.6), and $v_{\rm LG}-\tau_{\rm LG}$ (24.7) | D | -- |
+| $P_2(u)$ | the tidal potential on the relative coordinate of the pair, its strength (32.1), and the Legendre polynomial $\tfrac12(3u^2-1)$ | D | -- |
+| $P_{\rm LG}$ | the momentum $(\tfrac{17}8,0,0,\tfrac{15}8)$ of the plane wave of the examples (Appendix B.1, Section 16.1) | B.7, D | -- |
+| $\phi$ | a spinor field in the proof of (33.1) | D | -- |
+| $\Phi^\iota_{\rm SF}$ | the pair field and its components (B.20) | B.7 | -- |
+| $\phi^{\rm vac}_{\rm SF}$ | the phase and the isospin direction of a vacuum; the unit vectors of isospin space | B.7 | -- |
+| $\phi_{\mathbf g}$ | the automorphism (A.10) | A.7 | -- |
+| $\Pi^\iota_{\rm LL}$ | the pair operators of spin zero and their matrices $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ | A.7, B.7, D | SM_Higgs, SuperLoop |
+| $\psi'_{\rm H}$ | the nuclear charges, the ground states and the Bohr radius of the example of Section 26.1 | D | -- |
+| $\psi'_{\rm LL}$ | the matrix of the Weyl spinors of a spinor charge and $i\sigma^{\rm LL}_2$ (A.11) | A.7 | SM_Higgs, SuperLoop |
+| $\psi(0)$ | the wave function of the ground state of the pair at zero distance | D | -- |
+| $\psi^{(0)}_{\rm LG}$ | the ground state of the free pair and its first-order correction in the tidal field (32.5) | D | -- |
+| $\psi^{(1)}_{\rm LG}$ | the ground state of the free pair and its first-order correction in the tidal field (32.5) | D | -- |
+| $\psi^{\rm LG}_s$ | the momentum, the constant spinor, the Volkov solution and its phase (15.10) | D | -- |
+| $\psi^{\rm Lord}_{A_1\dots A_{2s}}$ | a Bargmann-Wigner field of spin $s$; capital Latin letters are Dirac spinor indices | D | -- |
+| $\psi^{\rm pair}_{\rm LG}$ | the wave function of the relative motion of the pair (32.7), and its radial functions | D | -- |
+| $\Psi_i$ | the components of the field operators, and the column of the adjoints of the components (Section 33.1) | D | -- |
+| $\psi_{\rm H}$ | the nuclear charges, the ground states and the Bohr radius of the example of Section 26.1 | D | -- |
+| $\Psi_{\rm LL}$ | the brochon (eight components: Dirac index and isospin index) and its mass | A.7, B.7, D | SM_Higgs, SuperLoop |
+| $\Psi_{{\rm LL},c}$ | the brochon, its eight components, its Dirac adjoint | B.7 | -- |
+| $Q^{\rm acc}_{\rm LG}$ | the zeugon charge of a black hole at which its field reaches the critical field, and the limit by accretion (30.5) | D | -- |
+| $Q^{\rm LG}_s$ | the isospin component of the brochon, its charge $\pm\tfrac12$ of $Q_{\rm LL}$, and its isospin vector | D | -- |
+| $q^{\rm qp}_{\rm LG}$ | the zeugon charge $\pm\tfrac12g^{\rm v}_{\rm LL}$ and the mass $E^{\rm CJT,gap}_{\rm SF}\Lambda_{\rm LL}$ of a quasi-particle | D | -- |
+| $Q^{\rm S}_{\rm LG}$ | the zeugon charge of a black hole at which its field reaches the critical field, and the limit by accretion (30.5) | D | -- |
+| $q^{\rm V}_{\rm LG}(r)$ | the radial functions of one frequency for a constant mass (24.6), and $v_{\rm LG}-\tau_{\rm LG}$ (24.7) | D | -- |
+| $Q^{\rm Z}_{\rm LG}$ | the zeugon charge of a black hole, and the same as a length, $(G_{\rm N}/4\pi)^{1/2}Q^{\rm Z}_{\rm LG}$ (30.1) | D | -- |
+| $Q_1$ | two charges, their distance, and the strength $(g^{\rm v}_{\rm LL})^2/(16\pi)$ of the zeugon potential | B.7 | -- |
+| $Q_2$ | two charges, their distance, and the strength $(g^{\rm v}_{\rm LL})^2/(16\pi)$ of the zeugon potential | B.7 | -- |
+| $Q_{\rm LL}$ | the third isospin generator, the charge $Q_{\rm LL}=T^3_{\rm LL}$ of the zeugon, and the direction of the polar condensate | B.7, D | SM_Higgs, SuperLoop |
+| $r$ | the coordinates of Schwarzschild and the metric of the unit sphere | D | -- |
+| $r^{\rm cm}_{\rm LG}$ | the radius of the centre of mass of the pair in the coordinates of Schwarzschild (Section 32.1) | D | -- |
+| $R^{\rm LG}$ | the Ricci tensor, the scalar curvature and the Einstein tensor (14.3) | D | -- |
+| $R^{\rm LG}_{\rho\sigma\mu\nu}$ | the Riemann tensor (14.2), with all indices lowered, and in the frame (14.11) | D | -- |
+| $R^{\rm LG}_{\sigma\nu}$ | the Ricci tensor, the scalar curvature and the Einstein tensor (14.3) | D | -- |
+| $R^{\rm Lord}_{\mu\nu\rho}{}^\sigma$ | the affine connection, its torsion and its curvature (5.9) | D | -- |
+| $r^{\rm ph}_{\rm LG}$ | the radius of the shadow and the radius of the photon sphere (30.6) | D | -- |
+| $R^{{\rm LG}\,\rho}{}_{\sigma\mu\nu}$ | the Riemann tensor (14.2), with all indices lowered, and in the frame (14.11) | D | -- |
+| $R^{{\rm LG}\,a}{}_{b\mu\nu}$ | the Riemann tensor (14.2), with all indices lowered, and in the frame (14.11) | D | -- |
+| $r_{+,\rm LG}$ | the metric function of Reissner and Nordström and its outer horizon (30.1) | D | -- |
+| $r_{12}$ | two charges, their distance, and the strength $(g^{\rm v}_{\rm LL})^2/(16\pi)$ of the zeugon potential | B.7 | -- |
+| $R_{\mu\nu\alpha\beta}$ | the curvature of a connection of the vectors, with its last two indices lowered (5.11) | D | -- |
+| $\rho^\Lambda_{\rm LG}$ | the observed energy density of the vacuum (31.2), the Hubble constant, and the fractions of the critical density in the vacuum and in matter | D | -- |
+| $\rho_{\rm LG}$ | the advanced and the retarded time of the Vaidya space-times, their null one-form, and the energy density of the null dust | D | -- |
+| S | the orbital angular momentum, the total spin and the total angular momentum of a level of the pair, the letter $S,P,D,\dots$ for $\ell=0,1,2,\dots$; the notation of a level (Section 29.3) | D | SM_Higgs |
+| $s$ | the isospin component of the brochon, its charge $\pm\tfrac12$ of $Q_{\rm LL}$, and its isospin vector | B.7, D | -- |
+| $s^{\rm HS,S}_{\rm SF}$ | the auxiliary scalar field of HS and the HS parameters | B.7 | SM_Higgs |
+| $s^{\rm HS,V}_{\rm SF}$ | the auxiliary scalar field of HS and the HS parameters | B.7 | SM_Higgs |
+| $S^{\rm LG}$ | the Lagrangian density (15.2) in a curved space-time, its Dirac part (15.3), and the action | D | -- |
+| $S_{\rm Lord}$ | a change of representation (2.6): a unimodular $2\times2$ matrix, and its $4\times4$ form (5.1) | D | -- |
+| $\sigma^\mu_{\rm LG}$ | the Hermitian blocks of $\gamma^\mu_{\rm LG}$ and the four Hermitian bi-quaternions with $M_{\rm LL}(\mathbf e^\mu_{\rm LG})=\sigma^\mu_{\rm LG}$ (13.4) | D | -- |
+| $\sigma^a_{\rm Lord}(x)$ | the Pauli-type matrices and the Dirac matrices as fields (5.2) | D | -- |
+| $\sigma^{\mu\nu}_{\rm LG}$ | $\tfrac12(\sigma^{\rm LL}_\mu\bar\sigma^{\rm LL}_\nu-\sigma^{\rm LL}_\nu\bar\sigma^{\rm LL}_\mu)$ (Lord's $\sigma^{\mu\nu}$) | D | -- |
+| $\sigma^{\rm HS}_{\rm SF}$ | the auxiliary scalar field of HS and the HS parameters | B.7 | SM_Higgs |
+| $\Sigma^{\rm LG}_s$ | the momentum, the constant spinor, the Volkov solution and its phase (15.10) | D | -- |
+| $\sigma^{\rm LL}_\mu$ | the unit matrix and the Pauli matrices (Lord's $\sigma^\mu$) | D | -- |
+| $\sigma^{\rm LL}_j$ | the Pauli matrices on the spinor and on the isospin index; the unit matrices | A.7 | SM_Higgs, SuperLoop |
+| $SU(2)_{\rm v}$ | the isospin rotations, the phases of the fermion number, and the gauge group (B.3) | B.7 | SM_Higgs, SuperLoop |
+| $t$ | the coordinates of Schwarzschild and the metric of the unit sphere | D | -- |
+| $T^3_{\rm LL}$ | the third isospin generator, the charge $Q_{\rm LL}=T^3_{\rm LL}$ of the zeugon, and the direction of the polar condensate | A.7, D | -- |
+| $T^\iota_{\rm LL}$ | the isospin generators $\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2$ and the Levi-Civita symbol of three indices | B.7, D | SM_Higgs, SuperLoop |
+| $T^{\Psi,{\rm LG}}_{\mu\nu}$ | the energy-momentum tensors of the brochon (16.2), of the self-interaction (16.4), of the gauge fields (16.5), of the zeugon, and their sum (16.8) | D | -- |
+| $t^{\rm c}_{\rm LG}$ | the duration of the change of the mass, and the smooth step (23.4) | D | -- |
+| $T^{\rm fall}_{\rm LG}$ | the proper time that the pair has left before $r=0$, and the strength of the tidal potential, both in the atomic units of the pair (32.2) | D | -- |
+| $T^{\rm LG}_{\mu\nu}$ | the energy-momentum tensors of the brochon (16.2), of the self-interaction (16.4), of the gauge fields (16.5), of the zeugon, and their sum (16.8) | D | -- |
+| $T^{\rm Lord}_{\mu\nu}{}^\rho$ | the affine connection, its torsion and its curvature (5.9) | D | -- |
+| $T^{\rm self,LG}_{\mu\nu}$ | the energy-momentum tensors of the brochon (16.2), of the self-interaction (16.4), of the gauge fields (16.5), of the zeugon, and their sum (16.8) | D | -- |
+| $T^{\rm YM,LG}_{\mu\nu}$ | the energy-momentum tensors of the brochon (16.2), of the self-interaction (16.4), of the gauge fields (16.5), of the zeugon, and their sum (16.8) | D | -- |
+| $T^{\rm Z,LG}_{\mu\nu}$ | the energy-momentum tensors of the brochon (16.2), of the self-interaction (16.4), of the gauge fields (16.5), of the zeugon, and their sum (16.8) | D | -- |
+| $\tau^{\rm end}_{\rm LG}$ | the proper time at which the centre of mass of the falling pair would reach $r=0$ | D | -- |
+| $\tau^{\rm LL}_\iota$ | the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index | D | SM_Higgs, SuperLoop |
+| $\tau^{\rm LL}_a$ | the Pauli matrices on the spinor and on the isospin index; the unit matrices | A.7 | -- |
+| $\tau^{\rm qp}_{\rm LG}$ | the proper time of a falling charged quasi-particle, and the length that decides whether it reaches the horizon (30.2) | D | -- |
+| $\tau_{\rm LG}$ | $1-2\mathcal M_{\rm LG}/r$; the speed $(2\mathcal M_{\rm LG}/r)^{1/2}$ and the proper time of the observers falling freely from rest at infinity (Painlevé-Gullstrand) | D | -- |
+| $\theta$ | the coordinates of Schwarzschild and the metric of the unit sphere | D | -- |
+| $\theta^{\rm cr}_{\rm LG}$ | the angle of the complex rotation and the scale of the Coulomb-Sturmian functions | D | -- |
+| $\theta^{\rm F}_{\rm LL}$ | an isospin rotation and a phase of the fermion number (a local GEE transformation with $\mathbf g$) | D | SM_Higgs, SuperLoop |
+| $\theta^{\rm F}_{\rm LL}(x)$ | a local GEE transformation and its matrix (B.4) | B.7 | -- |
+| $\Theta^{\rm LG}_{\mu\nu}$ | the response of the action to the tetrad (16.1) | D | -- |
+| $\theta_{\rm r}$ | the angle of a rotation; the rapidity of a boost | A.7 | -- |
+| $\tilde{\mathbf g}$ | a unit bi-quaternion ($N_{\rm LL}(\mathbf g)=1$), an element of $SL(2,\mathbb C)$, and $\tilde{\mathbf g}=\mathbf g^*$ | D | SM_Higgs, SuperLoop |
+| $\tilde{\mathcal M}_{\rm LG}$ | $\mathcal M_{\rm LG}\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2$, the gravitational radius of the black hole in the atomic unit of time of the pair (32.3) | D | -- |
+| $U(1)^{\rm F}_{\rm LL}$ | the isospin rotations, the phases of the fermion number, and the gauge group (B.3) | B.7 | SM_Higgs, SuperLoop |
+| $U(1)^{\rm Q}_{\rm LL}$ | the unbroken group of the charge $Q_{\rm LL}$ in the superfluid | B.7, D | SM_Higgs, SuperLoop |
+| $u_\ell(r)$ | the wave function of the relative motion of the pair (32.7), and its radial functions | D | -- |
+| $u_{\rm LG}$ | the advanced and the retarded time of the Vaidya space-times, their null one-form, and the energy density of the null dust | D | -- |
+| $u_{\rm LL}$ | the Dirac spinor of the example | A.7, B.7 | -- |
+| $V^{(n)}_{\rm SF}$ | the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings | B.7, D | SM_Higgs |
+| $V^{\rm tid}_{\rm LG}$ | the tidal potential on the relative coordinate of the pair, its strength (32.1), and the Legendre polynomial $\tfrac12(3u^2-1)$ | D | -- |
+| $V^{\rm Z}_{\rm LG}(r)$ | the potential energy of two quasi-particles of opposite charge, and its strength $(g^{\rm v}_{\rm LL})^2/(16\pi)$ (29.1) | D | -- |
+| $v_{\rm LG}$ | the advanced and the retarded time of the Vaidya space-times, their null one-form, and the energy density of the null dust | D | -- |
+| $\varepsilon^{\rm KO}_{\rm LG}$ | the spacing of the grid and the strength of the dissipation of Kreiss and Oliger (Section 25.1) | D | -- |
+| $\varepsilon_{\rm LL}$ | a momentum and the energy of a plane wave | A.7, B.7, D | SM_Higgs, SuperLoop |
+| $\varkappa_\pm$ | $\tfrac12(1\pm f_{\rm LG})$, in the example of Section 23.2 | D | -- |
+| $\varphi$ | the coordinates of Schwarzschild and the metric of the unit sphere | D | -- |
+| $\varpi_{\rm LG}(x)$ | the duration of the change of the mass, and the smooth step (23.4) | D | -- |
+| $\varsigma_{\rm LG}$ | an exponent of the radial equations at a regular singular point (19.1) | D | -- |
+| $\vartheta$ | the angle of a rotation; the rapidity of a boost | A.7 | -- |
+| $\vartheta^{\rm V}_{\rm LG}$ | the rapidity $-\ln(1+w_{\rm LG})$ of the boost that turns the freely falling coframe into the coframe (23.3) | D | -- |
+| $\vec d_{\rm LL}$ | the isovector order parameter | A.7 | SM_Higgs, SuperLoop |
+| $\vec e_\iota$ | the phase and the isospin direction of a vacuum; the unit vectors of isospin space | B.7 | -- |
+| $\vec L$ | the orbital angular momentum of the pair, the two spins and the total spin | D | -- |
+| $\vec n$ | the third isospin generator, the charge $Q_{\rm LL}=T^3_{\rm LL}$ of the zeugon, and the direction of the polar condensate | B.7, D | -- |
+| $\vec p$ | the Breit-Fermi Hamiltonian (29.4), the relative momentum and the unit vector $\vec r/r$ | D | -- |
+| $\vec q_{\rm LL}$ | a momentum and the energy of a plane wave | D | SM_Higgs, SuperLoop |
+| $\vec r$ | the relative coordinate of the two quasi-particles of the pair, their distance, the components of $\vec r$ ($z$ along the radius of the black hole in Section 32), and the angle of $\vec r$ from that radius | D | -- |
+| $\vec S$ | the orbital angular momentum of the pair, the two spins and the total spin | D | -- |
+| $\vec S_1$ | the orbital angular momentum of the pair, the two spins and the total spin | D | -- |
+| $\vec S_2$ | the orbital angular momentum of the pair, the two spins and the total spin | D | -- |
+| $\vec\Phi_{\rm SF}$ | the pair field and its components (B.20) | B.7 | -- |
+| $W^\iota_{{\rm SF},\mu\nu}$ | the field strengths of $SU(2)_{\rm v}$ (components and matrix) and of $U(1)^{\rm F}_{\rm LL}$ | D | -- |
+| $W^\iota_{{\rm SF},pp'}$ | the field strengths (B.7) | B.7 | SM_Higgs |
+| $W^\iota_{{\rm SF},p}$ | the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index | B.7, D | SM_Higgs |
+| $W^\pm_{{\rm SF},p}$ | the massive charged bosons, the massive neutral boson and the zeugon | B.7 | SM_Higgs |
+| $W^{\rm abs}_{\rm LG}(r)$ | the absorbing potential at the edge of the grid (Section 32.4) | D | -- |
+| $w^{\rm F}_{\rm SF}$ | the weights of the direct, the exchange and the pair contraction | B.7 | SM_Higgs |
+| $w^{\rm H}_{\rm SF}$ | the weights of the direct, the exchange and the pair contraction | B.7 | SM_Higgs |
+| $w^{\rm LG}_{ab}$ | the real coefficients of an element of the Lorentz algebra (proof of Theorem L2) | D | -- |
+| $w^{\rm P}_{\rm SF}$ | the weights of the direct, the exchange and the pair contraction | B.7 | SM_Higgs |
+| $W_\mu$ | a connection of the vectors as a matrix $(W_\mu)_b{}^e$ and with both indices lowered (5.11) | D | -- |
+| $W_{\mu\,ab}$ | a connection of the vectors as a matrix $(W_\mu)_b{}^e$ and with both indices lowered (5.11) | D | -- |
+| $w_{\rm LG}$ | $1-2\mathcal M_{\rm LG}/r$; the speed $(2\mathcal M_{\rm LG}/r)^{1/2}$ and the proper time of the observers falling freely from rest at infinity (Painlevé-Gullstrand) | D | -- |
+| X | a method: HS, KS or CJT | B.7 | SM_Higgs |
+| $x$ | the relative coordinate of the two quasi-particles of the pair, their distance, the components of $\vec r$ ($z$ along the radius of the black hole in Section 32), and the angle of $\vec r$ from that radius | D | -- |
+| $x^\mu$ | the coordinates of a curved space-time; Greek indices are raised and lowered with $g^{\rm LG}_{\mu\nu}$ in Part III | A.7, D | -- |
+| $x^p$ | the space-time of the Hermitian bi-quaternions, a point, and its coordinates | D | -- |
+| $x^{\rm acc}_{\rm LG}$ | the proper time of a falling charged quasi-particle, and the length that decides whether it reaches the horizon (30.2) | D | -- |
+| $X^{\rm Lord}_{ab}{}^c$ | Lord's derivative operators and the coefficients of their commutators | D | -- |
+| $x_0$ | the point of a local solution (Section 16.1) | D | -- |
+| $X_r$ | the unknown matrix and the basis of the Hermitian matrices in the proof of Theorem L1 | D | -- |
+| $\xi^{\rm LG}_s$ | the momentum, the constant spinor, the Volkov solution and its phase (15.10) | D | -- |
+| $\xi^{\rm LL}_p$ | the complex and the real coefficients of a bi-octonion and of a quaternion | A.7 | -- |
+| $\xi^{\rm LL}_p(\mathbf b)$ | a bi-quaternion, its four complex coefficients, and the units | D | -- |
+| $y$ | the relative coordinate of the two quasi-particles of the pair, their distance, the components of $\vec r$ ($z$ along the radius of the black hole in Section 32), and the angle of $\vec r$ from that radius | D | -- |
+| $Y^{\iota,\lambda}_{\rm LG}$ | the left sides of the Yang-Mills equations in a curved space-time (16.7) | D | -- |
+| $y^{\rm qp}_{\rm LG}$ | $G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}/(\hbar c)$, the coupling $y_{\rm LG}$ of Part IV for the quasi-particle (30.5) | D | -- |
+| $Y^{{\rm F},\lambda}_{\rm LG}$ | the left sides of the Yang-Mills equations in a curved space-time (16.7) | D | -- |
+| $Y_{\ell0}$ | the generalized Laguerre polynomials, the spherical harmonics without angular momentum about the axis, their order, and the index of a Coulomb-Sturmian function | D | -- |
+| $y_{\rm LG}$ | $\mathcal M_{\rm LG}m_{\rm LL}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, the coupling of the gravitational atom (18.1) | D | -- |
+| $z$ | the relative coordinate of the two quasi-particles of the pair, their distance, the components of $\vec r$ ($z$ along the radius of the black hole in Section 32), and the angle of $\vec r$ from that radius | D | -- |
+| $Z'_{\rm H}$ | the nuclear charges, the ground states and the Bohr radius of the example of Section 26.1 | D | -- |
+| $z^{\rm top}_{\rm LG}$ | the position of the top of the barrier on the radial axis (Section 32.2) | D | -- |
+| $Z_{\rm H}$ | the nuclear charges, the ground states and the Bohr radius of the example of Section 26.1 | D | -- |
+| $Z_{{\rm SF},p}$ | the massive charged bosons, the massive neutral boson and the zeugon | B.7 | SM_Higgs |
+| $\zeta\cdot\zeta'$ | a vector field and a one-form in (14.1), (14.2); the Minkowski product of two frame vectors (Section 15.3) | D | -- |
+| $\zeta^\rho$ | a vector field and a one-form in (14.1), (14.2); the Minkowski product of two frame vectors (Section 15.3) | D | -- |
+| $\zeta_\nu$ | a vector field and a one-form in (14.1), (14.2); the Minkowski product of two frame vectors (Section 15.3) | D | -- |
+| $\zeta_{\rm LL}$ | a gap, the two gaps and the measure of non-unitarity (A.16) | A.7 | SM_Higgs, SuperLoop |
+
+# 4. The symbols shared with the other folders
+
+The 86 symbols with the suffix LL or SF that the registry of `Revision_SM_Higgs` or of `Revision_SuperLoop` lists
+with the same text, each with its meaning in the three registries ("-- (not listed)" where a registry does not list it), in the
+order of Table 1. The meanings are written for different texts and differ in their words and in their detail; the reader can
+compare them and see that each symbol names one object. (A list, not a table: several meanings contain long formulas that do not
+fit into the narrow cells of a table.)
+
+* $A_{{\rm SF},p}$
+    * in this folder (B.7): the massive charged bosons, the massive neutral boson and the zeugon
+    * in Revision_SM_Higgs: the gauge fields of definite mass after the breaking of the symmetry of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, named after the Standard Model (the names only: the group is a new one): the fields $(W^1_{{\rm SF},p}\mp iW^2_{{\rm SF},p})/\sqrt2$ of the charges $Q_{\rm LL}=\pm1$, the massive field of charge 0 and the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, which is not the photon and is named the zeugon (their expressions in $W^3_{{\rm SF},p}$ and $B_{{\rm SF},p}$ are derived in the solution)
+    * in Revision_SuperLoop: -- (not listed)
+* $B_{{\rm SF},pp'}$
+    * in this folder (B.7): the field strengths (B.7)
+    * in Revision_SM_Higgs: the field strengths $\partial_pW^\iota_{{\rm SF},p'}-\partial_{p'}W^\iota_{{\rm SF},p}-g^{\rm v}_{\rm LL}\sum\epsilon^{\rm LL}_{\iota\iota'\iota''}W^{\iota'}_{{\rm SF},p}W^{\iota''}_{{\rm SF},p'}$ and $\partial_pB_{{\rm SF},p'}-\partial_{p'}B_{{\rm SF},p}$
+    * in Revision_SuperLoop: -- (not listed)
+* $B_{{\rm SF},p}$
+    * in this folder (B.7, D): the gauge field of $U(1)^{\rm F}_{\rm LL}$
+    * in Revision_SM_Higgs: the gauge field of $U(1)^{\rm F}_{\rm LL}$: a real vector field on M31 (it enters the covariant derivative with $+ig^{\rm F}_{\rm LL}F_{\rm LL}$)
+    * in Revision_SuperLoop: -- (not listed)
+* $\bar\Psi_{\rm LL}$
+    * in this folder (B.7): the brochon, its eight components, its Dirac adjoint
+    * in Revision_SM_Higgs: the eight components of $\Psi_{\rm LL}$ (components 1, 2: first Dirac component, isospin up and down; 3, 4 the second; 5, 6 the third; 7, 8 the fourth); the chirality blocks $\Psi^-_{\rm LL}$ (components 1 to 4) and $\Psi^+_{\rm LL}$ (5 to 8); the Dirac adjoint $\bar\Psi_{\rm LL}=\Psi^\dagger_{\rm LL}(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)$
+    * in Revision_SuperLoop: the eight components of $\Psi_{\rm LL}$: components 1 and 2 are the first Dirac component with isospin up and down, 3 and 4 the second, 5 and 6 the third, 7 and 8 the fourth; $\Psi^-_{\rm LL}$ (components 1 to 4, chirality $-1$) and $\Psi^+_{\rm LL}$ (components 5 to 8, chirality $+1$) are the two Weyl isodoublets; $\bar\Psi_{\rm LL}=\Psi^\dagger_{\rm LL}(\gamma^0_{\rm LL}\otimes\sigma^{\rm LL}_0)$ is the Dirac adjoint
+* $C_{\rm LL}$
+    * in this folder (A.7, D): the charge-conjugation matrix $\mathrm{diag}(\mathsf E_{\rm LL},-\mathsf E_{\rm LL})$ (Lord's $C$)
+    * in Revision_SM_Higgs: the Dirac matrices of the canonical frame in the chiral basis, $\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}$, $\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}$; the chirality matrix $\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)$; the charge-conjugation matrix $C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$; $\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$ (on the eight components each acts as its tensor product with $\sigma^{\rm LL}_0$)
+    * in Revision_SuperLoop: the $4\times4$ Dirac matrices of $\mathbb R^{1,3}_{\rm LL}$ in the chiral basis, $\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}$, $\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}$; the chirality matrix $\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)$; the charge-conjugation matrix $C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$; $\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$ (on Dirac $\otimes$ isospin each acts as $\otimes\sigma^{\rm LL}_0$)
+* $\chi^{\rm S}_{\rm SF}$
+    * in this folder (B.7): the scalar susceptibility (B.16) and the eigenvalues of the static response in the two channels
+    * in Revision_SM_Higgs: the scalar susceptibility of the normal vacuum, $-\partial n^{\rm S}_{\rm SF}/\partial M=(2/\pi^2)\int_0^{\Lambda_{\rm LL}}q^4(q^2+m_{\rm LL}^2)^{-3/2}dq$
+    * in Revision_SuperLoop: -- (not listed)
+* $\chi^{ab}_{\rm SF}$
+    * in this folder (B.7): the chemical potentials of the four charges, their susceptibilities, the mass matrix (B.23), the four gauge fields and their couplings
+    * in Revision_SM_Higgs: the charge matrices of the four gauge fields ($a=1,2,3$: $\mathsf 1_4\otimes\tfrac12\tau^{\rm LL}_a$; $a={\rm F}$: $\mathsf 1_8$), the chemical potentials of the charges $\Psi^\dagger_{\rm LL}\mathsf q^a_{\rm SF}\Psi_{\rm LL}$, and the static susceptibilities $\chi^{ab}_{\rm SF}=\partial\langle\Psi^\dagger_{\rm LL}\mathsf q^a_{\rm SF}\Psi_{\rm LL}\rangle/\partial\mu^b_{\rm SF}$ at $\mu^b_{\rm SF}=0$
+    * in Revision_SuperLoop: -- (not listed)
+* $d^\iota_{\rm LL}$
+    * in this folder (A.7): the isovector order parameter
+    * in Revision_SM_Higgs: the order parameter, the isospin vector $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$ in $\mathbb C^3$, and its non-unitarity $\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2$
+    * in Revision_SuperLoop: the order parameter, the isospin vector $\vec d_{\rm LL}=(d^1_{\rm LL},d^2_{\rm LL},d^3_{\rm LL})\in\mathbb C^3$ with $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$, and its non-unitarity $\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2\in[0,1]$ (plain text `cross(dvec, dvec^*)`: the cross product)
+* $D^X_{\rm SF}$
+    * in this folder (B.7): the Dirac mass, the pair amplitude and the gap of the polar ground state
+    * in Revision_SM_Higgs: the pair amplitude of a polar state of method $X$: its pair self-energy is $D^X_{\rm SF}(\mathsf K^3_{\rm LL})^\dagger$
+    * in Revision_SuperLoop: -- (not listed)
+* $\Delta^\pm_{\rm LL}$
+    * in this folder (A.7): a gap, the two gaps and the measure of non-unitarity (A.16)
+    * in Revision_SM_Higgs: the gap $\lvert\vec d_{\rm LL}\rvert$ of a unitary state ($\zeta_{\rm LL}=0$), and the two gaps $(\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})$ of a general state
+    * in Revision_SuperLoop: the gap: $\Delta_{\rm LL}=\lvert\vec d_{\rm LL}\rvert$ for a unitary state, and the two gaps $(\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})$ of a general state
+* $\Delta_{\rm LL}$
+    * in this folder (A.7): a gap, the two gaps and the measure of non-unitarity (A.16)
+    * in Revision_SM_Higgs: the gap $\lvert\vec d_{\rm LL}\rvert$ of a unitary state ($\zeta_{\rm LL}=0$), and the two gaps $(\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})$ of a general state
+    * in Revision_SuperLoop: the gap: $\Delta_{\rm LL}=\lvert\vec d_{\rm LL}\rvert$ for a unitary state, and the two gaps $(\Delta^\pm_{\rm LL})^2=\lvert\vec d_{\rm LL}\rvert^2(1\pm\zeta_{\rm LL})$ of a general state
+* $E^\pm_{\rm LL}$
+    * in this folder (A.7): the quasi-particle energies and $(q^2+m_{\rm LL}^2)^{1/2}$
+    * in Revision_SM_Higgs: the free energy $\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$ and the quasi-particle energies of the scalar pair channel $E^\pm_{\rm LL}=[(\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2]^{1/2}$
+    * in Revision_SuperLoop: the energy $\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$, the quasi-particle energies of the scalar channel $E^\pm_{\rm LL}=[(\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2]^{1/2}$, a function of the gap (written $E^\pm_{\rm LL}(\Delta^+_{\rm LL})$ and $E^\pm_{\rm LL}(\Delta^-_{\rm LL})$ when $\Delta_{\rm LL}$ is replaced by one of the two gaps of a general state), and those of the pseudoscalar channel, $(\tilde E^\pm_{\rm LL})^2=\varepsilon_{\rm LL}^2+\mu_{\rm LL}^2+\Delta_{\rm LL}^2\pm2[\mu_{\rm LL}^2\varepsilon_{\rm LL}^2+m_{\rm LL}^2\Delta_{\rm LL}^2]^{1/2}$
+* $E^{X,{\rm gap}}_{\rm SF}$
+    * in this folder (B.7): the Dirac mass, the pair amplitude and the gap of the polar ground state
+    * in Revision_SM_Higgs: the gap of method $X$ (the lowest energy of one quasi-particle) and the Dirac mass of its ground state
+    * in Revision_SuperLoop: -- (not listed)
+* $F_{\rm LL}$
+    * in this folder (B.7): the isospin generators, the fermion number, and the charge $T^3_{\rm LL}$
+    * in Revision_SM_Higgs: the isospin group, which acts on the isospin index of the spinor field (and on isospin vectors by rotations), and the group of the phases of the fermion number, $\Psi_{\rm LL}\mapsto e^{i\theta^{\rm F}_{\rm LL}}\Psi_{\rm LL}$; $F_{\rm LL}$ is its generator, the fermion number (1 on $\Psi_{\rm LL}$, 2 on a pair of two spinor charges); the author writes $U(1)^{\rm F}_{\rm LL}$ as U(1)FLL
+    * in Revision_SuperLoop: the generator of the fermion number $\Psi_{\rm LL}\to e^{i\theta_{\rm LL}}\Psi_{\rm LL}$ (it multiplies $\vec d_{\rm LL}$ by $2i$) and its group; the isospin group, which rotates the isospin index of $\Psi_{\rm LL}$ and $\vec d_{\rm LL}$ as a vector
+* $G^{\rm crit}_{\rm LL}$
+    * in this folder (A.7): the critical coupling and the integral (A.19)
+    * in Revision_SM_Higgs: the coupling of the attractive spin-zero contact interaction $-\tfrac14G_{\rm LL}\sum_\iota:(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}:$ of the Hamiltonian density, and its critical value for the condensation of the vacuum with this interaction alone
+    * in Revision_SuperLoop: the coupling of the attractive spin-zero contact interaction (dimension mass$^{-2}$) and its critical value at $\mu_{\rm LL}=0$, above which the vacuum condenses
+* $g^{\rm F}_{\rm LL}$
+    * in this folder (B.7, D): the couplings of $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$
+    * in Revision_SM_Higgs: the gauge couplings of $SU(2)_{\rm v}$ and of $U(1)^{\rm F}_{\rm LL}$ (real numbers)
+    * in Revision_SuperLoop: the gauge potentials, real fields on $\mathbb R^{1,3}_{\rm LL}$: $A^\iota_{{\rm LL},p}$ of the isospin group $SU(2)_{\rm v}$ (three fields for each direction $p$) and $A^{\rm F}_{{\rm LL},p}$ of the fermion number $U(1)^{\rm F}_{\rm LL}$; $g^{\rm v}_{\rm LL}$ and $g^{\rm F}_{\rm LL}$ are their couplings (real numbers); a constant $g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}$ acts like a chemical potential
+* $G^{\rm S}_{\rm SF}$
+    * in this folder (B.7, D): the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings
+    * in Revision_SM_Higgs: the couplings of the scalar and of the vector contact terms, $\tfrac12G^{\rm S}_{\rm SF}:(\bar\Psi_{\rm LL}\Psi_{\rm LL})^2:$ and $\tfrac12G^{\rm V}_{\rm SF}\sum_p\eta^{\rm LL}_{pp}:(j^{{\rm F},p}_{\rm SF})^2:$ of the Hamiltonian density, formed after the author's Kohn-Sham ansatz of the project (attraction in the scalar density for $G^{\rm S}_{\rm SF}<0$, repulsion of the densities for $G^{\rm V}_{\rm SF}>0$)
+    * in Revision_SuperLoop: -- (not listed)
+* $g^{\rm v}_{\rm LL}$
+    * in this folder (B.7, D): the couplings of $SU(2)_{\rm v}$ and $U(1)^{\rm F}_{\rm LL}$
+    * in Revision_SM_Higgs: the gauge couplings of $SU(2)_{\rm v}$ and of $U(1)^{\rm F}_{\rm LL}$ (real numbers)
+    * in Revision_SuperLoop: the gauge potentials, real fields on $\mathbb R^{1,3}_{\rm LL}$: $A^\iota_{{\rm LL},p}$ of the isospin group $SU(2)_{\rm v}$ (three fields for each direction $p$) and $A^{\rm F}_{{\rm LL},p}$ of the fermion number $U(1)^{\rm F}_{\rm LL}$; $g^{\rm v}_{\rm LL}$ and $g^{\rm F}_{\rm LL}$ are their couplings (real numbers); a constant $g^{\rm F}_{\rm LL}A^{\rm F}_{{\rm LL},0}$ acts like a chemical potential
+* $G^{\rm V}_{\rm SF}$
+    * in this folder (B.7, D): the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings
+    * in Revision_SM_Higgs: the couplings of the scalar and of the vector contact terms, $\tfrac12G^{\rm S}_{\rm SF}:(\bar\Psi_{\rm LL}\Psi_{\rm LL})^2:$ and $\tfrac12G^{\rm V}_{\rm SF}\sum_p\eta^{\rm LL}_{pp}:(j^{{\rm F},p}_{\rm SF})^2:$ of the Hamiltonian density, formed after the author's Kohn-Sham ansatz of the project (attraction in the scalar density for $G^{\rm S}_{\rm SF}<0$, repulsion of the densities for $G^{\rm V}_{\rm SF}>0$)
+    * in Revision_SuperLoop: -- (not listed)
+* $g^{X,{\rm P}}_{\rm SF}$
+    * in this folder (B.7): the effective couplings of the scalar and of the pair channel (B.15)
+    * in Revision_SM_Higgs: the effective couplings of method $X$ in the scalar-density channel (a uniform scalar density $n^{\rm S}_{\rm SF}$ shifts the Dirac mass by $g^{X,{\rm S}}_{\rm SF}n^{\rm S}_{\rm SF}$) and in the pair channel $\mathsf K^3_{\rm LL}$ (normalized so that the pairing term alone has $g^{X,{\rm P}}_{\rm SF}=G_{\rm LL}$)
+    * in Revision_SuperLoop: -- (not listed)
+* $g^{X,{\rm S}}_{\rm SF}$
+    * in this folder (B.7): the effective couplings of the scalar and of the pair channel (B.15)
+    * in Revision_SM_Higgs: the effective couplings of method $X$ in the scalar-density channel (a uniform scalar density $n^{\rm S}_{\rm SF}$ shifts the Dirac mass by $g^{X,{\rm S}}_{\rm SF}n^{\rm S}_{\rm SF}$) and in the pair channel $\mathsf K^3_{\rm LL}$ (normalized so that the pairing term alone has $g^{X,{\rm P}}_{\rm SF}=G_{\rm LL}$)
+    * in Revision_SuperLoop: -- (not listed)
+* $G_{\rm LL}$
+    * in this folder (A.7, B.7, D): the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings
+    * in Revision_SM_Higgs: the coupling of the attractive spin-zero contact interaction $-\tfrac14G_{\rm LL}\sum_\iota:(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}:$ of the Hamiltonian density, and its critical value for the condensation of the vacuum with this interaction alone
+    * in Revision_SuperLoop: the coupling of the attractive spin-zero contact interaction (dimension mass$^{-2}$) and its critical value at $\mu_{\rm LL}=0$, above which the vacuum condenses
+* $\gamma^p_{\rm LL}$
+    * in this folder (A.7): the Dirac matrices of the chiral basis, the chirality matrix and the charge-conjugation matrix
+    * in Revision_SM_Higgs: the Dirac matrices of the canonical frame in the chiral basis, $\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}$, $\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}$; the chirality matrix $\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)$; the charge-conjugation matrix $C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$; $\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$ (on the eight components each acts as its tensor product with $\sigma^{\rm LL}_0$)
+    * in Revision_SuperLoop: the $4\times4$ Dirac matrices of $\mathbb R^{1,3}_{\rm LL}$ in the chiral basis, $\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}$, $\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}$; the chirality matrix $\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)$; the charge-conjugation matrix $C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$; $\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$ (on Dirac $\otimes$ isospin each acts as $\otimes\sigma^{\rm LL}_0$)
+* $\gamma^p_{\rm LL}[\mathbf f]$
+    * in this folder (D): the Dirac matrices of a frame (9.4)
+    * in Revision_SM_Higgs: the Dirac matrices of a frame, the $4\times4$ matrices of $2\times2$ blocks $\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}$
+    * in Revision_SuperLoop: the Dirac matrices of a frame, the $4\times4$ matrices with the $2\times2$ blocks $\gamma^p_{\rm LL}[\mathbf f]=\begin{pmatrix}0&M_{\rm LL}(\mathbf f_p)\\M_{\rm LL}(\bar{\mathbf f}_p)&0\end{pmatrix}$; they satisfy $\gamma^p_{\rm LL}[\mathbf f]\gamma^{p'}_{\rm LL}[\mathbf f]+\gamma^{p'}_{\rm LL}[\mathbf f]\gamma^p_{\rm LL}[\mathbf f]=2N_{\rm LL}(\mathbf f_p,\mathbf f_{p'})\,\mathsf 1_4$; for the canonical frame they are the matrices $\gamma^p_{\rm LL}$
+* $\gamma^{\rm ch}_{\rm LL}$
+    * in this folder (A.7, D): the chirality matrix $i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}$ (minus Lord's $\gamma^5$)
+    * in Revision_SM_Higgs: the Dirac matrices of the canonical frame in the chiral basis, $\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}$, $\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}$; the chirality matrix $\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)$; the charge-conjugation matrix $C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$; $\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$ (on the eight components each acts as its tensor product with $\sigma^{\rm LL}_0$)
+    * in Revision_SuperLoop: the $4\times4$ Dirac matrices of $\mathbb R^{1,3}_{\rm LL}$ in the chiral basis, $\gamma^0_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_0\\\sigma^{\rm LL}_0&0\end{pmatrix}$, $\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix}$; the chirality matrix $\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)$; the charge-conjugation matrix $C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}$; $\alpha^j_{\rm LL}=\gamma^0_{\rm LL}\gamma^j_{\rm LL}$, $\beta_{\rm LL}=\gamma^0_{\rm LL}$ (on Dirac $\otimes$ isospin each acts as $\otimes\sigma^{\rm LL}_0$)
+* $\Gamma^{\rm LL}_p$
+    * in this folder (B.7, D): the spin connection of GEE, the gauge field of its $SL(2,\mathbb C)$ factor; in a curved space-time $\tfrac14\omega^{\rm LG}_{\mu\,ab}\gamma^{ab}_{\rm LL}$ (14.7)
+    * in Revision_SM_Higgs: the Lorentz connection, for each direction $p$ a Lorentz generator, and the spin connection $\Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0$ (on flat M31 a pure gauge, zero in the canonical frame)
+    * in Revision_SuperLoop: the spin connection, the $8\times8$ matrix $\Gamma^{\rm LL}_p=\mathsf s_{\rm LL}(\mathbf u^\omega_{{\rm LL},p})\otimes\sigma^{\rm LL}_0$ (it acts on the Dirac index and leaves the isospin index alone)
+* $H^{\rm vac}_{\rm SF}$
+    * in this folder (B.7): the surviving group (B.21), its gauge part, its identity component and its charge conjugation
+    * in Revision_SM_Higgs: the manifold of vacua of method $X$ (the minima of $\mathcal V^X_{\rm SF}$) and the stabilizer of a chosen vacuum in GEE
+    * in Revision_SuperLoop: -- (not listed)
+* $I^{(1)}_{\rm SF}$
+    * in this folder (A.7): the critical coupling and the integral (A.19)
+    * in Revision_SM_Higgs: the integrals $\int_0^{\Lambda_{\rm LL}}q^2(q^2+M^2)^{\mp1/2}dq$ (upper sign $I^{(1)}_{\rm SF}$, lower $I^{(3)}_{\rm SF}$) as functions of the mass $M$ in their argument; at the temperature $T$, $I^{(1)}_{\rm SF}(M,T)=\int_0^{\Lambda_{\rm LL}}q^2\tanh(E/2T)E^{-1}dq$ with $E=(q^2+M^2)^{1/2}$, which equals $I^{(1)}_{\rm SF}(M)$ at $T=0$
+    * in Revision_SuperLoop: -- (not listed)
+* $J^j_{\rm LL}$
+    * in this folder (A.7): the rotation and boost generators; a Lorentz generator
+    * in Revision_SM_Higgs: the rotation and boost generators of the Lorentz algebra of the super-loop, $J^j_{\rm LL}=\mathbf e_j/2$, $K^j_{\rm LL}=i\,\mathbf e_j/2$
+    * in Revision_SuperLoop: the rotation and boost generators of $\mathfrak l_{\rm LL}$, $J^j_{\rm LL}=\mathbf e_j/2$ and $K^j_{\rm LL}=i\,\mathbf e_j/2$
+* $j^{\iota,p}_{\rm SF}$
+    * in this folder (B.7): the isospin currents and the fermion-number current (B.8)
+    * in Revision_SM_Higgs: the isospin current $\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL}$ and the fermion-number current $\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}$ of the spinor field
+    * in Revision_SuperLoop: -- (not listed)
+* $j^{{\rm F},p}_{\rm SF}$
+    * in this folder (B.7): the isospin currents and the fermion-number current (B.8)
+    * in Revision_SM_Higgs: the isospin current $\bar\Psi_{\rm LL}\gamma^p_{\rm LL}T^\iota_{\rm LL}\Psi_{\rm LL}$ and the fermion-number current $\bar\Psi_{\rm LL}\gamma^p_{\rm LL}\Psi_{\rm LL}$ of the spinor field
+    * in Revision_SuperLoop: -- (not listed)
+* $K^j_{\rm LL}$
+    * in this folder (A.7): the rotation and boost generators; a Lorentz generator
+    * in Revision_SM_Higgs: the rotation and boost generators of the Lorentz algebra of the super-loop, $J^j_{\rm LL}=\mathbf e_j/2$, $K^j_{\rm LL}=i\,\mathbf e_j/2$
+    * in Revision_SuperLoop: the rotation and boost generators of $\mathfrak l_{\rm LL}$, $J^j_{\rm LL}=\mathbf e_j/2$ and $K^j_{\rm LL}=i\,\mathbf e_j/2$
+* $k^{\rm F}_{\rm LL}$
+    * in this folder (A.7): the Fermi momentum
+    * in Revision_SM_Higgs: -- (not listed)
+    * in Revision_SuperLoop: the Fermi momentum $(\mu_{\rm LL}^2-m_{\rm LL}^2)^{1/2}$ and the density of states of one species and one spin state at the Fermi surface, $\nu^{\rm F}_{\rm LL}=k^{\rm F}_{\rm LL}\mu_{\rm LL}/(2\pi^2)$
+* $\lambda^{\rm P}_{\rm SF}$
+    * in this folder (B.7): the scalar susceptibility (B.16) and the eigenvalues of the static response in the two channels
+    * in Revision_SM_Higgs: the eigenvalues of $\mathsf Q^X_{\rm SF}(0)$ of the normal vacuum in the scalar-density channel and in the pair channel (an eigenvalue larger than 1 means that the normal vacuum is unstable in that channel); $\lambda^{\rm P}_{\rm SF}(T)$ is the eigenvalue of the pair channel of the normal state at the temperature $T$
+    * in Revision_SuperLoop: -- (not listed)
+* $\lambda^{\rm S}_{\rm SF}$
+    * in this folder (B.7): the scalar susceptibility (B.16) and the eigenvalues of the static response in the two channels
+    * in Revision_SM_Higgs: the eigenvalues of $\mathsf Q^X_{\rm SF}(0)$ of the normal vacuum in the scalar-density channel and in the pair channel (an eigenvalue larger than 1 means that the normal vacuum is unstable in that channel); $\lambda^{\rm P}_{\rm SF}(T)$ is the eigenvalue of the pair channel of the normal state at the temperature $T$
+    * in Revision_SuperLoop: -- (not listed)
+* $\Lambda_{\rm LL}$
+    * in this folder (A.7): the mass, the chemical potential, the coupling and the momentum cutoff
+    * in Revision_SM_Higgs: the mass of the spinor charges, the chemical potential, and the momentum cutoff ($q_{\rm LL}<\Lambda_{\rm LL}$; $\Lambda_{\rm LL}=1$ sets the units)
+    * in Revision_SuperLoop: the mass of the spinor charges, the chemical potential, and the momentum cutoff ($q_{\rm LL}<\Lambda_{\rm LL}$; $\Lambda_{\rm LL}=1$ sets the units, except where it varies)
+* $M^{X,{\rm D}}_{\rm SF}$
+    * in this folder (B.7): the Dirac mass, the pair amplitude and the gap of the polar ground state
+    * in Revision_SM_Higgs: the gap of method $X$ (the lowest energy of one quasi-particle) and the Dirac mass of its ground state
+    * in Revision_SuperLoop: -- (not listed)
+* $m_{\rm LL}$
+    * in this folder (A.7, D): the brochon (eight components: Dirac index and isospin index) and its mass
+    * in Revision_SM_Higgs: the mass of the spinor charges, the chemical potential, and the momentum cutoff ($q_{\rm LL}<\Lambda_{\rm LL}$; $\Lambda_{\rm LL}=1$ sets the units)
+    * in Revision_SuperLoop: the mass of the spinor charges, the chemical potential, and the momentum cutoff ($q_{\rm LL}<\Lambda_{\rm LL}$; $\Lambda_{\rm LL}=1$ sets the units, except where it varies)
+* $M_{\rm LL}(\mathbf b)$
+    * in this folder (A.7, D): the $2\times2$ matrix of a bi-quaternion (9.1)
+    * in Revision_SM_Higgs: the complex $2\times2$ matrix of a bi-quaternion, $M_{\rm LL}(\mathbf e_0)=\sigma^{\rm LL}_0$, $M_{\rm LL}(\mathbf e_j)=-i\sigma^{\rm LL}_j$, extended complex-linearly; $M_{\rm LL}(\mathbf b\mathbf b')=M_{\rm LL}(\mathbf b)M_{\rm LL}(\mathbf b')$ and $\det M_{\rm LL}(\mathbf b)=N_{\rm LL}(\mathbf b)$
+    * in Revision_SuperLoop: the complex $2\times2$ matrix of a bi-quaternion, $M_{\rm LL}(\mathbf e_0)=\sigma^{\rm LL}_0$, $M_{\rm LL}(\mathbf e_j)=-i\sigma^{\rm LL}_j$, extended complex-linearly; $M_{\rm LL}(\mathbf b\mathbf b')=M_{\rm LL}(\mathbf b)M_{\rm LL}(\mathbf b')$, $\det M_{\rm LL}(\mathbf b)=N_{\rm LL}(\mathbf b)$ (plain text `M_2(C)`: all complex $2\times2$ matrices)
+* $\mathbb L_{\rm LL}$
+    * in this folder (A.7): the Lorentz super-loop (A.5)
+    * in Revision_SM_Higgs: the Lorentz super-loop: the unit bi-octonions, $N_{\rm LL}(\mathbf w)=1$, with the product of $\mathbb B_{\rm LL}$; a Moufang loop (not a group), a manifold of real dimension 14
+    * in Revision_SuperLoop: the Lorentz super-loop: the unit bi-octonions, $\mathbb L_{\rm LL}=\{\mathbf w\in\mathbb B_{\rm LL}:N_{\rm LL}(\mathbf w)=1\}$, with the product of $\mathbb B_{\rm LL}$; a Moufang loop (not a group), and a manifold of real dimension 14
+* $\mathcal E^X_{\rm SF}$
+    * in this folder (B.7): the energy per volume of a uniform state, and of the ground state of the method $X$
+    * in Revision_SM_Higgs: the energy per volume of a uniform state in the approximation of method $X$, measured from the normal vacuum
+    * in Revision_SuperLoop: -- (not listed)
+* $\mathcal H^{\rm sf}_{\rm LL}$
+    * in this folder (A.7): the Hamiltonian (A.13) and the free Dirac Hamiltonian
+    * in Revision_SM_Higgs: -- (not listed)
+    * in Revision_SuperLoop: the Hamiltonian of the superfluid, $\sum_{\vec q_{\rm LL}}\Psi^\dagger_{\rm LL}(\mathsf h_{\rm LL}-\mu_{\rm LL})\Psi_{\rm LL}-\tfrac14G_{\rm LL}\sum_\iota(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL}$
+* $\mathcal L_{\rm SF}$
+    * in this folder (B.7): the Lagrangian density (B.9) and the self-interaction of step $n$
+    * in Revision_SM_Higgs: the Lagrangian density of the solution and its parts: the Dirac part with the covariant derivative and the mass term, the self-interaction (four field components at one point) and the Yang-Mills part of the gauge fields
+    * in Revision_SuperLoop: -- (not listed)
+* $\mathcal U_{\rm LL}$
+    * in this folder (B.7): a local GEE transformation and its matrix (B.4)
+    * in Revision_SM_Higgs: a local gauge transformation of the spinor field by GEE, $\mathcal U_{\rm LL}=\exp(i\theta^{\rm F}_{\rm LL})\,\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}$
+    * in Revision_SuperLoop: a local gauge transformation of $\Psi_{\rm LL}$ by the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$: $\mathcal U_{\rm LL}=\exp(i\theta^{\rm F}_{\rm LL})\,\mathsf S_{\rm LL}(\mathbf g)\otimes\mathsf U_{\rm LL}$, with $\mathbf g$, $\mathsf U_{\rm LL}$ and $\theta^{\rm F}_{\rm LL}$ functions of $x_{\rm LL}$
+* $\mathsf C^{\rm n}_{\rm LL}$
+    * in this folder (B.7): the normal and the pair correlation matrix, that of the normal vacuum (B.2), and the local matrices of (B.13)
+    * in Revision_SM_Higgs: the correlation matrices of a uniform state: $(\mathsf C^{\rm n}_{\rm LL})_{cc'}=\langle\Psi^\dagger_{{\rm LL},c'}\Psi_{{\rm LL},c}\rangle$ (normal, Hermitian) and $(\mathsf C^{\rm p}_{\rm LL})_{cc'}=\langle\Psi_{{\rm LL},c}\Psi_{{\rm LL},c'}\rangle$ (pair, antisymmetric), both fields at one point, and the normal correlation matrix of the normal vacuum; with the argument $\vec q_{\rm LL}$, their parts of one momentum
+    * in Revision_SuperLoop: the correlation matrices of a state that is the same at every point of space, $8\times8$ matrices with the entries $(\mathsf C^{\rm n}_{\rm LL})_{ab}=\langle\Psi^\dagger_{{\rm LL},b}\Psi_{{\rm LL},a}\rangle$ (normal; Hermitian) and $(\mathsf C^{\rm p}_{\rm LL})_{ab}=\langle\Psi_{{\rm LL},a}\Psi_{{\rm LL},b}\rangle$ (pair; antisymmetric), the two fields at the same point and time; with the argument $\vec q_{\rm LL}$ their parts of one momentum, of which they are the integrals $\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}$; the normal correlation matrix of the vacuum; and the density matrix of the Nambu spinor at one momentum, the $16\times16$ matrix with the entries $\langle\mathcal N^\dagger_{{\rm LL},b}\mathcal N_{{\rm LL},a}\rangle$, whose upper left block is $\mathsf C^{\rm n}_{\rm LL}(\vec q_{\rm LL})$ and whose upper right block is $-\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})$
+* $\mathsf C^{\rm p}_{\rm LL}$
+    * in this folder (B.7): the normal and the pair correlation matrix, that of the normal vacuum (B.2), and the local matrices of (B.13)
+    * in Revision_SM_Higgs: the correlation matrices of a uniform state: $(\mathsf C^{\rm n}_{\rm LL})_{cc'}=\langle\Psi^\dagger_{{\rm LL},c'}\Psi_{{\rm LL},c}\rangle$ (normal, Hermitian) and $(\mathsf C^{\rm p}_{\rm LL})_{cc'}=\langle\Psi_{{\rm LL},c}\Psi_{{\rm LL},c'}\rangle$ (pair, antisymmetric), both fields at one point, and the normal correlation matrix of the normal vacuum; with the argument $\vec q_{\rm LL}$, their parts of one momentum
+    * in Revision_SuperLoop: the correlation matrices of a state that is the same at every point of space, $8\times8$ matrices with the entries $(\mathsf C^{\rm n}_{\rm LL})_{ab}=\langle\Psi^\dagger_{{\rm LL},b}\Psi_{{\rm LL},a}\rangle$ (normal; Hermitian) and $(\mathsf C^{\rm p}_{\rm LL})_{ab}=\langle\Psi_{{\rm LL},a}\Psi_{{\rm LL},b}\rangle$ (pair; antisymmetric), the two fields at the same point and time; with the argument $\vec q_{\rm LL}$ their parts of one momentum, of which they are the integrals $\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}$; the normal correlation matrix of the vacuum; and the density matrix of the Nambu spinor at one momentum, the $16\times16$ matrix with the entries $\langle\mathcal N^\dagger_{{\rm LL},b}\mathcal N_{{\rm LL},a}\rangle$, whose upper left block is $\mathsf C^{\rm n}_{\rm LL}(\vec q_{\rm LL})$ and whose upper right block is $-\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})$
+* $\mathsf C^{\rm vac}_{\rm LL}$
+    * in this folder (B.7): the normal and the pair correlation matrix, that of the normal vacuum (B.2), and the local matrices of (B.13)
+    * in Revision_SM_Higgs: the correlation matrices of a uniform state: $(\mathsf C^{\rm n}_{\rm LL})_{cc'}=\langle\Psi^\dagger_{{\rm LL},c'}\Psi_{{\rm LL},c}\rangle$ (normal, Hermitian) and $(\mathsf C^{\rm p}_{\rm LL})_{cc'}=\langle\Psi_{{\rm LL},c}\Psi_{{\rm LL},c'}\rangle$ (pair, antisymmetric), both fields at one point, and the normal correlation matrix of the normal vacuum; with the argument $\vec q_{\rm LL}$, their parts of one momentum
+    * in Revision_SuperLoop: the correlation matrices of a state that is the same at every point of space, $8\times8$ matrices with the entries $(\mathsf C^{\rm n}_{\rm LL})_{ab}=\langle\Psi^\dagger_{{\rm LL},b}\Psi_{{\rm LL},a}\rangle$ (normal; Hermitian) and $(\mathsf C^{\rm p}_{\rm LL})_{ab}=\langle\Psi_{{\rm LL},a}\Psi_{{\rm LL},b}\rangle$ (pair; antisymmetric), the two fields at the same point and time; with the argument $\vec q_{\rm LL}$ their parts of one momentum, of which they are the integrals $\int_{q_{\rm LL}<\Lambda_{\rm LL}}d^3q_{\rm LL}(2\pi)^{-3}$; the normal correlation matrix of the vacuum; and the density matrix of the Nambu spinor at one momentum, the $16\times16$ matrix with the entries $\langle\mathcal N^\dagger_{{\rm LL},b}\mathcal N_{{\rm LL},a}\rangle$, whose upper left block is $\mathsf C^{\rm n}_{\rm LL}(\vec q_{\rm LL})$ and whose upper right block is $-\mathsf C^{\rm p}_{\rm LL}(\vec q_{\rm LL})$
+* $\mathsf D_{\rm LL}$
+    * in this folder (A.7): the matrix of Bogoliubov and de Gennes (A.15), the pair self-energy and its isospin factor
+    * in Revision_SM_Higgs: -- (not listed)
+    * in Revision_SuperLoop: the isospin part of the pairing block of the scalar channel, the $2\times2$ matrix $\mathsf D_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf E_{\rm LL}\tau^{\rm LL}_\iota)^\dagger$, so that $\mathsf P_{\rm LL}=(C_{\rm LL}\gamma^{\rm ch}_{\rm LL})^\dagger\otimes\mathsf D_{\rm LL}$; it is also the isospin wavefunction of the condensed pairs (rows and columns: isospin up, down); plain text `Dpair` (not `D_LL`, which is the Lorentz derivation)
+* $\mathsf E_{\rm LL}$
+    * in this folder (A.7, D): the matrix $\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ (Lord's $\epsilon$)
+    * in Revision_SM_Higgs: the real antisymmetric $2\times2$ matrix $i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, $\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}$
+    * in Revision_SuperLoop: the real antisymmetric $2\times2$ matrix $i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$, with $\mathsf E_{\rm LL}^{-1}=\mathsf E_{\rm LL}^T=-\mathsf E_{\rm LL}$; it acts on a Weyl, isospin or species index, as stated at each place
+* $\mathsf K^\iota_{\rm LL}$
+    * in this folder (A.7, D): the pair operators of spin zero and their matrices $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$
+    * in Revision_SM_Higgs: the $8\times8$ pair matrices of the spin-zero isotriplet channels: scalar $\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ and pseudoscalar $\mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$; antisymmetric and unitary
+    * in Revision_SuperLoop: the $8\times8$ pair matrices of the spin-zero channels: scalar $\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ ($0^+$), pseudoscalar $\mathsf K'^\iota_{\rm LL}=C_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$ ($0^-$), and the $16\times16$ singlet of two species $\mathsf K^{\rm s}_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\otimes\mathsf E_{\rm LL}$ (the last factor on the species index); the plain-text name Kch alone, and the letter $\mathsf K$ without scripts (in Theorem SF1 and in the explanation of the folder explanations), stand for any pair matrix ($8\times8$ for one field, $16\times16$ for two species), the pair of two spinor charges being $\Psi^T_{\rm LL}\mathsf K\Psi_{\rm LL}$; $\mathsf K_{12}$ is the entry of $\mathsf K$ in row 1 and column 2
+* $\mathsf L_{\rm LL}(\mathbf g)$
+    * in this folder (A.7, D): the Lorentz matrix of a unit bi-quaternion (9.2)
+    * in Revision_SM_Higgs: the real $4\times4$ matrix of the Lorentz transformation $\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger$ of M31: its entry in row $p$ and column $p'$ is $\tfrac12\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM\sigma^{\rm LL}_{p'}M^\dagger)$ with $M=M_{\rm LL}(\mathbf g)$
+    * in Revision_SuperLoop: the real $4\times4$ matrix of the Lorentz transformation $\mathbf x\mapsto\mathbf g\mathbf x\mathbf g^\dagger$ of $\mathbb R^{1,3}_{\rm LL}$ in the coordinates $x^0_{\rm LL},\dots,x^3_{\rm LL}$, for a unit bi-quaternion $\mathbf g$: its entry in row $p$ and column $p'$ ($p,p'=0,\dots,3$) is $\tfrac12\,\mathrm{Re}\,\mathrm{tr}(\sigma^{\rm LL}_pM_{\rm LL}(\mathbf g)\,\sigma^{\rm LL}_{p'}M_{\rm LL}(\mathbf g)^\dagger)$, with $\sigma^{\rm LL}_0$ the unit matrix
+* $\mathsf P_{\rm LL}$
+    * in this folder (A.7): the matrix of Bogoliubov and de Gennes (A.15), the pair self-energy and its isospin factor
+    * in Revision_SM_Higgs: the pairing block $\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger$; the $16\times16$ Bogoliubov-de Gennes matrix of $8\times8$ blocks: upper left $\mathsf h_{\rm LL}(\vec q_{\rm LL})-\mu_{\rm LL}$, upper right $\mathsf P_{\rm LL}$, lower left $\mathsf P_{\rm LL}^\dagger$, lower right $-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})-\mu_{\rm LL})^T$; and the Nambu spinor $(\Psi_{\rm LL}(\vec q_{\rm LL}),\Psi^*_{\rm LL}(-\vec q_{\rm LL}))$ on which it acts
+    * in Revision_SuperLoop: the pairing block $\mathsf P_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger$, the $16\times16$ Bogoliubov-de Gennes matrix $\mathsf H_{\rm LL}=\begin{pmatrix}\mathsf h_{\rm LL}(\vec q_{\rm LL})-\mu_{\rm LL}&\mathsf P_{\rm LL}\\\mathsf P_{\rm LL}^\dagger&-(\mathsf h_{\rm LL}(-\vec q_{\rm LL})-\mu_{\rm LL})^T\end{pmatrix}$ and the Nambu spinor $\mathcal N_{\rm LL}=(\Psi_{\rm LL}(\vec q_{\rm LL}),\Psi_{\rm LL}^{*}(-\vec q_{\rm LL}))$ on which it acts
+* $\mathsf S_{\rm LL}(\mathbf g)$
+    * in this folder (D): the spinor matrix of a unit bi-quaternion (9.3)
+    * in Revision_SM_Higgs: the spinor matrix of a unit bi-quaternion, $\mathrm{diag}(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g))$ (blocks of $2\times2$)
+    * in Revision_SuperLoop: the spinor matrix of the Lorentz transformation $\mathbf g$: the $4\times4$ matrix $\mathsf S_{\rm LL}(\mathbf g)=\mathrm{diag}(M_{\rm LL}(\tilde{\mathbf g}),M_{\rm LL}(\mathbf g))$ of $2\times2$ blocks (on the eight components of $\Psi_{\rm LL}$: $\mathsf S_{\rm LL}(\mathbf g)\otimes\sigma^{\rm LL}_0$, plain text `Sspin`); $\mathsf S_{\rm LL}(\mathbf g)^{-1}\gamma^p_{\rm LL}\mathsf S_{\rm LL}(\mathbf g)=\sum_{p'}[\mathsf L_{\rm LL}(\mathbf g)]_{pp'}\gamma^{p'}_{\rm LL}$, where $[\mathsf L_{\rm LL}(\mathbf g)]_{pp'}$ is the entry in row $p$ and column $p'$
+* $\mathsf U_{\rm LL}$
+    * in this folder (A.7, D): an isospin rotation and a phase of the fermion number (a local GEE transformation with $\mathbf g$)
+    * in Revision_SM_Higgs: a local isospin rotation, a matrix of $SU(2)$ that is a function on M31 and acts on the isospin index ($\mathsf U_{\rm LL}=M_{\rm LL}(\mathbf v)$); $\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})$, the real orthogonal $3\times3$ matrix with $\mathsf U_{\rm LL}\tau^{\rm LL}_\iota\mathsf U_{\rm LL}^\dagger=\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}]_{\iota'\iota}\tau^{\rm LL}_{\iota'}$
+    * in Revision_SuperLoop: a local isospin rotation: a matrix $\mathsf U_{\rm LL}$ of $SU(2)$, a function of $x_{\rm LL}$, that acts on the isospin index of $\Psi_{\rm LL}$ ($\mathsf U_{\rm LL}=M_{\rm LL}(\mathbf v)$ for a unit real quaternion $\mathbf v$); $\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})$ is the real orthogonal $3\times3$ matrix with $\mathsf U_{\rm LL}\tau^{\rm LL}_\iota\mathsf U_{\rm LL}^\dagger=\sum_{\iota'}[\mathsf R^{\rm v}_{\rm LL}(\mathsf U_{\rm LL})]_{\iota'\iota}\tau^{\rm LL}_{\iota'}$, the rotation of an isospin vector
+* $\mathsf W_{{\rm SF},p}$
+    * in this folder (B.7, D): the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index
+    * in Revision_SM_Higgs: the gauge field of $SU(2)_{\rm v}$ as a Hermitian traceless $2\times2$ matrix, $\sum_\iota W^\iota_{{\rm SF},p}\tau^{\rm LL}_\iota/2$; with two indices, $\mathsf W_{{\rm SF},pp'}$, its field strength $\partial_p\mathsf W_{{\rm SF},p'}-\partial_{p'}\mathsf W_{{\rm SF},p}+ig^{\rm v}_{\rm LL}[\mathsf W_{{\rm SF},p},\mathsf W_{{\rm SF},p'}]$
+    * in Revision_SuperLoop: -- (not listed)
+* $\mu^a_{\rm SF}$
+    * in this folder (B.7): the chemical potentials of the four charges, their susceptibilities, the mass matrix (B.23), the four gauge fields and their couplings
+    * in Revision_SM_Higgs: the charge matrices of the four gauge fields ($a=1,2,3$: $\mathsf 1_4\otimes\tfrac12\tau^{\rm LL}_a$; $a={\rm F}$: $\mathsf 1_8$), the chemical potentials of the charges $\Psi^\dagger_{\rm LL}\mathsf q^a_{\rm SF}\Psi_{\rm LL}$, and the static susceptibilities $\chi^{ab}_{\rm SF}=\partial\langle\Psi^\dagger_{\rm LL}\mathsf q^a_{\rm SF}\Psi_{\rm LL}\rangle/\partial\mu^b_{\rm SF}$ at $\mu^b_{\rm SF}=0$
+    * in Revision_SuperLoop: -- (not listed)
+* $\mu_{\rm LL}$
+    * in this folder (A.7): the mass, the chemical potential, the coupling and the momentum cutoff
+    * in Revision_SM_Higgs: the mass of the spinor charges, the chemical potential, and the momentum cutoff ($q_{\rm LL}<\Lambda_{\rm LL}$; $\Lambda_{\rm LL}=1$ sets the units)
+    * in Revision_SuperLoop: the mass of the spinor charges, the chemical potential, and the momentum cutoff ($q_{\rm LL}<\Lambda_{\rm LL}$; $\Lambda_{\rm LL}=1$ sets the units, except where it varies)
+* $n^{\rm S}_{\rm SF}$
+    * in this folder (B.7): a uniform scalar density and a shift of the Dirac mass
+    * in Revision_SM_Higgs: the number density $\langle\Psi^\dagger_{\rm LL}\Psi_{\rm LL}\rangle$ and the scalar density $\langle\bar\Psi_{\rm LL}\Psi_{\rm LL}\rangle$ of a uniform state, each measured from its value in the normal vacuum
+    * in Revision_SuperLoop: -- (not listed)
+* $N_{\rm LL}(\mathbf x)$
+    * in this folder (A.7): the norm, $\sum_p(\xi^{\rm LL}_p)^2$
+    * in Revision_SM_Higgs: the complex norm $N_{\rm LL}(\mathbf x)=\sum_p\xi^{\rm LL}_p(\mathbf x)^2$, with $\mathbf x\bar{\mathbf x}=N_{\rm LL}(\mathbf x)\,\mathbf e_0$, and its polarization $N_{\rm LL}(\mathbf x,\mathbf y)=\sum_p\xi^{\rm LL}_p(\mathbf x)\xi^{\rm LL}_p(\mathbf y)$
+    * in Revision_SuperLoop: the complex norm $N_{\rm LL}(\mathbf x)=\sum_p\xi^{\rm LL}_p(\mathbf x)^2$, with $\mathbf x\bar{\mathbf x}=\bar{\mathbf x}\mathbf x=N_{\rm LL}(\mathbf x)\,\mathbf e_0$, and its polarization $N_{\rm LL}(\mathbf x,\mathbf y)=\sum_p\xi^{\rm LL}_p(\mathbf x)\,\xi^{\rm LL}_p(\mathbf y)$, $N_{\rm LL}(\mathbf x,\mathbf x)=N_{\rm LL}(\mathbf x)$ (complex-valued; for bi-quaternions the determinant of the $2\times2$ matrix $M_{\rm LL}$)
+* $\Omega^{\rm L}_{{\rm SF},pp'}$
+    * in this folder (B.7): the field strengths (B.7)
+    * in Revision_SM_Higgs: the curvature of the Lorentz connection, $\partial_p\Gamma^{\rm LL}_{p'}-\partial_{p'}\Gamma^{\rm LL}_p+[\Gamma^{\rm LL}_p,\Gamma^{\rm LL}_{p'}]$ (zero on flat M31)
+    * in Revision_SuperLoop: -- (not listed)
+* $\Omega_{\rm LL}$
+    * in this folder (A.7): the grand potential per volume (A.17)
+    * in Revision_SM_Higgs: -- (not listed)
+    * in Revision_SuperLoop: the grand potential per volume at zero temperature, measured from the normal state: $\Omega_{\rm LL}=\lvert\vec d_{\rm LL}\rvert^2/G_{\rm LL}-\tfrac12\int\!d^3q_{\rm LL}(2\pi)^{-3}\sum(\text{positive eigenvalues of }\mathsf H_{\rm LL})$ minus its value at $\vec d_{\rm LL}=0$
+* $\Pi^\iota_{\rm LL}$
+    * in this folder (A.7, B.7, D): the pair operators of spin zero and their matrices $C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota$
+    * in Revision_SM_Higgs: the pair operators of the momenta: the sum over $\vec q_{\rm LL}$ of $\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})$; they annihilate two spinor charges of opposite momenta
+    * in Revision_SuperLoop: the pair operators $\Pi^\iota_{\rm LL}=\sum_{\vec q_{\rm LL}}\Psi_{\rm LL}(\vec q_{\rm LL})^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q_{\rm LL})$, which annihilate two spinor charges of opposite momenta
+* $\psi'_{\rm LL}$
+    * in this folder (A.7): the matrix of the Weyl spinors of a spinor charge and $i\sigma^{\rm LL}_2$ (A.11)
+    * in Revision_SM_Higgs: the Weyl isodoublet of a spinor charge $\mathbf b\mathbf e_4$: the $2\times2$ matrix $\psi'_{\rm LL}(\mathbf b)=\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf b)^T$, whose rows are the two components of a Weyl spinor and whose columns are isospin up and down
+    * in Revision_SuperLoop: the Weyl isodoublet of a spinor charge $\mathbf b\mathbf e_4$: the $2\times2$ matrix $\psi'_{\rm LL}=\mathsf E_{\rm LL}^{-1}M_{\rm LL}(\mathbf b)^T$, whose first column (isospin up) and second column (isospin down) are Weyl spinors
+* $\Psi_{\rm LL}$
+    * in this folder (A.7, B.7, D): the brochon (eight components: Dirac index and isospin index) and its mass
+    * in Revision_SM_Higgs: the spinor field, the doublet field: an isospin doublet of four-component Dirac fields, eight complex Grassmann (anticommuting) operator components $\Psi_{{\rm LL},c}$, made of two spinor charges of the super-loop. Under the hypotheses of this folder $SU(2)_{\rm v}$ is $SU(2)_L$ and the field has the hypercharge $Y^{\rm SM}=1/4$ and the electric charges $3/4$ (isospin up) and $-1/4$ (isospin down); under the earlier hypotheses, which the inherited documents still state, it was the DiracLike spinor with the electric charge 0
+    * in Revision_SuperLoop: the Dirac isodoublet of the spinor charges: a field of 8 complex Grassmann components (Dirac $\otimes$ isospin), whose $\gamma^{\rm ch}_{\rm LL}=+1$ half is built from $\mathfrak s_{\rm LL}$ and whose other half from the complex-conjugate super-loop
+* $Q_{\rm LL}$
+    * in this folder (B.7, D): the third isospin generator, the charge $Q_{\rm LL}=T^3_{\rm LL}$ of the zeugon, and the direction of the polar condensate
+    * in Revision_SM_Higgs: the charge of the rotations about the third isospin axis, the generator $Q_{\rm LL}=T^3_{\rm LL}$ of the group $U(1)^{\rm Q}_{\rm LL}$; $\pm\tfrac12$ on isospin up and down; a charge of $SU(2)_{\rm v}$, not the electric charge (the DiracLike spinor has electric charge 0)
+    * in Revision_SuperLoop: the electric charge, $Q_{\rm LL}=T^3_{\rm LL}$: eigenvalues $0$ on $\mathbb C\otimes\mathbb H$ and $\pm\tfrac12$ on the spinor charges
+* $s^{\rm HS,S}_{\rm SF}$
+    * in this folder (B.7): the auxiliary scalar field of HS and the HS parameters
+    * in Revision_SM_Higgs: the HS parameters: the shares (between 0 and 1) of the scalar and of the vector contact term that are decoupled in the density channels (their direct contraction); the rest of each term is decoupled in the pair channels (its pair contraction)
+    * in Revision_SuperLoop: -- (not listed)
+* $s^{\rm HS,V}_{\rm SF}$
+    * in this folder (B.7): the auxiliary scalar field of HS and the HS parameters
+    * in Revision_SM_Higgs: the HS parameters: the shares (between 0 and 1) of the scalar and of the vector contact term that are decoupled in the density channels (their direct contraction); the rest of each term is decoupled in the pair channels (its pair contraction)
+    * in Revision_SuperLoop: -- (not listed)
+* $\sigma^{\rm HS}_{\rm SF}$
+    * in this folder (B.7): the auxiliary scalar field of HS and the HS parameters
+    * in Revision_SM_Higgs: the auxiliary (Hubbard-Stratonovich) fields of the scalar density, of the vector current and of the pair channel
+    * in Revision_SuperLoop: -- (not listed)
+* $\sigma^{\rm LL}_j$
+    * in this folder (A.7): the Pauli matrices on the spinor and on the isospin index; the unit matrices
+    * in Revision_SM_Higgs: the $2\times2$ unit matrix and the Pauli matrices $\sigma^{\rm LL}_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$, $\sigma^{\rm LL}_2=\begin{pmatrix}0&-i\\i&0\end{pmatrix}$, $\sigma^{\rm LL}_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}$, acting on the two components of a Weyl spinor
+    * in Revision_SuperLoop: the $2\times2$ unit matrix $\sigma^{\rm LL}_0$ and the Pauli matrices $\sigma^{\rm LL}_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$, $\sigma^{\rm LL}_2=\begin{pmatrix}0&-i\\i&0\end{pmatrix}$, $\sigma^{\rm LL}_3=\begin{pmatrix}1&0\\0&-1\end{pmatrix}$, acting on the two components of a Weyl spinor or on the species index
+* $T^\iota_{\rm LL}$
+    * in this folder (B.7, D): the isospin generators $\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2$ and the Levi-Civita symbol of three indices
+    * in Revision_SM_Higgs: the generators of $SU(2)_{\rm v}$ on the spinor field, $\mathsf 1_4\otimes\tau^{\rm LL}_\iota/2$; $[T^1_{\rm LL},T^2_{\rm LL}]=iT^3_{\rm LL}$ and cyclically
+    * in Revision_SuperLoop: the isospin generators $T^\iota_{\rm LL}=i\,D^{\rm v}_{\rm LL}(\mathbf e_\iota/2)$, Hermitian, $[T^1_{\rm LL},T^2_{\rm LL}]=iT^3_{\rm LL}$ and cyclically, and the isospin Casimir $(T_{\rm LL})^2=\sum_\iota(T^\iota_{\rm LL})^2$
+* $\tau^{\rm LL}_\iota$
+    * in this folder (D): the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index
+    * in Revision_SM_Higgs: the same three Pauli matrices acting on the isospin index
+    * in Revision_SuperLoop: the same three Pauli matrices acting on the isospin index of a field (the index of the two components up and down of an isodoublet)
+* $\theta^{\rm F}_{\rm LL}$
+    * in this folder (D): an isospin rotation and a phase of the fermion number (a local GEE transformation with $\mathbf g$)
+    * in Revision_SM_Higgs: the phase of a local transformation of the fermion number, a real function on M31
+    * in Revision_SuperLoop: the phase of a local transformation of the fermion number, $\Psi_{\rm LL}\mapsto\exp(i\theta^{\rm F}_{\rm LL})\Psi_{\rm LL}$, a real function of $x_{\rm LL}$
+* $U(1)^{\rm F}_{\rm LL}$
+    * in this folder (B.7): the isospin rotations, the phases of the fermion number, and the gauge group (B.3)
+    * in Revision_SM_Higgs: the isospin group, which acts on the isospin index of the spinor field (and on isospin vectors by rotations), and the group of the phases of the fermion number, $\Psi_{\rm LL}\mapsto e^{i\theta^{\rm F}_{\rm LL}}\Psi_{\rm LL}$; $F_{\rm LL}$ is its generator, the fermion number (1 on $\Psi_{\rm LL}$, 2 on a pair of two spinor charges); the author writes $U(1)^{\rm F}_{\rm LL}$ as U(1)FLL
+    * in Revision_SuperLoop: the generator of the fermion number $\Psi_{\rm LL}\to e^{i\theta_{\rm LL}}\Psi_{\rm LL}$ (it multiplies $\vec d_{\rm LL}$ by $2i$) and its group; the isospin group, which rotates the isospin index of $\Psi_{\rm LL}$ and $\vec d_{\rm LL}$ as a vector
+* $U(1)^{\rm Q}_{\rm LL}$
+    * in this folder (B.7, D): the unbroken group of the charge $Q_{\rm LL}$ in the superfluid
+    * in Revision_SM_Higgs: the group of the charge $Q_{\rm LL}$ (a charge of $SU(2)_{\rm v}$, not the electric charge): the phases $\exp(i\theta Q_{\rm LL})$, $Q_{\rm LL}=T^3_{\rm LL}$, the rotations about the third isospin axis
+    * in Revision_SuperLoop: the stabilizer of the vacuum $(0,0,\Delta^{\rm vac}_{\rm LL})$: the transformations (9.4) that leave it unchanged, a group $O(2)$ formed by the group $U(1)^{\rm Q}_{\rm LL}$ of the electric charge (the rotations $\exp(i\theta^3_{\rm LL}Q_{\rm LL})$ about the third isospin axis) and the reflection $\theta^{\rm F}_{\rm LL}=\pi/2$, $\mathsf U_{\rm LL}=i\tau^{\rm LL}_1$, which reverses the charge
+* $V^{(n)}_{\rm SF}$
+    * in this folder (B.7, D): the self-interaction of the brochon model (step $n$ of the recursion of Appendix B.5) and its couplings
+    * in Revision_SM_Higgs: the self-interaction of the step $n$ of the recursion of the potential: the set of contact terms (with their couplings) and of gauge-boson exchanges examined at that step
+    * in Revision_SuperLoop: -- (not listed)
+* $\varepsilon_{\rm LL}$
+    * in this folder (A.7, B.7, D): a momentum and the energy of a plane wave
+    * in Revision_SM_Higgs: the free energy $\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$ and the quasi-particle energies of the scalar pair channel $E^\pm_{\rm LL}=[(\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2]^{1/2}$
+    * in Revision_SuperLoop: the energy $\varepsilon_{\rm LL}=(q_{\rm LL}^2+m_{\rm LL}^2)^{1/2}$, the quasi-particle energies of the scalar channel $E^\pm_{\rm LL}=[(\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2]^{1/2}$, a function of the gap (written $E^\pm_{\rm LL}(\Delta^+_{\rm LL})$ and $E^\pm_{\rm LL}(\Delta^-_{\rm LL})$ when $\Delta_{\rm LL}$ is replaced by one of the two gaps of a general state), and those of the pseudoscalar channel, $(\tilde E^\pm_{\rm LL})^2=\varepsilon_{\rm LL}^2+\mu_{\rm LL}^2+\Delta_{\rm LL}^2\pm2[\mu_{\rm LL}^2\varepsilon_{\rm LL}^2+m_{\rm LL}^2\Delta_{\rm LL}^2]^{1/2}$
+* $\vec d_{\rm LL}$
+    * in this folder (A.7): the isovector order parameter
+    * in Revision_SM_Higgs: the order parameter, the isospin vector $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$ in $\mathbb C^3$, and its non-unitarity $\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2$
+    * in Revision_SuperLoop: the order parameter, the isospin vector $\vec d_{\rm LL}=(d^1_{\rm LL},d^2_{\rm LL},d^3_{\rm LL})\in\mathbb C^3$ with $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$, and its non-unitarity $\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2\in[0,1]$ (plain text `cross(dvec, dvec^*)`: the cross product)
+* $\vec q_{\rm LL}$
+    * in this folder (D): a momentum and the energy of a plane wave
+    * in Revision_SM_Higgs: the momentum of a plane wave of the spinor field, its length and its components
+    * in Revision_SuperLoop: the momentum of a particle in the space of $\mathbb R^{1,3}_{\rm LL}$, its length and its components
+* $W^\iota_{{\rm SF},pp'}$
+    * in this folder (B.7): the field strengths (B.7)
+    * in Revision_SM_Higgs: the field strengths $\partial_pW^\iota_{{\rm SF},p'}-\partial_{p'}W^\iota_{{\rm SF},p}-g^{\rm v}_{\rm LL}\sum\epsilon^{\rm LL}_{\iota\iota'\iota''}W^{\iota'}_{{\rm SF},p}W^{\iota''}_{{\rm SF},p'}$ and $\partial_pB_{{\rm SF},p'}-\partial_{p'}B_{{\rm SF},p}$
+    * in Revision_SuperLoop: -- (not listed)
+* $W^\iota_{{\rm SF},p}$
+    * in this folder (B.7, D): the gauge field of $SU(2)_{\rm v}$, its three components, and the Pauli matrices acting on the isospin index
+    * in Revision_SM_Higgs: the gauge field of $SU(2)_{\rm v}$: three real vector fields on M31 (they enter the covariant derivative with $+ig^{\rm v}_{\rm LL}$)
+    * in Revision_SuperLoop: -- (not listed)
+* $W^\pm_{{\rm SF},p}$
+    * in this folder (B.7): the massive charged bosons, the massive neutral boson and the zeugon
+    * in Revision_SM_Higgs: the gauge fields of definite mass after the breaking of the symmetry of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, named after the Standard Model (the names only: the group is a new one): the fields $(W^1_{{\rm SF},p}\mp iW^2_{{\rm SF},p})/\sqrt2$ of the charges $Q_{\rm LL}=\pm1$, the massive field of charge 0 and the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, which is not the photon and is named the zeugon (their expressions in $W^3_{{\rm SF},p}$ and $B_{{\rm SF},p}$ are derived in the solution)
+    * in Revision_SuperLoop: -- (not listed)
+* $w^{\rm F}_{\rm SF}$
+    * in this folder (B.7): the weights of the direct, the exchange and the pair contraction
+    * in Revision_SM_Higgs: the weights with which a method keeps the direct (Hartree), the exchange (Fock) and the pair (Bogoliubov) contraction of a contact term in its energy per volume
+    * in Revision_SuperLoop: -- (not listed)
+* $w^{\rm H}_{\rm SF}$
+    * in this folder (B.7): the weights of the direct, the exchange and the pair contraction
+    * in Revision_SM_Higgs: the weights with which a method keeps the direct (Hartree), the exchange (Fock) and the pair (Bogoliubov) contraction of a contact term in its energy per volume
+    * in Revision_SuperLoop: -- (not listed)
+* $w^{\rm P}_{\rm SF}$
+    * in this folder (B.7): the weights of the direct, the exchange and the pair contraction
+    * in Revision_SM_Higgs: the weights with which a method keeps the direct (Hartree), the exchange (Fock) and the pair (Bogoliubov) contraction of a contact term in its energy per volume
+    * in Revision_SuperLoop: -- (not listed)
+* $Z_{{\rm SF},p}$
+    * in this folder (B.7): the massive charged bosons, the massive neutral boson and the zeugon
+    * in Revision_SM_Higgs: the gauge fields of definite mass after the breaking of the symmetry of $SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$, named after the Standard Model (the names only: the group is a new one): the fields $(W^1_{{\rm SF},p}\mp iW^2_{{\rm SF},p})/\sqrt2$ of the charges $Q_{\rm LL}=\pm1$, the massive field of charge 0 and the massless gauge boson of $U(1)^{\rm Q}_{\rm LL}$, which is not the photon and is named the zeugon (their expressions in $W^3_{{\rm SF},p}$ and $B_{{\rm SF},p}$ are derived in the solution)
+    * in Revision_SuperLoop: -- (not listed)
+* $\zeta_{\rm LL}$
+    * in this folder (A.7): a gap, the two gaps and the measure of non-unitarity (A.16)
+    * in Revision_SM_Higgs: the order parameter, the isospin vector $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$ in $\mathbb C^3$, and its non-unitarity $\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2$
+    * in Revision_SuperLoop: the order parameter, the isospin vector $\vec d_{\rm LL}=(d^1_{\rm LL},d^2_{\rm LL},d^3_{\rm LL})\in\mathbb C^3$ with $d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle$, and its non-unitarity $\zeta_{\rm LL}=\lvert\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}\rvert/\lvert\vec d_{\rm LL}\rvert^2\in[0,1]$ (plain text `cross(dvec, dvec^*)`: the cross product)
+
+# 5. The checks
+
+The report of `code/scripts/write_lg_symbols.py` (`data/hck_lg_symbols_checks.txt`), complete:
+
+```
+PROJECT spacetimes, Revision_Lord_Gravity: the registry of the symbols and its checks (stage 4b of task C23; code/scripts/write_lg_symbols.py)
+
+PASS LY-1  every row of the four tables (249 rows of the manuscript in Appendix D, A.7 and B.7, and 20 of the remarks document) has a symbol cell with at least one symbol and a meaning: 457 symbol texts in the manuscript
+PASS LY-2  none of the 162 symbol texts with the suffix LG occurs in the registries of Revision_SM_Higgs (503 symbol texts) and Revision_SuperLoop (559)
+PASS LY-3  of the 48 symbol texts that the tables of the manuscript list in more than one row, every one is declared with its reason (48 declared)
+PASS LY-4  every one of the 55 symbol texts of the remarks document occurs in a table of the manuscript, except the 7 declared symbols of the remarks document only; whether a shared symbol names the same object in both was reviewed by hand (one collision, $c$, declared under LY-6)
+PASS LY-6  every one of the 32 symbol texts without a suffix that the tables of the manuscript share with the two other registries is declared as the same object or as a collision with its remedy (32 declared, 5 collisions)
+PASS LY-7  every one of the 127 symbol texts of the table of the task record (84 rows) occurs in a table of the manuscript (101; whether each names the same object in both was reviewed by hand, with no difference found), or is declared as a notation of the task record (26 declared, most of them earlier names of objects that the manuscript writes otherwise); of these, the 2 that another registry lists are declared as the same object or as a collision with its remedy
+PASS LY-8  of the symbols of the three tables (the manuscript, the remarks document, the task record), 11 are written with different trailing arguments or with and without one; every one is declared as one object or as two related objects (11 declared)
+NOTE  LY-5  of the 132 symbol texts of the manuscript with the suffix LL or SF, 82 occur with the same text in the registry of Revision_SM_Higgs and 51 in that of Revision_SuperLoop (47 in both, 86 in at least one); the other 46 are forms or objects that neither registry lists in that text; the registry document lists the meanings of the 86 in the three registries
+
+Declared repetitions (LY-3):
+  $B_{{\rm SF},p}$: the same object, listed in the table of each part that uses it
+  $C_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $D$: shorthand for the pair amplitude of the superfluid, defined in Theorems L2 and L3 and in Section 33, the same object
+  $E$: shorthand for the gap of the superfluid, defined in Theorem L3 and in Section 33, the same object
+  $GEE$: the same object, listed in the table of each part that uses it
+  $G^{\rm S}_{\rm SF}$: the same object, listed in the table of each part that uses it
+  $G^{\rm V}_{\rm SF}$: the same object, listed in the table of each part that uses it
+  $G_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $M$: shorthand for the Dirac mass of the superfluid, defined in Theorems L2 and L3 and in Section 33, the same object
+  $M^{\rm CJT}_{W,{\rm SF}}$: the same object, listed in the table of each part that uses it
+  $M_{\rm LL}(\mathbf b)$: the same object, listed in the table of each part that uses it
+  $P_{\rm LG}$: the same object, listed in the table of each part that uses it
+  $Q_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $T^3_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $T^\iota_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $U(1)^{\rm Q}_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $V^{(n)}_{\rm SF}$: the same object, listed in the table of each part that uses it
+  $W^\iota_{{\rm SF},p}$: the same object, listed in the table of each part that uses it
+  $\Gamma^{\rm LL}_p$: the same object, listed in the table of each part that uses it
+  $\Pi^\iota_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\Psi_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\alpha^{\rm Z}_{\rm LG}$: the same object, listed in the table of each part that uses it
+  $\ell$: the orbital angular momentum number: of a level of the pair (Section 29.3) and of a spherical harmonic (Section 32)
+  $\epsilon^{\rm LL}_{\iota\iota'\iota''}$: the same object, listed in the table of each part that uses it
+  $\gamma^{\rm ch}_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\mathbf g$: the same object, listed in the table of each part that uses it
+  $\mathbf g_{\rm boost}$: the same object, listed in the table of each part that uses it
+  $\mathsf 1_2$: the same object, listed in the table of each part that uses it
+  $\mathsf 1_4$: the same object, listed in the table of each part that uses it
+  $\mathsf E_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\mathsf K^\iota_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\mathsf L_{\rm LL}(\mathbf g)$: the same object, listed in the table of each part that uses it
+  $\mathsf S$: the same object: the spinor matrix $\mathsf S_{\rm LL}(\mathbf g)$, written short in Part II
+  $\mathsf U_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\mathsf W_{{\rm SF},p}$: the same object, listed in the table of each part that uses it
+  $\nabla^{\rm GEE}_p$: the same object, listed in the table of each part that uses it
+  $\theta$: a local notation of Part VI, declared at its beginning: there $\theta$ is the angle of the relative coordinate of the pair from the radius of the black hole
+  $\varepsilon_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $\vec n$: the same object, listed in the table of each part that uses it
+  $e$: the same object: the elementary electric charge (Lord's Sections 1 and 2, and the electron in Section 30.3)
+  $g^{\rm F}_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $g^{\rm v}_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $m$: a rest mass: of a Bargmann-Wigner field in Part I, and the shorthand for the mass of one particle of the pair in Sections 29.3 and 33.3, defined there
+  $m_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $r$: a local notation of Part VI, declared at its beginning: there $r$ is the distance of the two quasi-particles of the pair, and the Schwarzschild radius of their centre of mass is $r^{\rm cm}_{\rm LG}$
+  $s$: the same object: the isospin index (1 up, 2 down) of the brochon
+  $u_{\rm LL}$: the same object, listed in the table of each part that uses it
+  $x^\mu$: the same object: the coordinates, of M31 in Appendix A and of a curved space-time in the main text
+Symbols without a suffix shared with the other registries (LY-6):
+  $A_\mu$: the same object: the electromagnetic potential (Lord's Sections 1 and 2; the photon of the Standard Model)
+  $D$: a collision: in Revision_SuperLoop $D$ is a number of space dimensions; in this folder $D$ is a shorthand for the pair amplitude of the superfluid, defined in Theorems L2 and L3 and in Section 33 where it is used (remedy: the shorthand is defined at each use)
+  $GEE$: the same object: the gauge group of the brochon model
+  $G_S$: the same object: the author's scalar coupling of his Kohn-Sham ansatz
+  $G_V$: the same object: the author's vector coupling of his Kohn-Sham ansatz
+  $L$: a collision: in Revision_SuperLoop the letter L labels a family of machine checks; in this folder $L$ is the spectroscopic letter of the orbital angular momentum ($S$, $P$, $D$) of a level of the pair, defined in Section 29.3 (remedy: the letter and its values are defined there; the values $S,P,D,\dots$ are the labels of the standard notation of a level, such as $1\,{}^3S_1$ or the triplet S states, and not symbols of objects: as symbols, $S$ is the total spin and $D$ the shorthand for the pair amplitude)
+  $M$: a collision: in Revision_SuperLoop the letter M labels a family of machine checks; in this folder $M$ is a shorthand for the Dirac mass of the superfluid, defined in Theorems L2 and L3 and in Section 33 where it is used (remedy: the shorthand is defined at each use)
+  $M31$: the same object: the space-time of the Hermitian bi-quaternions
+  $O(2)$: the same object: the group of the rotations and reflections of a plane
+  $S$: the same object: the total spin of a state of two spin-1/2 particles
+  $SU(2)_{\rm v}$: the same object: the isospin group
+  $X$: the same object: the label of a method (HS, KS or CJT)
+  $[\mathbf x,\mathbf y,\mathbf z]$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\alpha$: a collision: in Revision_SM_Higgs $\alpha$ is an index over the two components of a Weyl spinor; in this folder $\alpha$ is a shorthand for $\alpha^{\rm Z}_{\rm LG}$ in Sections 29.3 and 33.3, defined there (remedy: the shorthand is defined at each use)
+  $\bar{\mathbf x}$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf b$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf e_0,\dots,\mathbf e_7$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf e_p$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf f_p$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf g$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf u$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf x$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathbf x^\dagger$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $\mathrm{tr}$: the same object (the trace); the manuscript adds the normalized trace $\mathrm{tr}_{\rm N}$
+  $\mathsf 1_2$: the same object (a unit matrix)
+  $\mathsf 1_4$: the same object (a unit matrix)
+  $\nabla^{\rm GEE}_p$: the same object: the GEE covariant derivative
+  $\tilde{\mathbf g}$: the same object (the algebra of the bi-quaternions and the bi-octonions, as in the other registries)
+  $c$: a collision: in this folder $c$ is the number of a component of the brochon (1 to 8, Appendix B.1), the same object as in the two other registries, and also the speed of light, common notation that the units set to 1 (remedy: each is defined where it is used; the speed of light appears only in $\hbar=c=1$ and in formulas written in ordinary units, such as $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$; the letter is also one of the frame indices $a,b,c,d$, which mean nothing outside their formula)
+  $e$: the same object: the elementary electric charge
+  $n$: the same object in the table: the number density of the author's Kohn-Sham ansatz
+  $n_S$: the same object: the scalar density of the author's Kohn-Sham ansatz
+Symbols of the remarks document only (LY-4):
+  $B$: the massive gauge boson $B_{{\rm SF},p}$, written without its index
+  $R^{\rm LG}_{\mu\nu\rho\sigma}$: the Riemann tensor with all indices lowered; the manuscript lists the same tensor with the index letters $\rho\sigma\mu\nu$, $R^{\rm LG}_{\rho\sigma\mu\nu}$
+  $W^1$: the massive gauge boson $W^1$, the component $\iota=1$ of $W^\iota_{{\rm SF},p}$
+  $W^2$: the massive gauge boson $W^2$, the component $\iota=2$ of $W^\iota_{{\rm SF},p}$
+  $\epsilon^{\rm d}_{\rm LG}$: a dielectric constant of the condensate, used only in remark R9
+  $\gamma^{ab}_{\rm LL}$: the antisymmetrized Dirac matrices; the manuscript lists them as $\gamma^{\mu\nu}_{\rm LL}$
+  $\hbar$: Planck's constant, common notation (set to 1 in the manuscript)
+Notations of the task record (LY-7):
+  $H_{\rm LG}$: its block (entries E7 and E15); the manuscript writes it $\mathsf H_{\rm LG}$ (18.3)
+  $LG$: the suffix itself, which the task record lists to explain it; not a symbol of an object
+  $N^{\rm V}_{\rm LG}(v)$: the charge on a slice of constant advanced time (entries of stage 6); the manuscript writes it $\mathcal N^{\rm V}_{\rm LG}(v_{\rm LG})$ (24.5)
+  $R^{\rm LG}_{ab\mu\nu}$: the Riemann tensor with two frame indices; the manuscript lists $R^{{\rm LG}\,a}{}_{b\mu\nu}$
+  $SL(2,\mathbb C)$: a standard group, the unit bi-quaternions; the manuscript names it in its text and in the meaning of GEE
+  $S_{\rm H}$: the matrix of the separated spinor (entries E7 and E15); the manuscript writes it $\mathsf S^{\rm H}_{\rm LG}$ (18.3)
+  $S_{\rm LG}$: $j_{\rm LG}-\ell_{\rm LG}$, the projection of the spin of a hydrogen-like level (entries of stage 5); not used in the manuscript
+  $W_{n,{\rm LG}}$: the charge that the decomposition assigns to the state $n$ (entry E18); the manuscript writes it $\mathcal W_{n,{\rm LG}}$
+  $Z$: the nuclear charge of a hydrogen atom before a sudden change (entry E17); the manuscript writes it $Z_{\rm H}$ (Section 26.1)
+  $Z'$: the nuclear charge after the change (entry E17); the manuscript writes it $Z'_{\rm H}$ (Section 26.1)
+  $\eta^{\rm LL}$: the Minkowski metric written without its indices (as in Section 1 of the manuscript); the tables of the manuscript list it with its indices, $\eta^{\rm LL}_{\mu\nu}$
+  $\gamma^a_{\rm LL}$: the Dirac matrices with a frame index $a$; the tables of the manuscript list them with the index $\mu$ and, in Appendix A, with the index $p$
+  $\gamma^{ab}_{\rm LL}$: their antisymmetrized products with frame indices; the manuscript lists $\gamma^{\mu\nu}_{\rm LL}$
+  $\mathcal A_{\rm LG}$: the greybody factor (entries of stage 5); the manuscript writes it $\mathcal T_{\rm LG}$ (21.1)
+  $\mathcal M_{\rm LG}(v)$: the mass as a function of the advanced time (entries of stage 6); the manuscript writes $\mathcal M_{\rm LG}(v_{\rm LG})$
+  $\mathcal P^{\rm V}_{\rm LG}(v,r)$: a radial function in the Vaidya space-time (entries of stage 6); the manuscript writes the argument $v_{\rm LG}$
+  $\mathcal Q^{\rm V}_{\rm LG}(v,r)$: the other radial function in the Vaidya space-time (entries of stage 6); the manuscript writes the argument $v_{\rm LG}$
+  $\sigma_1$: a Pauli matrix (entries E7 and E15); the manuscript writes it $\sigma^{\rm LL}_1$
+  $\sigma_3$: a Pauli matrix (entries E7 and E15); the manuscript writes it $\sigma^{\rm LL}_3$
+  $a^{\rm H}_{\rm LG}$: the coefficient of the decay rate at small masses (entry E13); the manuscript writes it $c^{\rm H}_{\rm LG}$ (20.5)
+  $c_{n,{\rm LG}}$: the coefficient of the state $n$ in the decomposition of the field (entry E18); not used in the manuscript
+  $p_n$: the profile of the state $n$ on a slice (entry E18); the manuscript writes it $\mathcal P^{(n)}_{\rm LG}(r)$
+  $r^{\rm ion}_{\rm LG}$: the radius at which the tidal field frees the pair in the classical estimate (entry E20); not used in the manuscript
+  $r_*$: the tortoise coordinate (entries of stage 5); not used in the manuscript
+  $s_{\rm LG}$: an exponent of the radial equations at a regular singular point (entries of stage 5); the manuscript writes it $\varsigma_{\rm LG}$ (19.1)
+  $v$: the advanced time of the Vaidya space-time (decision D10 and the entries of stage 6); the manuscript writes it $v_{\rm LG}$
+Notations of the task record that another registry lists (LY-7):
+  $SL(2,\mathbb C)$: the same object as in the registries of Revision_SM_Higgs and Revision_SuperLoop
+  $v$: a collision: in Revision_SM_Higgs $v$ is the vacuum value of the Higgs field of the Standard Model; in the task record of this folder $v$ is the advanced time of the Vaidya space-time (remedy: the task record defines it in decision D10 and in its table of symbols, and the manuscript writes $v_{\rm LG}$)
+Symbols written with different arguments (LY-8):
+  $E$ ($E$, $E(\vec q)$): two related objects: the energy $E(\vec q)$ of a quasi-particle of momentum $\vec q$ (B.18) and its smallest value, the gap, written $E$ in Theorem L3 and in Section 33: $E=E(\vec 0)$ for the method CJT
+  $N_{\rm LL}$ ($N_{\rm LL}(\mathbf b)$, $N_{\rm LL}(\mathbf b,\mathbf b')$, $N_{\rm LL}(\mathbf x)$): one object and its polarization: the complex norm of a bi-octonion, $N_{\rm LL}(\mathbf x)$, of a bi-quaternion, $N_{\rm LL}(\mathbf b)$, and its polarized form $N_{\rm LL}(\mathbf b,\mathbf b')$
+  $\gamma^p_{\rm LL}$ ($\gamma^p_{\rm LL}$, $\gamma^p_{\rm LL}[\mathbf f]$): one family: the Dirac matrices $\gamma^p_{\rm LL}[\mathbf f]$ of a frame $\mathbf f$ (9.4) and those of the canonical frame, $\gamma^p_{\rm LL}$
+  $\mathbf g$ ($\mathbf g$, $\mathbf g(x)$): one object: a unit bi-quaternion, and $\mathbf g(x)$ the same as a function of the point (a local transformation, (B.4))
+  $\mathcal M_{\rm LG}$ ($\mathcal M_{\rm LG}$, $\mathcal M_{\rm LG}(0)$, $\mathcal M_{\rm LG}(v)$, $\mathcal M_{\rm LG}(v_{\rm LG})$): one object: the mass of the black hole in units of length, as a function of the advanced time ($\mathcal M_{\rm LG}(v_{\rm LG})$, in the task record $\mathcal M_{\rm LG}(v)$) and at the start ($\mathcal M_{\rm LG}(0)$)
+  $\mathcal P^{\rm V}_{\rm LG}$ ($\mathcal P^{\rm V}_{\rm LG}(v,r)$, $\mathcal P^{\rm V}_{\rm LG}(v_{\rm LG},r)$): one object: a radial function in the Vaidya space-time, with the argument $v_{\rm LG}$ in the manuscript and $v$ in the task record
+  $\mathcal Q^{\rm V}_{\rm LG}$ ($\mathcal Q^{\rm V}_{\rm LG}(v,r)$, $\mathcal Q^{\rm V}_{\rm LG}(v_{\rm LG},r)$): one object: the other radial function in the Vaidya space-time, with the argument $v_{\rm LG}$ in the manuscript and $v$ in the task record
+  $\mathsf U_{\rm LL}$ ($\mathsf U_{\rm LL}$, $\mathsf U_{\rm LL}(x)$): one object: a local isospin rotation, written with or without its argument $x$
+  $\mathsf h_{\rm LL}$ ($\mathsf h_{\rm LL}$, $\mathsf h_{\rm LL}(\vec q)$): one object: the free Dirac Hamiltonian, written with or without the momentum $\vec q$
+  $\theta^{\rm F}_{\rm LL}$ ($\theta^{\rm F}_{\rm LL}$, $\theta^{\rm F}_{\rm LL}(x)$): one object: the phase of a local transformation of the fermion number, written with or without its argument $x$
+  $\xi^{\rm LL}_p$ ($\xi^{\rm LL}_p$, $\xi^{\rm LL}_p(\mathbf b)$): one object: the complex coefficients of a bi-quaternion or a bi-octonion, written with or without the element as argument
+
+VERDICT: ALL PASS (7 of 7)
+```
+
+To reproduce, from the folder `Revision_Lord_Gravity`:
+
+```bash
+python3 code/scripts/write_lg_symbols.py      # data/lg_symbols.csv, data/hck_lg_symbols_checks.txt and the fragments
+python3 code/scripts/assemble_docs.py docs_src/P1_symbols.src.md
+```
