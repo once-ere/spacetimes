@@ -36,7 +36,10 @@ written in parts, each pushed when it is complete:
 * **Part V** (Sections 23 to 28, this version): the brochon around a black hole whose mass grows or shrinks, in the Vaidya
   space-time, across the apparent horizon: the two equations of the brochon, its evolution in time with the inside of the
   black hole cut out of the grid, and four runs in which the mass changes slowly or fast.
-* **Part VI** (planned): the brochon pair bound by the zeugon, and the predictions.
+* **Part VI** (Sections 29 to 35, this version): the pair of two quasi-particles bound by the zeugon, its levels, and which pairs can
+  annihilate; a black hole that carries the charge of the zeugon; every result in physical units over the unknown value of the cutoff,
+  and the energy of the condensed vacuum against the observed energy of the vacuum; the fall of the pair into a black hole; and what
+  gravitation can detect.
 
 Appendix A builds the algebra of the Lorentz super-loop, with an example of every object, and Appendix B states the brochon
 model; each lists its own symbols. Appendix C gives the provenance of the main text: the programs that compute and check
@@ -82,6 +85,19 @@ before the equations do it.
    $y_{\rm LG}^5$ and faster. The wave that falls in crosses the horizon smoothly and reaches the centre (Part IV).
 7. When the black hole grows or shrinks, a brochon in the ground state follows a slow growth adiabatically and is left in its
    old state by a fast change; a growth speeds up its absorption and a shrinking slows it down (Part V).
+8. Two quasi-particles of opposite zeugon charge form an atom like positronium, with the mass of the gap and the coupling
+   $\alpha^{\rm Z}_{\rm LG}={{GENM:lgp_alpha}}$ of the zeugon: its Bohr radius is {{GEN:lgp_gap_bohr}}$/\Lambda_{\rm LL}$ and its binding energy
+   {{GEN:lgp_gap_binding}} $\Lambda_{\rm LL}$ (Section 29).
+9. A black hole can carry a zeugon charge, but only a tiny one, $\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG}\le$ {{GEN:lgq_coef}} $\Lambda_{\rm LL}/M_{\rm Pl}$;
+   the relative change of its shadow is then {{GEN:lgq_shadow_1TeV}} for $\Lambda_{\rm LL}=1$ TeV, and smaller for smaller cutoffs, and that of
+   the frequencies of its ringing is as small (Section 30).
+10. The energy of the condensed vacuum, ${{GENM:lgq_evac}}\,\Lambda_{\rm LL}^4$, exceeds the observed energy of the vacuum for every cutoff above
+    {{GEN:lgq_lambda_star_mev}} meV, and has the opposite sign (Section 31).
+11. A pair that falls into a black hole is swallowed whole by every black hole heavier than about {{GEN:lgt_mbh_esc_05}} $M_{\rm Pl}^2/\Lambda_{\rm LL}$;
+    the classical estimate, ten times larger, fails because the tidal field is never static on the time scale of tunnelling (Section 32).
+12. The quasi-particles are the particles and antiparticles of a Dirac field of the mass of the gap, and the zeugon conserves their
+    number: two particles cannot annihilate into zeugons, a particle and its antiparticle can, and of their ground states only the even
+    singlet and the odd triplet decay (Section 33).
 
 # 1. Conventions, units and notation
 
@@ -1016,8 +1032,8 @@ $T^{\rm LG}_{\mu\nu}=\mathcal E^{\rm CJT}_{\rm SF}\,g^{\rm LG}_{\mu\nu}$ (16.4),
 acts as a cosmological constant. *Why it is not decided here:* the brochon model measures every energy from the normal
 vacuum (the normal order) and fix no value of the energy of the vacuum to which gravitation responds; this energy, a
 constant of the gravitational theory, must be fixed by the observed expansion of the universe, as it must for every
-condensate (the condensates of quantum chromodynamics and of the electroweak theory raise the same question). Part VI
-compares the size of the condensation energy with the observed cosmological constant.
+condensate (the condensates of quantum chromodynamics and of the electroweak theory raise the same question). Section 31.2
+compares the size of the condensation energy with the observed energy of the vacuum.
 
 **Remark (operators, normal order and semiclassical gravitation).** *What it means:* the brochon of the brochon model
 (Appendix B) is a quantum field, its self-interaction is normal-ordered with respect to the normal vacuum of the flat M31, and its
@@ -1545,7 +1561,7 @@ particle of rest energy {{GEN:lgs_m_sun_01}} eV (Appendix C.5 gives the constant
 proportionally lighter black hole. Around a black hole much heavier than that, $y_{\rm LG}\gg1$: the wavelength of the particle is
 short compared with the black hole, and the particle moves like a classical body, on orbits that this part does not compute.
 Which black holes matter for the brochon depends on the value of $\Lambda_{\rm LL}$ in physical units, which the brochon model
-does not fix (Section 16.3); Part VI takes up this question.
+does not fix (Section 16.3); Section 31 takes up this question.
 
 # 21. Scattering: the greybody factors
 
@@ -1919,6 +1935,653 @@ end of the fast growth agrees to {{GEN:lgv_dev_yv9}}.)
    are as broad as at $y_{\rm LG}=0.25$.
 5. By Theorem L3 every result holds for the quasi-particle of the superfluid with the mass of the gap.
 
+# Part VI. The pair bound by the zeugon, and what gravitation can detect
+
+Parts IV and V followed one quasi-particle of the superfluid in the field of a black hole. Part VI completes the task with
+the zeugon: two quasi-particles bound to each other by the zeugon, a black hole that carries the charge of the zeugon, and the
+size of every effect in physical units. It answers five questions, one in each section:
+
+* Section 29: what are the levels of two quasi-particles of opposite zeugon charge, held together by the zeugon? (They form an
+  atom like *positronium*, the bound state of an electron and its antiparticle, the positron.)
+* Section 30: what becomes of a black hole that swallows more quasi-particles of one charge than of the other? (It carries a
+  zeugon charge, which changes its geometry and what a distant observer sees.)
+* Section 31: the brochon model fixes every energy as a multiple of its cutoff $\Lambda_{\rm LL}$, but not $\Lambda_{\rm LL}$ itself. What
+  do the results mean in physical units, and what does gravitation say about the energy of the condensed vacuum?
+* Section 32: is the pair torn apart by the tidal field of a black hole into which it falls?
+* Section 33: can the two quasi-particles of the pair annihilate into zeugons, as an electron and a positron annihilate into
+  photons?
+
+Section 34 collects what gravitation can detect, and Section 35 what Part VI establishes.
+
+*In words.* In the superfluid vacuum of the brochon model the excitations of the brochon field are not bare brochons but
+mixtures of a brochon and of the complex conjugate of a brochon, in the proportion that the condensate of pairs dictates
+(Section 15.4); like the excitations of a superconductor, they are called **quasi-particles**. Theorems L2 and L3 (Sections
+15.4 and 18.1) showed that a quasi-particle behaves, in every gravitational field and every field of the zeugon, exactly as a
+Dirac particle of the mass $E^{\rm CJT,gap}_{\rm SF}={{GENM:lgp_egap}}\,\Lambda_{\rm LL}$ whose charge under the zeugon is $+\tfrac12$ or $-\tfrac12$
+times the coupling $g^{\rm v}_{\rm LL}=0.7$. Part VI uses this result throughout: wherever it speaks of a quasi-particle, the reader may
+think of a Dirac particle of that mass and charge.
+
+Every statement of Part VI is computed and checked by programs, which Appendix C.7 describes with their complete reports: for
+Section 29 the Rust program `lg_pair` ({{GEN:lgp_verdict_rust}}), the Python program `python/lg_pair.py` ({{GEN:lgp_verdict_python}}) and
+the Wolfram script `wolfram/source/lg_pair.wls` ({{GEN:lgp_verdict_wolfram}}); for Sections 30 and 31 `lg_charge`
+({{GEN:lgq_verdict_rust}}), `python/lg_charge.py` ({{GEN:lgq_verdict_python}}) and `wolfram/source/lg_charge.wls`
+({{GEN:lgq_verdict_wolfram}}); for Section 32 `lg_tidal` ({{GEN:lgt_verdict_rust}}), `python/lg_tidal.py` ({{GEN:lgt_verdict_python}}) and
+`wolfram/source/lg_tidal.wls` ({{GEN:lgt_verdict_wolfram}}); for Section 33 `lg_annih` ({{GEN:lga_verdict_rust}}), `python/lg_annih.py`
+({{GEN:lga_verdict_python}}) and `wolfram/source/lg_annih.wls` ({{GEN:lga_verdict_wolfram}}). The units are those of Section 1,
+$\hbar=c=1$; energies are given in units of $\Lambda_{\rm LL}$ unless another unit is named.
+
+*Notation of Part VI.* In Sections 29, 32 and 33 the vector $\vec r$ from one quasi-particle of the pair to the other is the
+**relative coordinate**, $r=\lvert\vec r\rvert$ their distance, and $(x,y,z)$ its components; in Section 32, $z$ points along the radius
+of the black hole and $\theta$ is the angle of $\vec r$ from that direction. The radius of the centre of mass of the pair in the
+coordinates of Schwarzschild is written $r^{\rm cm}_{\rm LG}$.
+
+# 29. The pair bound by the zeugon
+
+*In words.* Two quasi-particles of opposite zeugon charge attract each other with a force that falls as the inverse square of
+their distance, as an electron and a positron do. They form an atom whose levels are those of positronium, with the mass of the
+electron replaced by the mass of the gap and the fine-structure constant by the coupling of the zeugon. This section computes
+the levels and their small splittings. Whether the two can also annihilate, as an electron and a positron do, is decided in
+Section 33.
+
+## 29.1 The force between two quasi-particles
+
+The zeugon is the gauge field $A_{{\rm SF},\mu}=W^3_{{\rm SF},\mu}$ of $SU(2)_{\rm v}$ that remains massless in the superfluid (Appendix B.6).
+With the Lagrangian (15.2) its field equation is that of electrodynamics in *Heaviside-Lorentz units*, the units in which the
+energy density of a static field is half the square of its strength and no factor $4\pi$ appears in the field equations: a charge
+$Q_1$ at rest has the potential $Q_1/(4\pi r)$, and two charges $Q_1$, $Q_2$ at the distance $r$ have the potential energy
+$Q_1Q_2/(4\pi r)$ (Appendix B.6). A quasi-particle carries the zeugon charge $q^{\rm qp}_{\rm LG}=\pm\tfrac12g^{\rm v}_{\rm LL}$, so that two
+quasi-particles of opposite charge have the potential energy
+$$V^{\rm Z}_{\rm LG}(r)=-\frac{(g^{\rm v}_{\rm LL})^2}{16\pi\,r}=-\frac{\alpha^{\rm Z}_{\rm LG}}r,\qquad\alpha^{\rm Z}_{\rm LG}=\frac{(g^{\rm v}_{\rm LL})^2}{16\pi}={{GENM:lgp_alpha}}.\tag{29.1}$$
+The number $\alpha^{\rm Z}_{\rm LG}$ plays the role of the fine-structure constant $\alpha\approx1/137$ of electrodynamics, and it is of
+the same size (1.3 times larger). The potential (29.1) is that of the empty vacuum. The superfluid could weaken it at long
+distances, as a dielectric medium weakens the force between two charges, by the polarization of its condensate; this effect is
+not computed in this work, and the results of Part VI hold where it is small.
+
+## 29.2 An atom of two equal masses
+
+The motion of two particles of masses $m_1$ and $m_2$ that attract each other with a potential of their distance separates into
+the free motion of their centre of mass and the motion of one particle of the *reduced mass* $m_1m_2/(m_1+m_2)$ in that
+potential. For two quasi-particles of the same mass $m^{\rm pair}_{\rm LG}=E^{\rm CJT,gap}_{\rm SF}$ the reduced mass is
+$\mu^{\rm pair}_{\rm LG}=m^{\rm pair}_{\rm LG}/2$, and the relative motion in (29.1) is that of a hydrogen atom: the levels, the rest energy
+of the two particles included, are
+$$2m^{\rm pair}_{\rm LG}+E^{(2)}_{\rm LG},\qquad E^{(2)}_{\rm LG}=-\frac{\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2}{2n_{\rm LG}^2}=-\frac{m^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2}{4n_{\rm LG}^2}\qquad(n_{\rm LG}=1,2,3,\dots),\tag{29.2}$$
+and the size of the atom is set by its *Bohr radius*
+$$a^{\rm pair}_{\rm LG}=\frac1{\mu^{\rm pair}_{\rm LG}\alpha^{\rm Z}_{\rm LG}}=\frac2{m^{\rm pair}_{\rm LG}\alpha^{\rm Z}_{\rm LG}}.\tag{29.3}$$
+In the ground state $n_{\rm LG}=1$ the wave function of the relative coordinate is $e^{-r/a^{\rm pair}_{\rm LG}}/(\pi(a^{\rm pair}_{\rm LG})^3)^{1/2}$.
+
+*Example: the numbers.* With $m^{\rm pair}_{\rm LG}={{GENM:lgp_egap}}$ and $\alpha^{\rm Z}_{\rm LG}={{GENM:lgp_alpha}}$ the Bohr radius is
+{{GEN:lgp_gap_bohr}} in units of $1/\Lambda_{\rm LL}$, and the ground state is bound by $m^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2/4=$
+{{GEN:lgp_gap_binding}}, which is {{GEN:lgp_gap_binding_rel}} of the mass of one quasi-particle. The pair is therefore large and weakly
+bound: its size is several hundred times the length $1/\Lambda_{\rm LL}$ of the model, and its binding energy is a small fraction of
+its mass. This is why the nonrelativistic Schrödinger equation describes it, with relativistic corrections of the relative size
+$(\alpha^{\rm Z}_{\rm LG})^2\approx10^{-4}$, which Section 29.3 computes. (For two brochons of the mass $m_{\rm LL}=0.2$ of the normal vacuum, in
+which the zeugon is massless too, the same formulas give the Bohr radius {{GEN:lgp_mLL_bohr}} and the binding energy {{GEN:lgp_mLL_binding}}.)
+
+## 29.3 The fine and the hyperfine structure
+
+The levels (29.2) depend only on $n_{\rm LG}$. The relativistic corrections split them, by amounts of the order
+$m^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^4$. They follow from the **Breit-Fermi Hamiltonian**, the Hamiltonian of two Dirac particles that
+exchange one massless vector boson, expanded to the second order in their velocities; for the electron and the positron it gives
+the levels of positronium (V. B. Berestetskii, E. M. Lifshitz and L. P. Pitaevskii, *Quantum Electrodynamics*, Sections 83 and
+84). Write $m$ for $m^{\rm pair}_{\rm LG}$ and $\alpha$ for $\alpha^{\rm Z}_{\rm LG}$ in this section, $\vec p$ for the relative momentum,
+$\hat n=\vec r/r$, $\vec L$ for the orbital angular momentum and $\vec S_1$, $\vec S_2$ for the two spins, with the total spin
+$\vec S=\vec S_1+\vec S_2$. For two particles of the same mass the Hamiltonian is
+$$\begin{aligned}H^{\rm BF}_{\rm LG}={}&\frac{p^2}m-\frac\alpha r-\frac{p^4}{4m^3}+\frac{\pi\alpha}{m^2}\delta^3(\vec r)-\frac\alpha{2m^2}\,p_i\frac{\delta_{ij}+\hat n_i\hat n_j}r\,p_j+\frac{3\alpha}{2m^2r^3}\,\vec L\cdot\vec S\\&+\frac{8\pi\alpha}{3m^2}\,\vec S_1\cdot\vec S_2\,\delta^3(\vec r)+\frac\alpha{m^2r^3}\big[3(\vec S_1\cdot\hat n)(\vec S_2\cdot\hat n)-\vec S_1\cdot\vec S_2\big]\;\Big[{}+\frac{2\pi\alpha}{m^2}\Big(\frac34+\vec S_1\cdot\vec S_2\Big)\delta^3(\vec r)\Big].\end{aligned}\tag{29.4}$$
+The first two terms are those of the hydrogen atom of (29.2). The others are, in order:
+
+* the *relativistic correction of the kinetic energy*, the next term of $(m^2+p^2)^{1/2}=m+p^2/(2m)-p^4/(8m^3)+\dots$ for each
+  particle;
+* the *Darwin term*, a contact term that comes from the trembling motion of a Dirac particle over its Compton wavelength $1/m$
+  (the *Zitterbewegung*), which smears the potential that it feels;
+* the *orbit-orbit term*: the magnetic attraction of the two moving charges and the delay of the exchange, since the boson travels
+  at the speed of light;
+* the *spin-orbit term*: the interaction of the spins with the orbital motion;
+* the *spin-spin terms*: the interaction of the two magnetic moments, a contact term and a tensor term; the gyromagnetic factor 2 of
+  a Dirac particle holds for the quasi-particles, because their equation of the second order is that of a Dirac particle (Theorem
+  L2);
+* in brackets, the term of **virtual annihilation**: a particle and its *own* antiparticle can annihilate into one virtual boson and
+  be created again from it. This shifts only the states of total spin 1 at zero distance, which have the angular momentum and the
+  parity of one vector boson; the factor $\tfrac34+\vec S_1\cdot\vec S_2$ is 1 for the total spin $S=1$ and 0 for $S=0$. Two particles
+  that are not each other's antiparticles cannot do this. Which pairs of quasi-particles can is decided in Section 33; here the
+  levels are given both without and with the term.
+
+To first order the corrections are the expectation values of these operators in the states of (29.2). They split the levels of
+the same $n_{\rm LG}$ in two ways. The *fine structure* separates states of different orbital angular momentum $\ell$ and total angular
+momentum $J$. The **hyperfine structure** separates the states of total spin $S=0$, the *singlet* (in positronium called *para*), from
+those of $S=1$, the *triplet* (*ortho*). The states are written $n_{\rm LG}\,{}^{2S+1}L_J$, with the letter $L=S,P,D,\dots$ for
+$\ell=0,1,2,\dots$; for example $1\,{}^3S_1$ is the ground level with parallel spins.
+
+**Table VI.1.** The levels of the pair for $n_{\rm LG}\le2$: the energy is $2m^{\rm pair}_{\rm LG}+E^{(2)}_{\rm LG}+E^{(4)}_{\rm LG}$, with the leading
+term (29.2) and the correction $E^{(4)}_{\rm LG}$ of the order $(\alpha^{\rm Z}_{\rm LG})^4$; the coefficients are exact rational numbers
+(program `python/lg_pair.py`; the table for $n_{\rm LG}\le4$ is in `data/lg_pair_levels.csv`). The last column includes the term of
+virtual annihilation of a particle with its own antiparticle.
+
+{{GEN:lgp_levels_table}}
+
+*Example: the hyperfine splitting of the ground state.* Without annihilation the triplet $1\,{}^3S_1$ lies above the singlet
+$1\,{}^1S_0$ by $\big(\tfrac1{192}+\tfrac{21}{64}\big)m\alpha^4=\tfrac{64}{192}m\alpha^4=\tfrac13m\alpha^4$, which is {{GEN:lgp_gap_hfs0}}. All of it comes from
+the contact term of the two magnetic moments: the ground state has at zero distance the density
+$\lvert\psi(0)\rvert^2=1/(\pi(a^{\rm pair}_{\rm LG})^3)=m^3\alpha^3/(8\pi)$, and $\vec S_1\cdot\vec S_2$ is $\tfrac14$ in the triplet and $-\tfrac34$ in the
+singlet, so that the contact term separates them by $\frac{8\pi\alpha}{3m^2}\cdot\frac{m^3\alpha^3}{8\pi}\cdot1=\tfrac13m\alpha^4$. The virtual
+annihilation adds $\frac{2\pi\alpha}{m^2}\lvert\psi(0)\rvert^2=\tfrac14m\alpha^4$ to the triplet, and the splitting becomes $\tfrac7{12}m\alpha^4$
+({{GEN:lgp_gap_hfs1}}), the value of positronium. The levels with $n_{\rm LG}=2$ spread over {{GEN:lgp_gap_spread2}} without annihilation.
+
+(Checks. YP-1: for one particle in a fixed Coulomb field, the limit of the Hamiltonian in which one mass is infinite, the same
+operators give Dirac's fine structure $-\frac{m\alpha^4}{2n_{\rm LG}^4}\big(\frac{n_{\rm LG}}{j_{\rm LG}+1/2}-\frac34\big)$ for every state with
+$n_{\rm LG}\le5$; YP-2: with the annihilation term they give the formula of R. A. Ferrell for the levels of positronium ("The
+positronium fine structure", Physical Review, 1951) for every state with $n_{\rm LG}\le5$; YP-3: the expectation values of $1/r$,
+$1/r^2$, $1/r^3$ and $\lvert\psi(0)\rvert^2$; LP-1: the coefficients computed again by numerical quadrature of the radial integrals
+agree with the exact ones to {{GEN:lgp_dev_lp1}}; WP-1: the coefficients for $n_{\rm LG}\le3$ in exact arithmetic.)
+
+# 30. A black hole that carries the charge of the zeugon
+
+*In words.* A black hole that has settled down is described completely by its mass, its angular momentum and its charges under the
+fields of long range; nothing else of what fell in can be seen from outside (the *no-hair theorems*). The zeugon is a field of long
+range, like the electromagnetic field. A black hole that has swallowed more quasi-particles of one zeugon charge than of the other
+therefore carries a zeugon charge, and the field of that charge reaches to infinity and changes the geometry around the black hole.
+Section 30.1 gives the geometry, Sections 30.2 and 30.3 the largest charge that a black hole can acquire, and Section 30.4 how much
+the charge changes what a distant observer sees. Throughout, the black hole does not rotate.
+
+## 30.1 The geometry
+
+A black hole of mass $M_{\rm LG}$ and zeugon charge $Q^{\rm Z}_{\rm LG}$ has the zeugon field
+$A_{{\rm SF},\mu}\,dx^\mu=Q^{\rm Z}_{\rm LG}/(4\pi r)\,dt$, a Coulomb field, and the metric of Reissner and Nordström,
+$$ds^2=f^{\rm RN}_{\rm LG}dt^2-\frac{dr^2}{f^{\rm RN}_{\rm LG}}-r^2d\Omega^2,\qquad f^{\rm RN}_{\rm LG}=1-\frac{2\mathcal M_{\rm LG}}r+\frac{(\mathcal Q^{\rm Z}_{\rm LG})^2}{r^2},\qquad(\mathcal Q^{\rm Z}_{\rm LG})^2=\frac{G_{\rm N}(Q^{\rm Z}_{\rm LG})^2}{4\pi},\tag{30.1}$$
+with $\mathcal M_{\rm LG}=G_{\rm N}M_{\rm LG}$; both $\mathcal M_{\rm LG}$ and $\mathcal Q^{\rm Z}_{\rm LG}$ are lengths. The factor $4\pi$ is that of the
+Heaviside-Lorentz units of (15.2); textbooks that write the electric charge in Gaussian units have $G_{\rm N}Q^2$ without it. The metric
+(30.1) solves Einstein's equations (16.8) with the energy-momentum tensor (16.5) of the zeugon (checks YC-1 and WC-1, exactly, with
+the curvature of Section 14.1; with $G_{\rm N}(Q^{\rm Z}_{\rm LG})^2$ in place of $G_{\rm N}(Q^{\rm Z}_{\rm LG})^2/(4\pi)$ the equations fail). The horizons
+are the zeros of $f^{\rm RN}_{\rm LG}$, at $\mathcal M_{\rm LG}\pm(\mathcal M_{\rm LG}^2-(\mathcal Q^{\rm Z}_{\rm LG})^2)^{1/2}$; the outer one, $r_{+,\rm LG}$, is the
+horizon seen from outside. They exist only for $\mathcal Q^{\rm Z}_{\rm LG}\le\mathcal M_{\rm LG}$; at equality the black hole is called *extremal*.
+
+## 30.2 The largest charge: accretion
+
+Black holes acquire charge by *accretion*, the capture of the matter around them. A black hole among slow quasi-particles of both
+charges that has a charge of one sign attracts the opposite charges and repels the like ones; it can gain more charge of its own sign
+only as long as the like charges still reach the horizon. Consider a quasi-particle of mass $m^{\rm qp}_{\rm LG}=E^{\rm CJT,gap}_{\rm SF}\Lambda_{\rm LL}$
+and charge $q^{\rm qp}_{\rm LG}$ of the sign of $Q^{\rm Z}_{\rm LG}$ that falls radially from rest far away. The conserved energy per unit mass of
+a charged particle in the field (30.1) is $f^{\rm RN}_{\rm LG}\,dt/d\tau^{\rm qp}_{\rm LG}+x^{\rm acc}_{\rm LG}/r$ ($\tau^{\rm qp}_{\rm LG}$ its proper time), with
+the length
+$$x^{\rm acc}_{\rm LG}=\frac{q^{\rm qp}_{\rm LG}Q^{\rm Z}_{\rm LG}}{4\pi m^{\rm qp}_{\rm LG}},\tag{30.2}$$
+and it equals 1 for a particle at rest far away. The normalization of the four-velocity then gives the square of the radial velocity,
+$$\Big(\frac{dr}{d\tau^{\rm qp}_{\rm LG}}\Big)^2=\Big(1-\frac{x^{\rm acc}_{\rm LG}}r\Big)^2-f^{\rm RN}_{\rm LG}(r),\qquad r^2\Big(\frac{dr}{d\tau^{\rm qp}_{\rm LG}}\Big)^2=2(\mathcal M_{\rm LG}-x^{\rm acc}_{\rm LG})\,r+(x^{\rm acc}_{\rm LG})^2-(\mathcal Q^{\rm Z}_{\rm LG})^2.\tag{30.3}$$
+The right side of the second form is linear in $r$. At the horizon it equals $(r_{+,\rm LG}-x^{\rm acc}_{\rm LG})^2\ge0$, because
+$r_{+,\rm LG}^2-2\mathcal M_{\rm LG}r_{+,\rm LG}+(\mathcal Q^{\rm Z}_{\rm LG})^2=0$. It therefore stays positive all the way from far away to the horizon
+exactly when its slope is not negative, $x^{\rm acc}_{\rm LG}\le\mathcal M_{\rm LG}$, that is $q^{\rm qp}_{\rm LG}Q^{\rm Z}_{\rm LG}\le4\pi G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}$:
+the zeugon repulsion must not exceed the gravitational attraction. The charge stops growing at the equality, where
+$$\frac{\mathcal Q^{\rm Z}_{\rm LG}}{\mathcal M_{\rm LG}}=\frac{(4\pi)^{1/2}m^{\rm qp}_{\rm LG}}{\lvert q^{\rm qp}_{\rm LG}\rvert M_{\rm Pl}}={{GENM:lgq_coef}}\,\frac{\Lambda_{\rm LL}}{M_{\rm Pl}}\tag{30.4}$$
+(with $G_{\rm N}=M_{\rm Pl}^{-2}$ and $\lvert q^{\rm qp}_{\rm LG}\rvert=0.35$). For $\Lambda_{\rm LL}=1$ eV this is {{GEN:lgq_qacc_1eV}}, for 1 GeV {{GEN:lgq_qacc_1GeV}} and
+for 1 TeV {{GEN:lgq_qacc_1TeV}} (checks LC-1 on a grid of radii for 400 random cases, YC-2 by computer algebra, WC-2 with the decision
+procedure of the Wolfram Language for inequalities).
+
+*Why the charge is so small.* Two quasi-particles of the same charge repel each other through the zeugon with the force
+$\alpha^{\rm Z}_{\rm LG}/r^2$ and attract each other gravitationally with $G_{\rm N}(m^{\rm qp}_{\rm LG})^2/r^2$; the ratio is
+$\alpha^{\rm Z}_{\rm LG}(M_{\rm Pl}/m^{\rm qp}_{\rm LG})^2$, which is {{GEN:lgq_force_1TeV}} for $\Lambda_{\rm LL}=1$ TeV and larger for smaller $\Lambda_{\rm LL}$. A tiny
+excess of charge on the black hole already repels like charges more strongly than its mass attracts them. Astrophysical black holes
+carry almost no electric charge for the same reason: the electric force between two protons exceeds their gravitational attraction by
+about $10^{36}$.
+
+## 30.3 The largest charge: the creation of pairs
+
+A strong static field can also discharge a black hole: it pulls pairs of a particle and an antiparticle out of the vacuum, and the
+member of opposite charge falls in. In a uniform electric field the rate at which pairs of electrons and positrons are created per
+unit volume and time contains the factor $\exp(-\pi m_e^2/(e\,\mathcal F))$, with the mass $m_e$ and the charge $e$ of the electron and the
+strength $\mathcal F$ of the field (J. Schwinger, 1951): it is negligible in weak fields and becomes large when $\mathcal F$ reaches the *critical
+field* $m_e^2/e$. By Theorem L3 the quasi-particles obey, in a field of the zeugon, the Dirac equation of the mass of the gap, so that the
+same estimate holds for them, with $m^{\rm qp}_{\rm LG}$ and $\lvert q^{\rm qp}_{\rm LG}\rvert$ in place of $m_e$ and $e$. The field at the
+horizon is $Q^{\rm Z}_{\rm LG}/(4\pi r_{+,\rm LG}^2)$; it reaches the critical field at the charge $Q^{\rm S}_{\rm LG}$ with
+$$\frac{Q^{\rm S}_{\rm LG}}{Q^{\rm acc}_{\rm LG}}=\frac{4\pi r_{+,\rm LG}^2(m^{\rm qp}_{\rm LG})^2/\lvert q^{\rm qp}_{\rm LG}\rvert}{4\pi G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}/\lvert q^{\rm qp}_{\rm LG}\rvert}=4\,y^{\rm qp}_{\rm LG},\qquad y^{\rm qp}_{\rm LG}=\frac{G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}}{\hbar c},\tag{30.5}$$
+for a small charge ($r_{+,\rm LG}=2\mathcal M_{\rm LG}$), where $Q^{\rm acc}_{\rm LG}=4\pi G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}/\lvert q^{\rm qp}_{\rm LG}\rvert$ is the limit
+(30.4) (checks LC-4, YC-4). The number $y^{\rm qp}_{\rm LG}$ is the coupling $y_{\rm LG}$ of the gravitational atom of Part IV, for the
+quasi-particle. For black holes with $y^{\rm qp}_{\rm LG}<\tfrac14$, the light ones, the creation of pairs limits the charge more strongly than
+the accretion; for heavier ones the accretion does. The estimate gives the scale of the limit, not a sharp value, because the rate
+grows continuously with the field.
+
+## 30.4 The shadow and the ringing
+
+Two properties of a black hole are measured from far away: the size of its *shadow* and the frequencies of its *ringing*.
+
+**The shadow.** Light that passes a black hole is bent. A ray whose *impact parameter*, its distance from the parallel line through the
+centre, is smaller than a critical value $b^{\rm sh}_{\rm LG}$ spirals in and is absorbed. A distant observer who sees the black hole against a
+bright background therefore sees a dark disc, the shadow, of radius $b^{\rm sh}_{\rm LG}$ (the angle $b^{\rm sh}_{\rm LG}/d^{\rm obs}_{\rm LG}$ at the
+distance $d^{\rm obs}_{\rm LG}$). The critical rays approach the *photon sphere*, the radius $r^{\rm ph}_{\rm LG}$ on which light can circle the
+black hole (unstably). A ray of impact parameter $b^{\rm ray}_{\rm LG}$ in the plane $\theta=\pi/2$ of the coordinates (30.1) obeys
+$(dr/d\varphi)^2=r^4/(b^{\rm ray}_{\rm LG})^2-r^2f^{\rm RN}_{\rm LG}$, so it turns back where $(b^{\rm ray}_{\rm LG})^2=r^2/f^{\rm RN}_{\rm LG}$, and it escapes
+if $(b^{\rm ray}_{\rm LG})^2$ is larger than the minimum of $r^2/f^{\rm RN}_{\rm LG}$ over $r$. The minimum lies where
+$r^2-3\mathcal M_{\rm LG}r+2(\mathcal Q^{\rm Z}_{\rm LG})^2=0$:
+$$\begin{gathered}r^{\rm ph}_{\rm LG}=\tfrac12\Big(3\mathcal M_{\rm LG}+\big(9\mathcal M_{\rm LG}^2-8(\mathcal Q^{\rm Z}_{\rm LG})^2\big)^{1/2}\Big),\\b^{\rm sh}_{\rm LG}=\frac{r^{\rm ph}_{\rm LG}}{f^{\rm RN}_{\rm LG}(r^{\rm ph}_{\rm LG})^{1/2}}=3\sqrt3\,\mathcal M_{\rm LG}\Big(1-\frac16\Big(\frac{\mathcal Q^{\rm Z}_{\rm LG}}{\mathcal M_{\rm LG}}\Big)^2-\frac7{216}\Big(\frac{\mathcal Q^{\rm Z}_{\rm LG}}{\mathcal M_{\rm LG}}\Big)^4-\dots\Big),\end{gathered}\tag{30.6}$$
+from $3\sqrt3\,\mathcal M_{\rm LG}$ without charge to $4\mathcal M_{\rm LG}$ for the extremal charge (checks LC-2, the minimum found numerically;
+LC-3, the coefficient {{GEN:lgq_c0}} of $(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2$ by Richardson's extrapolation; YC-3 and WC-3, the series
+exactly).
+
+**The ringing.** A black hole that has been disturbed, for example one just formed by the merger of two black holes, emits
+gravitational waves that oscillate and die away: its *quasi-normal modes*. For a large angular number $\ell^{\rm QNM}_{\rm LG}$ their complex
+frequencies are $\omega^{\rm QNM}_{\rm LG}\approx(\ell^{\rm QNM}_{\rm LG}+\tfrac12)\,\Omega^{\rm ph}_{\rm LG}-i(n^{\rm QNM}_{\rm LG}+\tfrac12)\,\lambda^{\rm ph}_{\rm LG}$
+($n^{\rm QNM}_{\rm LG}=0,1,\dots$), where $\Omega^{\rm ph}_{\rm LG}$ is the angular velocity of the light that circles on the photon sphere and
+$\lambda^{\rm ph}_{\rm LG}$ the rate at which neighbouring rays leave it (V. Cardoso, A. S. Miranda, E. Berti, H. Witek and V. T. Zanchin,
+"Geodesic stability, Lyapunov exponents, and quasinormal modes", Physical Review D 79, 064016 (2009)). On the photon sphere
+$\Omega^{\rm ph}_{\rm LG}=f^{\rm RN}_{\rm LG}(r^{\rm ph}_{\rm LG})^{1/2}/r^{\rm ph}_{\rm LG}=1/b^{\rm sh}_{\rm LG}$, so the frequencies of the ringing grow with the
+charge by the same relative amount, $\tfrac16(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2$, by which the shadow shrinks.
+
+*How large is the change?* At the largest charge (30.4) the shadow shrinks by the relative amount
+$\tfrac16(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2$: the relative change is {{GEN:lgq_shadow_1eV}} for $\Lambda_{\rm LL}=1$ eV, {{GEN:lgq_shadow_1GeV}} for
+1 GeV and {{GEN:lgq_shadow_1TeV}} for 1 TeV (the minus sign: the shadow shrinks). Changes of this size are far below any measurement of a
+shadow or of a ringing. The zeugon charge of a black hole can show in its geometry only if $\Lambda_{\rm LL}$ is close to the Planck mass,
+where (30.4) is of the order 1.
+
+# 31. The cutoff in physical units
+
+*In words.* The brochon model has one scale, its cutoff $\Lambda_{\rm LL}$, and gives every mass and energy as a multiple of it. Which
+black holes and which effects matter depends on the value of $\Lambda_{\rm LL}$ in electronvolts, which the model does not fix. This
+section therefore gives the results of Part VI as functions of $\Lambda_{\rm LL}$, and then compares the energy of the condensed vacuum
+with the energy of the vacuum that astronomers observe.
+
+## 31.1 The scan over the cutoff
+
+To turn a result in units of $\Lambda_{\rm LL}$ into physical units, one multiplies energies by $\Lambda_{\rm LL}$ and lengths by
+$\hbar c/\Lambda_{\rm LL}$. A gravitational radius $\mathcal M_{\rm LG}$ belongs to the mass $M_{\rm LG}=\mathcal M_{\rm LG}M_{\rm Pl}^2$ (since
+$G_{\rm N}=M_{\rm Pl}^{-2}$); if $\mathcal M_{\rm LG}$ is known in units of $1/\Lambda_{\rm LL}$, the mass is $(\mathcal M_{\rm LG}\Lambda_{\rm LL})\,M_{\rm Pl}^2/\Lambda_{\rm LL}$.
+Table VI.2 does this for twelve decades of $\Lambda_{\rm LL}$, from 1 eV to 1 TeV, a range chosen to show how each quantity scales; the
+formulas hold for every $\Lambda_{\rm LL}\ll M_{\rm Pl}$. The constants are $M_{\rm Pl}c^2=1.220890\times10^{19}$ GeV and $\hbar c=197.3269804$ MeV fm
+(CODATA 2018), $1\,{\rm eV}/c^2=1.78266192\times10^{-36}$ kg, and the nominal solar mass $M_\odot=1.9884\times10^{30}$ kg.
+
+**Table VI.2.** The results of Sections 29 and 30 in physical units. Columns: the cutoff; the mass of a quasi-particle; the largest
+zeugon charge of a black hole (30.4); the relative change of the shadow and of the frequencies of the ringing at that charge (30.6);
+the mass of the black hole with $y^{\rm qp}_{\rm LG}=0.1$, around which a quasi-particle forms the gravitational atom of Part IV; the Bohr
+radius (29.3) and the binding energy of the pair. (Data `data/lg_charge_scan.csv` of the program `lg_charge`, recomputed in arithmetic
+of 30 digits by `python/lg_charge.py`, check YC-5.)
+
+{{GEN:lgq_scan_table}}
+
+Three things stand out. The zeugon charge of a black hole is always negligible for the geometry. The black holes around which a
+quasi-particle forms a gravitational atom, $y^{\rm qp}_{\rm LG}\approx0.1$, weigh {{GEN:lgq_my01sun_1eV}} solar masses for $\Lambda_{\rm LL}=1$ eV and less
+for larger $\Lambda_{\rm LL}$: far lighter than any black hole that the collapse of a star can make, so that they could only be
+*primordial*, formed in the early universe, and the existence of such black holes is not established. And the pair is an atom whose
+size lies between a tenth of a millimetre and a tenth of a femtometre.
+
+## 31.2 The energy of the condensed vacuum and the cosmological constant
+
+The condensation of the pairs changes the energy density of the vacuum, relative to the normal vacuum, by
+$$\mathcal E^{\rm CJT}_{\rm SF}\Lambda_{\rm LL}^4,\qquad\mathcal E^{\rm CJT}_{\rm SF}={{GENM:lgq_evac}}\tag{31.1}$$
+(Section 15.4 and Appendix B.5): it lowers it. Gravitation responds to a constant energy density of the vacuum as to a *cosmological constant* (the
+term $\mathcal E^{\rm CJT}_{\rm SF}g^{\rm LG}_{\mu\nu}$ of (16.4)): a positive one accelerates the expansion of the universe, a negative one
+decelerates it. The observed expansion requires a positive energy density of the vacuum,
+$$\rho^\Lambda_{\rm LG}=\Omega_\Lambda\frac{3H_0^2}{8\pi G_{\rm N}}={{GENM:lgq_rho_l}}\ {\rm eV}^4=\big({{GENM:lgq_rho_l_quarter_mev}}\ {\rm meV}\big)^4,\tag{31.2}$$
+where $3H_0^2/(8\pi G_{\rm N})$ is the *critical density*, the density of a spatially flat universe that expands at the rate of the Hubble
+constant $H_0={{GENM:lgq_h0}}$ km/s/Mpc, and $\Omega_\Lambda=1-\Omega_{\rm m}$ is the fraction of it in the vacuum, with the fraction
+$\Omega_{\rm m}={{GENM:lgq_om}}$ in matter, as measured by the Planck satellite (Planck Collaboration, "Planck 2018 results. VI. Cosmological
+parameters", Astronomy & Astrophysics 641, A6 (2020)) in the flat model. The condensation energy (31.1) has the size of $\rho^\Lambda_{\rm LG}$
+at the cutoff
+$$\Lambda^*_{\rm LG}=\big(\rho^\Lambda_{\rm LG}/\lvert\mathcal E^{\rm CJT}_{\rm SF}\rvert\big)^{1/4}={{GENM:lgq_lambda_star_mev}}\ {\rm meV},\tag{31.3}$$
+and exceeds it by the factor $(\Lambda_{\rm LL}/\Lambda^*_{\rm LG})^4$ for larger cutoffs: {{GEN:lgq_vac_1eV}} for $\Lambda_{\rm LL}=1$ eV, {{GEN:lgq_vac_1GeV}}
+for 1 GeV and {{GEN:lgq_vac_1TeV}} for 1 TeV. (Checks LC-6 and YC-6: $\rho^\Lambda_{\rm LG}$ computed with the Planck mass and, independently, with
+Newton's constant in SI units agree to {{GEN:lgq_dev_lc6}}; the Python program reads $\mathcal E^{\rm CJT}_{\rm SF}$ from the data of the brochon
+model and recomputes the table `data/lg_charge_vacuum.csv` to {{GEN:lgq_dev_yc6}}. These two checks have no counterpart in the Wolfram
+script.)
+
+*What this means.* The energy of the vacuum to which gravitation responds is (31.1) plus a constant that the brochon model does not fix
+(Section 15.4). Observation demands that the sum be $+\rho^\Lambda_{\rm LG}$. For every cutoff above $\Lambda^*_{\rm LG}$ the constant must therefore
+cancel the condensation energy to one part in $(\Lambda_{\rm LL}/\Lambda^*_{\rm LG})^4$: to one part in $10^7$ for 1 eV and in $10^{43}$ for 1 GeV.
+This is the *cosmological constant problem*, which every condensate of the Standard Model of particle physics raises in the same way; the
+brochon model neither solves it nor makes it worse. A cutoff near $\Lambda^*_{\rm LG}$ would make the condensation energy as large as the
+observed energy of the vacuum, but with the wrong sign: the condensation lowers the energy, while the observed energy of the vacuum is
+positive.
+
+# 32. The pair falls into a black hole
+
+*In words.* A body that falls freely into a black hole feels no gravity as a whole: it floats, as an astronaut floats in an orbiting
+station. What it does feel is the *tidal field*, the difference of the pull of gravity between its parts: the part nearer to the black
+hole is pulled harder than the far part, so the body is stretched along the direction of the fall and squeezed across it. The pair of
+Section 29 is a body of this kind, held together by the zeugon. This section asks whether the tidal field tears it apart before it
+crosses the horizon. A first estimate (Section 32.2) compares the strength of the tidal field with the binding; the computation along
+the real fall (Sections 32.3 and 32.4) shows that the estimate is badly wrong, and why (Section 32.5).
+
+## 32.1 The tidal field along the fall
+
+Let the centre of mass of the pair fall freely and radially into a Schwarzschild black hole, from rest far away: it moves as the
+observers of Painlevé and Gullstrand of Part IV, with the speed $w_{\rm LG}=(2\mathcal M_{\rm LG}/r^{\rm cm}_{\rm LG})^{1/2}$ and the proper time
+$\tau_{\rm LG}$. In its freely falling frame, two neighbouring particles that also fall freely, at the relative position $\vec r$, accelerate
+relative to each other as $d^2r^a/d\tau_{\rm LG}^2=-R^{{\rm LG}\,a}{}_{0b0}\,r^b$ (the *equation of geodesic deviation*, with the Riemann tensor of
+Section 14.1 in the frame of the observer). In the Schwarzschild space-time this relative acceleration is $+2\mathcal M_{\rm LG}/(r^{\rm cm}_{\rm LG})^3$
+times the separation along the radius (a stretch) and $-\mathcal M_{\rm LG}/(r^{\rm cm}_{\rm LG})^3$ times the separation across it (a squeeze),
+in the falling frame as in the frame at rest, because a boost along the radius does not change these components. For the relative
+coordinate of the pair, with the reduced mass $\mu^{\rm pair}_{\rm LG}$, this is the force of the *tidal potential*
+$$V^{\rm tid}_{\rm LG}=-k^{\rm tid}_{\rm LG}\Big(z^2-\frac{x^2+y^2}2\Big)=-k^{\rm tid}_{\rm LG}\,r^2P_2(\cos\theta),\qquad k^{\rm tid}_{\rm LG}=\frac{\mu^{\rm pair}_{\rm LG}\mathcal M_{\rm LG}}{(r^{\rm cm}_{\rm LG})^3},\tag{32.1}$$
+with the Legendre polynomial $P_2(u)=\tfrac12(3u^2-1)$. The pair is pulled apart along the radius and pushed together across it.
+
+Along the fall $dr^{\rm cm}_{\rm LG}/d\tau_{\rm LG}=-(2\mathcal M_{\rm LG}/r^{\rm cm}_{\rm LG})^{1/2}$, whose solution is
+$(r^{\rm cm}_{\rm LG})^3=\tfrac92\mathcal M_{\rm LG}(\tau^{\rm end}_{\rm LG}-\tau_{\rm LG})^2$, with $\tau^{\rm end}_{\rm LG}$ the time at which the centre would
+reach $r=0$. Then $k^{\rm tid}_{\rm LG}=2\mu^{\rm pair}_{\rm LG}/(9(\tau^{\rm end}_{\rm LG}-\tau_{\rm LG})^2)$: the mass of the black hole has dropped out. It is
+natural to use the **atomic units of the pair**: lengths in its Bohr radius $a^{\rm pair}_{\rm LG}$, energies in
+$\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2$ and times in its inverse; in them the ground state has the energy $-\tfrac12$ and the wave function
+$e^{-r}/\pi^{1/2}$. With the time left before $r=0$ written in these units, $T^{\rm fall}_{\rm LG}=(\tau^{\rm end}_{\rm LG}-\tau_{\rm LG})\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2$,
+the tidal potential is $-\kappa^{\rm tid}_{\rm LG}r^2P_2(\cos\theta)$ with
+$$\kappa^{\rm tid}_{\rm LG}=\frac{k^{\rm tid}_{\rm LG}}{(\mu^{\rm pair}_{\rm LG})^3(\alpha^{\rm Z}_{\rm LG})^4}=\frac2{9(T^{\rm fall}_{\rm LG})^2},\tag{32.2}$$
+the same function of the remaining time for every black hole. The mass of the black hole decides only *when* the pair crosses the
+horizon: $r^{\rm cm}_{\rm LG}=2\mathcal M_{\rm LG}$ is reached when $\tfrac92\mathcal M_{\rm LG}(\tau^{\rm end}_{\rm LG}-\tau_{\rm LG})^2=8\mathcal M_{\rm LG}^3$, that is at
+$$T^{\rm fall}_{\rm LG}=\tfrac43\tilde{\mathcal M}_{\rm LG},\qquad\tilde{\mathcal M}_{\rm LG}=\mathcal M_{\rm LG}\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2,\tag{32.3}$$
+where $\tilde{\mathcal M}_{\rm LG}$ is the gravitational radius of the black hole measured in the atomic unit of time of the pair. A light black hole
+is crossed late in the fall, when the tidal field is already strong; a heavy one early, when it is still weak. For the quasi-particles
+$\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2={{GENM:lgt_mua2}}\,\Lambda_{\rm LL}$, so that a black hole of the mass $M_{\rm LG}$ has
+$\tilde{\mathcal M}_{\rm LG}={{GENM:lgt_mua2}}\,M_{\rm LG}\Lambda_{\rm LL}/M_{\rm Pl}^2$. (Checks YT-2 and WT-2: the frame of the falling observers, the tidal
+field from the Riemann tensor, the fall, (32.2) and (32.3), exactly.)
+
+The potential (32.1) is the first term of the expansion of the tidal field in the size of the pair divided by the radius; it suffices
+when the pair is small compared with the black hole. At the horizon the ratio of the radius $2\mathcal M_{\rm LG}$ to the Bohr radius is
+$2\tilde{\mathcal M}_{\rm LG}/\alpha^{\rm Z}_{\rm LG}$, more than 40 for all the black holes of this section ($\tilde{\mathcal M}_{\rm LG}\ge0.2$).
+
+## 32.2 The classical estimate
+
+Along the radial direction the potential energy of the relative motion is, in atomic units, $-1/z-\kappa^{\rm tid}_{\rm LG}z^2$ for $z>0$: the
+attraction of the zeugon and the stretch of the tidal field. It has a maximum, a *barrier*: its derivative $1/z^2-2\kappa^{\rm tid}_{\rm LG}z$
+vanishes at $z^{\rm top}_{\rm LG}=(2\kappa^{\rm tid}_{\rm LG})^{-1/3}$, where the height is
+$$-(2\kappa^{\rm tid}_{\rm LG})^{1/3}-\kappa^{\rm tid}_{\rm LG}(2\kappa^{\rm tid}_{\rm LG})^{-2/3}=-\tfrac32(2\kappa^{\rm tid}_{\rm LG})^{1/3}.\tag{32.4}$$
+Classically the pair stays bound as long as the barrier is higher than its energy $-\tfrac12$. The barrier sinks below that energy when
+$(2\kappa^{\rm tid}_{\rm LG})^{1/3}>\tfrac13$, that is for $\kappa^{\rm tid}_{\rm LG}>\tfrac1{54}$. By (32.2) this happens at $T^{\rm fall}_{\rm LG}=(2\cdot54/9)^{1/2}=2\sqrt3=$
+{{GEN:lgt_t_classical}}, and by (32.3) before the horizon if $\tilde{\mathcal M}_{\rm LG}<\tfrac34\cdot2\sqrt3=\tfrac{3\sqrt3}2=$ {{GEN:lgt_mt_classical}}. In physical
+units: black holes lighter than {{GEN:lgt_mbh_classical}} $M_{\rm Pl}^2/\Lambda_{\rm LL}$ would free the pair before it reaches the horizon, and heavier ones
+would swallow it whole (checks LP-2 and WP-2: the barrier, and the radius at which it sinks below the level). The estimate treats the tidal
+field as constant and the pair as a classical particle at the energy of the ground state, and asks only whether the barrier is still
+there. The rest of this section computes what actually happens.
+
+## 32.3 Tunnelling in a static field
+
+A quantum particle can cross a barrier that it cannot climb: it *tunnels*. In a tidal field of constant strength the ground state of the
+pair is therefore not stationary but leaks out through the barrier. It becomes a *resonance*: a state whose amplitude oscillates with an
+energy $E^{\rm tid}_{\rm LG}$ while the probability that remains decreases exponentially at the *rate of tunnelling* $\Gamma^{\rm tid}_{\rm LG}$.
+
+**Complex rotation.** A resonance is not a normalizable eigenvector of the Hamiltonian, because the outgoing wave by which it leaks away
+grows exponentially at large distances (its wave number is complex). The method of *complex rotation*, or complex scaling, replaces the
+distance $r$ by $re^{i\theta^{\rm cr}_{\rm LG}}$ in the Hamiltonian, which becomes
+$-\tfrac12e^{-2i\theta^{\rm cr}_{\rm LG}}\nabla^2-e^{-i\theta^{\rm cr}_{\rm LG}}/r-\kappa^{\rm tid}_{\rm LG}e^{2i\theta^{\rm cr}_{\rm LG}}r^2P_2(\cos\theta)$. For a large enough
+angle $\theta^{\rm cr}_{\rm LG}$ the rotated outgoing wave decays, and the resonance becomes a normalizable eigenvector of this operator, which
+is no longer Hermitian, with the complex eigenvalue $E^{\rm tid}_{\rm LG}-\tfrac i2\Gamma^{\rm tid}_{\rm LG}$; the eigenvalue does not depend on the
+angle (the theorem of J. Aguilar, E. Balslev and J. M. Combes, 1971). The program `python/lg_tidal.py` represents the rotated operator
+in a basis of *Coulomb-Sturmian functions*, $r^{\ell+1}e^{-\lambda^{\rm St}_{\rm LG}r}L^{(2\ell+1)}_{k}(2\lambda^{\rm St}_{\rm LG}r)$ times the spherical
+harmonics $Y_{\ell0}(\theta)$, with the generalized Laguerre polynomials $L^{(2\ell+1)}_k$ ($k=0,1,2,\dots$) and a scale
+$\lambda^{\rm St}_{\rm LG}$: a complete set of functions in which the Coulomb potential has simple matrix elements. It uses $\ell\le32$, 100
+functions for each $\ell$ and $\lambda^{\rm St}_{\rm LG}=0.3$; the eigenvalue changes by less than {{GEN:lgt_dev_cr}} (relative) when the angle changes
+from 0.3 to 0.2 or the basis grows to $\ell\le40$ and 140 functions (check YT-4a).
+
+**Two checks of the method.** (i) For a weak field the energy follows from perturbation theory. There is no first-order term, because
+$P_2$ averages to zero over the spherical ground state $\psi^{(0)}_{\rm LG}=e^{-r}/\pi^{1/2}$. The second order needs the first-order correction of
+the wave function, which the method of A. Dalgarno and J. T. Lewis (1955) finds in closed form,
+$\psi^{(1)}_{\rm LG}=\kappa^{\rm tid}_{\rm LG}(r^3/3+r^2/2)P_2(\cos\theta)\,\psi^{(0)}_{\rm LG}$; the result is
+$$E^{\rm tid}_{\rm LG}=-\tfrac12-\tfrac{15}2(\kappa^{\rm tid}_{\rm LG})^2-\tfrac{153}2(\kappa^{\rm tid}_{\rm LG})^3+O\big((\kappa^{\rm tid}_{\rm LG})^4\big)\tag{32.5}$$
+(checks YT-3 and WT-3), and the real part of the complex-rotation eigenvalue reproduces both coefficients. (ii) For a weak field the rate
+follows from the method that L. D. Landau used for the hydrogen atom in a uniform electric field (L. D. Landau and E. M. Lifshitz,
+*Quantum Mechanics*, the problem on the ionization of hydrogen in the section on its Stark effect): the decaying wave under the barrier
+along the axis is matched to the ground state, with its profile across the axis, and the flux of probability beyond the outer turning
+point is the rate. For the tidal field this gives
+$$\Gamma^{\rm tid}_{\rm LG}\approx\frac8{(\kappa^{\rm tid}_{\rm LG})^{1/2}\sinh(\pi/\sqrt2)}\exp\Big(-\frac\pi{2(2\kappa^{\rm tid}_{\rm LG})^{1/2}}\Big)\tag{32.6}$$
+for both exits ($z>0$ and $z<0$) together. Applied to a uniform field of strength $F^{\rm u}_{\rm LG}$, the same steps give Landau's rate
+$(4/F^{\rm u}_{\rm LG})\,e^{-2/(3F^{\rm u}_{\rm LG})}$ exactly (checks YT-5a, YT-5b, WT-4). The exponent in (32.6) is the action under the barrier: along
+the axis, far from the origin, the potential is close to $-\kappa^{\rm tid}_{\rm LG}z^2$, the momentum under the barrier at the energy $-\tfrac12$ has
+the size $(1-2\kappa^{\rm tid}_{\rm LG}z^2)^{1/2}$, and twice its integral from 0 to the turning point $(2\kappa^{\rm tid}_{\rm LG})^{-1/2}$ is
+$\pi/(2(2\kappa^{\rm tid}_{\rm LG})^{1/2})$.
+
+**Table VI.3.** The ground state of the pair in a static tidal field: the real part of the energy, the rate of tunnelling by complex
+rotation, and its ratio to the weak-field rate (32.6) (data `data/lg_tidal_cr.csv` of `python/lg_tidal.py`).
+
+| $\kappa^{\rm tid}_{\rm LG}$ | $E^{\rm tid}_{\rm LG}$ | $\Gamma^{\rm tid}_{\rm LG}$ | ratio to (32.6) |
+|:---|:---|:---|:---|
+| 0.002 | {{GEN:lgt_reE_0002}} | {{GEN:lgt_gamma_0002}} | {{GEN:lgt_ratio_0002}} |
+| 0.005 | {{GEN:lgt_reE_005}} | {{GEN:lgt_gamma_005}} | {{GEN:lgt_ratio_005}} |
+| 0.01 | {{GEN:lgt_reE_01}} | {{GEN:lgt_gamma_01}} | {{GEN:lgt_ratio_01}} |
+| 0.0125 | {{GEN:lgt_reE_0125}} | {{GEN:lgt_gamma_0125}} | {{GEN:lgt_ratio_0125}} |
+| 0.0185 | {{GEN:lgt_reE_kc}} | {{GEN:lgt_gamma_kc}} | {{GEN:lgt_ratio_kc}} |
+
+The ratio approaches 1 as the field weakens: fitted as a constant plus terms in $(\kappa^{\rm tid}_{\rm LG})^{1/2}$ and $\kappa^{\rm tid}_{\rm LG}$, the
+constant differs from 1 by {{GEN:lgt_dev_intercept}} (YT-5c). The last row lies at the classical threshold $\kappa^{\rm tid}_{\rm LG}\approx1/54$: there the
+rate is still only {{GEN:lgt_gamma_kc}}, so that the ground state would need about 400 atomic units of time to decay, while the fall leaves only the
+time $2\sqrt3$. The Rust program finds the same rates from the Schrödinger equation in time, in a field that is switched on smoothly and then
+held constant, to {{GEN:lgt_dev_static}} (LT-3, YT-4b).
+
+## 32.4 The fall, computed
+
+Along the real fall the strength (32.2) grows without limit, and the relative motion of the pair obeys the time-dependent Schrödinger
+equation, in atomic units,
+$$-i\,\frac{\partial\psi^{\rm pair}_{\rm LG}}{\partial T^{\rm fall}_{\rm LG}}=\Big[-\tfrac12\nabla^2-\frac1r-\frac{2}{9(T^{\rm fall}_{\rm LG})^2}\,r^2P_2(\cos\theta)\Big]\psi^{\rm pair}_{\rm LG}\tag{32.7}$$
+(the minus sign because the remaining time decreases as the proper time grows), from the ground state at $T^{\rm fall}_{\rm LG}=30$, where
+$\kappa^{\rm tid}_{\rm LG}=2.5\times10^{-4}$ and the field has not yet changed anything, to $T^{\rm fall}_{\rm LG}=$ {{GEN:lgt_tmin}}. The Rust program `lg_tidal`
+solves it as follows.
+
+* *Partial waves.* The wave function is expanded as $\sum_\ell u_\ell(r)Y_{\ell0}(\theta)/r$ over $\ell=0,2,\dots,40$: the ground state is even
+  under $z\to-z$ and has no angular momentum about the radial direction, and the tidal potential keeps both properties, coupling $\ell$
+  only to $\ell$ and $\ell\pm2$.
+* *The grid.* The radial functions $u_\ell$ are stored on a grid of spacing 0.05 out to $r=50$, with the second derivative replaced by the
+  difference of three neighbouring values; the ground state of this grid has the energy $-\tfrac12+(0.05)^2/8$, close to $-\tfrac12$.
+* *The edge.* Beyond $r=30$ an *absorbing potential* $-iW^{\rm abs}_{\rm LG}(r)$, an imaginary potential that removes the waves that reach it,
+  takes out what escapes, and its probability is counted as escaped. The tidal potential accelerates the escaping waves without limit; far
+  beyond the barrier (from $r=20$, or less when the field is strong) it is flattened smoothly to a constant, so that the waves stop
+  accelerating where they have long escaped.
+* *The time integration.* The resulting system of 42000 ordinary differential equations is integrated by CVODE with Newton's iteration and a
+  banded linear solver, with the Adams-Moulton formulas of the orders 1 and 2 (the trapezoidal rule, which conserves the norm of a
+  Hermitian problem).
+
+The pair can be broken in three different senses, which the program measures separately:
+
+* $P^{\rm esc}_{\rm LG}$, *beyond the barrier*: the probability in the region where, in a direction in which the tidal potential pulls outward
+  ($P_2(\cos\theta)>0$), the distance exceeds the outer turning point of the energy $-\tfrac12$ (or the ridge of the barrier, where the ridge
+  has sunk below $-\tfrac12$), plus the absorbed probability;
+* $P^{\rm exc}_{\rm LG}=1-\lvert\langle1s\vert\psi^{\rm pair}_{\rm LG}\rangle\rvert^2$, *no longer in the ground state* $1s$ of the free pair: deformed,
+  excited or unbound;
+* $P^{\rm sep}_{\rm LG}$, *apart*: the probability that the two quasi-particles are more than 10 Bohr radii apart (with the absorbed
+  probability).
+
+The program tests itself: without the field the ground state stays itself and keeps its norm to $10^{-11}$ over the time 40 (LT-1); without the
+Coulomb potential a Gaussian packet in the tidal field follows the closed forms of the quadratic Hamiltonian, with an error that falls as the
+square of the grid spacing ({{GEN:lgt_dev_lt2}} on the grid 0.025; LT-2, YT-6, WT-5); along the fall the norm is conserved up to the absorbed
+probability to {{GEN:lgt_drift}} (LT-4); and the probabilities change by less than $3\times10^{-3}$ with a finer grid, more partial waves, a
+larger box with a weaker flattening, or an earlier start (LT-5).
+
+![](figures/fig_lg_tidal_fall.png){width=92%}
+
+**Figure VI.1.** The three probabilities at the crossing of the horizon, as functions of the gravitational radius $\tilde{\mathcal M}_{\rm LG}$ of
+the black hole in the atomic unit of time of the pair: each point is the value at $T^{\rm fall}_{\rm LG}=\tfrac43\tilde{\mathcal M}_{\rm LG}$ along the one
+computed fall. Dashed: the *quasi-static* probability $1-\exp(-\int\Gamma^{\rm tid}_{\rm LG}\,dT^{\rm fall}_{\rm LG})$, the static rates of Section 32.3
+integrated along the fall from $T^{\rm fall}_{\rm LG}=11$ (computed down to $T^{\rm fall}_{\rm LG}=2$). Dotted: the classical estimate of Section 32.2.
+(Data `data/lg_tidal_fall.csv` of `lg_tidal` and `data/lg_tidal_quasistatic.csv` of `python/lg_tidal.py`; figure drawn by
+`python/lg_tidal_figures.py`.)
+
+![](figures/fig_lg_tidal_density.png){width=86%}
+
+**Figure VI.2.** The probability density of the relative coordinate of the pair in a plane through the radial direction $z$ (vertical: towards
+and away from the black hole), at six moments of the fall, on a logarithmic scale; the crosses mark the ridges of the barrier on the axis,
+$z=\pm(2\kappa^{\rm tid}_{\rm LG})^{-1/3}$. The pair is stretched along $z$ and squeezed across it, but even at $T^{\rm fall}_{\rm LG}=0.5$, where the
+ridges lie at less than one Bohr radius, most of the probability is still within a few Bohr radii. (Data `data/lg_tidal_snapshots.csv` of
+`lg_tidal`.)
+
+**Table VI.4.** The pair at the crossing of the horizon, for black holes of decreasing mass. Columns: the remaining time at the horizon and
+the gravitational radius (32.3); the strength of the tidal field there; the three probabilities, and the quasi-static probability for
+comparison (-- where it was not computed); the root mean squares of the separation along and across the radius, in Bohr radii (both are 1 in
+the ground state of the free pair). (Data `data/lg_tidal_fall.csv`.)
+
+{{GEN:lgt_fall_table}}
+
+## 32.5 Why the classical estimate fails, and what remains of it
+
+The fall breaks the pair far less than the classical estimate says. At the classical threshold ($\tilde{\mathcal M}_{\rm LG}=$ {{GEN:lgt_mt_classical}})
+the probability beyond the barrier is only {{GEN:lgt_pesc_tc}}; it reaches 0.01 for $\tilde{\mathcal M}_{\rm LG}=$ {{GEN:lgt_mt_esc_001}}, 0.1 for
+{{GEN:lgt_mt_esc_01}}, and $\tfrac12$ only for {{GEN:lgt_mt_esc_05}}, black holes ten times lighter than the classical estimate says;
+$P^{\rm exc}_{\rm LG}$ reaches $\tfrac12$ at {{GEN:lgt_mt_exc_05}}. Even then the two quasi-particles are not apart: at the end of the computation
+($\tilde{\mathcal M}_{\rm LG}=$ {{GEN:lgt_mt_min}}) the probability of a separation beyond 10 Bohr radii is {{GEN:lgt_psep_end}}, and the root mean squares
+of the separation are {{GEN:lgt_zrms_end}} Bohr radii along the radius and {{GEN:lgt_xrms_end}} across it. There are three reasons.
+
+1. *The field is never static on the time scale of tunnelling.* The strength (32.2) doubles while the remaining time shrinks by the
+   factor $2^{-1/2}$, that is within about $0.3\,T^{\rm fall}_{\rm LG}$. Tunnelling takes longer: in imaginary time the path under the barrier
+   from the origin to the turning point $(2\kappa^{\rm tid}_{\rm LG})^{-1/2}=\tfrac32T^{\rm fall}_{\rm LG}$ takes $\tfrac34\pi T^{\rm fall}_{\rm LG}$, the time of the
+   classical motion in the inverted potential. Where the field changes slowly enough, far from the threshold, the fall agrees with the
+   quasi-static probability ({{GEN:lgt_pesc_55}} against {{GEN:lgt_pqs_55}} at $T^{\rm fall}_{\rm LG}=5.5$); nearer to the end the changing field breaks the
+   binding faster than the static rates do ({{GEN:lgt_pesc_3}} against {{GEN:lgt_pqs_3}} at $T^{\rm fall}_{\rm LG}=3$, {{GEN:lgt_pesc_2}} against {{GEN:lgt_pqs_2}}
+   at 2), but still far more slowly than the classical estimate assumes.
+2. *Even without a barrier, escaping takes time.* After the barrier has sunk below the level, the rate at which the pair leaves its region
+   is still finite: {{GEN:lgt_gamma_T2}} at $T^{\rm fall}_{\rm LG}=2$ by complex rotation, while the time left is 2.
+3. *Two particles that are no longer bound separate slowly.* Without the Coulomb attraction the separation along the radius obeys
+   $d^2z/d(T^{\rm fall}_{\rm LG})^2=2\kappa^{\rm tid}_{\rm LG}z$ with (32.2), in atomic units, whose solutions are the powers $(T^{\rm fall}_{\rm LG})^{4/3}$ and
+   $(T^{\rm fall}_{\rm LG})^{-1/3}$ (try $z=(T^{\rm fall}_{\rm LG})^p$: $p(p-1)=\tfrac49$). The one that grows towards the end grows only as
+   $(T^{\rm fall}_{\rm LG})^{-1/3}$, by the factor $10^{1/3}\approx2.2$ from $T^{\rm fall}_{\rm LG}=3$ to 0.3 (checks LT-2, YT-6, WT-5).
+
+*The answer in physical units.* The pair is beyond its barrier with the probability $\tfrac12$ at the horizon only for black holes lighter than
+{{GEN:lgt_mbh_esc_05}} $M_{\rm Pl}^2/\Lambda_{\rm LL}$: {{GEN:lgt_mbh_esc_05_1eV}} kg ({{GEN:lgt_mbhsun_esc_05_1eV}} solar masses) for $\Lambda_{\rm LL}=1$ eV,
+{{GEN:lgt_mbh_esc_05_1GeV}} kg for 1 GeV and {{GEN:lgt_mbh_esc_05_1TeV}} kg for 1 TeV; and even there the two quasi-particles cross the horizon within a few
+Bohr radii of each other. In the whole range in which the pair is small compared with the black hole, **the black hole swallows the pair
+whole**. The classical estimate of Section 32.2 is therefore false for a real fall: it assumed a static field and ignored the time that
+tunnelling and separation take, so that it put the mass below which the pair is torn apart ten times too high, and it missed that even a pair
+beyond its barrier stays together for the rest of the fall.
+
+# 33. Can the two quasi-particles annihilate?
+
+*In words.* An electron and a positron annihilate into photons because each conserved quantity, the electric charge and the number of
+electrons minus positrons, adds up to zero for the pair. Two electrons cannot annihilate: together they carry the electron number 2. A
+quasi-particle of the superfluid seems to have no such number, because it is a mixture of a brochon and of the conjugate of a brochon: the
+pairing term of its equation (15.11) does not conserve the number of brochons. This section shows that it nevertheless has a conserved
+number, which decides which pairs can annihilate.
+
+## 33.1 The quasi-particles are the particles and antiparticles of one Dirac field
+
+**An identity of operators.** With the notation of Theorem L3 ($M=M^{\rm CJT,D}_{\rm SF}$, $D=D^{\rm CJT}_{\rm SF}$, $E=E^{\rm CJT,gap}_{\rm SF}$,
+$b=b^{\rm qp}_{\rm LG}=-D/(E+M)$, $\mathcal C=\mathcal C_{\rm LG}$ and $\mathcal K_{\rm LG}=i\gamma^\mu_{\rm LG}\nabla^{\rm GEE}_\mu$),
+$$(\mathcal K_{\rm LG}-M-D\,\mathcal C)(1+b\,\mathcal C)=(1-b\,\mathcal C)(\mathcal K_{\rm LG}-E)\tag{33.1}$$
+holds on every spinor field, not only on solutions. *Proof.* By Theorem L2, $\mathcal K_{\rm LG}\mathcal C=-\mathcal C\mathcal K_{\rm LG}$, and by its part (b)
+and the antilinearity, $D\,\mathcal C(b\,\mathcal C\phi)=-Db^*\phi$ for every spinor $\phi$. The left side is therefore
+$\mathcal K_{\rm LG}-b\,\mathcal C\mathcal K_{\rm LG}-(M-Db^*)-(Mb+D)\,\mathcal C$, and the right side is $\mathcal K_{\rm LG}-b\,\mathcal C\mathcal K_{\rm LG}-E+bE\,\mathcal C$
+($E$ is real); they agree because $M-Db^*=E$ and $Mb+D=-Eb$, the two identities of the proof of Theorem L3. $\square$ The map
+$\chi\mapsto\chi+b\,\mathcal C\chi$ therefore turns the Dirac operator of the mass $E$ into the operator of the quasi-particle, whether or not $\chi$
+solves an equation (checks AN-2 on 200 plane waves of random four-momenta off the mass shell, to {{GEN:lga_dev_an2}}, with the wrong sign of $b$ as
+a control; YA-2 and WA-2 exactly).
+
+**The field operator.** In quantum field theory the brochon is an operator, and the antilinear map $\mathcal C$ acts on operators by replacing the
+complex conjugate by the adjoint: $\mathcal C\chi=\mathsf P_{\rm LG}\chi^{\dagger T}$, where $\chi^{\dagger T}$ is the column of the adjoints of the eight
+components (Dirac index and isospin). Let $\chi_{\rm LG}$ be the operator of a Dirac field of the mass $E$ with the canonical anticommutators
+$\{\chi_i,\chi_j^\dagger\}=\delta_{ij}$ and $\{\chi_i,\chi_j\}=0$ (at equal times; for the fields at two points the right sides carry the delta
+function of their distance). By (33.1) the operator
+$$\Psi_{\rm LL}=\chi_{\rm LG}+b^{\rm qp}_{\rm LG}\,\mathsf P_{\rm LG}\,\chi_{\rm LG}^{\dagger T}\tag{33.2}$$
+solves the quasi-particle equation (15.11). The matrix $\mathsf P_{\rm LG}$ is real, antisymmetric and unitary (checks AN-1, YA-1, WA-1), and therefore
+$$\{\Psi_i,\Psi_j^\dagger\}=\delta_{ij}+\lvert b\rvert^2(\mathsf P_{\rm LG}\mathsf P_{\rm LG}^\dagger)_{ij}=(1+\lvert b\rvert^2)\,\delta_{ij},\qquad\{\Psi_i,\Psi_j\}=b\,\big((\mathsf P_{\rm LG})_{ji}+(\mathsf P_{\rm LG})_{ij}\big)=0,$$
+the anticommutators of a canonical field up to the factor $1+\lvert b\rvert^2$ (the cross terms vanish because the $\chi_i$ anticommute with each
+other, and the last expression because $\mathsf P_{\rm LG}$ is antisymmetric). The field
+$\chi'_{\rm LG}=(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)^{1/2}\chi_{\rm LG}$ is thus a canonical Dirac field of the mass of the gap, and **the quasi-particles are
+its particles and its antiparticles**. (Check AN-3a: the operators built explicitly on the space of states of eight fermion modes, of dimension
+$2^8=256$, by the construction of Jordan and Wigner, which represents anticommuting operators by matrices; WA-3 the same in exact arithmetic.)
+
+## 33.2 The zeugon conserves the number of quasi-particles
+
+The zeugon couples to the current $J^\mu_{\rm LG}[\Psi]=\Psi^\dagger\mathsf G^\mu_{\rm LG}\Psi$ with the Hermitian matrices
+$\mathsf G^\mu_{\rm LG}=\gamma^0_{\rm LL}\gamma^\mu_{\rm LL}T^3_{\rm LL}$. Inserting (33.2) gives
+$$J^\mu_{\rm LG}[\Psi]=\chi^\dagger\mathsf G^\mu_{\rm LG}\chi+b\,\chi^\dagger\big(\mathsf G^\mu_{\rm LG}\mathsf P_{\rm LG}\big)\chi^{\dagger T}+b^*\chi^T\big(\mathsf P_{\rm LG}^\dagger\mathsf G^\mu_{\rm LG}\big)\chi+\lvert b\rvert^2\chi^T\big(\mathsf P_{\rm LG}^\dagger\mathsf G^\mu_{\rm LG}\mathsf P_{\rm LG}\big)\chi^{\dagger T}.$$
+The second term would raise the number of quanta of $\chi$, the particles minus the antiparticles, by two, and the third would lower it by two.
+Both vanish: the matrices $\mathsf G^\mu_{\rm LG}\mathsf P_{\rm LG}$ are symmetric (checks AN-3b, YA-3, WA-3), and a symmetric combination of two
+anticommuting operators is zero.
+
+*Example.* For two components, $\chi_1^\dagger\chi_2^\dagger+\chi_2^\dagger\chi_1^\dagger=\{\chi_1^\dagger,\chi_2^\dagger\}=0$, and $\chi_1^\dagger\chi_1^\dagger=0$. A sum
+$\sum_{ij}c_{ij}\chi_i^\dagger\chi_j^\dagger$ with symmetric coefficients is a sum of such combinations, and vanishes.
+
+The last term equals $\lvert b\rvert^2\big(\chi^\dagger\mathsf G^\mu_{\rm LG}\chi+\text{a constant}\big)$, because
+$\mathsf P_{\rm LG}^\dagger\mathsf G^\mu_{\rm LG}\mathsf P_{\rm LG}=-(\mathsf G^\mu_{\rm LG})^T$ (checked) and $\chi_i\chi_j^\dagger=-\chi_j^\dagger\chi_i$ up to a constant. So
+$$J^\mu_{\rm LG}[\Psi]=(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)\,J^\mu_{\rm LG}[\chi_{\rm LG}]+\text{const}=J^\mu_{\rm LG}[\chi'_{\rm LG}]+\text{const},\tag{33.3}$$
+an identity of operators; the constant is a number, which the normal order removes (the check AN-3b in the space of states of eight modes finds
+(33.3) to {{GEN:lga_dev_an3b}}). The zeugon couples to the quasi-particles exactly as the photon couples to electrons and positrons: through the
+current of a Dirac field, which creates or destroys particles only together with their antiparticles. Every process of the zeugon (its exchange,
+its emission and absorption, the annihilation into zeugons) therefore conserves the **number of quasi-particles** $N^{\rm qp}_{\rm LG}$, the number of
+particles of $\chi'_{\rm LG}$ minus the number of its antiparticles, besides the charge $Q_{\rm LL}$.
+
+## 33.3 Which pairs annihilate, and how fast
+
+The isospin of $\chi'_{\rm LG}$ has the components *up* ($T^3_{\rm LL}=+\tfrac12$) and *down* ($-\tfrac12$). A particle up and an antiparticle down carry
+the zeugon charge $+\tfrac12$, a particle down and an antiparticle up the charge $-\tfrac12$ (in units of $g^{\rm v}_{\rm LL}$). There are four kinds of
+pairs of opposite charge:
+
+* a particle up and a particle down ($N^{\rm qp}_{\rm LG}=+2$), and an antiparticle up and an antiparticle down ($N^{\rm qp}_{\rm LG}=-2$): **they cannot
+  annihilate into zeugons**, which carry $N^{\rm qp}_{\rm LG}=0$. Their levels are those of two distinguishable particles: Table VI.1 without the
+  annihilation term, with the hyperfine splitting $\tfrac13E\alpha^4=$ {{GEN:lga_hfs_pp}} of the ground state (here $\alpha=\alpha^{\rm Z}_{\rm LG}$);
+* a particle up and an antiparticle up, and a particle down and an antiparticle down ($N^{\rm qp}_{\rm LG}=0$, $Q_{\rm LL}=0$): **they can annihilate**, as an
+  electron and a positron do, with the mass $E$ and the coupling $\alpha^{\rm Z}_{\rm LG}$.
+
+The two kinds of the last case have the same mass and charges of the same size, so their states are degenerate, and the annihilation mixes them:
+a pair of one kind can annihilate into virtual zeugons from which a pair of the other kind is created. The amplitude of a pair into $n$ zeugons is
+proportional to the $n$-th power of the charge of its particle, $(+\tfrac12)^n$ or $(-\tfrac12)^n$. For the *even* combination (the sum of the two
+kinds, with equal amplitudes) the amplitudes into two zeugons add and those into three cancel; for the *odd* combination (the difference) the
+opposite. The even combination therefore decays into two zeugons at twice the rate of one kind, the odd one into three zeugons at twice the rate,
+and the virtual annihilation into one zeugon, which shifts the triplet S states, acts only on the odd combination, with twice the shift of one kind
+(checks AN-4, YA-4).
+
+Two symmetries decide which states can decay into zeugons at all. *Charge conjugation*, which exchanges the particles and the antiparticles of
+$\chi'_{\rm LG}$, multiplies a state of the pair by $(-1)^{\ell+S}$, with $\ell$ its orbital angular momentum and $S$ its total spin, as for positronium,
+and a state of $n$ zeugons by $(-1)^n$, because the zeugon couples to a current that changes sign. The *reflection*
+$\mathsf F^{\rm v}_{\rm LG}=\mathsf1_4\otimes\tau^{\rm LL}_1$, the element of the unbroken group $O(2)$ of the superfluid that exchanges up and down and
+turns $T^3_{\rm LL}$ into $-T^3_{\rm LL}$ (the element $\mathsf r$ of (B.24), acting on the brochon; it commutes with $\mathcal C_{\rm LG}$, check AN-1),
+multiplies the even combination by $+1$, the odd one by $-1$, and $n$ zeugons by $(-1)^n$. A decay into $n$ zeugons needs both factors to agree:
+
+**Table VI.5.** The ground states of a particle and an antiparticle ($N^{\rm qp}_{\rm LG}=0$). Rates in units of $\Lambda_{\rm LL}$; lifetimes for
+$\Lambda_{\rm LL}=1$ GeV (they are inversely proportional to $\Lambda_{\rm LL}$).
+
+| state | charge conjugation | reflection | numbers of zeugons allowed | rate | lifetime |
+|:---|:---|:---|:---|:---|:---|
+| singlet $1\,{}^1S_0$, even | $+1$ | $+1$ | even: 2 | {{GEN:lga_g2_even}} | {{GEN:lga_tau2_1GeV}} s |
+| singlet, odd | $+1$ | $-1$ | none | 0 | stable against annihilation |
+| triplet $1\,{}^3S_1$, even | $-1$ | $+1$ | none | 0 | stable against annihilation |
+| triplet, odd | $-1$ | $-1$ | odd: 3 | {{GEN:lga_g3_odd}} | {{GEN:lga_tau3_1GeV}} s |
+
+The rates of one kind are those of positronium, $E\alpha^5/2$ into two zeugons ({{GEN:lga_g2_one}}) and $2(\pi^2-9)E\alpha^6/(9\pi)$ into three
+({{GEN:lga_g3_one}}; A. Ore and J. L. Powell, 1949), and the table gives twice these (checks AN-5, YA-5). For $\Lambda_{\rm LL}=1$ eV the lifetimes are
+{{GEN:lga_tau2_1eV}} s and {{GEN:lga_tau3_1eV}} s, for 1 TeV {{GEN:lga_tau2_1TeV}} s and {{GEN:lga_tau3_1TeV}} s. The hyperfine splitting of the odd
+combination is $\tfrac13E\alpha^4+2\cdot\tfrac14E\alpha^4=\tfrac56E\alpha^4=$ {{GEN:lga_hfs_odd}}; that of the even combination is $\tfrac13E\alpha^4$, as for the
+pairs with $N^{\rm qp}_{\rm LG}=\pm2$.
+
+## 33.4 What this does not cover
+
+* *Beyond the mean field.* The quasi-particle equation (15.11) is the mean-field equation of the superfluid. The part of the four-fermion
+  interaction $V^{(2)}_{\rm SF}$ that the mean field leaves out conserves the number of brochons but not $N^{\rm qp}_{\rm LG}$, and can change
+  $N^{\rm qp}_{\rm LG}$ by 2 at a higher order; through it the pairs with $N^{\rm qp}_{\rm LG}=\pm2$ could annihilate, at rates that are not computed here.
+* *The massive gauge bosons.* $W^1$, $W^2$ and $B$ are left out; Theorem L2 (a) fails for them, so that (33.1) does not hold with them. Their
+  range is short (Appendix B.6).
+* *The polarization of the condensate* (Section 29.1).
+
+# 34. What gravitation can detect
+
+The task asked for the predictions involving the brochon and the zeugon that gravitation can detect. Nothing in the brochon model carries
+electric charge (Appendix B.6), so its quasi-particles and its zeugons neither emit nor absorb light: within the model, gravitation is their only
+link to the ordinary matter of detectors. Parts IV to VI give the following answers, each as a function of the cutoff $\Lambda_{\rm LL}$.
+
+1. *The energy of the condensed vacuum* (Section 31.2) gravitates as a negative cosmological constant of the size
+   $\lvert\mathcal E^{\rm CJT}_{\rm SF}\rvert\Lambda_{\rm LL}^4$. It is the one gravitational quantity of the model that is not small: for every cutoff above
+   $\Lambda^*_{\rm LG}={{GENM:lgq_lambda_star_mev}}$ meV it exceeds the observed energy of the vacuum, by the factor $(\Lambda_{\rm LL}/\Lambda^*_{\rm LG})^4$, so that
+   the gravitational theory must contain a constant that cancels it.
+2. *The zeugon charge of black holes* (Section 30) is limited by $\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG}\le$ {{GEN:lgq_coef}} $\Lambda_{\rm LL}/M_{\rm Pl}$ (30.4); at
+   that charge the shadow changes by the relative amount {{GEN:lgq_shadow_1TeV}} for $\Lambda_{\rm LL}=1$ TeV, and by less for smaller cutoffs, and the
+   frequencies of the ringing by as little: not detectable unless $\Lambda_{\rm LL}$ is close to the Planck mass.
+3. *Gravitational atoms* (Parts IV and V): a quasi-particle bound to a black hole with $y^{\rm qp}_{\rm LG}$ near 0.1 needs a black hole of
+   {{GEN:lgq_my01sun_1eV}} solar masses for $\Lambda_{\rm LL}=1$ eV and lighter ones for larger cutoffs (Table VI.2): only primordial black holes, if they
+   exist, are light enough.
+4. *The pair* (Sections 29 and 32) is swallowed whole by every black hole heavier than about {{GEN:lgt_mbh_esc_05}} $M_{\rm Pl}^2/\Lambda_{\rm LL}$; no break-up of
+   pairs marks a black hole.
+5. *Annihilation* (Section 33): the pairs of a quasi-particle and its antiparticle annihilate into massless zeugons within the lifetimes of
+   Table VI.5; the pairs of two particles do not, within the mean field. The zeugons carry the energy away as radiation, which gravitates.
+
+Whether quasi-particles or zeugons left over from the early universe contribute to the density of the universe, as dark matter or as radiation,
+depends on the history of the universe, which this work does not compute.
+
+# 35. What Part VI establishes
+
+1. Two quasi-particles of opposite zeugon charge form an atom like positronium, with the mass of the gap and the coupling
+   $\alpha^{\rm Z}_{\rm LG}=(g^{\rm v}_{\rm LL})^2/(16\pi)$; its levels to the order $(\alpha^{\rm Z}_{\rm LG})^4$ follow from the Breit-Fermi Hamiltonian
+   (Table VI.1).
+2. A black hole can carry a zeugon charge; its geometry is that of Reissner and Nordström with $(\mathcal Q^{\rm Z}_{\rm LG})^2=G_{\rm N}(Q^{\rm Z}_{\rm LG})^2/(4\pi)$.
+   The charge is limited by accretion to {{GEN:lgq_coef}} $\Lambda_{\rm LL}/M_{\rm Pl}$ times the mass, and more strongly by the creation of pairs when
+   $y^{\rm qp}_{\rm LG}<\tfrac14$; its effect on the shadow and the ringing is negligible for $\Lambda_{\rm LL}\ll M_{\rm Pl}$.
+3. The condensation energy of the vacuum exceeds the observed energy of the vacuum for every cutoff above {{GEN:lgq_lambda_star_mev}} meV, and has the
+   opposite sign.
+4. Along a real fall into a Schwarzschild black hole the tidal strength in the atomic units of the pair is $2/(9(T^{\rm fall}_{\rm LG})^2)$ for every
+   black hole, and the mass decides only when the horizon is crossed. The pair is torn apart far less than the classical estimate says: black
+   holes heavier than about {{GEN:lgt_mbh_esc_05}} $M_{\rm Pl}^2/\Lambda_{\rm LL}$ swallow it whole, and lighter ones swallow its two members within a few Bohr
+   radii of each other.
+5. The quasi-particles are the particles and antiparticles of a Dirac field of the mass of the gap, and the zeugon conserves their number. Two
+   particles cannot annihilate into zeugons; a particle and its antiparticle can, and the selection rules of charge conjugation and of the
+   reflection of $O(2)$ allow the decay only of the even singlet (into two zeugons) and of the odd triplet (into three).
+6. By Theorems L2 and L3 every result holds for the quasi-particle of the superfluid, as a Dirac particle of the mass of the gap with the zeugon
+   charges $\pm\tfrac12g^{\rm v}_{\rm LL}$.
+
 {{PART:algebra_lg}}
 
 {{PART:brochon_lg}}
@@ -2175,9 +2838,125 @@ python3 code/scripts/write_lg_vaidya_fragments.py                # the numbers o
 {{FILE:data/hck_lg_vaidya_checks_wolfram.txt}}
 ```
 
+## C.7 The programs of Part VI
+
+Twelve programs compute and check Part VI, three for each of its four computations, each program independently of the others.
+
+* **The pair (Section 29).** The Rust program `lg_pair` (`rust/lgpair/src/main.rs`): {{GEN:lgp_verdict_rust}}. It computes the coefficients of
+  the order $(\alpha^{\rm Z}_{\rm LG})^4$ again by numerical quadrature (48 points of Gauss and Laguerre) of the radial integrals and compares them
+  with the exact ones, and finds the radius at which the tidal barrier of Section 32.2 sinks below a level; it writes
+  `data/lg_pair_values.csv`. The Python program `python/lg_pair.py`: {{GEN:lgp_verdict_python}}. It is the exact reference: it evaluates the
+  Breit-Fermi Hamiltonian (29.4) in the hydrogen-like states with computer algebra (sympy) for $n_{\rm LG}\le5$, checks it against Dirac's fine
+  structure and Ferrell's formula, and writes `data/lg_pair_levels.csv`. The Wolfram script `wolfram/source/lg_pair.wls`:
+  {{GEN:lgp_verdict_wolfram}}, exactly, with the radial functions of the Wolfram Language.
+* **The charged black hole, the scan and the vacuum (Sections 30 and 31).** The Rust program `lg_charge` (`rust/lgcharge/src/main.rs`):
+  {{GEN:lgq_verdict_rust}}. It checks the limit by accretion on a grid of radii, finds the shadow numerically, extrapolates its coefficient,
+  checks the limit by the creation of pairs, writes the scan `data/lg_charge_scan.csv` and the energies of the vacuum
+  `data/lg_charge_vacuum.csv` (with `data/lg_charge_values.csv`). The Python program `python/lg_charge.py`: {{GEN:lgq_verdict_python}}. It checks
+  the geometry against Einstein's equations, the limits and the shadow by computer algebra, recomputes the scan and the energies of the vacuum
+  in arithmetic of 30 digits (mpmath), the latter from Newton's constant in SI units and from the data of the brochon model. The Wolfram
+  script `wolfram/source/lg_charge.wls`: {{GEN:lgq_verdict_wolfram}}, exactly: the geometry, the limit by accretion and the shadow.
+* **The fall (Section 32).** The Rust program `lg_tidal` (`rust/lgtidal/src/main.rs`, with the crate `rust/lgsundials` for CVODE and its banded
+  solver): {{GEN:lgt_verdict_rust}}. It solves the Schrödinger equation (32.7) along the fall and in static fields, with the tests of Section 32.4,
+  and writes `data/lg_tidal_fall.csv` (the probabilities and the mean squares along the fall), `data/lg_tidal_static.csv`,
+  `data/lg_tidal_snapshots.csv` (the densities of Figure VI.2), `data/lg_tidal_gauss.csv`, `data/lg_tidal_convergence.csv` and
+  `data/lg_tidal_values.csv`; it runs for about half an hour. The Python program `python/lg_tidal.py`: {{GEN:lgt_verdict_python}}. It derives the
+  tidal field and the fall by computer algebra, computes the static rates by complex rotation (`data/lg_tidal_cr.csv`) and the quasi-static
+  probability (`data/lg_tidal_quasistatic.csv`), and derives the perturbation series (32.5) and the weak-field rate (32.6). The Wolfram script
+  `wolfram/source/lg_tidal.wls`: {{GEN:lgt_verdict_wolfram}}, exactly.
+* **The annihilation (Section 33).** The Rust program `lg_annih` (`rust/lgannih/src/main.rs`): {{GEN:lga_verdict_rust}}. It checks the matrices, the
+  identity (33.1) on random plane waves, the anticommutators of (33.2) and the identity (33.3) in the space of states of eight fermion modes,
+  the selection rules, and computes the rates, the splittings and the lifetimes (`data/lg_annih_values.csv`, `data/lg_annih_scan.csv`). The
+  Python program `python/lg_annih.py`: {{GEN:lga_verdict_python}}; the identities exactly with sympy, the space of states built again in the
+  opposite order of the modes, the numbers in arithmetic of 30 digits. The Wolfram script `wolfram/source/lg_annih.wls`: {{GEN:lga_verdict_wolfram}},
+  exactly, the space of states in rational arithmetic.
+
+The figures of Part VI are drawn by `python/lg_tidal_figures.py`, and the numbers and tables of the text are written from the data files and the
+reports by `code/scripts/write_lg_pair_fragments.py`, `write_lg_charge_fragments.py`, `write_lg_tidal_fragments.py` and
+`write_lg_annih_fragments.py`. The reports use plain letters for the symbols of the text: M for $\mathcal M_{\rm LG}$; Q and Qg for
+$Q^{\rm Z}_{\rm LG}$ and $\mathcal Q^{\rm Z}_{\rm LG}$; m and q for the mass and the charge of a quasi-particle; x for $x^{\rm acc}_{\rm LG}$; r_+, r_ph and b_c for
+$r_{+,\rm LG}$, $r^{\rm ph}_{\rm LG}$ and $b^{\rm sh}_{\rm LG}$; y for $y^{\rm qp}_{\rm LG}$; rho_L, E_vac and Lambda_star for $\rho^\Lambda_{\rm LG}$, $\mathcal E^{\rm CJT}_{\rm SF}$ and
+$\Lambda^*_{\rm LG}$; mu, alpha and alpha_Z for $\mu^{\rm pair}_{\rm LG}$ and $\alpha^{\rm Z}_{\rm LG}$; kappa, T, T_h and Mt for $\kappa^{\rm tid}_{\rm LG}$,
+$T^{\rm fall}_{\rm LG}$, its value at the horizon and $\tilde{\mathcal M}_{\rm LG}$; Gamma for $\Gamma^{\rm tid}_{\rm LG}$ or a decay rate; theta and lambda in YT-4a for
+$\theta^{\rm cr}_{\rm LG}$ and $\lambda^{\rm St}_{\rm LG}$; P_esc, P_exc and P_sep for $P^{\rm esc}_{\rm LG}$, $P^{\rm exc}_{\rm LG}$ and $P^{\rm sep}_{\rm LG}$; E, b, P, C, F and K^3
+for $E^{\rm CJT,gap}_{\rm SF}$, $b^{\rm qp}_{\rm LG}$, $\mathsf P_{\rm LG}$, $\mathcal C_{\rm LG}$, $\mathsf F^{\rm v}_{\rm LG}$ and $\mathsf K^3_{\rm LL}$; and J^mu[Psi] for
+$J^\mu_{\rm LG}[\Psi]$. To reproduce, from the folder `Revision_Lord_Gravity`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+python3 python/lg_pair.py                                          # first: the exact levels that lg_pair compares with
+(cd rust && cargo build --release && ./target/release/lg_pair && ./target/release/lg_charge \
+   && ./target/release/lg_annih && ./target/release/lg_tidal)       # the Rust reports and data files
+python3 python/lg_charge.py && python3 python/lg_tidal.py && python3 python/lg_annih.py
+wolframscript -file wolfram/source/lg_pair.wls data/lg_pair_levels.csv data/hck_lg_pair_checks_wolfram.txt
+wolframscript -file wolfram/source/lg_charge.wls data/hck_lg_charge_checks_wolfram.txt
+wolframscript -file wolfram/source/lg_tidal.wls data/hck_lg_tidal_checks_wolfram.txt
+wolframscript -file wolfram/source/lg_annih.wls data/hck_lg_annih_checks_wolfram.txt
+python3 python/lg_tidal_figures.py                                 # figures/fig_lg_tidal_fall, fig_lg_tidal_density
+for s in pair charge tidal annih; do python3 code/scripts/write_lg_${s}_fragments.py; done   # the numbers of Part VI
+```
+
+**The reports of the pair** (`data/hck_lg_pair_checks.txt`, `data/hck_lg_pair_checks_python.txt`, `data/hck_lg_pair_checks_wolfram.txt`):
+
+```
+{{FILE:data/hck_lg_pair_checks.txt}}
+```
+
+```
+{{FILE:data/hck_lg_pair_checks_python.txt}}
+```
+
+```
+{{FILE:data/hck_lg_pair_checks_wolfram.txt}}
+```
+
+**The reports of the charged black hole, the scan and the vacuum** (`data/hck_lg_charge_checks.txt`, `data/hck_lg_charge_checks_python.txt`,
+`data/hck_lg_charge_checks_wolfram.txt`):
+
+```
+{{FILE:data/hck_lg_charge_checks.txt}}
+```
+
+```
+{{FILE:data/hck_lg_charge_checks_python.txt}}
+```
+
+```
+{{FILE:data/hck_lg_charge_checks_wolfram.txt}}
+```
+
+**The reports of the fall** (`data/hck_lg_tidal_checks.txt`, `data/hck_lg_tidal_checks_python.txt`, `data/hck_lg_tidal_checks_wolfram.txt`):
+
+```
+{{FILE:data/hck_lg_tidal_checks.txt}}
+```
+
+```
+{{FILE:data/hck_lg_tidal_checks_python.txt}}
+```
+
+```
+{{FILE:data/hck_lg_tidal_checks_wolfram.txt}}
+```
+
+**The reports of the annihilation** (`data/hck_lg_annih_checks.txt`, `data/hck_lg_annih_checks_python.txt`,
+`data/hck_lg_annih_checks_wolfram.txt`):
+
+```
+{{FILE:data/hck_lg_annih_checks.txt}}
+```
+
+```
+{{FILE:data/hck_lg_annih_checks_python.txt}}
+```
+
+```
+{{FILE:data/hck_lg_annih_checks_wolfram.txt}}
+```
+
 # D. The symbols of the main text
 
-The table lists the symbols of the main text, Parts I to V, in the order of their first use; the symbols of Appendix A are
+The table lists the symbols of the main text, Parts I to VI, in the order of their first use; the symbols of Appendix A are
 listed in its Section A.7, and those of Appendix B in its Section B.7.
 
 | symbol | meaning |
@@ -2315,3 +3094,50 @@ listed in its Section A.7, and those of Appendix B in its Section B.7.
 | $Z_{\rm H}$, $Z'_{\rm H}$, $\psi_{\rm H}$, $\psi'_{\rm H}$, $a_{\rm B}$ | the nuclear charges, the ground states and the Bohr radius of the example of Section 26.1 |
 | $\langle a,b\rangle_{\rm LG}$ | the charge product $\int2\,a^*b\,dr$ of two radial functions on a slice (Section 27) |
 | $\mathcal P^{(n)}_{\rm LG}(r)$, $O_{n,{\rm LG}}$, $\mathcal W_{n,{\rm LG}}$ | the profile of the state $n$ on a slice, its occupation (27.1), and the charge that the decomposition assigns to it |
+| $\vec r$, $r$, $x$, $y$, $z$, $\theta$ (Part VI) | the relative coordinate of the two quasi-particles of the pair, their distance, the components of $\vec r$ ($z$ along the radius of the black hole in Section 32), and the angle of $\vec r$ from that radius |
+| $r^{\rm cm}_{\rm LG}$ | the radius of the centre of mass of the pair in the coordinates of Schwarzschild (Section 32.1) |
+| $q^{\rm qp}_{\rm LG}$, $m^{\rm qp}_{\rm LG}$ | the zeugon charge $\pm\tfrac12g^{\rm v}_{\rm LL}$ and the mass $E^{\rm CJT,gap}_{\rm SF}\Lambda_{\rm LL}$ of a quasi-particle |
+| $V^{\rm Z}_{\rm LG}(r)$, $\alpha^{\rm Z}_{\rm LG}$ | the potential energy of two quasi-particles of opposite charge, and its strength $(g^{\rm v}_{\rm LL})^2/(16\pi)$ (29.1) |
+| $m_1$, $m_2$ | the masses of two particles (Section 29.2) |
+| $m^{\rm pair}_{\rm LG}$, $\mu^{\rm pair}_{\rm LG}$ | the mass of one particle of the pair and the reduced mass $m^{\rm pair}_{\rm LG}/2$ |
+| $E^{(2)}_{\rm LG}$, $E^{(4)}_{\rm LG}$ | the binding energy of a level of the pair (29.2) and its correction of the order $(\alpha^{\rm Z}_{\rm LG})^4$ (Table VI.1) |
+| $a^{\rm pair}_{\rm LG}$ | the Bohr radius of the pair (29.3) |
+| $m$, $\alpha$ (Sections 29.3 and 33.3) | shorthands for the mass of one particle of the pair and for $\alpha^{\rm Z}_{\rm LG}$ |
+| $H^{\rm BF}_{\rm LG}$, $\vec p$, $\hat n$ | the Breit-Fermi Hamiltonian (29.4), the relative momentum and the unit vector $\vec r/r$ |
+| $\vec L$, $\vec S_1$, $\vec S_2$, $\vec S$ | the orbital angular momentum of the pair, the two spins and the total spin |
+| $\ell$, $S$, $J$, $L$; $n_{\rm LG}\,{}^{2S+1}L_J$ | the orbital angular momentum, the total spin and the total angular momentum of a level of the pair, the letter $S,P,D,\dots$ for $\ell=0,1,2,\dots$; the notation of a level (Section 29.3) |
+| $\psi(0)$ | the wave function of the ground state of the pair at zero distance |
+| $Q^{\rm Z}_{\rm LG}$, $\mathcal Q^{\rm Z}_{\rm LG}$ | the zeugon charge of a black hole, and the same as a length, $(G_{\rm N}/4\pi)^{1/2}Q^{\rm Z}_{\rm LG}$ (30.1) |
+| $f^{\rm RN}_{\rm LG}$, $r_{+,\rm LG}$ | the metric function of Reissner and Nordström and its outer horizon (30.1) |
+| $\tau^{\rm qp}_{\rm LG}$, $x^{\rm acc}_{\rm LG}$ | the proper time of a falling charged quasi-particle, and the length that decides whether it reaches the horizon (30.2) |
+| $m_e$, $e$, $\mathcal F$ | the mass and the charge of the electron and the strength of a uniform electric field, in Schwinger's rate (Section 30.3) |
+| $Q^{\rm S}_{\rm LG}$, $Q^{\rm acc}_{\rm LG}$ | the zeugon charge of a black hole at which its field reaches the critical field, and the limit by accretion (30.5) |
+| $y^{\rm qp}_{\rm LG}$ | $G_{\rm N}M_{\rm LG}m^{\rm qp}_{\rm LG}/(\hbar c)$, the coupling $y_{\rm LG}$ of Part IV for the quasi-particle (30.5) |
+| $b^{\rm sh}_{\rm LG}$, $r^{\rm ph}_{\rm LG}$ | the radius of the shadow and the radius of the photon sphere (30.6) |
+| $b^{\rm ray}_{\rm LG}$, $d^{\rm obs}_{\rm LG}$ | the impact parameter of a ray of light, and the distance of an observer (Section 30.4) |
+| $\omega^{\rm QNM}_{\rm LG}$, $\ell^{\rm QNM}_{\rm LG}$, $n^{\rm QNM}_{\rm LG}$ | the complex frequency, the angular number and the overtone number of a quasi-normal mode |
+| $\Omega^{\rm ph}_{\rm LG}$, $\lambda^{\rm ph}_{\rm LG}$ | the angular velocity of light on the photon sphere, and the rate at which neighbouring rays leave it |
+| $\rho^\Lambda_{\rm LG}$, $H_0$, $\Omega_\Lambda$, $\Omega_{\rm m}$ | the observed energy density of the vacuum (31.2), the Hubble constant, and the fractions of the critical density in the vacuum and in matter |
+| $\Lambda^*_{\rm LG}$ | the cutoff at which the condensation energy has the size of $\rho^\Lambda_{\rm LG}$ (31.3) |
+| $V^{\rm tid}_{\rm LG}$, $k^{\rm tid}_{\rm LG}$, $P_2(u)$ | the tidal potential on the relative coordinate of the pair, its strength (32.1), and the Legendre polynomial $\tfrac12(3u^2-1)$ |
+| $\tau^{\rm end}_{\rm LG}$ | the proper time at which the centre of mass of the falling pair would reach $r=0$ |
+| $T^{\rm fall}_{\rm LG}$, $\kappa^{\rm tid}_{\rm LG}$ | the proper time that the pair has left before $r=0$, and the strength of the tidal potential, both in the atomic units of the pair (32.2) |
+| $\tilde{\mathcal M}_{\rm LG}$ | $\mathcal M_{\rm LG}\mu^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2$, the gravitational radius of the black hole in the atomic unit of time of the pair (32.3) |
+| $z^{\rm top}_{\rm LG}$ | the position of the top of the barrier on the radial axis (Section 32.2) |
+| $E^{\rm tid}_{\rm LG}$, $\Gamma^{\rm tid}_{\rm LG}$ | the energy and the rate of tunnelling of the ground state of the pair in a static tidal field (Section 32.3) |
+| $\theta^{\rm cr}_{\rm LG}$, $\lambda^{\rm St}_{\rm LG}$ | the angle of the complex rotation and the scale of the Coulomb-Sturmian functions |
+| $L^{(a)}_k$, $Y_{\ell0}$, $\ell$ (Section 32), $k$ | the generalized Laguerre polynomials, the spherical harmonics without angular momentum about the axis, their order, and the index of a Coulomb-Sturmian function |
+| $\psi^{(0)}_{\rm LG}$, $\psi^{(1)}_{\rm LG}$ | the ground state of the free pair and its first-order correction in the tidal field (32.5) |
+| $F^{\rm u}_{\rm LG}$ | the strength of a uniform field, in atomic units, in Landau's rate (Section 32.3) |
+| $\psi^{\rm pair}_{\rm LG}$, $u_\ell(r)$ | the wave function of the relative motion of the pair (32.7), and its radial functions |
+| $W^{\rm abs}_{\rm LG}(r)$ | the absorbing potential at the edge of the grid (Section 32.4) |
+| $P^{\rm esc}_{\rm LG}$, $P^{\rm exc}_{\rm LG}$, $P^{\rm sep}_{\rm LG}$ | the probabilities that the pair is beyond its barrier, no longer in its ground state $1s$, and more than 10 Bohr radii apart (Section 32.4) |
+| $M$, $D$, $E$, $b$, $\mathcal C$ (Section 33) | shorthands, as in Theorem L3 |
+| $\phi$ | a spinor field in the proof of (33.1) |
+| $\chi'_{\rm LG}$ | the canonical Dirac field $(1+\lvert b^{\rm qp}_{\rm LG}\rvert^2)^{1/2}\chi_{\rm LG}$ of the mass of the gap, whose particles and antiparticles are the quasi-particles (Section 33.1) |
+| $\chi_i$, $\Psi_i$, $\chi^{\dagger T}$ | the components of the field operators, and the column of the adjoints of the components (Section 33.1) |
+| $\mathsf G^\mu_{\rm LG}$, $J^\mu_{\rm LG}[\Psi]$ | the matrices $\gamma^0_{\rm LL}\gamma^\mu_{\rm LL}T^3_{\rm LL}$ and the zeugon current $\Psi^\dagger\mathsf G^\mu_{\rm LG}\Psi$ of a field (Section 33.2) |
+| $c_{ij}$ | symmetric coefficients, in the example of Section 33.2 |
+| $N^{\rm qp}_{\rm LG}$ | the number of quasi-particles: the particles minus the antiparticles of $\chi'_{\rm LG}$, conserved by the zeugon |
+| $\mathsf F^{\rm v}_{\rm LG}$ | the reflection $\mathsf 1_4\otimes\tau^{\rm LL}_1$ of the unbroken group $O(2)$, which exchanges the isospin components and turns $T^3_{\rm LL}$ into $-T^3_{\rm LL}$ |
+| $n$ (Section 33.3) | a number of zeugons |

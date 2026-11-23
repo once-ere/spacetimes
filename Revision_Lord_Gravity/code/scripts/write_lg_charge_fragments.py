@@ -4,7 +4,9 @@ write_lg_charge_fragments.py (Revision_Lord_Gravity) -- the machine-written frag
 that carries zeugon charge, and the scan of the predictions over the cutoff Lambda_LL): the verdicts of the three programs
 that compute and check it (the Rust program lg_charge, the Python program python/lg_charge.py and the Wolfram script
 wolfram/source/lg_charge.wls), and the numbers that the task record and the manuscript quote, read from the data files that
-lg_charge writes (data/lg_charge_values.csv, data/lg_charge_scan.csv).
+lg_charge writes (data/lg_charge_values.csv, data/lg_charge_scan.csv, data/lg_charge_vacuum.csv).  The table of the scan,
+lgq_scan_table, is Table VI.2 of the manuscript (Section 31.2); the fragments lgq_vac_* and lgq_rho_* are the numbers of the
+energy of the condensed vacuum against the observed cosmological constant (check LC-6, YC-6; Section 31.3; entry E36).
 
 The program stops if a report is missing, has no verdict line, or does not pass completely, and if a quantity is missing.
 
@@ -46,7 +48,9 @@ def deviation(text, cid, name):
 def sci(x, digits=2):
     """0.139 or 2.76, or a x 10^n for small and large numbers"""
     if 1e-2 <= abs(x) < 1e3:
-        return "%s" % ("%.*g" % (digits + 1, x))
+        # rounded to digits + 1 significant digits and written without an exponent ("%g" alone writes 870 with two
+        # significant digits as 8.7e+02)
+        return ("%f" % float("%.*g" % (digits + 1, x))).rstrip("0").rstrip(".")
     m, e = ("%.*e" % (digits, x)).split("e")
     return "%s\\times10^{%d}" % (m, int(e))
 
@@ -85,19 +89,40 @@ def main():
         frags["lgq_my01_%s" % tag] = "$%s$" % sci(float(r["M_y01_kg"]), 1)
         frags["lgq_my01sun_%s" % tag] = "$%s$" % sci(float(r["M_y01_solar"]), 1)
         frags["lgq_force_%s" % tag] = "$%s$" % sci(float(r["zeugon_over_gravity"]), 1)
-    # the scan as a table, one line per decade of Lambda_LL
-    lines = ["| $\\Lambda_{\\rm LL}$ | quasi-particle mass | $\\mathcal Q^{\\rm Z}_{\\rm LG}/\\mathcal M_{\\rm LG}$ at the accretion limit | change of the shadow | "
-             "black hole with $y^{\\rm qp}_{\\rm LG}=0.1$ | pair: Bohr radius | pair: binding | pair: classical tidal mass (E20; corrected in E32) |",
-             "|:---|:---|:---|:---|:---|:---|:---|:---|"]
+    # the scan as a table, one line per decade of Lambda_LL (Table VI.2 of the manuscript; the symbols are those of the
+    # manuscript, and the classical tidal mass of the pair, which Section 32 corrects, is not repeated here)
+    lines = ["| $\\Lambda_{\\rm LL}$ (eV) | $m^{\\rm qp}_{\\rm LG}$ (eV) | largest $\\mathcal Q^{\\rm Z}_{\\rm LG}/\\mathcal M_{\\rm LG}$ | "
+             "change of the shadow | $M_{\\rm LG}/M_\\odot$ with $y^{\\rm qp}_{\\rm LG}=0.1$ | pair: Bohr radius (m) | "
+             "pair: binding energy (eV) |",
+             "|:---|:---|:---|:---|:---|:---|:---|"]
     for r in rows:
         lam = float(r["Lambda_eV"])
         k = int(round(math.log10(lam)))
-        name = {0: "1 eV", 3: "1 keV", 6: "1 MeV", 9: "1 GeV", 12: "1 TeV"}.get(k, "$10^{%d}$ eV" % k)
-        lines.append("| %s | $%s$ eV | $%s$ | $%s$ | $%s\\,M_\\odot$ | $%s$ m | $%s$ eV | $%s\\,M_\\odot$ |" % (
-            name, sci(float(r["m_quasi_particle_eV"]), 2), sci(float(r["Qacc_over_M"]), 1),
+        lines.append("| $10^{%d}$ | $%s$ | $%s$ | $%s$ | $%s$ | $%s$ | $%s$ |" % (
+            k, sci(float(r["m_quasi_particle_eV"]), 2), sci(float(r["Qacc_over_M"]), 1),
             sci(float(r["shadow_relative_change"]), 1), sci(float(r["M_y01_solar"]), 1),
-            sci(float(r["pair_bohr_radius_m"]), 1), sci(float(r["pair_binding_eV"]), 1), sci(float(r["pair_Mcrit_solar"]), 1)))
+            sci(float(r["pair_bohr_radius_m"]), 1), sci(float(r["pair_binding_eV"]), 1)))
     frags["lgq_scan_table"] = "\n".join(lines)
+    # the energy of the condensed vacuum against the observed energy density of the vacuum (LC-6, YC-6; entry E36)
+    for q in ("E_vac_per_Lambda4", "rho_Lambda_eV4", "rho_Lambda_quarter_eV", "Lambda_star_eV", "H0_km_s_Mpc", "Omega_m"):
+        if q not in vals:
+            sys.exit("lg_charge_values.csv: no row for %s" % q)
+    frags["lgq_evac"] = "$%s$" % sci(float(vals["E_vac_per_Lambda4"]), 3)
+    frags["lgq_rho_l"] = "$%s$" % sci(float(vals["rho_Lambda_eV4"]), 2)
+    frags["lgq_rho_l_quarter_mev"] = "$%.2f$" % (1e3 * float(vals["rho_Lambda_quarter_eV"]))
+    frags["lgq_lambda_star_mev"] = "$%.1f$" % (1e3 * float(vals["Lambda_star_eV"]))
+    frags["lgq_h0"] = "$%.1f$" % float(vals["H0_km_s_Mpc"])
+    frags["lgq_om"] = "$%.3f$" % float(vals["Omega_m"])
+    frags["lgq_dev_lc6"] = "$%s$" % sci(deviation(texts["lgq_verdict_rust"], "LC-6", "rust"), 1)
+    frags["lgq_dev_yc6"] = "$%s$" % sci(deviation(texts["lgq_verdict_python"], "YC-6", "python"), 1)
+    vac = list(csv.DictReader(open(os.path.join(DATA, "lg_charge_vacuum.csv"), encoding="utf-8")))
+    if len(vac) != 13:
+        sys.exit("lg_charge_vacuum.csv: 13 rows expected")
+    for lam, tag in ((1.0, "1eV"), (1e9, "1GeV"), (1e12, "1TeV")):
+        r = [x for x in vac if abs(float(x["Lambda_eV"]) / lam - 1) < 1e-9]
+        if len(r) != 1:
+            sys.exit("lg_charge_vacuum.csv: no row for Lambda = %g eV" % lam)
+        frags["lgq_vac_%s" % tag] = "$%s$" % sci(float(r[0]["ratio_to_observed"]), 1)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
         f.write("<!-- generated by code/scripts/write_lg_charge_fragments.py from the data and reports of lg_charge; do not edit -->\n")

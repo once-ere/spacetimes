@@ -175,3 +175,55 @@ brochon comes, with an example of every object, and Appendix B states the brocho
   that leaves the state unchanged, to be written in terms of the new levels (sudden).
 * *Gram matrix, least squares.* The matrix of the products of a set of vectors with each other; the coefficients of the best
   approximation of a vector by a combination of the set solve the linear equations with this matrix.
+
+**The pair and what gravitation can detect (Part VI)**
+
+* *Positronium.* The bound state of an electron and a positron, a hydrogen atom in which the proton is replaced by a particle of the same
+  mass as the electron. The pair of two quasi-particles bound by the zeugon is built in the same way (Section 29).
+* *Reduced mass, Bohr radius, atomic units.* The relative motion of two bodies is that of one body of the reduced mass
+  $m_1m_2/(m_1+m_2)$; the Bohr radius $1/(\mu\alpha)$ of a hydrogen-like atom of reduced mass $\mu$ and coupling $\alpha$ sets its size; in the
+  atomic units of the atom, lengths are measured in the Bohr radius, energies in $\mu\alpha^2$ and times in $1/(\mu\alpha^2)$.
+* *Hyperfine structure; singlet and triplet; para and ortho.* The splitting of a level by the relative orientation of the two spins:
+  total spin 0 (the singlet, in positronium para) or 1 (the triplet, ortho). The fine structure splits it by the orbital and the total
+  angular momentum.
+* *Breit-Fermi Hamiltonian, Darwin term, Zitterbewegung.* The Hamiltonian of two Dirac particles that exchange a massless vector boson,
+  expanded to the second order in their velocities (29.4); the Darwin term is the contact term that comes from the trembling motion
+  (Zitterbewegung) of a Dirac particle over its Compton wavelength.
+* *Virtual annihilation.* A particle and its own antiparticle can annihilate into a boson and be created again from it; the process
+  shifts the levels that have the quantum numbers of one boson.
+* *No-hair theorems.* A black hole that has settled down is described completely by its mass, its angular momentum and its charges
+  under the fields of long range.
+* *Reissner-Nordström space-time; extremal black hole.* The space-time of a black hole that carries the charge of a massless vector
+  field (30.1); an extremal black hole has the largest charge that still allows a horizon.
+* *Accretion.* The capture of the matter around a black hole, which makes it grow and can charge it.
+* *Schwinger pair creation, critical field.* A strong static field creates pairs of particles and antiparticles out of the vacuum, at a
+  rate that becomes large when the field reaches $m^2/q$ (the critical field) for particles of mass $m$ and charge $q$.
+* *Impact parameter, photon sphere, shadow.* The impact parameter of a ray is its distance from the parallel line through the centre;
+  the photon sphere is the radius on which light can circle a black hole; the shadow is the dark disc that a distant observer sees,
+  whose radius is the largest impact parameter of the rays that fall in.
+* *Quasi-normal modes, ringing.* The damped oscillations by which a disturbed black hole settles down, with complex frequencies.
+* *Cosmological constant, critical density, Hubble constant.* A constant energy density of the vacuum acts in Einstein's equations as a
+  cosmological constant; the critical density $3H_0^2/(8\pi G_{\rm N})$ is the density of a spatially flat universe that expands at the rate
+  of the Hubble constant $H_0$; the *cosmological constant problem* is that the observed energy density of the vacuum is far smaller than
+  the energies of the condensates and fields of particle physics.
+* *Primordial black holes.* Black holes that would have formed in the early universe, not by the collapse of stars; only they could be
+  lighter than about a solar mass. Their existence is not established.
+* *Tidal field, geodesic deviation.* The difference of the gravitational pull between the parts of a body; it is described by the
+  relative acceleration of neighbouring freely falling particles, the equation of geodesic deviation.
+* *Tunnelling, resonance, rate of tunnelling.* A quantum particle can cross a barrier that it cannot climb; a state that leaks out in this
+  way is a resonance, whose probability decreases exponentially at the rate of tunnelling.
+* *Complex rotation (complex scaling), Coulomb-Sturmian functions.* Replacing the radius $r$ by $re^{i\theta}$ turns a resonance into a
+  normalizable eigenvector with a complex eigenvalue, the energy minus $\tfrac i2$ times the rate; Coulomb-Sturmian functions are a
+  complete set of functions in which the Coulomb potential has simple matrix elements.
+* *Perturbation theory, the method of Dalgarno and Lewis.* The expansion of an energy in powers of a weak perturbation; the method of
+  Dalgarno and Lewis finds the first correction of the wave function as a function times the unperturbed state, and with it the energy to
+  the third order.
+* *Absorbing potential.* An imaginary potential at the edge of a grid that removes the waves that reach it, so that they are not
+  reflected back.
+* *Quasi-static.* Computed as if a slowly changing quantity were constant at each moment: here the static rates of tunnelling integrated
+  along the fall.
+* *Charge conjugation, selection rule.* Charge conjugation exchanges particles and antiparticles; a state that is unchanged by it up to a
+  sign has that sign as its charge-conjugation parity. A selection rule forbids a process that would change such a parity.
+* *Space of states of fermion modes, the construction of Jordan and Wigner.* The states of $n$ fermion modes form a space of dimension
+  $2^n$ (each mode is empty or filled); the construction of Jordan and Wigner represents the anticommuting operators of the modes by
+  matrices on this space.

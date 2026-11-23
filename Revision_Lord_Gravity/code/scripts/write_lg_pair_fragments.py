@@ -68,6 +68,17 @@ def main():
     frags["lgp_levels_n12"] = "; ".join("%s: $%s$" % (name(st), frac(lev[st]["E4_over_m_alpha4_without_annihilation"]))
                                         for st in ("1^1S0", "1^3S1", "2^1S0", "2^3S1", "2^1P1", "2^3P2", "2^3P1", "2^3P0"))
     frags["lgp_3s1_with"] = "$%s$" % frac(lev["1^3S1"]["E4_over_m_alpha4_with_annihilation"])
+    # Table VI.1 of the manuscript (Section 29.3): the levels n <= 2, the coefficient of the leading term and those of the order
+    # alpha^4 without and with the term of virtual annihilation of one kind of pair (the exact rational numbers of python/lg_pair.py)
+    lines = ["| state | $E^{(2)}_{\\rm LG}/(m^{\\rm pair}_{\\rm LG}(\\alpha^{\\rm Z}_{\\rm LG})^2)$ | "
+             "$E^{(4)}_{\\rm LG}/(m^{\\rm pair}_{\\rm LG}(\\alpha^{\\rm Z}_{\\rm LG})^4)$ without annihilation | "
+             "the same with the virtual annihilation |",
+             "|:---|:---|:---|:---|"]
+    for st in ("1^1S0", "1^3S1", "2^1S0", "2^3S1", "2^1P1", "2^3P0", "2^3P1", "2^3P2"):
+        lines.append("| %s | $%s$ | $%s$ | $%s$ |" % (name(st), frac(lev[st]["E2_over_m_alpha2"]),
+                                                   frac(lev[st]["E4_over_m_alpha4_without_annihilation"]),
+                                                   frac(lev[st]["E4_over_m_alpha4_with_annihilation"])))
+    frags["lgp_levels_table"] = "\n".join(lines)
 
     vals = {r["name"]: float(r["value"]) for r in csv.DictReader(open(os.path.join(DATA, "lg_pair_values.csv"), encoding="utf-8"))}
 

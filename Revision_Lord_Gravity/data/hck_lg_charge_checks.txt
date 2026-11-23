@@ -8,6 +8,7 @@ PASS LC-2    deviation 3.331e-16 (tolerance 1.0e-12): the shadow: the minimum of
 PASS LC-3    deviation 3.761e-13 (tolerance 1.0e-9): for a small charge b_c = 3 3^(1/2) M (1 + c0 (Qg/M)^2 + ...) with c0 = -1/6: Richardson's extrapolation of (b_c/(3 3^(1/2) M) - 1)/(Qg/M)^2 from Qg/M = 0.01, 0.02, 0.04 gives c0 = -0.166666666666 (difference from -1/6)
 PASS LC-4    deviation 2.220e-16 (tolerance 1.0e-14): the limit by the creation of pairs (Schwinger): the charge Qg_S at which the field at the horizon reaches m^2/q, divided by the accretion limit Qg_acc, is 4 y, y = G M m/(hbar c), for a small charge (r_+ = 2 M); four cases (largest relative difference)
 PASS LC-5    deviation 2.220e-16 (tolerance 1.0e-12): the scan over Lambda_LL = 1 eV to 1 TeV (data/lg_charge_scan.csv): the masses of the black holes that tear the pair of stage 7a apart classically, at Lambda_LL = 1 eV, 1 GeV and 1 TeV, equal those of the program lg_pair (data/lg_pair_values.csv; largest relative difference)
+PASS LC-6    deviation 2.099e-7 (tolerance 1.0e-5): the observed energy density of the vacuum (Planck 2018: H0 = 67.4 km/s/Mpc, Omega_m = 0.315, flat, Omega_L = 1 - Omega_m) in eV^4 by two routes, Omega_L (3/(8 pi)) (hbar H0)^2 M_Pl^2 in natural units (2.519273e-11) and Omega_L 3 H0^2 c^2/(8 pi G) in J/m^3 converted with e and (hbar c)^3 (2.519274e-11): relative difference (the constants M_Pl and G of CODATA 2018 agree to their rounding)
 
 Notes:
   Qg/M = 0: b_c = 5.1961524227 (search 5.1961524227)
@@ -18,5 +19,6 @@ Notes:
   Qg/M = 0.95: b_c = 4.1761632517 (search 4.1761632517)
   Qg/M = 1: b_c = 4.0000000000 (search 4.0000000000)
   E_gap = 0.3663906649346106 (from data/lg_curved_values.csv), q = g^v/2 = 0.35, alpha_Z = 0.0097482403; Qg_acc/M = 3.710917 Lambda_LL/M_Pl; the extremal shadow 4
+  the vacuum (LC-6): E_vac = -0.00024223849659 Lambda_LL^4; observed rho_L = 2.519273e-11 eV^4 = (2.240365e-3 eV)^4; the condensation energy has the size of rho_L at Lambda_star = (rho_L/|E_vac|)^(1/4) = 1.795800e-2 eV, with the opposite sign (it is negative); at Lambda_LL = 1 eV, 1 GeV and 1 TeV it exceeds rho_L by the factors 9.6154e6, 9.6154e42 and 9.6154e54
 
-VERDICT: ALL PASS (6 of 6)
+VERDICT: ALL PASS (7 of 7)

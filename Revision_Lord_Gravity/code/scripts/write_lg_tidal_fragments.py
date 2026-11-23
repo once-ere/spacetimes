@@ -139,7 +139,9 @@ def main():
         frags["lgt_pesc_%s" % tag] = "$%s$" % sci(float(fr["P_esc"]), 1)
         frags["lgt_gamma_T%s" % tag] = "$%s$" % sci(float(q["Gamma_complex_rotation"]), 2)
     # the table of the fall
-    lines = ["| $T_h$ | $\\tilde{\\mathcal M}$ | $\\kappa$ | $P_{\\rm esc}$ | quasi-static | $P_{\\rm exc}$ | $P_{\\rm sep}$ | "
+    # Table VI.4 of the manuscript (Section 32.4), with the symbols of the manuscript
+    lines = ["| $T^{\\rm fall}_{\\rm LG}$ at the horizon | $\\tilde{\\mathcal M}_{\\rm LG}$ | $\\kappa^{\\rm tid}_{\\rm LG}$ | "
+             "$P^{\\rm esc}_{\\rm LG}$ | quasi-static | $P^{\\rm exc}_{\\rm LG}$ | $P^{\\rm sep}_{\\rm LG}$ | "
              "$\\langle z^2\\rangle^{1/2}$ | $\\langle x^2\\rangle^{1/2}$ |",
              "|:---|:---|:---|:---|:---|:---|:---|:---|:---|"]
     for tt in (6.0, 5.0, 4.0, 3.4641016151377544, 3.0, 2.0, 1.5, 1.0, 0.7, 0.5, 0.3):
@@ -150,7 +152,7 @@ def main():
         except SystemExit:
             pq = "--"
         lines.append("| $%.2f$ | $%.2f$ | $%s$ | $%s$ | %s | $%s$ | $%s$ | $%.2f$ | $%.2f$ |" % (
-            float(fr["T_remaining"]), 0.75 * float(fr["T_remaining"]), sci(float(fr["kappa"]), 2),
+            float(fr["T_remaining"]), 0.75 * float(fr["T_remaining"]), "%.3g" % float(fr["kappa"]),
             sci(float(fr["P_esc"]), 1), pq, sci(float(fr["P_exc_not_1s"]), 1), sci(float(fr["P_sep_outside_r10"]), 1),
             math.sqrt(float(fr["z2_mean"])), math.sqrt(float(fr["x2_mean"]))))
     frags["lgt_fall_table"] = "\n".join(lines)

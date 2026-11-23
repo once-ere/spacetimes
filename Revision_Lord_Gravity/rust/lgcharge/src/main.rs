@@ -39,11 +39,16 @@
 //!         binding energy and the mass of the black hole that tears it apart classically, decision D11 and entry E20 of the
 //!         task record); the masses of the tidal dissociation at 1 eV, 1 GeV and 1 TeV must equal those of the program
 //!         lg_pair (data/lg_pair_values.csv).
+//!   LC-6  (added in entry E36) the energy of the condensed vacuum, E_vac Lambda_LL^4 with E_vac = -2.4223849659e-4, against the
+//!         observed energy density of the vacuum rho_L (Planck 2018: H0 = 67.4 km/s/Mpc, Omega_m = 0.315, flat): rho_L in eV^4
+//!         by two routes (natural units with M_Pl, SI units with G and the conversions e and (hbar c)^3), which must agree; the
+//!         cutoff Lambda_star = (rho_L/|E_vac|)^(1/4) and the ratio |E_vac| Lambda^4/rho_L over the scan (lg_charge_vacuum.csv).
 //!
 //! Inputs: E_gap from data/lg_curved_values.csv (the program lg_curved of Part III), the coupling g^v = 0.7 of the brochon
 //! model, alpha_Z = (g^v)^2/(16 pi).  Physical constants: M_Pl c^2 = 1.220890e19 GeV and hbar c = 197.3269804 MeV fm (CODATA
 //! 2018), 1 eV/c^2 = 1.78266192e-36 kg, the nominal solar mass 1.9884e30 kg (IAU 2015), as in the program lg_pair.
-//! Output (folder data/): hck_lg_charge_checks.txt (the report), lg_charge_scan.csv (the scan), lg_charge_values.csv.
+//! Output (folder data/): hck_lg_charge_checks.txt (the report), lg_charge_scan.csv (the scan), lg_charge_vacuum.csv (the vacuum,
+//! LC-6), lg_charge_values.csv.
 //! Build and run (from the folder rust/): cargo build --release && ./target/release/lg_charge
 use lgcore::report::{data_dir, f, write_csv, Report};
 use lgcore::rng::Rng;
@@ -273,6 +278,77 @@ fn main() {
         scan_dev,
         1e-12,
     );
+
+    // ------------------------------------------------------------------ LC-6: the energy of the condensed vacuum against the
+    // observed cosmological constant (added in entry E36 of the task record for Section 31.3 of the manuscript; LC-1 to LC-5 above
+    // are unchanged).  The condensation of the brochon model changes the energy density of the vacuum, relative to the normal
+    // vacuum, by E_vac Lambda_LL^4 (E_VAC below, negative: the condensation lowers it).  Gravitation responds to the energy density of the vacuum as to a cosmological
+    // constant; the observed one is rho_L = Omega_L rho_c with the critical density rho_c = 3 H0^2/(8 pi G).  Two routes to rho_L
+    // in eV^4 (hbar = c = 1), which agree only if every conversion of units is right:
+    //   (a) natural units: rho_L = Omega_L (3/(8 pi)) (hbar H0)^2 M_Pl^2, with hbar H0 in eV and M_Pl c^2 in eV;
+    //   (b) SI units: Omega_L 3 H0^2 c^2/(8 pi G) is an energy per volume in J/m^3; divided by the elementary charge (J -> eV) and
+    //       multiplied by (hbar c)^3 in (eV m)^3 (m^-3 -> eV^3) it is in eV^4.
+    // Then Lambda_star = (rho_L/|E_vac|)^(1/4) is the cutoff at which the condensation energy has the size of the observed energy of
+    // the vacuum, and the ratio |E_vac| Lambda^4/rho_L = (Lambda/Lambda_star)^4 is written for the 13 values of the scan.
+    const E_VAC: f64 = -2.4223849659e-4; // energy density of the polar CJT ground state of the brochon model relative to the
+    // normal vacuum, in units of Lambda_LL^4 (Revision_SM_Higgs/data/part2_states.csv, row V2, CJT, rank 0, column energy; the
+    // manuscript prints it in Section 15.4 and Appendix B.5; python/lg_charge.py YC-6 reads it from that file)
+    const H0_KM_S_MPC: f64 = 67.4; // Planck 2018 results VI, Astronomy & Astrophysics 641, A6 (2020), abstract: H0 = 67.4 +- 0.5
+    const OMEGA_M: f64 = 0.315; // the same: Omega_m = 0.315 +- 0.007; the base Lambda-CDM model is flat, Omega_L = 1 - Omega_m
+    // (the radiation, about 9e-5, is neglected)
+    const MPC_M: f64 = 3.0856775814913673e22; // one megaparsec in m (IAU 2012/2015: au = 149597870700 m, pc = 648000 au/pi)
+    const HBAR_EV_S: f64 = 6.582119569e-16; // hbar in eV s (CODATA 2018)
+    const G_SI: f64 = 6.67430e-11; // Newton's constant in m^3 kg^-1 s^-2 (CODATA 2018)
+    const C_SI: f64 = 299792458.0; // the speed of light in m/s (exact)
+    const E_SI: f64 = 1.602176634e-19; // the elementary charge in C, so 1 eV = E_SI J (exact)
+    let h0_s = H0_KM_S_MPC * 1e3 / MPC_M; // H0 in 1/s
+    let omega_l = 1.0 - OMEGA_M;
+    let rho_a = omega_l * 3.0 / (8.0 * PI) * (HBAR_EV_S * h0_s).powi(2) * MPL_EV * MPL_EV; // route (a), eV^4
+    let rho_b = omega_l * 3.0 * h0_s * h0_s * C_SI * C_SI / (8.0 * PI * G_SI) / E_SI * HBARC_EV_M.powi(3); // route (b), eV^4
+    rep.add(
+        "LC-6",
+        &format!(
+            "the observed energy density of the vacuum (Planck 2018: H0 = {} km/s/Mpc, Omega_m = {}, flat, Omega_L = 1 - Omega_m) in \
+             eV^4 by two routes, Omega_L (3/(8 pi)) (hbar H0)^2 M_Pl^2 in natural units ({:.6e}) and Omega_L 3 H0^2 c^2/(8 pi G) in J/m^3 \
+             converted with e and (hbar c)^3 ({:.6e}): relative difference (the constants M_Pl and G of CODATA 2018 agree to their \
+             rounding)",
+            H0_KM_S_MPC, OMEGA_M, rho_a, rho_b
+        ),
+        (rho_a / rho_b - 1.0).abs(),
+        1e-5,
+    );
+    let rho_l = rho_a;
+    let lam_star = (rho_l / E_VAC.abs()).powf(0.25);
+    let mut vac_rows: Vec<Vec<String>> = vec![];
+    for k in 0..13 {
+        let lam_ev = 10f64.powi(k);
+        let e_cond = E_VAC * lam_ev.powi(4);
+        vac_rows.push(vec![f(lam_ev), f(e_cond), f(e_cond.abs() / rho_l)]);
+    }
+    let vac_note = format!(
+        "the vacuum (LC-6): E_vac = {} Lambda_LL^4; observed rho_L = {:.6e} eV^4 = ({:.6e} eV)^4; the condensation energy has the size of \
+         rho_L at Lambda_star = (rho_L/|E_vac|)^(1/4) = {:.6e} eV, with the opposite sign (it is negative); at Lambda_LL = 1 eV, 1 GeV and \
+         1 TeV it exceeds rho_L by the factors {:.4e}, {:.4e} and {:.4e}",
+        E_VAC,
+        rho_l,
+        rho_l.powf(0.25),
+        lam_star,
+        E_VAC.abs() / rho_l,
+        E_VAC.abs() * 1e36 / rho_l,
+        E_VAC.abs() * 1e48 / rho_l
+    );
+    vals.push(vec!["E_vac_per_Lambda4".into(), f(E_VAC)]);
+    vals.push(vec!["H0_km_s_Mpc".into(), f(H0_KM_S_MPC)]);
+    vals.push(vec!["Omega_m".into(), f(OMEGA_M)]);
+    vals.push(vec!["rho_Lambda_eV4".into(), f(rho_l)]);
+    vals.push(vec!["rho_Lambda_quarter_eV".into(), f(rho_l.powf(0.25))]);
+    vals.push(vec!["Lambda_star_eV".into(), f(lam_star)]);
+    write_csv(
+        &data.join("lg_charge_vacuum.csv"),
+        &["Lambda_eV", "condensation_energy_eV4", "ratio_to_observed"],
+        &vac_rows,
+    );
+
     for s in &sh_notes {
         rep.note(s);
     }
@@ -285,6 +361,7 @@ fn main() {
         (4.0 * PI).sqrt() * egap / q,
         shadow_closed(1.0)
     ));
+    rep.note(&vac_note);
     vals.push(vec!["E_gap".into(), f(egap)]);
     vals.push(vec!["q".into(), f(q)]);
     vals.push(vec!["alpha_Z".into(), f(alpha_z)]);

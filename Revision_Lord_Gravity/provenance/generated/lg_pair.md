@@ -41,6 +41,18 @@ $1.62\times10^{-10}$
 <!-- BEGIN lgp_levels_n12 -->
 $1{}^{1}S_{0}$: $-\tfrac{21}{64}$; $1{}^{3}S_{1}$: $\tfrac{1}{192}$; $2{}^{1}S_{0}$: $-\tfrac{53}{1024}$; $2{}^{3}S_{1}$: $-\tfrac{31}{3072}$; $2{}^{1}P_{1}$: $-\tfrac{31}{3072}$; $2{}^{3}P_{2}$: $-\tfrac{43}{15360}$; $2{}^{3}P_{1}$: $-\tfrac{47}{3072}$; $2{}^{3}P_{0}$: $-\tfrac{95}{3072}$
 <!-- END lgp_levels_n12 -->
+<!-- BEGIN lgp_levels_table -->
+| state | $E^{(2)}_{\rm LG}/(m^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^2)$ | $E^{(4)}_{\rm LG}/(m^{\rm pair}_{\rm LG}(\alpha^{\rm Z}_{\rm LG})^4)$ without annihilation | the same with the virtual annihilation |
+|:---|:---|:---|:---|
+| $1{}^{1}S_{0}$ | $-\tfrac{1}{4}$ | $-\tfrac{21}{64}$ | $-\tfrac{21}{64}$ |
+| $1{}^{3}S_{1}$ | $-\tfrac{1}{4}$ | $\tfrac{1}{192}$ | $\tfrac{49}{192}$ |
+| $2{}^{1}S_{0}$ | $-\tfrac{1}{16}$ | $-\tfrac{53}{1024}$ | $-\tfrac{53}{1024}$ |
+| $2{}^{3}S_{1}$ | $-\tfrac{1}{16}$ | $-\tfrac{31}{3072}$ | $\tfrac{65}{3072}$ |
+| $2{}^{1}P_{1}$ | $-\tfrac{1}{16}$ | $-\tfrac{31}{3072}$ | $-\tfrac{31}{3072}$ |
+| $2{}^{3}P_{0}$ | $-\tfrac{1}{16}$ | $-\tfrac{95}{3072}$ | $-\tfrac{95}{3072}$ |
+| $2{}^{3}P_{1}$ | $-\tfrac{1}{16}$ | $-\tfrac{47}{3072}$ | $-\tfrac{47}{3072}$ |
+| $2{}^{3}P_{2}$ | $-\tfrac{1}{16}$ | $-\tfrac{43}{15360}$ | $-\tfrac{43}{15360}$ |
+<!-- END lgp_levels_table -->
 <!-- BEGIN lgp_mLL_binding -->
 $4.75\times10^{-6}$
 <!-- END lgp_mLL_binding -->

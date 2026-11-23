@@ -8,6 +8,15 @@ $3.711$
 <!-- BEGIN lgq_dev_lc3 -->
 $3.8\times10^{-13}$
 <!-- END lgq_dev_lc3 -->
+<!-- BEGIN lgq_dev_lc6 -->
+$2.1\times10^{-7}$
+<!-- END lgq_dev_lc6 -->
+<!-- BEGIN lgq_dev_yc6 -->
+$2.1\times10^{-7}$
+<!-- END lgq_dev_yc6 -->
+<!-- BEGIN lgq_evac -->
+$-2.422\times10^{-4}$
+<!-- END lgq_evac -->
 <!-- BEGIN lgq_force_1GeV -->
 $1.1\times10^{37}$
 <!-- END lgq_force_1GeV -->
@@ -17,6 +26,12 @@ $1.1\times10^{31}$
 <!-- BEGIN lgq_force_1eV -->
 $1.1\times10^{55}$
 <!-- END lgq_force_1eV -->
+<!-- BEGIN lgq_h0 -->
+$67.4$
+<!-- END lgq_h0 -->
+<!-- BEGIN lgq_lambda_star_mev -->
+$18.0$
+<!-- END lgq_lambda_star_mev -->
 <!-- BEGIN lgq_my01_1GeV -->
 $7.3\times10^{10}$
 <!-- END lgq_my01_1GeV -->
@@ -36,14 +51,17 @@ $3.6\times10^{-23}$
 $3.6\times10^{-11}$
 <!-- END lgq_my01sun_1eV -->
 <!-- BEGIN lgq_n_python -->
-5
+6
 <!-- END lgq_n_python -->
 <!-- BEGIN lgq_n_rust -->
-6
+7
 <!-- END lgq_n_rust -->
 <!-- BEGIN lgq_n_wolfram -->
 3
 <!-- END lgq_n_wolfram -->
+<!-- BEGIN lgq_om -->
+$0.315$
+<!-- END lgq_om -->
 <!-- BEGIN lgq_qacc_1GeV -->
 $3.0\times10^{-19}$
 <!-- END lgq_qacc_1GeV -->
@@ -53,22 +71,28 @@ $3.0\times10^{-16}$
 <!-- BEGIN lgq_qacc_1eV -->
 $3.0\times10^{-28}$
 <!-- END lgq_qacc_1eV -->
+<!-- BEGIN lgq_rho_l -->
+$2.52\times10^{-11}$
+<!-- END lgq_rho_l -->
+<!-- BEGIN lgq_rho_l_quarter_mev -->
+$2.24$
+<!-- END lgq_rho_l_quarter_mev -->
 <!-- BEGIN lgq_scan_table -->
-| $\Lambda_{\rm LL}$ | quasi-particle mass | $\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG}$ at the accretion limit | change of the shadow | black hole with $y^{\rm qp}_{\rm LG}=0.1$ | pair: Bohr radius | pair: binding | pair: classical tidal mass (E20; corrected in E32) |
-|:---|:---|:---|:---|:---|:---|:---|:---|
-| 1 eV | $0.366$ eV | $3.0\times10^{-28}$ | $-1.5\times10^{-56}$ | $3.6\times10^{-11}\,M_\odot$ | $1.1\times10^{-4}$ m | $8.7\times10^{-6}$ eV | $2.0\times10^{-5}\,M_\odot$ |
-| $10^{1}$ eV | $3.66$ eV | $3.0\times10^{-27}$ | $-1.5\times10^{-54}$ | $3.6\times10^{-12}\,M_\odot$ | $1.1\times10^{-5}$ m | $8.7\times10^{-5}$ eV | $2.0\times10^{-6}\,M_\odot$ |
-| $10^{2}$ eV | $36.6$ eV | $3.0\times10^{-26}$ | $-1.5\times10^{-52}$ | $3.6\times10^{-13}\,M_\odot$ | $1.1\times10^{-6}$ m | $8.7\times10^{-4}$ eV | $2.0\times10^{-7}\,M_\odot$ |
-| 1 keV | $366$ eV | $3.0\times10^{-25}$ | $-1.5\times10^{-50}$ | $3.6\times10^{-14}\,M_\odot$ | $1.1\times10^{-7}$ m | $8.7\times10^{-3}$ eV | $2.0\times10^{-8}\,M_\odot$ |
-| $10^{4}$ eV | $3.66\times10^{3}$ eV | $3.0\times10^{-24}$ | $-1.5\times10^{-48}$ | $3.6\times10^{-15}\,M_\odot$ | $1.1\times10^{-8}$ m | $0.087$ eV | $2.0\times10^{-9}\,M_\odot$ |
-| $10^{5}$ eV | $3.66\times10^{4}$ eV | $3.0\times10^{-23}$ | $-1.5\times10^{-46}$ | $3.6\times10^{-16}\,M_\odot$ | $1.1\times10^{-9}$ m | $0.87$ eV | $2.0\times10^{-10}\,M_\odot$ |
-| 1 MeV | $3.66\times10^{5}$ eV | $3.0\times10^{-22}$ | $-1.5\times10^{-44}$ | $3.6\times10^{-17}\,M_\odot$ | $1.1\times10^{-10}$ m | $8.7$ eV | $2.0\times10^{-11}\,M_\odot$ |
-| $10^{7}$ eV | $3.66\times10^{6}$ eV | $3.0\times10^{-21}$ | $-1.5\times10^{-42}$ | $3.6\times10^{-18}\,M_\odot$ | $1.1\times10^{-11}$ m | $87$ eV | $2.0\times10^{-12}\,M_\odot$ |
-| $10^{8}$ eV | $3.66\times10^{7}$ eV | $3.0\times10^{-20}$ | $-1.5\times10^{-40}$ | $3.6\times10^{-19}\,M_\odot$ | $1.1\times10^{-12}$ m | $8.7e+02$ eV | $2.0\times10^{-13}\,M_\odot$ |
-| 1 GeV | $3.66\times10^{8}$ eV | $3.0\times10^{-19}$ | $-1.5\times10^{-38}$ | $3.6\times10^{-20}\,M_\odot$ | $1.1\times10^{-13}$ m | $8.7\times10^{3}$ eV | $2.0\times10^{-14}\,M_\odot$ |
-| $10^{10}$ eV | $3.66\times10^{9}$ eV | $3.0\times10^{-18}$ | $-1.5\times10^{-36}$ | $3.6\times10^{-21}\,M_\odot$ | $1.1\times10^{-14}$ m | $8.7\times10^{4}$ eV | $2.0\times10^{-15}\,M_\odot$ |
-| $10^{11}$ eV | $3.66\times10^{10}$ eV | $3.0\times10^{-17}$ | $-1.5\times10^{-34}$ | $3.6\times10^{-22}\,M_\odot$ | $1.1\times10^{-15}$ m | $8.7\times10^{5}$ eV | $2.0\times10^{-16}\,M_\odot$ |
-| 1 TeV | $3.66\times10^{11}$ eV | $3.0\times10^{-16}$ | $-1.5\times10^{-32}$ | $3.6\times10^{-23}\,M_\odot$ | $1.1\times10^{-16}$ m | $8.7\times10^{6}$ eV | $2.0\times10^{-17}\,M_\odot$ |
+| $\Lambda_{\rm LL}$ (eV) | $m^{\rm qp}_{\rm LG}$ (eV) | largest $\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG}$ | change of the shadow | $M_{\rm LG}/M_\odot$ with $y^{\rm qp}_{\rm LG}=0.1$ | pair: Bohr radius (m) | pair: binding energy (eV) |
+|:---|:---|:---|:---|:---|:---|:---|
+| $10^{0}$ | $0.366$ | $3.0\times10^{-28}$ | $-1.5\times10^{-56}$ | $3.6\times10^{-11}$ | $1.1\times10^{-4}$ | $8.7\times10^{-6}$ |
+| $10^{1}$ | $3.66$ | $3.0\times10^{-27}$ | $-1.5\times10^{-54}$ | $3.6\times10^{-12}$ | $1.1\times10^{-5}$ | $8.7\times10^{-5}$ |
+| $10^{2}$ | $36.6$ | $3.0\times10^{-26}$ | $-1.5\times10^{-52}$ | $3.6\times10^{-13}$ | $1.1\times10^{-6}$ | $8.7\times10^{-4}$ |
+| $10^{3}$ | $366$ | $3.0\times10^{-25}$ | $-1.5\times10^{-50}$ | $3.6\times10^{-14}$ | $1.1\times10^{-7}$ | $8.7\times10^{-3}$ |
+| $10^{4}$ | $3.66\times10^{3}$ | $3.0\times10^{-24}$ | $-1.5\times10^{-48}$ | $3.6\times10^{-15}$ | $1.1\times10^{-8}$ | $0.087$ |
+| $10^{5}$ | $3.66\times10^{4}$ | $3.0\times10^{-23}$ | $-1.5\times10^{-46}$ | $3.6\times10^{-16}$ | $1.1\times10^{-9}$ | $0.87$ |
+| $10^{6}$ | $3.66\times10^{5}$ | $3.0\times10^{-22}$ | $-1.5\times10^{-44}$ | $3.6\times10^{-17}$ | $1.1\times10^{-10}$ | $8.7$ |
+| $10^{7}$ | $3.66\times10^{6}$ | $3.0\times10^{-21}$ | $-1.5\times10^{-42}$ | $3.6\times10^{-18}$ | $1.1\times10^{-11}$ | $87$ |
+| $10^{8}$ | $3.66\times10^{7}$ | $3.0\times10^{-20}$ | $-1.5\times10^{-40}$ | $3.6\times10^{-19}$ | $1.1\times10^{-12}$ | $870$ |
+| $10^{9}$ | $3.66\times10^{8}$ | $3.0\times10^{-19}$ | $-1.5\times10^{-38}$ | $3.6\times10^{-20}$ | $1.1\times10^{-13}$ | $8.7\times10^{3}$ |
+| $10^{10}$ | $3.66\times10^{9}$ | $3.0\times10^{-18}$ | $-1.5\times10^{-36}$ | $3.6\times10^{-21}$ | $1.1\times10^{-14}$ | $8.7\times10^{4}$ |
+| $10^{11}$ | $3.66\times10^{10}$ | $3.0\times10^{-17}$ | $-1.5\times10^{-34}$ | $3.6\times10^{-22}$ | $1.1\times10^{-15}$ | $8.7\times10^{5}$ |
+| $10^{12}$ | $3.66\times10^{11}$ | $3.0\times10^{-16}$ | $-1.5\times10^{-32}$ | $3.6\times10^{-23}$ | $1.1\times10^{-16}$ | $8.7\times10^{6}$ |
 <!-- END lgq_scan_table -->
 <!-- BEGIN lgq_shadow_1GeV -->
 $-1.5\times10^{-38}$
@@ -79,11 +103,20 @@ $-1.5\times10^{-32}$
 <!-- BEGIN lgq_shadow_1eV -->
 $-1.5\times10^{-56}$
 <!-- END lgq_shadow_1eV -->
+<!-- BEGIN lgq_vac_1GeV -->
+$9.6\times10^{42}$
+<!-- END lgq_vac_1GeV -->
+<!-- BEGIN lgq_vac_1TeV -->
+$9.6\times10^{54}$
+<!-- END lgq_vac_1TeV -->
+<!-- BEGIN lgq_vac_1eV -->
+$9.6\times10^{6}$
+<!-- END lgq_vac_1eV -->
 <!-- BEGIN lgq_verdict_python -->
-ALL PASS (5 of 5)
+ALL PASS (6 of 6)
 <!-- END lgq_verdict_python -->
 <!-- BEGIN lgq_verdict_rust -->
-ALL PASS (6 of 6)
+ALL PASS (7 of 7)
 <!-- END lgq_verdict_rust -->
 <!-- BEGIN lgq_verdict_wolfram -->
 ALL PASS (3 of 3)

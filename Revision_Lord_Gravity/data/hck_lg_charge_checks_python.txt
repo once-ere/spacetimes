@@ -7,8 +7,9 @@ PASS YC-2    the limit by selective accretion: W(r) r^2 = 2 (M - x) r + x^2 - Qg
 PASS YC-3    the shadow: d(r^2/f)/dr = 0 is r^2 - 3 M r + 2 Qg^2 = 0 (times positive factors), solved by r_ph = (3 M + (9 M^2 - 8 Qg^2)^(1/2))/2; b_c = (r_ph^2/f(r_ph))^(1/2) = 3 3^(1/2) M (1 - (Qg/M)^2/6 + ...) and 4 M for the extremal charge (sympy series) [d/dr (r^2/f) = 2*r**3*(-3*M*r + 2*Q_g**2 + r**2)/(-2*M*r + Q_g**2 + r**2)**2; series -7*sqrt(3)*epsilon**4/72 - sqrt(3)*epsilon**2/2 + 3*sqrt(3); extremal b_c/M = 4]
 PASS YC-4    the limit by the creation of pairs: with r_+ = 2 M, Qg_S/Qg_acc = 4 M m, i.e. 4 y with y = G M m/(hbar c) (sympy) [ratio 4*M*m]
 PASS YC-5    deviation 4.609e-16 (tolerance 1.0e-13): the scan data/lg_charge_scan.csv (13 values of Lambda_LL, 12 columns) recomputed from the closed forms in arithmetic of 30 digits (mpmath): largest relative difference
+PASS YC-6    deviation 2.090e-07 (tolerance 1.0e-05): the energy of the condensed vacuum (E_vac = -0.00024223849659 Lambda_LL^4, negative, read from Revision_SM_Higgs/data/part2_states.csv) against the observed energy density of the vacuum computed from G, c, hbar and e (rho_L = 2.519274e-11 eV^4 = (0.002240365 eV)^4; Lambda_star = (rho_L/|E_vac|)^(1/4) = 0.017958 eV), in arithmetic of 30 digits, against the values and the 13 rows of data/lg_charge_vacuum.csv of the Rust program (which uses M_Pl): largest relative difference (the CODATA values of M_Pl and G agree to their rounding)
 
 Notes:
   run time 2 s
 
-VERDICT: ALL PASS (5 of 5)
+VERDICT: ALL PASS (6 of 6)

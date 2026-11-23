@@ -397,15 +397,15 @@ algebra) check it. The task record gives the results with their numbers
 (entries E15 to E19); the data are in \texttt{data/lg\_vaidya\_*.csv}.
 
 \textbf{Stage 7, first part} (22 November 2026), computed and checked,
-not written up: the brochon pair bound by the zeugon. Two
-quasi-particles of the condensed vacuum with opposite zeugon charges
-(each a particle of spin \(\tfrac12\) and mass \(0.3664\)
+and written up as Section 29 of Part VI: the brochon pair bound by the
+zeugon. Two quasi-particles of the condensed vacuum with opposite zeugon
+charges (each a particle of spin \(\tfrac12\) and mass \(0.3664\)
 \(\Lambda_{\rm LL}\)) attract each other through the massless zeugon
 with the coupling \(0.00975\); the pair is hydrogen-like, of size
 \(560\)\(/\Lambda_{\rm LL}\) and binding energy \(8.70\times10^{-6}\)
 \(\Lambda_{\rm LL}\). Its fine and hyperfine structure is computed
-exactly to the next order, without and with the possible annihilation of
-the two quasi-particles into zeugons, which is an open question. A
+exactly to the next order, without and with the annihilation of the two
+quasi-particles into zeugons, which stage 7d decided (below). A
 classical estimate of the tidal dissociation said that a black hole
 tears the pair apart before it reaches the horizon if its mass is below
 \(1.492\times10^{5}\) \(M_{\rm Pl}^2/\Lambda_{\rm LL}\); stage 7c
@@ -419,11 +419,12 @@ to detect the predictions gravitationally and left the rest of the route
 to me (the task record, answers C4 and C5 and decision D12).
 
 \textbf{Stage 7, second part} (22 November 2026), computed and checked,
-not yet written up: a black hole that carries zeugon charge, and the
-scan of the predictions over the cutoff \(\Lambda_{\rm LL}\) from 1 eV
-to 1 TeV. The space-time is that of Reissner and Nordström with the
-zeugon charge. A black hole among slow quasi-particles of both charges
-cannot gain a zeugon charge \(Q^{\rm Z}_{\rm LG}\) beyond the ratio
+and written up as Sections 30 and 31 of Part VI: a black hole that
+carries zeugon charge, and the scan of the predictions over the cutoff
+\(\Lambda_{\rm LL}\) from 1 eV to 1 TeV. The space-time is that of
+Reissner and Nordström with the zeugon charge. A black hole among slow
+quasi-particles of both charges cannot gain a zeugon charge
+\(Q^{\rm Z}_{\rm LG}\) beyond the ratio
 \(\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG}\) = \(3.711\)
 \(\Lambda_{\rm LL}/M_{\rm Pl}\), where
 \(\mathcal M_{\rm LG}=G_{\rm N}M_{\rm LG}\) and
@@ -434,20 +435,21 @@ far more strongly than gravity attracts them; its shadow and its ringing
 then change by about
 \((\mathcal Q^{\rm Z}_{\rm LG}/\mathcal M_{\rm LG})^2/6\), which no
 observation can see unless \(\Lambda_{\rm LL}\) is near the Planck mass.
-Programs: the Rust program \texttt{lg\_charge} (ALL PASS (6 of 6)),
-\texttt{python/lg\_charge.py} (ALL PASS (5 of 5)) and
+Programs: the Rust program \texttt{lg\_charge} (ALL PASS (7 of 7)),
+\texttt{python/lg\_charge.py} (ALL PASS (6 of 6)) and
 \texttt{wolfram/source/lg\_charge.wls} (ALL PASS (3 of 3), exact); the
 task record, entry E30; the data in \texttt{data/lg\_charge\_scan.csv}
 and \texttt{data/lg\_charge\_values.csv}.
 
 \textbf{Stage 7, third part} (22 November 2026), computed and checked,
-not yet written up: the pair falls into a black hole. Its centre of mass
-falls freely from rest far away, and in its falling frame the curvature
-stretches the pair along the radius and squeezes it across, with a
-strength that grows as \(2/(9T^2)\) in the atomic units of the pair,
-\(T\) being the proper time it has left before it would reach the centre
-(the same for every black hole; the mass decides only when the horizon
-is crossed, at \(T=\tfrac43\tilde{\mathcal M}_{\rm LG}\) with
+and written up as Section 32 of Part VI: the pair falls into a black
+hole. Its centre of mass falls freely from rest far away, and in its
+falling frame the curvature stretches the pair along the radius and
+squeezes it across, with a strength that grows as \(2/(9T^2)\) in the
+atomic units of the pair, \(T\) being the proper time it has left before
+it would reach the centre (the same for every black hole; the mass
+decides only when the horizon is crossed, at
+\(T=\tfrac43\tilde{\mathcal M}_{\rm LG}\) with
 \(\tilde{\mathcal M}_{\rm LG}\) the gravitational radius in the atomic
 unit of time of the pair). Two computations: the rate at which the pair
 tunnels apart in a constant tidal field (by complex rotation, a method
@@ -469,13 +471,13 @@ task record, entries E31 to E33; the data in
 \texttt{data/lg\_tidal\_*.csv}.
 
 \textbf{Stage 7, fourth part} (22 November 2026), computed and checked,
-not yet written up: can two quasi-particles of opposite zeugon charge
-annihilate into zeugons? The pairing breaks the conservation of the
-fermion number of the brochon, so the usual rule (a particle and an
-antiparticle annihilate, two particles do not) seems to be gone. It is
-not: the quantized quasi-particle field is the field of a Dirac particle
-of the mass of the gap (Theorem L3 holds as an identity of operators),
-and its zeugon current contains no term that destroys two
+and written up as Section 33 of Part VI: can two quasi-particles of
+opposite zeugon charge annihilate into zeugons? The pairing breaks the
+conservation of the fermion number of the brochon, so the usual rule (a
+particle and an antiparticle annihilate, two particles do not) seems to
+be gone. It is not: the quantized quasi-particle field is the field of a
+Dirac particle of the mass of the gap (Theorem L3 holds as an identity
+of operators), and its zeugon current contains no term that destroys two
 quasi-particles (such terms vanish because fermion operators
 anticommute), so the zeugon conserves the number of quasi-particles. Two
 particles of opposite charge cannot annihilate; a particle and its
@@ -489,9 +491,27 @@ all. Programs: the Rust program \texttt{lg\_annih} (ALL PASS (6 of 6)),
 task record, entries E34 and E35; the data in
 \texttt{data/lg\_annih\_*.csv}.
 
-Next (the task record, Section 6): Part VI of the manuscript, from
-stages 7a to 7d; then the provenance of the remarks, the registry of the
-symbols and the notebook.
+\textbf{Stage 7, fifth part} (22 November 2026), computed and checked,
+and written up as Section 31.2 of Part VI: the energy of the condensed
+vacuum against the observed energy of the vacuum. Relative to the normal
+vacuum, the energy density of the condensed vacuum is
+\(-2.422\times10^{-4}\) \(\Lambda_{\rm LL}^4\), lower; gravitation
+responds to it as to a cosmological constant, and it has the size of the
+observed energy density of the vacuum, (\(2.24\) meV)\(^4\) (the Planck
+satellite, 2018), at the cutoff \(18.0\) meV, with the opposite sign;
+for larger cutoffs it exceeds it by the fourth power of their ratio, so
+that the gravitational theory must contain a constant that cancels it,
+as for every condensate of particle physics. Programs: the checks LC-6
+of \texttt{lg\_charge} and YC-6 of \texttt{python/lg\_charge.py}; the
+task record, entry E36; the data in
+\texttt{data/lg\_charge\_vacuum.csv}.
+
+Part VI of the manuscript (Sections 29 to 35), written from these five
+parts, also says what gravitation can detect (Section 34). Next (the
+task record, Section 6): the manuscript \texttt{superfluid.md} of the
+folder Revision\_SM\_Higgs is rewritten in the same style; then the
+provenance of the remarks, the registry of the symbols and the notebook
+of this folder.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -539,11 +559,14 @@ of the task: Part I (Lord's paper read and checked), Part II (the
 association of the project's \(SL(2,\mathbb C)\) with Lord's gauge
 group), Part III (the gravitational coupling of the brochon), Part IV
 (the brochon in the Schwarzschild field), Part V (the brochon around a
-black hole whose mass changes); Appendices A (the algebra of the Lorentz
-super-loop), B (the brochon model), C (the provenance, with the complete
-reports of the checks) and D (the symbols) & Parts I to V written,
-complete in themselves, with the word list and Appendices A to D; Part
-VI next \\
+black hole whose mass changes), Part VI (the pair bound by the zeugon,
+the charged black hole, the cutoff in physical units and the energy of
+the vacuum, the fall of the pair into a black hole, its annihilation,
+and what gravitation can detect); Appendices A (the algebra of the
+Lorentz super-loop), B (the brochon model), C (the provenance, with the
+complete reports of the checks) and D (the symbols) & Parts I to VI
+written, complete in themselves, with the word list and Appendices A to
+D \\
 \texttt{provenance/generated/} & the fragments that the programs write
 for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
 \texttt{lg\_schw.md}, \texttt{lg\_vaidya.md}, \texttt{lg\_pair.md},
@@ -561,8 +584,8 @@ for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
 the numbers of the appendices copied by
 \texttt{write\_lg\_examples\_fragments.py} from the fragment files of
 the folder \texttt{Revision\_SM\_Higgs} (with the SHA-256 checksums of
-the files that it reads) & written for Parts I to III, the appendices
-and stages 5 to 7d \\
+the files that it reads) & written for Parts I to VI and the
+appendices \\
 \texttt{rust/} & the Cargo workspace: the library \texttt{lgcore}
 (complex matrices, bi-quaternions, Dirac matrices, automatic
 differentiation, \texttt{lord.rs}, Lord's matrices from his definitions,
@@ -584,7 +607,7 @@ banded solver); the program \texttt{lg\_annih} (stage 7d: the
 quasi-particles as Dirac particles and the annihilation of the pair,
 crate \texttt{lgannih}); and the program \texttt{lg\_worked} (the worked
 examples of the manuscript, crate \texttt{lgworked}) & written for Parts
-I to V and stages 5 to 7d \\
+I to VI \\
 \texttt{python/} & \texttt{lgcommon.py} (common definitions, finite
 differences, the report), \texttt{lg\_lord.py} and
 \texttt{lg\_curved.py} (the independent checks of \texttt{lg\_lord} and
@@ -599,7 +622,7 @@ figures), \texttt{lg\_annih.py} (the exact checks of
 \texttt{lg\_annih}), \texttt{lg\_worked.py} (the worked examples, exact
 where they are rational), \texttt{lg\_schw\_figures.py} and
 \texttt{lg\_vaidya\_figures.py} (the figures of Parts IV and V) &
-written for Parts I to V and stages 5 to 7a \\
+written for Parts I to VI \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
 Lord's identities, signs and factors; \texttt{lg\_curved.wls}: the exact
 checks of Part III; \texttt{lg\_schw.wls}: the exact checks of stage 5
@@ -633,7 +656,8 @@ reports \texttt{hck\_lg\_vaidya\_checks*.txt}), of stage 7a
 (\texttt{lg\_worked\_values.csv}; reports
 \texttt{hck\_lg\_worked\_checks*.txt}), of stage 7b
 (\texttt{lg\_charge\_scan.csv}, the scan over the cutoff;
-\texttt{lg\_charge\_values.csv}; reports
+\texttt{lg\_charge\_vacuum.csv}, the energy of the condensed vacuum
+against the observed one; \texttt{lg\_charge\_values.csv}; reports
 \texttt{hck\_lg\_charge\_checks*.txt}), of stage 7c
 (\texttt{lg\_tidal\_fall.csv}, the fall;
 \texttt{lg\_tidal\_convergence.csv}; \texttt{lg\_tidal\_static.csv},
@@ -651,11 +675,10 @@ whether a document sends its reader elsewhere & written \\
 from the data of \texttt{lg\_schw}, \texttt{fig\_lg\_vaidya\_charge}
 (Figure V.1), drawn by \texttt{python/lg\_vaidya\_figures.py} from the
 data of \texttt{lg\_vaidya}, and \texttt{fig\_lg\_tidal\_fall} and
-\texttt{fig\_lg\_tidal\_density} (for Part VI), drawn by
+\texttt{fig\_lg\_tidal\_density} (Figures VI.1 and VI.2), drawn by
 \texttt{python/lg\_tidal\_figures.py} from the data of
 \texttt{lg\_tidal} and \texttt{lg\_tidal.py}; each as \texttt{.pdf} and
-\texttt{.png} & written for Parts IV and V, and for Part VI (stage
-7c) \\
+\texttt{.png} & written for Parts IV to VI \\
 \end{longtable}
 
 \hypertarget{how-to-build-the-documents}{%

@@ -17,6 +17,11 @@ Checks (the counterparts in the Rust report data/hck_lg_charge_checks.txt in bra
         b_c = 4 M for the extremal charge                                                                         [LC-2, LC-3]
   YC-4  the limit by the creation of pairs: Qg_S/Qg_acc = r_+^2 m/M = 4 G M m for r_+ = 2 M                        [LC-4]
   YC-5  the scan data/lg_charge_scan.csv recomputed from the closed forms in arithmetic of 30 digits                [LC-5]
+  YC-6  (added in entry E36) the energy of the condensed vacuum against the observed energy density of the vacuum: the
+        energy E_vac of the polar CJT ground state read from Revision_SM_Higgs/data/part2_states.csv (not from the Rust
+        program), the observed rho_L = Omega_L 3 H0^2 c^2/(8 pi G) from the SI constants alone (G, c, hbar, e; Planck 2018:
+        H0 = 67.4 km/s/Mpc, Omega_m = 0.315, flat), Lambda_star = (rho_L/|E_vac|)^(1/4) and the ratios |E_vac| Lambda^4/rho_L,
+        in arithmetic of 30 digits, against data/lg_charge_vacuum.csv and data/lg_charge_values.csv of the Rust program [LC-6]
 
 Run (from the folder Revision_Lord_Gravity, after rust/target/release/lg_charge):   python3 python/lg_charge.py
 Output: data/hck_lg_charge_checks_python.txt.  Requires: Python 3, sympy, mpmath.
@@ -157,6 +162,52 @@ def check_scan(rep):
     mp.mp.dps = 15
 
 
+def check_vacuum(rep):
+    """YC-6: the energy of the condensed vacuum against the observed energy density of the vacuum (entry E36).
+
+    The route here differs from that of the Rust program on purpose: the Rust program computes rho_L from the Planck mass
+    (natural units); here rho_L is computed from Newton's constant G, the speed of light, hbar and the elementary charge in SI
+    units, and E_vac is read from the data of the brochon model (Revision_SM_Higgs/data/part2_states.csv), where the Rust
+    program has it as a constant."""
+    mp.mp.dps = 30
+    sh = os.path.join(DATA, "..", "..", "Revision_SM_Higgs", "data", "part2_states.csv")
+    e_vac = None
+    for row in csv.DictReader(open(sh, encoding="utf-8")):
+        if row["potential"] == "V2" and row["method"] == "CJT" and row["rank"] == "0":
+            e_vac = mp.mpf(row["energy"])  # the polar ground state of CJT, in units of Lambda_LL^4
+    assert e_vac is not None, "the row V2, CJT, 0 is missing in part2_states.csv"
+    G = mp.mpf("6.67430e-11")          # m^3 kg^-1 s^-2 (CODATA 2018)
+    c = mp.mpf(299792458)              # m/s (exact)
+    hbar = mp.mpf("1.054571817e-34")   # J s (CODATA 2018)
+    e = mp.mpf("1.602176634e-19")      # C, so 1 eV = e J (exact)
+    mpc = mp.mpf(648000) / mp.pi * mp.mpf(149597870700) * 10 ** 6  # one megaparsec in m (IAU: pc = 648000 au/pi)
+    h0 = mp.mpf("67.4") * 1000 / mpc   # Planck 2018 results VI (abstract): H0 = 67.4 km/s/Mpc, in 1/s
+    omega_l = 1 - mp.mpf("0.315")      # flat base Lambda-CDM: Omega_L = 1 - Omega_m (radiation neglected)
+    rho_si = omega_l * 3 * h0 ** 2 * c ** 2 / (8 * mp.pi * G)   # J/m^3
+    hbarc_ev_m = hbar * c / e                                     # eV m
+    rho = rho_si / e * hbarc_ev_m ** 3                            # eV^4
+    lam_star = (rho / abs(e_vac)) ** mp.mpf("0.25")               # eV
+    dev = mp.mpf(0)
+    vals = {row[0]: row[1] for row in csv.reader(open(os.path.join(DATA, "lg_charge_values.csv"), encoding="utf-8"))}
+    for key, ref in (("rho_Lambda_eV4", rho), ("Lambda_star_eV", lam_star), ("E_vac_per_Lambda4", e_vac),
+                     ("rho_Lambda_quarter_eV", rho ** mp.mpf("0.25"))):
+        dev = max(dev, abs(mp.mpf(vals[key]) / ref - 1))
+    rows = list(csv.DictReader(open(os.path.join(DATA, "lg_charge_vacuum.csv"), encoding="utf-8")))
+    for k, row in enumerate(rows):
+        lam = mp.mpf(10) ** k
+        dev = max(dev, abs(mp.mpf(row["Lambda_eV"]) / lam - 1))
+        dev = max(dev, abs(mp.mpf(row["condensation_energy_eV4"]) / (e_vac * lam ** 4) - 1))
+        dev = max(dev, abs(mp.mpf(row["ratio_to_observed"]) / (abs(e_vac) * lam ** 4 / rho) - 1))
+    rep.add("YC-6", "the energy of the condensed vacuum (E_vac = %s Lambda_LL^4, negative, read from "
+            "Revision_SM_Higgs/data/part2_states.csv) against the observed energy density of the vacuum computed from G, c, hbar "
+            "and e (rho_L = %s eV^4 = (%s eV)^4; Lambda_star = (rho_L/|E_vac|)^(1/4) = %s eV), in arithmetic of 30 digits, "
+            "against the values and the 13 rows of data/lg_charge_vacuum.csv of the Rust program (which uses M_Pl): largest "
+            "relative difference (the CODATA values of M_Pl and G agree to their rounding)"
+            % (mp.nstr(e_vac, 11), mp.nstr(rho, 7), mp.nstr(rho ** mp.mpf("0.25"), 7), mp.nstr(lam_star, 7)),
+            float(dev), 1e-5)
+    mp.mp.dps = 15
+
+
 def main():
     t0 = time.time()
     rep = Report("lg_charge.py: the independent check of stage 7b of task C23, a black hole with zeugon charge and the scan over "
@@ -165,6 +216,7 @@ def main():
     check_geometry(rep)
     check_limits(rep)
     check_scan(rep)
+    check_vacuum(rep)
     rep.note("run time %.0f s" % (time.time() - t0))
     rep.write("hck_lg_charge_checks_python.txt")
 
