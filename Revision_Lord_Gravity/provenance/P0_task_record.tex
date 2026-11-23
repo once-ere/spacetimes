@@ -861,8 +861,9 @@ manuscripts be written again (C5): the rewriting of Parts I to III
 (Section 4.1) comes first, then Parts IV to VI from stages 5 to 7, in
 the friendlier style that he asked for; the rest of stage 7 follows
 decision D12. Parts I to III were rewritten in entries E22 to E24, and
-Part IV was written from stage 5 in entries E26 and E27. Next: Part V
-from stage 6; then the rest of stage 7 (D12) and Part VI.
+Part IV was written from stage 5 in entries E26 and E27, Theorem L3
+completed in E28, and Part V written from stage 6 in entry E29. Next:
+the rest of stage 7 (D12) and Part VI.
 
 The plan is changed only with a record in Section 7.
 
@@ -1556,8 +1557,8 @@ every state is guarded: the root must lie nearer to the small-mass level
 than half the distance to the neighbouring levels, or the program
 stops). Data: \texttt{data/lg\_vaidya\_values.csv} (the numbers quoted
 here), \texttt{data/lg\_vaidya\_runs.csv} (the four runs at every output
-time). Python: \texttt{python/lg\_vaidya.py} (ALL PASS (9 of 9); 30 s):
-YV-1 to YV-4 by sympy (E15); YV-5, the state \(1S_{1/2}\) at
+time). Python: \texttt{python/lg\_vaidya.py} (ALL PASS (10 of 10); 30
+s): YV-1 to YV-4 by sympy (E15); YV-5, the state \(1S_{1/2}\) at
 \(y_{\rm LG}=0.3\); YV-6 and YV-7, the fast growth recomputed to
 \(v=120\) with its own operators (weights of the finite differences and
 of the integrals from the equations of their moments, solved by numpy)
@@ -1871,6 +1872,35 @@ other), now ALL PASS (59 of 59); Python YG-8e and YG-8f, the same with
 the finite differences of that program, now ALL PASS (21 of 21). Section
 18.1 of the manuscript states (a), (b), (c) with the proof; Sections
 0.2, 15.4 and 22 were changed to match \\
+E29 & 22 Nov 2026, 16:30 to 16:36 & Part V of \texttt{lord\_gravity.md}
+written from stage 6 (E15 to E19, D10), in the style of C5: Sections 23
+to 28 (the space-time of Vaidya, with the advanced time, null dust,
+Hiscock's model of evaporation, the apparent horizon, the coframe with a
+worked check that it gives the metric, and the histories of the mass
+with the smooth step; the two equations of the brochon, read as a
+transport along the outgoing light rays and a constraint on each null
+slice, the charge, and the static limit; the method of lines, excision
+and the tests; the four runs with Table V.1 and Figure V.1, the
+adiabatic and the sudden limits with the worked example of a hydrogen
+atom whose nucleus changes suddenly, probability \((80/81)^3=0.963\);
+what the occupations and the decomposition mean; what Part V
+establishes). Every term defined at its first use; a new group of the
+word list, \emph{A black hole whose mass changes}; Appendix C.6 with the
+programs and the complete reports of stage 6; the symbols in Appendix D
+(the rapidity of the boost is \(\vartheta^{\rm V}_{\rm LG}\) in the
+manuscript, because \(\chi_{\rm LG}\) now names the Dirac solution of
+Theorem L3). New program \texttt{python/lg\_vaidya\_figures.py} (Figure
+V.1, the charge in the four runs against the adiabatic charge). New
+check YV-10 in \texttt{python/lg\_vaidya.py} (ALL PASS (10 of 10)): the
+density \(2\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2\) and the outward
+flux
+\(f_{\rm LG}\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2-\lvert\mathcal Q^{\rm V}_{\rm LG}\rvert^2\)
+of the charge, which E15 states, are the components of the current of
+the separated spinor, per unit of the angular integral; the other checks
+are unchanged. Correction made while writing, before the commit: the
+draft named the task record as the place where the choice of the ingoing
+space-time is explained; the manuscript now states the reason itself (a
+referral to another document, which the rules forbid) \\
 \end{longtable}
 
 \hypertarget{the-symbols-of-this-document}{%

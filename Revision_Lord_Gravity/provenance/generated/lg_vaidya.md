@@ -198,7 +198,7 @@ $4.5\times10^{-11}$
 $4.7\times10^{-9}$
 <!-- END lgv_lv3_h01 -->
 <!-- BEGIN lgv_n_python -->
-9
+10
 <!-- END lgv_n_python -->
 <!-- BEGIN lgv_n_rust -->
 8
@@ -357,7 +357,7 @@ $0.0062$
 $0.0166$
 <!-- END lgv_ss_w2_sudden -->
 <!-- BEGIN lgv_verdict_python -->
-ALL PASS (9 of 9)
+ALL PASS (10 of 10)
 <!-- END lgv_verdict_python -->
 <!-- BEGIN lgv_verdict_rust -->
 ALL PASS (8 of 8)

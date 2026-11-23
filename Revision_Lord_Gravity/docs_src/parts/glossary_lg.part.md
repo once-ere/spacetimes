@@ -150,3 +150,28 @@ brochon comes, with an example of every object, and Appendix B states the brocho
 * *Planck mass, gravitational radius, Compton wavelength.* The Planck mass $M_{\rm Pl}=(\hbar c/G_{\rm N})^{1/2}$ (about 22
   micrograms); the gravitational radius $G_{\rm N}M/c^2$ of a mass $M$, half the radius of its horizon; and the reduced Compton
   wavelength $\hbar/(mc)$ of a particle of mass $m$, the length below which its position cannot be fixed without creating pairs.
+
+**A black hole whose mass changes (Part V)**
+
+* *Hawking radiation, evaporation.* A black hole emits thermal radiation at a temperature inversely proportional to its mass
+  (S. W. Hawking, 1974), and so loses mass slowly; for black holes of the mass of stars the effect is far too small to be seen.
+* *Advanced time, Eddington-Finkelstein coordinates.* The advanced time $v$ is constant along every light ray that falls radially
+  inward. With $v$ in place of the time of Schwarzschild the coordinates are regular at the horizon.
+* *Energy condition.* The requirement that every observer measures a positive energy density, true for ordinary matter; the
+  inflow of negative energy that models an evaporating black hole violates it, as evaporation itself does.
+* *Apparent horizon, event horizon.* The apparent horizon is the sphere on which the outgoing light rays stop moving outward,
+  defined at each time; the event horizon is the boundary of the region from which nothing ever escapes, which depends on the
+  whole future. For a black hole of constant mass they coincide.
+* *Characteristics, null surface, constraint.* A partial differential equation of the first order carries its unknown along
+  curves, its characteristics. A null surface is a surface whose normal vector has length zero, such as a surface made of
+  light rays. A constraint is an equation that contains no derivative in the time and so restricts the data at each time.
+* *Method of lines, finite differences, dissipation, excision.* The method of lines replaces the unknown function of the radius
+  by its values on a grid and integrates the resulting system of ordinary differential equations in time; a finite difference
+  of the order $k$ is a weighted sum of neighbouring values whose error is of the order of the $k$-th power of the spacing; a
+  small artificial dissipation damps the shortest wavelengths of the grid, which carry only numerical noise; excision cuts the
+  inside of a black hole out of the grid where nothing moves outward, so that no condition is needed at that edge.
+* *Adiabatic theorem, sudden approximation.* A system in a level that does not cross the others stays in it if its Hamiltonian
+  changes slowly compared with the inverse of the distance to the neighbouring levels (adiabatic); a change much faster than
+  that leaves the state unchanged, to be written in terms of the new levels (sudden).
+* *Gram matrix, least squares.* The matrix of the products of a set of vectors with each other; the coefficients of the best
+  approximation of a vector by a combination of the set solve the linear equations with this matrix.

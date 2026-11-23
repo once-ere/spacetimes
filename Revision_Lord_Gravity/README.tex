@@ -364,9 +364,10 @@ corresponding Dirac solution, so that every result of stages 5 and 6
 holds for the quasi-particle (checks LS-14a to LS-14c, YS-13, G-17h,
 G-17i, YG-8e, YG-8f; entries E27 and E28).
 
-\textbf{Stage 6} (22 November 2026), computed and checked, not written
-up: the brochon in the field of a black hole whose mass changes. The
-space-time is that of Vaidya with the advanced time \(v\) (constant
+\textbf{Stage 6} (22 November 2026), computed and checked, and written
+up as Part V of the manuscript (Sections 23 to 28, with a table and a
+figure): the brochon in the field of a black hole whose mass changes.
+The space-time is that of Vaidya with the advanced time \(v\) (constant
 along every light ray that falls radially inward): a black hole that
 grows by absorbing a radial inflow of null dust (radiation without
 pressure, moving at the speed of light), or, with an inflow of negative
@@ -390,8 +391,8 @@ the brochon the states are not orthogonal, so that the share of each
 state is determined only to about 10 \% when the levels are nearly as
 broad as they are apart. The Rust program \texttt{lg\_vaidya} computes
 this with CVODE (ALL PASS (8 of 8)); the Python program
-\texttt{python/lg\_vaidya.py} (ALL PASS (9 of 9)) and the Wolfram script
-\texttt{wolfram/source/lg\_vaidya.wls} (ALL PASS (6 of 6), exact
+\texttt{python/lg\_vaidya.py} (ALL PASS (10 of 10)) and the Wolfram
+script \texttt{wolfram/source/lg\_vaidya.wls} (ALL PASS (6 of 6), exact
 algebra) check it. The task record gives the results with their numbers
 (entries E15 to E19); the data are in \texttt{data/lg\_vaidya\_*.csv}.
 
@@ -416,10 +417,9 @@ record, decision D11 and entries E20 and E21; the data in
 author means, and the value of \(\Lambda_{\rm LL}\) in physical units,
 are questions put to him.
 
-Next (the task record, Section 6): Part V of the manuscript, written
-from stage 6 in the same style; then the rest of stage 7 (decision D12
-of the task record) and Part VI; then the provenance of the remarks, the
-registry of the symbols and the notebook.
+Next (the task record, Section 6): the rest of stage 7 (decision D12 of
+the task record) and Part VI of the manuscript; then the provenance of
+the remarks, the registry of the symbols and the notebook.
 
 \hypertarget{contents}{%
 \section{3. Contents}\label{contents}}
@@ -466,11 +466,12 @@ Appendix B) & written \\
 of the task: Part I (Lord's paper read and checked), Part II (the
 association of the project's \(SL(2,\mathbb C)\) with Lord's gauge
 group), Part III (the gravitational coupling of the brochon), Part IV
-(the brochon in the Schwarzschild field); Appendices A (the algebra of
-the Lorentz super-loop), B (the brochon model), C (the provenance, with
-the complete reports of the checks) and D (the symbols) & Parts I to IV
-written, complete in themselves, with the word list and Appendices A to
-D; Parts V and VI next \\
+(the brochon in the Schwarzschild field), Part V (the brochon around a
+black hole whose mass changes); Appendices A (the algebra of the Lorentz
+super-loop), B (the brochon model), C (the provenance, with the complete
+reports of the checks) and D (the symbols) & Parts I to V written,
+complete in themselves, with the word list and Appendices A to D; Part
+VI next \\
 \texttt{provenance/generated/} & the fragments that the programs write
 for the documents (\texttt{lg\_lord.md}, \texttt{lg\_curved.md},
 \texttt{lg\_schw.md}, \texttt{lg\_vaidya.md}, \texttt{lg\_pair.md} and
@@ -509,8 +510,9 @@ differences, the report), \texttt{lg\_lord.py} and
 (the independent checks of \texttt{lg\_schw} and \texttt{lg\_vaidya}),
 \texttt{lg\_pair.py} (the exact levels of the pair of stage 7a),
 \texttt{lg\_worked.py} (the worked examples, exact where they are
-rational), and \texttt{lg\_schw\_figures.py} (the figures of Part IV) &
-written for Parts I to IV and stages 5 to 7a \\
+rational), \texttt{lg\_schw\_figures.py} and
+\texttt{lg\_vaidya\_figures.py} (the figures of Parts IV and V) &
+written for Parts I to V and stages 5 to 7a \\
 \texttt{wolfram/source/} & \texttt{lg\_lord.wls}: the exact checks of
 Lord's identities, signs and factors; \texttt{lg\_curved.wls}: the exact
 checks of Part III; \texttt{lg\_schw.wls}: the exact checks of stage 5
@@ -543,9 +545,11 @@ reports \texttt{hck\_lg\_vaidya\_checks*.txt}), of stage 7a
 whether a document sends its reader elsewhere & written \\
 \texttt{figures/} & the figures of the manuscript:
 \texttt{fig\_lg\_schw\_interior} and \texttt{fig\_lg\_schw\_decay}
-(Figures IV.1 and IV.2; \texttt{.pdf} and \texttt{.png}), drawn by
-\texttt{python/lg\_schw\_figures.py} from the data of \texttt{lg\_schw}
-& written for Part IV \\
+(Figures IV.1 and IV.2), drawn by \texttt{python/lg\_schw\_figures.py}
+from the data of \texttt{lg\_schw}, and \texttt{fig\_lg\_vaidya\_charge}
+(Figure V.1), drawn by \texttt{python/lg\_vaidya\_figures.py} from the
+data of \texttt{lg\_vaidya}; each as \texttt{.pdf} and \texttt{.png} &
+written for Parts IV and V \\
 \end{longtable}
 
 \hypertarget{how-to-build-the-documents}{%
@@ -565,6 +569,7 @@ From the folder \texttt{Revision\_Lord\_Gravity}:
 \ExtensionTok{python3}\NormalTok{ python/lg\_schw.py                      }\CommentTok{\# uses rust/target/release/liblgsundials\_c (about 45 s)}
 \ExtensionTok{python3}\NormalTok{ python/lg\_schw\_figures.py              }\CommentTok{\# the figures of Part IV, from the data of lg\_schw}
 \ExtensionTok{python3}\NormalTok{ python/lg\_vaidya.py                    }\CommentTok{\# after lg\_vaidya, whose data it checks (about 30 s)}
+\ExtensionTok{python3}\NormalTok{ python/lg\_vaidya\_figures.py            }\CommentTok{\# the figure of Part V, from the data of lg\_vaidya}
 \ExtensionTok{python3}\NormalTok{ python/lg\_pair.py                      }\CommentTok{\# stage 7a, exact levels (about 16 s); then (cd rust \&\& ./target/release/lg\_pair)}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_lord.wls data/hck\_lg\_lord\_checks\_wolfram.txt}
 \ExtensionTok{wolframscript} \AttributeTok{{-}file}\NormalTok{ wolfram/source/lg\_curved.wls data/hck\_lg\_curved\_checks\_wolfram.txt}

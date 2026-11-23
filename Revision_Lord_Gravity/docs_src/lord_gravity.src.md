@@ -33,8 +33,10 @@ written in parts, each pushed when it is complete:
   separation of its Dirac equation, the horizon and the inside of the black hole, the quasi-bound states (the levels of a
   gravitational atom that decay by falling into the black hole) and the greybody factors; and Theorem L3, which makes every
   result a result for the quasi-particle of the superfluid.
-* **Parts V and VI** (planned): the brochon in the Vaidya space-time of a black hole whose mass changes; the brochon pair bound
-  by the zeugon, and the predictions.
+* **Part V** (Sections 23 to 28, this version): the brochon around a black hole whose mass grows or shrinks, in the Vaidya
+  space-time, across the apparent horizon: the two equations of the brochon, its evolution in time with the inside of the
+  black hole cut out of the grid, and four runs in which the mass changes slowly or fast.
+* **Part VI** (planned): the brochon pair bound by the zeugon, and the predictions.
 
 Appendix A builds the algebra of the Lorentz super-loop, with an example of every object, and Appendix B states the brochon
 model; each lists its own symbols. Appendix C gives the provenance of the main text: the programs that compute and check
@@ -78,6 +80,8 @@ before the equations do it.
 6. Around a black hole that does not rotate, the brochon has quasi-bound states: the levels of a hydrogen atom whose
    coupling is $y_{\rm LG}=G_{\rm N}M_{\rm LG}m_{\rm LL}/(\hbar c)$, which decay by falling into the black hole at rates that fall as
    $y_{\rm LG}^5$ and faster. The wave that falls in crosses the horizon smoothly and reaches the centre (Part IV).
+7. When the black hole grows or shrinks, a brochon in the ground state follows a slow growth adiabatically and is left in its
+   old state by a fast change; a growth speeds up its absorption and a shrinking slows it down (Part V).
 
 # 1. Conventions, units and notation
 
@@ -1584,6 +1588,337 @@ couples the two chiralities, and the states $S_{1/2}$ and $P_{1/2}$ that the two
    solution: every result of Part IV holds for the quasi-particle, with $m_{\rm LL}$ replaced by $E^{\rm CJT,gap}_{\rm SF}$ (Section
    18.1).
 
+# Part V. The brochon around a black hole whose mass changes
+
+Part IV kept the mass of the black hole fixed. Real black holes change: they grow when matter or radiation falls in, and,
+by Hawking's prediction, they shrink slowly by emitting radiation. Part V puts the brochon of Part IV into the field of a
+black hole whose mass changes with the time, across the apparent horizon, and follows the field of the brochon in time
+while the mass grows by 25 % or shrinks by 20 %, slowly or fast. As in Part IV the zeugon and the self-interaction are left
+out, and by Theorem L3 (Section 18.1) every result holds for the quasi-particle of the superfluid with the mass of the gap,
+also in these fields that change in time.
+
+*In words.* A brochon sits in the ground state $1S_{1/2}$ of the gravitational atom of Part IV, slowly leaking into the black
+hole. Then the black hole grows or shrinks. If the change is slow, the brochon follows it and stays in the ground state of
+the new mass; if it is fast, the brochon has no time to adapt, and finds itself in a mixture of the states of the new
+mass. Part V computes how much of the brochon remains outside the black hole, and in which states, in the four cases.
+
+Every statement of Part V is checked by three programs (Appendix C.6): the Rust program `lg_vaidya`
+({{GEN:lgv_verdict_rust}}), which computes every number; the Python program `python/lg_vaidya.py`
+({{GEN:lgv_verdict_python}}), which derives the equations again by computer algebra and recomputes one of the runs with its own
+operators; and the Wolfram script `wolfram/source/lg_vaidya.wls` ({{GEN:lgv_verdict_wolfram}}), which derives the equations
+again in exact arithmetic. The reports, reproduced in Appendix C.6, call the equations (24.2), (24.3) and (24.4) below (V1),
+(V2) and (V3); they write P and Q for $\mathcal P^{\rm V}_{\rm LG}$ and $\mathcal Q^{\rm V}_{\rm LG}$, M for $\mathcal M_{\rm LG}$, v for $v_{\rm LG}$,
+h for $\delta r_{\rm LG}$ and Mm for $y_{\rm LG}$.
+
+# 23. The space-time of Vaidya
+
+*In words.* The simplest space-time of a black hole whose mass changes is that of a black hole that absorbs a stream of
+radiation falling straight in. Its metric was found by P. C. Vaidya. A shrinking black hole is described by the same metric
+with a stream of negative energy, a model of the evaporation that Hawking predicted.
+
+## 23.1 A black hole that grows or shrinks
+
+The **advanced time** $v_{\rm LG}$ is a time coordinate that is constant along every light ray that falls radially inward: a
+flash of light sent toward the black hole at the time $v_{\rm LG}$ from a large distance keeps the label $v_{\rm LG}$ all the
+way in. For a black hole of constant mass, $v_{\rm LG}=t+r+2\mathcal M_{\rm LG}\ln(r/2\mathcal M_{\rm LG}-1)$ outside the horizon, with the
+time $t$ of Schwarzschild: these are the coordinates of Eddington and Finkelstein, which, unlike those of Schwarzschild, are
+regular at the horizon. The **ingoing Vaidya space-time** (Section 14.3) is
+$$ds^2=f_{\rm LG}\,dv_{\rm LG}^2-2\,dv_{\rm LG}\,dr-r^2\big(d\theta^2+\sin^2\theta\,d\varphi^2\big),\qquad f_{\rm LG}=1-\frac{2\mathcal M_{\rm LG}(v_{\rm LG})}r,\tag{23.1}$$
+with a mass $\mathcal M_{\rm LG}=G_{\rm N}M_{\rm LG}$ that depends on the advanced time. Its Einstein tensor (check WG-3 of Part III) is
+that of **null dust**, radiation without pressure that moves inward at the speed of light, with the energy density
+$\mathcal M_{\rm LG}'(v_{\rm LG})/(4\pi r^2)$ (units $G_{\rm N}=c=1$). For $\mathcal M_{\rm LG}'>0$ the black hole grows by absorbing it.
+
+A shrinking black hole is described by the same metric with $\mathcal M_{\rm LG}'<0$: an inflow of *negative* energy. This is the
+model of an evaporating black hole near its horizon that W. A. Hiscock constructed ("Models of evaporating black holes. I",
+Physical Review D 23, 2813 (1981)): the negative energy that falls in represents the reaction of the black hole to the
+emission of Hawking radiation far away, and like evaporation itself it violates the condition, true for ordinary matter,
+that the energy density is positive. The radiation that leaves the black hole is not modelled, only its effect at the
+horizon: the *outgoing* Vaidya space-time, which describes the radiation far away, has coordinates that are singular at the
+horizon, so that the field of the brochon could not be followed across it.
+
+**The apparent horizon.** The radial light rays of (23.1) obey $ds^2=0$ with $d\theta=d\varphi=0$:
+$dv_{\rm LG}(f_{\rm LG}\,dv_{\rm LG}-2\,dr)=0$. The *ingoing* rays have $dv_{\rm LG}=0$; the *outgoing* rays have
+$$\frac{dr}{dv_{\rm LG}}=\frac{f_{\rm LG}}2,\tag{23.2}$$
+which is positive outside $r=2\mathcal M_{\rm LG}(v_{\rm LG})$ and negative inside it (check WV-5). The sphere
+$r=2\mathcal M_{\rm LG}(v_{\rm LG})$, on which the outgoing light rays stop moving outward, is the **apparent horizon**. For a constant
+mass it is the horizon of Part IV. For a changing mass it differs from the *event horizon*, the boundary of the region from
+which nothing ever escapes, which depends on the whole future of the mass; the apparent horizon is defined at each time,
+which is why the computation uses it.
+
+## 23.2 The coframe
+
+The computation uses the coframe
+$$e^{{\rm LG}\,0}=\tfrac12(1+f_{\rm LG})\,dv_{\rm LG}-dr,\qquad e^{{\rm LG}\,1}=\tfrac12(1-f_{\rm LG})\,dv_{\rm LG}+dr,\qquad e^{{\rm LG}\,2}=r\,d\theta,\qquad e^{{\rm LG}\,3}=r\sin\theta\,d\varphi.\tag{23.3}$$
+*Example: it gives the metric (23.1).* With $\varkappa_\pm=\tfrac12(1\pm f_{\rm LG})$, so that $\varkappa_++\varkappa_-=1$ and
+$\varkappa_+^2-\varkappa_-^2=(\varkappa_++\varkappa_-)(\varkappa_+-\varkappa_-)=f_{\rm LG}$,
+$$\begin{aligned}(e^{{\rm LG}\,0})^2-(e^{{\rm LG}\,1})^2&=(\varkappa_+dv_{\rm LG}-dr)^2-(\varkappa_-dv_{\rm LG}+dr)^2\\&=(\varkappa_+^2-\varkappa_-^2)\,dv_{\rm LG}^2-2(\varkappa_++\varkappa_-)\,dv_{\rm LG}\,dr=f_{\rm LG}\,dv_{\rm LG}^2-2\,dv_{\rm LG}\,dr,\end{aligned}$$
+and the angular one-forms give $-r^2(d\theta^2+\sin^2\theta\,d\varphi^2)$ (checks WV-1, YV-1). The coefficients contain neither
+$f_{\rm LG}^{-1}$ nor $f_{\rm LG}^{1/2}$, so the coframe is regular at every $r>0$, on both sides of the apparent horizon. Its frame
+vectors are $e^{\rm LG}_0=\partial_v-\tfrac12(1-f_{\rm LG})\partial_r$ and $e^{\rm LG}_1=\partial_v+\tfrac12(1+f_{\rm LG})\partial_r$, and its volume
+element is $r^2\sin\theta$ (YV-10). For a constant mass it is the freely falling coframe of Part IV turned by a boost in the
+radial direction (a Lorentz transformation of the frame, Section 13.2) of rapidity $\vartheta^{\rm V}_{\rm LG}=-\ln(1+w_{\rm LG})$ (check
+WV-4b): the same space-time seen by other observers.
+
+## 23.3 The histories of the mass
+
+In the units of Part V the mass of the black hole at the start is 1, $\mathcal M_{\rm LG}(0)=1$, so that the horizon is first at
+$r=2$; the brochon has the mass $m_{\rm LL}=0.2$, and $y_{\rm LG}=\mathcal M_{\rm LG}m_{\rm LL}=0.2$ at the start. From $v_{\rm LG}=50$ the mass
+changes smoothly to 1.25 (*growth*, $y_{\rm LG}=0.25$ at the end) or to 0.8 (*shrinking*, $y_{\rm LG}=0.16$), within the time
+$t^{\rm c}_{\rm LG}=1000$ (*slow*) or $t^{\rm c}_{\rm LG}=20$ (*fast*); then it stays constant for the time 300:
+$$\begin{gathered}\mathcal M_{\rm LG}(v_{\rm LG})=1+0.25\,\varpi_{\rm LG}\Big(\frac{v_{\rm LG}-50}{t^{\rm c}_{\rm LG}}\Big)\quad\text{or}\quad1-0.2\,\varpi_{\rm LG}\Big(\frac{v_{\rm LG}-50}{t^{\rm c}_{\rm LG}}\Big),\\\varpi_{\rm LG}(x)=\frac{e^{-1/x}}{e^{-1/x}+e^{-1/(1-x)}}\quad(0<x<1),\end{gathered}\tag{23.4}$$
+with $\varpi_{\rm LG}=0$ for $x\le0$ and $\varpi_{\rm LG}=1$ for $x\ge1$. The function $\varpi_{\rm LG}$ is a *smooth step*: it rises from 0 to 1,
+$\varpi_{\rm LG}(\tfrac12)=\tfrac12$, and all its derivatives vanish at $x=0$ and at $x=1$, because $e^{-1/x}$ goes to zero faster than every
+power of $x$. The change therefore starts and ends without a jerk in any derivative of the mass.
+
+# 24. The two equations of the brochon
+
+*In words.* In the Vaidya space-time the Dirac equation of a partial wave becomes two equations of the first order in the
+radius and the time. One carries a radial function along the outgoing light rays; the other gives the second function from
+the first on each slice of constant advanced time. The rate at which the mass changes does not appear.
+
+## 24.1 The separation
+
+With the angular functions $\alpha_{\rm LG}$, $\beta_{\rm LG}$ and the matrix $\mathsf S^{\rm H}_{\rm LG}$ of Part IV, the partial waves are
+$$\psi=\frac{e^{im_{j,{\rm LG}}\varphi}}{r\,(\sin\theta)^{1/2}}\;\mathsf S^{\rm H}_{\rm LG}\begin{pmatrix}-i\,\mathcal Q^{\rm V}_{\rm LG}\,\alpha_{\rm LG}\\i\,\mathcal P^{\rm V}_{\rm LG}\,\beta_{\rm LG}\\\mathcal P^{\rm V}_{\rm LG}\,\alpha_{\rm LG}\\\mathcal Q^{\rm V}_{\rm LG}\,\beta_{\rm LG}\end{pmatrix},\tag{24.1}$$
+where the radial functions $\mathcal P^{\rm V}_{\rm LG}(v_{\rm LG},r)$ and $\mathcal Q^{\rm V}_{\rm LG}(v_{\rm LG},r)$ now depend on the time as well. The
+Dirac equation of Part III with the mass $m_{\rm LL}$ is then equivalent to
+$$\partial_v\mathcal P^{\rm V}_{\rm LG}=\Big(\frac{\mathcal M_{\rm LG}}r-\frac12\Big)\partial_r\mathcal P^{\rm V}_{\rm LG}-\frac{\mathcal M_{\rm LG}}{2r^2}\,\mathcal P^{\rm V}_{\rm LG}-\Big(\frac{i\lambda_{\rm LG}}{2r}+\frac{m_{\rm LL}}2\Big)\mathcal Q^{\rm V}_{\rm LG},\tag{24.2}$$
+$$\partial_r\mathcal Q^{\rm V}_{\rm LG}=\Big(\frac{i\lambda_{\rm LG}}r-m_{\rm LL}\Big)\mathcal P^{\rm V}_{\rm LG},\tag{24.3}$$
+for every history $\mathcal M_{\rm LG}(v_{\rm LG})$ and on both sides of the apparent horizon. The separation was found by computer
+algebra and is checked three times: numerically at 80 random points, 40 of them inside the apparent horizon, with the spin
+connection that the library of Part III computes from the coframe, for $\mathcal M_{\rm LG}=1+0.3\sin(0.7v_{\rm LG}+0.4)$ (residual
+{{GEN:lgv_dev_lv1}} of the spinor, check LV-1); and exactly, for a symbolic function $\mathcal M_{\rm LG}(v_{\rm LG})$, in Python (YV-1) and in
+the Wolfram Language (WV-1). In both exact checks the same spinor with the coefficient $\mathcal M_{\rm LG}/r^2$ in place of
+$\mathcal M_{\rm LG}/(2r^2)$ in (24.2) leaves a residual, so the checks can fail.
+
+The derivative $\mathcal M_{\rm LG}'$ does not appear in (24.2), (24.3): the equations at the time $v_{\rm LG}$ know only the mass at that
+time. The history of the mass acts on the brochon only through the change of the geometry that it has already caused.
+
+## 24.2 Transport along the light rays, and a constraint on each slice
+
+Written as
+$$\partial_v\mathcal P^{\rm V}_{\rm LG}+\frac{f_{\rm LG}}2\,\partial_r\mathcal P^{\rm V}_{\rm LG}=-\frac{\mathcal M_{\rm LG}}{2r^2}\,\mathcal P^{\rm V}_{\rm LG}-\Big(\frac{i\lambda_{\rm LG}}{2r}+\frac{m_{\rm LL}}2\Big)\mathcal Q^{\rm V}_{\rm LG},$$
+equation (24.2) says how $\mathcal P^{\rm V}_{\rm LG}$ changes along the curves $dr/dv_{\rm LG}=f_{\rm LG}/2$, which are the outgoing light rays
+(23.2) (check WV-5): it *carries* $\mathcal P^{\rm V}_{\rm LG}$ along them, outward outside the apparent horizon and inward inside it.
+Such curves, along which an equation of the first order transports its unknown, are its *characteristics*. Equation (24.3)
+contains no derivative in $v_{\rm LG}$. Each slice $v_{\rm LG}=\text{const}$ is made of ingoing light rays: it is a **null surface**,
+a surface whose normal vector has length zero. On it, (24.3) is a *constraint*: it gives $\mathcal Q^{\rm V}_{\rm LG}$ from
+$\mathcal P^{\rm V}_{\rm LG}$ by an integral in $r$, from the outer edge, where $\mathcal Q^{\rm V}_{\rm LG}=0$ when nothing comes in from
+outside. The state of the brochon at the time $v_{\rm LG}$ is therefore the single function $\mathcal P^{\rm V}_{\rm LG}(v_{\rm LG},r)$ of the
+radius.
+
+## 24.3 The charge
+
+For every solution of (24.2) and (24.3), exactly (YV-2, WV-2),
+$$\partial_v\big(2\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2\big)+\partial_r\big(f_{\rm LG}\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2-\lvert\mathcal Q^{\rm V}_{\rm LG}\rvert^2\big)=0.\tag{24.4}$$
+This is the conservation of the current $j^{{\rm F},\mu}_{\rm SF}$ of (15.6): with the volume element $r^2\sin\theta$ of the coframe,
+the current of the partial wave (24.1) has the time component $2\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2$ and the radial component
+$f_{\rm LG}\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2-\lvert\mathcal Q^{\rm V}_{\rm LG}\rvert^2$, both times the angular factor
+$\lvert\alpha_{\rm LG}\rvert^2+\lvert\beta_{\rm LG}\rvert^2$ (check YV-10). So $2\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2$ is the density of the **charge** of the
+brochon on the slice, the number of particles minus the number of antiparticles per unit of $r$ (divided by the angular
+integral), and $f_{\rm LG}\lvert\mathcal P^{\rm V}_{\rm LG}\rvert^2-\lvert\mathcal Q^{\rm V}_{\rm LG}\rvert^2$ its flux outward through the sphere of radius
+$r$. The charge on a slice,
+$$\mathcal N^{\rm V}_{\rm LG}(v_{\rm LG})=\int2\,\lvert\mathcal P^{\rm V}_{\rm LG}(v_{\rm LG},r)\rvert^2\,dr,\tag{24.5}$$
+taken between two radii, changes only by the fluxes through them. For the quasi-particle of the superfluid this is the
+conserved charge of Theorem L3 (Section 18.1).
+
+## 24.4 A constant mass: the states of Part IV again
+
+For a constant mass ($\mathcal M_{\rm LG}=1$), the solutions $\mathcal P^{\rm V}_{\rm LG}=e^{-i\omega^{\rm S}_{\rm LG}v}p^{\rm V}_{\rm LG}(r)$,
+$\mathcal Q^{\rm V}_{\rm LG}=e^{-i\omega^{\rm S}_{\rm LG}v}q^{\rm V}_{\rm LG}(r)$ of one frequency obey
+$$r(r-2)\,p^{\rm V\prime}_{\rm LG}=2i\omega^{\rm S}_{\rm LG}r^2p^{\rm V}_{\rm LG}-p^{\rm V}_{\rm LG}-\big(i\lambda_{\rm LG}r+m_{\rm LL}r^2\big)\,q^{\rm V}_{\rm LG},\qquad r\,q^{\rm V\prime}_{\rm LG}=\big(i\lambda_{\rm LG}-m_{\rm LL}r\big)\,p^{\rm V}_{\rm LG},\tag{24.6}$$
+whose exponents at the horizon are $0$ and $4i\omega^{\rm S}_{\rm LG}-\tfrac12$, as in Part IV (YV-3, WV-3); the solution analytic at the
+horizon is again the one that falls in. These are the solutions of Part IV in the other coframe: if $\mathcal P_{\rm LG}$,
+$\mathcal Q_{\rm LG}$ solve (18.5), then
+$$p^{\rm V}_{\rm LG}=(1+w_{\rm LG})^{-1/2}e^{i\omega^{\rm S}_{\rm LG}\Delta_{\rm LG}}\,\mathcal P_{\rm LG},\qquad q^{\rm V}_{\rm LG}=(1+w_{\rm LG})^{1/2}e^{i\omega^{\rm S}_{\rm LG}\Delta_{\rm LG}}\,\mathcal Q_{\rm LG},\qquad\Delta_{\rm LG}'=\frac1{1+w_{\rm LG}},\tag{24.7}$$
+solve (24.6), where $\Delta_{\rm LG}(r)=v_{\rm LG}-\tau_{\rm LG}$ (YV-4, WV-4; with the opposite powers of $1+w_{\rm LG}$ the relation fails, so
+the checks can fail). The factors $(1+w_{\rm LG})^{\mp1/2}$ are those of the boost of Section 23.2, which multiplies the two
+components of a Weyl spinor along the radial direction by $e^{\pm\vartheta^{\rm V}_{\rm LG}/2}$. The quasi-bound states of Part IV are therefore found again from (24.6):
+$1S_{1/2}$, $2P_{1/2}$ and $2P_{3/2}$ at $y_{\rm LG}=0.3$ to {{GEN:lgv_dev_lv2}} of $m_{\rm LL}$ (LV-2), and $1S_{1/2}$ in Python, with its own start
+and Muller's method, to {{GEN:lgv_dev_yv5}} (YV-5). The frequencies of the states do not depend on the coframe or the coordinates,
+as they must not.
+
+# 25. The evolution in time
+
+*In words.* To follow the brochon in time, its radial function is stored at many radii, the derivatives in $r$ are
+replaced by differences of neighbouring values, and the resulting large system of ordinary differential equations in the
+time is integrated by CVODE. The grid reaches inside the black hole, where no condition is needed, because everything there
+moves inward.
+
+## 25.1 The method of lines
+
+In the **method of lines** a partial differential equation in $v_{\rm LG}$ and $r$ is turned into a system of ordinary differential
+equations in $v_{\rm LG}$ by replacing the unknown function of $r$ with its values on a grid. Here:
+
+* $\mathcal P^{\rm V}_{\rm LG}$ is stored on the uniform grid of radii from $r=1.2$ to $r=900$ with the spacing $\delta r_{\rm LG}=0.1$;
+* $\partial_r\mathcal P^{\rm V}_{\rm LG}$ is the *finite difference of the sixth order*: a weighted sum of the values at seven neighbouring
+  points whose error is of the order $\delta r_{\rm LG}^6$ (one-sided near the edges; the weights from Fornberg's algorithm);
+* $\mathcal Q^{\rm V}_{\rm LG}$ is the integral (24.3), taken inward from $r=900$, where $\mathcal Q^{\rm V}_{\rm LG}=0$, with weights of the sixth
+  order;
+* a small *dissipation*, $-\varepsilon^{\rm KO}_{\rm LG}/(256\,\delta r_{\rm LG})$ times the eighth difference of the values with
+  $\varepsilon^{\rm KO}_{\rm LG}=0.02$ (the dissipation of Kreiss and Oliger), damps the shortest wavelengths that the grid can carry, which
+  carry only numerical noise, and changes a smooth solution only at the order $\delta r_{\rm LG}^7$;
+* the system is integrated in $v_{\rm LG}$ by CVODE (Adams formulas); an extra unknown accumulates the net flux of the charge
+  through the two edges, so that the balance (24.4) can be checked in the computed solution.
+
+## 25.2 Excision: no condition at the inner edge
+
+An equation that transports its unknown along characteristics needs a boundary condition only where the characteristics
+enter the grid. The inner edge $r=1.2$ lies inside the apparent horizon at all times ($2\mathcal M_{\rm LG}\ge1.6$), where the outgoing
+light rays (23.2) move inward, out of the grid: no condition is needed there, and what falls in leaves the grid as it leaves
+the world outside the black hole. Cutting the inside of the black hole out of the grid in this way is called **excision**.
+At the outer edge the rays move outward, out of the grid, with $dr/dv_{\rm LG}=f_{\rm LG}/2<\tfrac12$; in the time 1350 of the
+longest run nothing from inside $r=225$ reaches the outer edge, so that the edge cannot disturb the brochon, which lives
+far inside it.
+
+## 25.3 Tests
+
+* *A constant mass.* The state $1S_{1/2}$ at $y_{\rm LG}=0.3$ (Table IV.1), put on the slice $v_{\rm LG}=0$ of a grid from $r=1.2$ to
+  $300$, must evolve as $e^{-i\omega^{\rm S}_{\rm LG}v}$ times its initial profile, its decay by absorption included. At $v_{\rm LG}=60$ it
+  does so to {{GEN:lgv_lv3_h01}} for $\delta r_{\rm LG}=0.1$ and to {{GEN:lgv_lv3_h005}} for $\delta r_{\rm LG}=0.05$ (relative to the largest value;
+  LV-3): halving the spacing reduces the error by about $2^{6.7}$, as a scheme of the sixth order should.
+* *The charge.* The change of the charge equals the integrated flux through the two edges to {{GEN:lgv_dev_lv4}} of the charge in this
+  test (LV-4) and to {{GEN:lgv_dev_lv5}} in the four runs below (LV-5).
+* *The grid.* The fast runs repeated with $\delta r_{\rm LG}=0.2$ agree with $\delta r_{\rm LG}=0.1$ to {{GEN:lgv_dev_lv6}} in the final
+  occupation, the final charge and the charges of the states (LV-6).
+* *Another program.* The Python program recomputes the fast growth to $v_{\rm LG}=120$ with its own finite differences and
+  integrals: the charges agree to {{GEN:lgv_dev_yv6}} (YV-6), and its own balance holds to {{GEN:lgv_dev_yv7}} (YV-7).
+
+# 26. The four runs
+
+*In words.* The brochon starts in the ground state of the black hole of mass 1. A slow growth leaves it in the ground state
+of the larger black hole; a fast growth or shrinking leaves it in its old state, which is a mixture of the states of the new
+black hole. Because the decay into the black hole is faster at larger $y_{\rm LG}$, the growth speeds up the absorption and the
+shrinking slows it down.
+
+## 26.1 Two limits: adiabatic and sudden
+
+Two limits of quantum mechanics serve as references.
+
+* **Adiabatic.** The *adiabatic theorem* says that a system in a level that does not cross the others stays in that level if
+  its Hamiltonian changes slowly enough, slowly compared with the inverse of the distance to the neighbouring levels. Here:
+  a brochon that follows the mass adiabatically stays in the state $1S_{1/2}$ of the instantaneous mass, and its charge decays
+  at the instantaneous rate, $\mathcal N^{\rm ad}_{\rm LG}(v_{\rm LG})=\mathcal N^{\rm V}_{\rm LG}(0)\exp\int_0^{v_{\rm LG}}2\,{\rm Im}\,\omega^{\rm S}_{\rm LG}(v')\,dv'$, with
+  the frequency $\omega^{\rm S}_{\rm LG}(v')$ of $1S_{1/2}$ at the mass $\mathcal M_{\rm LG}(v')$ (the factor 2 because the charge is quadratic in the
+  field).
+* **Sudden.** A change so fast that the field has no time to change: just after it, the field is the old state, written in
+  terms of the states of the new mass.
+
+*Example: a hydrogen atom whose nucleus changes suddenly.* The ground state of a hydrogen-like atom of nuclear charge
+$Z_{\rm H}$ is $\psi_{\rm H}=(Z_{\rm H}^3/\pi a_{\rm B}^3)^{1/2}e^{-Z_{\rm H}r/a_{\rm B}}$ ($a_{\rm B}$ the Bohr radius). If the charge jumps to
+$Z'_{\rm H}$, with the ground state $\psi'_{\rm H}$, the probability to remain in the ground state is the square of the overlap,
+$$\Big\lvert\int\psi'_{\rm H}\psi_{\rm H}\,d^3x\Big\rvert^2=\Big(\frac{(Z_{\rm H}Z'_{\rm H})^{3/2}}{\pi a_{\rm B}^3}\int_0^\infty e^{-(Z_{\rm H}+Z'_{\rm H})r/a_{\rm B}}\,4\pi r^2dr\Big)^2=\Big(\frac{4Z_{\rm H}Z'_{\rm H}}{(Z_{\rm H}+Z'_{\rm H})^2}\Big)^3,$$
+since $\int_0^\infty r^2e^{-kr}dr=2/k^3$.
+For $Z'_{\rm H}/Z_{\rm H}=1.25$ and for $0.8$ alike, $4Z_{\rm H}Z'_{\rm H}/(Z_{\rm H}+Z'_{\rm H})^2=\tfrac{80}{81}$, and the probability is
+$(\tfrac{80}{81})^3=0.963$. The gravitational atom behaves in the same way, with the mass of the black hole in the place of
+the nuclear charge: the computed charge of the state $1S_{1/2}$ of the new mass in the old state is {{GEN:lgv_gf_w1_sudden}} for the
+growth and {{GEN:lgv_sf_w1_sudden}} for the shrinking (Section 27 explains why these are not exactly probabilities).
+
+## 26.2 The results
+
+Table V.1 gives the charge in the four runs at the end of the change and at the end of the run, against the adiabatic
+limit, and Figure V.1 shows the charge in time.
+
+**Table V.1.** The four runs. All charges are divided by the initial charge. "Charge of $1S_{1/2}$" is the charge that the
+decomposition of Section 27 assigns to the state $1S_{1/2}$ of the instantaneous mass, divided by the adiabatic charge.
+
+| run | at the end of the change: charge | adiabatic | charge of $1S_{1/2}$ / adiabatic | at the end of the run: charge | adiabatic | ratio |
+|:---|:---|:---|:---|:---|:---|:---|
+| growth, slow | {{GEN:lgv_gs_charge_end}} | {{GEN:lgv_gs_ad_end}} | {{GEN:lgv_gs_w1_end_over_ad}} | {{GEN:lgv_gs_charge_fin}} | {{GEN:lgv_gs_ad_fin}} | {{GEN:lgv_gs_fin_over_ad}} |
+| growth, fast | {{GEN:lgv_gf_charge_end}} | {{GEN:lgv_gf_ad_end}} | {{GEN:lgv_gf_w1_end_over_ad}} | {{GEN:lgv_gf_charge_fin}} | {{GEN:lgv_gf_ad_fin}} | {{GEN:lgv_gf_fin_over_ad}} |
+| shrinking, slow | {{GEN:lgv_ss_charge_end}} | {{GEN:lgv_ss_ad_end}} | {{GEN:lgv_ss_w1_end_over_ad}} | {{GEN:lgv_ss_charge_fin}} | {{GEN:lgv_ss_ad_fin}} | {{GEN:lgv_ss_fin_over_ad}} |
+| shrinking, fast | {{GEN:lgv_sf_charge_end}} | {{GEN:lgv_sf_ad_end}} | {{GEN:lgv_sf_w1_end_over_ad}} | {{GEN:lgv_sf_charge_fin}} | {{GEN:lgv_sf_ad_fin}} | {{GEN:lgv_sf_fin_over_ad}} |
+
+![](figures/fig_lg_vaidya_charge.png){width=96%}
+
+**Figure V.1.** The charge of the brochon outside the black hole, divided by its initial value, as a function of the advanced
+time, in the four runs (solid lines), and the adiabatic charge $\mathcal N^{\rm ad}_{\rm LG}$ (dotted lines). The mass changes between
+$v_{\rm LG}=50$ and $1050$ in the slow runs and between $50$ and $70$ in the fast runs, and then stays constant for the time 300.
+(Data `data/lg_vaidya_runs.csv` of the program `lg_vaidya`; figure drawn by `python/lg_vaidya_figures.py`.)
+
+* *Slow growth: adiabatic.* At the end of the change the charge of $1S_{1/2}$ is {{GEN:lgv_gs_w1_end_over_ad}} of the adiabatic charge: the
+  brochon follows the growing mass in its ground state. The total charge, {{GEN:lgv_gs_charge_end}}, is a little larger than the
+  adiabatic {{GEN:lgv_gs_ad_end}}, because the change has also put a small charge, {{GEN:lgv_gs_w2_end}}, into $2S_{1/2}$.
+* *Fast growth: sudden.* The projection of the field on the state $1S_{1/2}$ of the final mass at the end of the change,
+  {{GEN:lgv_gf_occ_end}}, is close to that of the old state, {{GEN:lgv_gf_sudden}} (the occupation of Section 27).
+* *Slow shrinking: less adiabatic.* At the end of the change the charge of $1S_{1/2}$ is {{GEN:lgv_ss_w1_end_over_ad}} of the adiabatic
+  charge, and the total charge {{GEN:lgv_ss_charge_end}} lies below the adiabatic {{GEN:lgv_ss_ad_end}}: part of the field left the state
+  $1S_{1/2}$ and was absorbed.
+* *Fast shrinking: sudden.* Projection {{GEN:lgv_sf_occ_end}}, against {{GEN:lgv_sf_sudden}} for the old state.
+
+## 26.3 Why the runs differ
+
+*Why the slow shrinking is less adiabatic than the slow growth.* The adiabatic theorem compares the duration of the change
+with the inverse of the distance between the levels. Between $1S_{1/2}$ and $2S_{1/2}$ the distance is
+$m_{\rm LL}y_{\rm LG}^2(\tfrac12-\tfrac18)=\tfrac38m_{\rm LL}y_{\rm LG}^2$ by (20.1); it falls with $y_{\rm LG}^2$, so that the same duration 1000 is less
+slow at the smaller mass of the shrinking black hole.
+
+*Why the final charges differ from the adiabatic ones.* At the end of the runs the growth has made the absorption faster
+(the decay rate of $1S_{1/2}$ rises steeply with $y_{\rm LG}$, Section 20.4) and the shrinking slower. After a growth more charge
+remains than in the adiabatic limit ({{GEN:lgv_gs_fin_over_ad}} and {{GEN:lgv_gf_fin_over_ad}} times for the slow and the fast run), because the
+parts of the field outside $1S_{1/2}$, which the change produced, are absorbed more slowly than $1S_{1/2}$ at $y_{\rm LG}=0.25$; after a
+shrinking less ({{GEN:lgv_ss_fin_over_ad}} and {{GEN:lgv_sf_fin_over_ad}} times), because part of the field left $1S_{1/2}$ during the change and
+was absorbed then.
+
+# 27. What the projections on the states mean
+
+*In words.* Around a black hole the states are not the orthogonal states of an ordinary atom: they leak, and they overlap.
+Dividing the brochon among them is therefore possible only approximately, to about ten per cent when the levels are nearly as
+broad as they are apart.
+
+**The occupation.** The *charge product* of two radial functions on a slice is
+$\langle a,b\rangle_{\rm LG}=\int2\,a^*b\,dr$, so that $\langle\mathcal P^{\rm V}_{\rm LG},\mathcal P^{\rm V}_{\rm LG}\rangle_{\rm LG}=\mathcal N^{\rm V}_{\rm LG}$. The
+*occupation* of the state $n$, with the profile $\mathcal P^{(n)}_{\rm LG}(r)$ of the instantaneous mass on the slice, is
+$$O_{n,{\rm LG}}=\frac{\lvert\langle\mathcal P^{(n)}_{\rm LG},\mathcal P^{\rm V}_{\rm LG}\rangle_{\rm LG}\rvert^2}{\langle\mathcal P^{(n)}_{\rm LG},\mathcal P^{(n)}_{\rm LG}\rangle_{\rm LG}\,\langle\mathcal P^{\rm V}_{\rm LG},\mathcal P^{\rm V}_{\rm LG}\rangle_{\rm LG}},\tag{27.1}$$
+the square of the cosine of the angle between the field and the state. For the orthogonal states of an ordinary atom the
+occupations are the probabilities of the states and add up to at most 1. Here they are not: the quasi-bound states lose charge
+into the black hole, the evolution does not conserve the charge product, and the states are not orthogonal. The normalized
+overlap of $1S_{1/2}$ and $2S_{1/2}$, $\lvert\langle\mathcal P^{(1)}_{\rm LG},\mathcal P^{(2)}_{\rm LG}\rangle_{\rm LG}\rvert$ divided by the square root of the product of
+their charges, is {{GEN:lgv_init_overlap}} at $y_{\rm LG}=0.2$, {{GEN:lgv_grow_overlap}} at $0.25$ and {{GEN:lgv_shrink_overlap}} at $0.16$ (zero for orthogonal states); at the
+end of the fast growth the occupations of $1S_{1/2}$ and $2S_{1/2}$ add up to {{GEN:lgv_gf_occsum_fin}}.
+
+**The decomposition.** The field is written as a sum of the states $1S_{1/2}$ to $4S_{1/2}$ of the final mass (their frequencies at
+$y_{\rm LG}=0.25$: {{GEN:lgv_grow_states}}; at $0.16$: {{GEN:lgv_shrink_states}}, all as $\omega^{\rm S}_{\rm LG}/m_{\rm LL}$), each with a complex coefficient, plus a
+remainder. The coefficients are those of the best approximation in the charge product: they solve the linear equations whose
+matrix, the **Gram matrix**, holds the charge products of the states with each other (the method of least squares). The
+charge that the state $n$ would carry alone is $\mathcal W_{n,{\rm LG}}$, the squared modulus of its coefficient times its own charge.
+Because of the overlaps the $\mathcal W_{n,{\rm LG}}$ do not add up to the total charge either, and the result depends on how the
+coefficients are fitted. Two fits were made: at the single time of the end of the change, and over the whole time after the
+change, where every coefficient must evolve as $e^{-i\omega^{\rm S}_{\rm LG}v}$ with the frequency of its state. For the slow growth and
+both shrinking runs they agree within 2 % (the charge of $1S_{1/2}$ at the end of the change: {{GEN:lgv_gs_w1_end}} and {{GEN:lgv_gs_w1_st}},
+{{GEN:lgv_ss_w1_end}} and {{GEN:lgv_ss_w1_st}}, {{GEN:lgv_sf_w1_end}} and {{GEN:lgv_sf_w1_st}}); for the fast growth they give {{GEN:lgv_gf_w1_end}} and
+{{GEN:lgv_gf_w1_st}}. The coefficient of $1S_{1/2}$ found at the end of the change and at the end of the run follows $e^{-i\omega^{\rm S}_{\rm LG}v}$ to
+{{GEN:lgv_ss_evol1}} and {{GEN:lgv_sf_evol1}} after the shrinking (slow and fast), but only to {{GEN:lgv_gs_evol1}} and {{GEN:lgv_gf_evol1}} after the growth.
+
+*Why.* At $y_{\rm LG}=0.25$ the decay rate $\lvert{\rm Im}\,\omega^{\rm S}_{\rm LG}\rvert$ of $1S_{1/2}$ is {{GEN:lgv_grow_width}} of the distance
+${\rm Re}\,\omega^{\rm S}_{\rm LG}(2S_{1/2})-{\rm Re}\,\omega^{\rm S}_{\rm LG}(1S_{1/2})$ of the two levels (at $0.16$: {{GEN:lgv_shrink_width}}): the levels are nearly as
+broad as they are apart, and the charge cannot be divided among the states better than about 10 %. The remainder outside
+the four states holds between {{GEN:lgv_gs_rem_end}} (slow growth, end of the change) and {{GEN:lgv_sf_rem_sudden}} (shrinking, sudden limit) of
+the charge. The decline of the occupation of $1S_{1/2}$ during the slow growth ({{GEN:lgv_gs_occ_end}} at the end of the change,
+{{GEN:lgv_gs_occ1_fin}} at the end of the run) is thus not a loss from $1S_{1/2}$: that state keeps its adiabatic charge, but it is
+absorbed faster than the admixture of $2S_{1/2}$ that the change produced, whose share of the remaining field grows.
+
+(Checks: LV-7, the initial state decomposed in the states of the initial mass gives the coefficients $(1,0,0,0)$ to
+{{GEN:lgv_dev_lv7}}; LV-8, the states $1S_{1/2}$ and $2S_{1/2}$ of the final mass of the growth, followed from $y_{\rm LG}=0.2$ in steps of 1 % of the
+mass, equal those of Part IV at $y_{\rm LG}=0.25$ to {{GEN:lgv_dev_lv8}}, and every step is guarded: the root must lie nearer to the
+small-mass level (20.4) of its $n$ than half the distance to the neighbouring levels, or the program stops; YV-8, the state
+$1S_{1/2}$ and the occupations at $v_{\rm LG}=120$ of the fast growth agree with Python to {{GEN:lgv_dev_yv8}}; YV-9, the decomposition at the
+end of the fast growth agrees to {{GEN:lgv_dev_yv9}}.)
+
+# 28. What Part V establishes
+
+1. In the ingoing Vaidya space-time of a black hole whose mass changes with the advanced time, the Dirac equation of the
+   brochon separates, for every history of the mass and on both sides of the apparent horizon, into an equation that carries
+   one radial function along the outgoing light rays and a constraint that gives the other on each null slice (24.2), (24.3);
+   the charge (24.5) changes only by its fluxes (24.4). The rate of change of the mass does not enter the equations.
+2. For a constant mass the solutions are those of Part IV, seen by boosted observers, with the same quasi-bound states.
+3. The evolution in time, with the inside of the black hole excised, follows a brochon in the state $1S_{1/2}$ while the mass grows
+   by 25 % or shrinks by 20 %: a slow growth is adiabatic, the fast changes are sudden, and the slow shrinking lies between,
+   because the levels are closer at the smaller mass. A growth speeds up the absorption and a shrinking slows it down.
+4. Because the quasi-bound states leak and overlap, the charge can be assigned to the states only to about 10 % when the levels
+   are as broad as at $y_{\rm LG}=0.25$.
+5. By Theorem L3 every result holds for the quasi-particle of the superfluid with the mass of the gap.
+
 {{PART:algebra_lg}}
 
 {{PART:brochon_lg}}
@@ -1790,9 +2125,59 @@ python3 code/scripts/write_lg_schw_fragments.py                  # the numbers o
 {{FILE:data/hck_lg_schw_checks_wolfram.txt}}
 ```
 
+## C.6 The programs of Part V
+
+Three programs compute and check Part V, each independently of the others:
+
+* the Rust program `lg_vaidya` (`rust/lgvaidya/src/main.rs`, with the library `rust/lgcore` for the Dirac operator of Part III and
+  the crate `rust/lgsundials` for CVODE): {{GEN:lgv_verdict_rust}}. It checks the separation at random points, finds the quasi-bound
+  states of the static equations (24.6) and follows them in the mass, evolves the field by the method of lines with the
+  inside of the black hole excised, and decomposes it into the states; it writes `data/lg_vaidya_runs.csv` (the four runs at
+  every output time: the mass, the charge, the net inflow, the occupations of $1S_{1/2}$ and $2S_{1/2}$, the frequency of $1S_{1/2}$
+  and the adiabatic charge) and `data/lg_vaidya_values.csv` (single values). It runs for about six minutes;
+* the Python program `python/lg_vaidya.py`: {{GEN:lgv_verdict_python}}. It derives the separation, the conservation of the charge,
+  the static equations and their relation to Part IV, and the density and flux of the charge by computer algebra (sympy),
+  with the spin connection computed from the coframe for a symbolic $\mathcal M_{\rm LG}(v_{\rm LG})$; it finds the state $1S_{1/2}$
+  again with Muller's method, and recomputes the fast growth with its own finite differences and integrals (weights from
+  the equations of their moments, solved by numpy) and CVODE, through the C interface `rust/lgsundials_c`;
+* the Wolfram script `wolfram/source/lg_vaidya.wls`: {{GEN:lgv_verdict_wolfram}}, exactly: the coframe and its metric, the separation with
+  the spin connection computed from the coframe for an arbitrary $\mathcal M_{\rm LG}(v_{\rm LG})$, the charge, the static limit and its
+  relation to the freely falling coframe, and the light rays.
+
+The figure of Part V is drawn by `python/lg_vaidya_figures.py` from `data/lg_vaidya_runs.csv`, and the numbers of the text are
+written from the data files and the reports by `code/scripts/write_lg_vaidya_fragments.py`. To reproduce, from the folder
+`Revision_Lord_Gravity`:
+
+```bash
+cd "/Users/nsh/Developer/github/spacetimes/Revision_Lord_Gravity"
+(cd rust && cargo build --release && ./target/release/lg_vaidya) # data/hck_lg_vaidya_checks.txt and the data files
+python3 python/lg_vaidya.py                                       # data/hck_lg_vaidya_checks_python.txt
+wolframscript -file wolfram/source/lg_vaidya.wls data/hck_lg_vaidya_checks_wolfram.txt
+python3 python/lg_vaidya_figures.py                               # figures/fig_lg_vaidya_charge
+python3 code/scripts/write_lg_vaidya_fragments.py                # the numbers of Part V
+```
+
+**The report of the Rust program** (`data/hck_lg_vaidya_checks.txt`):
+
+```
+{{FILE:data/hck_lg_vaidya_checks.txt}}
+```
+
+**The report of the Python program** (`data/hck_lg_vaidya_checks_python.txt`):
+
+```
+{{FILE:data/hck_lg_vaidya_checks_python.txt}}
+```
+
+**The report of the Wolfram script** (`data/hck_lg_vaidya_checks_wolfram.txt`):
+
+```
+{{FILE:data/hck_lg_vaidya_checks_wolfram.txt}}
+```
+
 # D. The symbols of the main text
 
-The table lists the symbols of the main text, Parts I to IV, in the order of their first use; the symbols of Appendix A are
+The table lists the symbols of the main text, Parts I to V, in the order of their first use; the symbols of Appendix A are
 listed in its Section A.7, and those of Appendix B in its Section B.7.
 
 | symbol | meaning |
@@ -1918,3 +2303,15 @@ listed in its Section A.7, and those of Appendix B in its Section B.7.
 | $F^{\rm H}_{\rm LG}$, $c^{\rm H}_{\rm LG}$ | the coefficients of the fine structure (20.4) and of the decay rate (20.5) at small $y_{\rm LG}$ |
 | $\mathcal T_{\rm LG}$ | the greybody factor of a partial wave, the fraction of an incoming wave that the black hole absorbs (21.1) |
 | $M_\odot$ | the mass of the Sun (Section 20.5) |
+| $\mathcal M_{\rm LG}(v_{\rm LG})$, $\mathcal M_{\rm LG}(0)$ | the mass of the black hole (in units of length) as a function of the advanced time, and at the start (Part V) |
+| $\varkappa_\pm$ | $\tfrac12(1\pm f_{\rm LG})$, in the example of Section 23.2 |
+| $\vartheta^{\rm V}_{\rm LG}$ | the rapidity $-\ln(1+w_{\rm LG})$ of the boost that turns the freely falling coframe into the coframe (23.3) |
+| $t^{\rm c}_{\rm LG}$, $\varpi_{\rm LG}(x)$ | the duration of the change of the mass, and the smooth step (23.4) |
+| $\mathcal P^{\rm V}_{\rm LG}(v_{\rm LG},r)$, $\mathcal Q^{\rm V}_{\rm LG}(v_{\rm LG},r)$ | the radial functions in the Vaidya space-time (24.1) |
+| $\mathcal N^{\rm V}_{\rm LG}(v_{\rm LG})$ | the charge of the brochon on the slice $v_{\rm LG}=\text{const}$ (24.5) |
+| $p^{\rm V}_{\rm LG}(r)$, $q^{\rm V}_{\rm LG}(r)$, $\Delta_{\rm LG}(r)$ | the radial functions of one frequency for a constant mass (24.6), and $v_{\rm LG}-\tau_{\rm LG}$ (24.7) |
+| $\delta r_{\rm LG}$, $\varepsilon^{\rm KO}_{\rm LG}$ | the spacing of the grid and the strength of the dissipation of Kreiss and Oliger (Section 25.1) |
+| $\mathcal N^{\rm ad}_{\rm LG}(v_{\rm LG})$ | the charge of a brochon that follows the mass adiabatically in the state $1S_{1/2}$ (Section 26.1) |
+| $Z_{\rm H}$, $Z'_{\rm H}$, $\psi_{\rm H}$, $\psi'_{\rm H}$, $a_{\rm B}$ | the nuclear charges, the ground states and the Bohr radius of the example of Section 26.1 |
+| $\langle a,b\rangle_{\rm LG}$ | the charge product $\int2\,a^*b\,dr$ of two radial functions on a slice (Section 27) |
+| $\mathcal P^{(n)}_{\rm LG}(r)$, $O_{n,{\rm LG}}$, $\mathcal W_{n,{\rm LG}}$ | the profile of the state $n$ on a slice, its occupation (27.1), and the charge that the decomposition assigns to it |

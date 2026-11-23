@@ -34,6 +34,8 @@ Checks (the counterparts in the Rust report data/hck_lg_vaidya_checks.txt in bra
         occupations of the states 1S1/2 and 2S1/2 agree with data/lg_vaidya_runs.csv                          [LV-5]
   YV-9  at the end of the change (v = 70): the decomposition in the states 1S1/2 to 4S1/2 of the final mass
         (Gram system) agrees with data/lg_vaidya_values.csv                                                   [LV-7, LV-8]
+  YV-10 the density 2 |P|^2 and the outward flux f |P|^2 - |Q|^2 of the charge are those of the current of the
+        separated spinor (per unit of the angular integral; sympy)                                            [LV-4, LV-5]
 
 Run (from the folder Revision_Lord_Gravity, after rust/target/release/lg_vaidya):   python3 python/lg_vaidya.py
 Output: data/hck_lg_vaidya_checks_python.txt.  Requires: Python 3, numpy, sympy, and the library liblgsundials_c.
@@ -161,6 +163,28 @@ def symbolic_checks(rep):
                  "q = (1 + W)^(1/2) e^(i omega h) Q with h' = 1/(1 + W) solve the static equations identically (rational "
                  "functions of b = (1 + W)^(1/2)); with the opposite exponents they do not (the control; sympy)",
                  r4 == [0, 0] and r4c != [0, 0], "residuals %s; control %s" % (r4, [sp.factor(e) for e in r4c]))
+
+    # ---- YV-10: the density and the flux of the charge.  With the volume element e = det(coframe) and the coordinate
+    # components j^v = Psi-bar gamma^v Psi, j^r = Psi-bar gamma^r Psi of the current (gamma^k = F[a, k] gamma^a), the
+    # separated spinor gives e j^v = 2 |P|^2 (|A|^2 + |B|^2) and e j^r = (f |P|^2 - |Q|^2)(|A|^2 + |B|^2): 2 |P|^2 is the
+    # density of the charge on the slice v = const and f |P|^2 - |Q|^2 its flux outward through the sphere of radius r,
+    # both per unit of the integral of |A|^2 + |B|^2 over the angles.  Values at a point as symbols, conjugates independent.
+    Pv, Qv, Av, Bv, Pw, Qw, Aw, Bw = sp.symbols('Pv Qv Av Bv Pw Qw Aw Bw')
+    chi4 = sh * sp.Matrix([-I * Qv * Av, I * Pv * Bv, Pv * Av, Qv * Bv])
+    chi4b = sh.conjugate() * sp.Matrix([I * Qw * Aw, -I * Pw * Bw, Pw * Aw, Qw * Bw])
+    vol = sp.simplify(E.det())
+    pref2 = 1 / (r ** 2 * sp.sin(th))                    # |prefactor|^2; the phase e^(i m_j phi) cancels
+    angn = Av * Aw + Bv * Bw
+    dens = vol * pref2 * (chi4b.T * gam[0] * sum((F[a, 0] * gam[a] for a in range(4)), sp.zeros(4)) * chi4)[0]
+    flux = vol * pref2 * (chi4b.T * gam[0] * sum((F[a, 1] * gam[a] for a in range(4)), sp.zeros(4)) * chi4)[0]
+    out10a = sp.simplify(sp.expand(dens - 2 * Pv * Pw * angn))
+    out10b = sp.simplify(sp.expand(flux - (f * Pv * Pw - Qv * Qw) * angn))
+    rep.add_bool("YV-10", "the density and the flux of the charge: with the volume element e = det(coframe) and the current "
+                 "j^k = Psi-bar gamma^k Psi, the separated spinor gives e j^v = 2 |P|^2 (|A|^2 + |B|^2) and e j^r = "
+                 "(f |P|^2 - |Q|^2)(|A|^2 + |B|^2) for a symbolic M(v): 2 |P|^2 is the density of the charge on the slice "
+                 "v = const and f |P|^2 - |Q|^2 its flux outward through the sphere of radius r, per unit of the angular "
+                 "integral of |A|^2 + |B|^2 (sympy)", out10a == 0 and out10b == 0,
+                 "e = %s; e j^v - 2|P|^2 (...) = %s; e j^r - (f|P|^2 - |Q|^2)(...) = %s" % (vol, out10a, out10b))
 
 
 # ================================================================================================ the static problem

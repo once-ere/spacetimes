@@ -99,8 +99,8 @@ equation of the quasi-particle of the superfluid correspond one to one to those 
 and the quasi-particle has the conserved current of the corresponding Dirac solution, so that every result of stages 5 and 6
 holds for the quasi-particle (checks LS-14a to LS-14c, YS-13, G-17h, G-17i, YG-8e, YG-8f; entries E27 and E28).
 
-**Stage 6** (22 November 2026), computed and checked, not written up: the brochon in the field of a black hole whose
-mass changes. The space-time is that of Vaidya with the advanced time $v$ (constant along every light ray that falls
+**Stage 6** (22 November 2026), computed and checked, and written up as Part V of the manuscript (Sections 23 to 28,
+with a table and a figure): the brochon in the field of a black hole whose mass changes. The space-time is that of Vaidya with the advanced time $v$ (constant along every light ray that falls
 radially inward): a black hole that grows by absorbing a radial inflow of null dust (radiation without pressure, moving
 at the speed of light), or, with an inflow of negative energy, one that shrinks as an evaporating black hole does near
 its horizon (the task record, decision D10). In a coframe that is regular on both sides of the apparent horizon (the
@@ -114,7 +114,7 @@ a slow growth leaves it in the ground state of the new mass (the adiabatic limit
 leaves the old state written in terms of the new states (the sudden limit), and because the black hole absorbs the
 brochon the states are not orthogonal, so that the share of each state is determined only to about 10 % when the
 levels are nearly as broad as they are apart. The Rust program `lg_vaidya` computes this with CVODE
-(ALL PASS (8 of 8)); the Python program `python/lg_vaidya.py` (ALL PASS (9 of 9)) and the Wolfram script
+(ALL PASS (8 of 8)); the Python program `python/lg_vaidya.py` (ALL PASS (10 of 10)) and the Wolfram script
 `wolfram/source/lg_vaidya.wls` (ALL PASS (6 of 6), exact algebra) check it. The task record gives the results with
 their numbers (entries E15 to E19); the data are in `data/lg_vaidya_*.csv`.
 
@@ -130,9 +130,8 @@ program `lg_pair` (ALL PASS (2 of 2)) and `wolfram/source/lg_pair.wls` (ALL PASS
 decision D11 and entries E20 and E21; the data in `data/lg_pair_*.csv`. Which gravitational predictions the author means,
 and the value of $\Lambda_{\rm LL}$ in physical units, are questions put to him.
 
-Next (the task record, Section 6): Part V of the manuscript, written from stage 6 in the same style; then the rest of
-stage 7 (decision D12 of the task record) and Part VI; then the provenance of the remarks, the registry of the symbols and
-the notebook.
+Next (the task record, Section 6): the rest of stage 7 (decision D12 of the task record) and Part VI of the manuscript;
+then the provenance of the remarks, the registry of the symbols and the notebook.
 
 # 3. Contents
 
@@ -143,13 +142,13 @@ the notebook.
 | `provenance/inputs_sha256.txt` | the SHA-256 checksum of the copy of Lord's paper that is read (the paper is not in the repository) | written |
 | `code/scripts/` | the document pipeline: `assemble_docs.py` (writes a document from its source in `docs_src/` and the generated fragments), `build_docs.sh` (the `.tex` and the `.pdf` of every document, with a check of the layout of every page), `doc_header.tex`, `keep_tables.py`, `check_layout.py`, `check_pages.py`, and `check_self_contained.py` (does a document send its reader elsewhere?) | written |
 | `docs_src/` | the hand-edited sources of the documents; `docs_src/parts/` holds the parts that the manuscript includes in full (`glossary_lg.part.md`, the word list; `algebra_lg.part.md`, Appendix A; `brochon_lg.part.md`, Appendix B) | written |
-| `lord_gravity.md`, `.tex`, `.pdf` | the manuscript of the task: Part I (Lord's paper read and checked), Part II (the association of the project's $SL(2,\mathbb C)$ with Lord's gauge group), Part III (the gravitational coupling of the brochon), Part IV (the brochon in the Schwarzschild field); Appendices A (the algebra of the Lorentz super-loop), B (the brochon model), C (the provenance, with the complete reports of the checks) and D (the symbols) | Parts I to IV written, complete in themselves, with the word list and Appendices A to D; Parts V and VI next |
+| `lord_gravity.md`, `.tex`, `.pdf` | the manuscript of the task: Part I (Lord's paper read and checked), Part II (the association of the project's $SL(2,\mathbb C)$ with Lord's gauge group), Part III (the gravitational coupling of the brochon), Part IV (the brochon in the Schwarzschild field), Part V (the brochon around a black hole whose mass changes); Appendices A (the algebra of the Lorentz super-loop), B (the brochon model), C (the provenance, with the complete reports of the checks) and D (the symbols) | Parts I to V written, complete in themselves, with the word list and Appendices A to D; Part VI next |
 | `provenance/generated/` | the fragments that the programs write for the documents (`lg_lord.md`, `lg_curved.md`, `lg_schw.md`, `lg_vaidya.md`, `lg_pair.md` and `lg_worked.md`, written by `code/scripts/write_lg_lord_fragments.py`, `write_lg_curved_fragments.py`, `write_lg_schw_fragments.py`, `write_lg_vaidya_fragments.py`, `write_lg_pair_fragments.py` and `write_lg_worked_fragments.py`), and `lg_examples.md`, the numbers of the appendices copied by `write_lg_examples_fragments.py` from the fragment files of the folder `Revision_SM_Higgs` (with the SHA-256 checksums of the files that it reads) | written for Parts I to III, the appendices and stages 5 to 7a |
 | `rust/` | the Cargo workspace: the library `lgcore` (complex matrices, bi-quaternions, Dirac matrices, automatic differentiation, `lord.rs`, Lord's matrices from his definitions, and `curved.rs`, the geometry of a tetrad and the brochon in it); the program `lg_lord` (the checks of Parts I and II) and the program `lg_curved` (the checks of Part III); the crate `lgsundials` (the integrator CVODE of SUNDIALS 7.8.0 in pure Rust) with its C interface `lgsundials_c` for the Python programs; the program `lg_schw` (stage 5: the brochon in the Schwarzschild field) the program `lg_vaidya` (stage 6: the brochon in the Vaidya space-time, crate `lgvaidya`) and the program `lg_pair` (stage 7a: the pair bound by the zeugon, crate `lgpair`); and the program `lg_worked` (the worked examples of the manuscript, crate `lgworked`) | written for Parts I to III and stages 5 to 7a |
-| `python/` | `lgcommon.py` (common definitions, finite differences, the report), `lg_lord.py` and `lg_curved.py` (the independent checks of `lg_lord` and `lg_curved`), `lgsundials.py` (CVODE through `lgsundials_c`), `lg_schw.py` and `lg_vaidya.py` (the independent checks of `lg_schw` and `lg_vaidya`), `lg_pair.py` (the exact levels of the pair of stage 7a), `lg_worked.py` (the worked examples, exact where they are rational), and `lg_schw_figures.py` (the figures of Part IV) | written for Parts I to IV and stages 5 to 7a |
+| `python/` | `lgcommon.py` (common definitions, finite differences, the report), `lg_lord.py` and `lg_curved.py` (the independent checks of `lg_lord` and `lg_curved`), `lgsundials.py` (CVODE through `lgsundials_c`), `lg_schw.py` and `lg_vaidya.py` (the independent checks of `lg_schw` and `lg_vaidya`), `lg_pair.py` (the exact levels of the pair of stage 7a), `lg_worked.py` (the worked examples, exact where they are rational), `lg_schw_figures.py` and `lg_vaidya_figures.py` (the figures of Parts IV and V) | written for Parts I to V and stages 5 to 7a |
 | `wolfram/source/` | `lg_lord.wls`: the exact checks of Lord's identities, signs and factors; `lg_curved.wls`: the exact checks of Part III; `lg_schw.wls`: the exact checks of stage 5 and some of its numbers in arithmetic of 32 digits; `lg_vaidya.wls`: the exact checks of stage 6; `lg_pair.wls`: the exact checks of stage 7a; `lg_worked.wls`: the symbolic checks of the worked examples | written |
 | `data/` | the reports of the checks (`hck_lg_lord_checks.txt`, `hck_lg_curved_checks.txt`, `hck_lg_schw_checks.txt`, each with `_python.txt` and `_wolfram.txt`), the numbers of the findings (`lg_lord_findings.csv`), of Part III (`lg_curved_values.csv`) and of stage 5 (`lg_schw_qbs.csv`, the quasi-bound states; `lg_schw_grey.csv`, the greybody factors; `lg_schw_interior.csv`, a solution on both sides of the horizon; `lg_schw_small.csv`, the states at small masses and their comparison with the small-mass formulas; `lg_schw_values.csv`, single values), of stage 6 (`lg_vaidya_runs.csv`, the four runs with a changing mass at every output time; `lg_vaidya_values.csv`, single values; reports `hck_lg_vaidya_checks*.txt`), of stage 7a (`lg_pair_levels.csv`, the exact coefficients of the levels; `lg_pair_values.csv`, the numbers of the pair; reports `hck_lg_pair_checks*.txt`), of the worked examples (`lg_worked_values.csv`; reports `hck_lg_worked_checks*.txt`), and the report of the check whether a document sends its reader elsewhere | written |
-| `figures/` | the figures of the manuscript: `fig_lg_schw_interior` and `fig_lg_schw_decay` (Figures IV.1 and IV.2; `.pdf` and `.png`), drawn by `python/lg_schw_figures.py` from the data of `lg_schw` | written for Part IV |
+| `figures/` | the figures of the manuscript: `fig_lg_schw_interior` and `fig_lg_schw_decay` (Figures IV.1 and IV.2), drawn by `python/lg_schw_figures.py` from the data of `lg_schw`, and `fig_lg_vaidya_charge` (Figure V.1), drawn by `python/lg_vaidya_figures.py` from the data of `lg_vaidya`; each as `.pdf` and `.png` | written for Parts IV and V |
 
 # 4. How to build the documents
 
@@ -165,6 +164,7 @@ python3 python/lg_curved.py
 python3 python/lg_schw.py                      # uses rust/target/release/liblgsundials_c (about 45 s)
 python3 python/lg_schw_figures.py              # the figures of Part IV, from the data of lg_schw
 python3 python/lg_vaidya.py                    # after lg_vaidya, whose data it checks (about 30 s)
+python3 python/lg_vaidya_figures.py            # the figure of Part V, from the data of lg_vaidya
 python3 python/lg_pair.py                      # stage 7a, exact levels (about 16 s); then (cd rust && ./target/release/lg_pair)
 wolframscript -file wolfram/source/lg_lord.wls data/hck_lg_lord_checks_wolfram.txt
 wolframscript -file wolfram/source/lg_curved.wls data/hck_lg_curved_checks_wolfram.txt
