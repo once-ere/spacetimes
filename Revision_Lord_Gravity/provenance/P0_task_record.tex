@@ -862,8 +862,11 @@ manuscripts be written again (C5): the rewriting of Parts I to III
 the friendlier style that he asked for; the rest of stage 7 follows
 decision D12. Parts I to III were rewritten in entries E22 to E24, and
 Part IV was written from stage 5 in entries E26 and E27, Theorem L3
-completed in E28, and Part V written from stage 6 in entry E29. Next:
-the rest of stage 7 (D12) and Part VI.
+completed in E28, and Part V written from stage 6 in entry E29. Stage 7b
+(the zeugon charge of a black hole and the scan over the cutoff, D12
+(1), (2)) was computed in entry E30. Next: the rest of stage 7 (the
+tidal break-up of the pair with tunnelling, and the annihilation of the
+pair) and Part VI.
 
 The plan is changed only with a record in Section 7.
 
@@ -1901,6 +1904,76 @@ are unchanged. Correction made while writing, before the commit: the
 draft named the task record as the place where the choice of the ingoing
 space-time is explained; the manuscript now states the reason itself (a
 referral to another document, which the rules forbid) \\
+E30 & 22 Nov 2026, 16:40 to 16:53 & stage 7b, a black hole that carries
+zeugon charge, and the scan over the cutoff (D12 (1), (2)), computed
+with checks; no manuscript text yet (it goes into Part VI). \emph{The
+geometry.} By Theorems L2 and L3 the quasi-particle is, in every
+gravitational field and field of the zeugon, a Dirac particle of mass
+\(E^{\rm CJT,gap}_{\rm SF}\) and charge \(q=\pm g^{\rm v}_{\rm LL}/2\).
+A black hole that absorbs more quasi-particles of one charge than of the
+other carries a zeugon charge \(Q\); the zeugon is massless, and the
+space-time is that of Reissner and Nordström,
+\(f=1-2\mathcal M_{\rm LG}/r+\mathcal Q^2/r^2\) with
+\(\mathcal Q^2=G_{\rm N}Q^2/(4\pi)\) in the units of the Lagrangian
+(15.2) (checked exactly with the curvature of Part III and the tensor
+(16.5) of the zeugon, YC-1 and WC-1; with \(G_{\rm N}Q^2\) in place of
+\(G_{\rm N}Q^2/(4\pi)\) the equations fail). \emph{The limit by
+selective accretion.} A particle of mass \(m\) and charge \(q\) of the
+same sign, at rest far away, reaches the horizon exactly when
+\(qQ\le4\pi G_{\rm N}M_{\rm LG}m\) (the square of its radial velocity
+times \(r^2\) is \(2(\mathcal M_{\rm LG}-x)r+x^2-\mathcal Q^2\) with
+\(x=qQ/(4\pi m)\), and equals \((r_+-x)^2\ge0\) at the horizon; LC-1,
+YC-2, WC-2). A black hole among slow quasi-particles of both charges
+therefore cannot gain more than
+\(\mathcal Q/\mathcal M_{\rm LG}=(4\pi)^{1/2}m/(qM_{\rm Pl})\), which is
+\(3.711\) \(\Lambda_{\rm LL}/M_{\rm Pl}\) for the quasi-particles:
+\(3.0\times10^{-28}\) for \(\Lambda_{\rm LL}=1\) eV,
+\(3.0\times10^{-19}\) for 1 GeV and \(3.0\times10^{-16}\) for 1 TeV, as
+small as the electric charge of astrophysical black holes and for the
+same reason: the zeugon force between two quasi-particles exceeds their
+gravitational attraction by the factor
+\(\alpha^{\rm Z}_{\rm LG}(M_{\rm Pl}/m)^2\), \(1.1\times10^{31}\) for 1
+TeV. \emph{The shadow and the ringing.} The shadow radius is
+\(b_c=r_{\rm ph}f(r_{\rm ph})^{-1/2}\) with the photon sphere
+\(r_{\rm ph}=(3\mathcal M_{\rm LG}+(9\mathcal M_{\rm LG}^2-8\mathcal Q^2)^{1/2})/2\),
+\(3\sqrt3\mathcal M_{\rm LG}(1-(\mathcal Q/\mathcal M_{\rm LG})^2/6+\dots)\)
+for a small charge and \(4\mathcal M_{\rm LG}\) for the extremal one
+(LC-2, LC-3: the coefficient \(-0.166666666666\) by Richardson's
+extrapolation; YC-3 and WC-3 exactly, with the next term
+\(-7(\mathcal Q/\mathcal M_{\rm LG})^4/216\)); in the limit of large
+angular momentum the frequencies of the ringing are multiples of
+\(1/b_c\) and change by \(+(\mathcal Q/\mathcal M_{\rm LG})^2/6\),
+relative. At the accretion limit the shadow therefore changes by
+\(-1.5\times10^{-32}\) for \(\Lambda_{\rm LL}=1\) TeV and less for
+smaller \(\Lambda_{\rm LL}\): the zeugon charge of a black hole is not
+detectable through its geometry unless \(\Lambda_{\rm LL}\) is close to
+the Planck mass. \emph{The limit by the creation of pairs.} The field
+\(Q/(4\pi r_+^2)\) at the horizon creates pairs of quasi-particles
+efficiently when it reaches the scale \(m^2/q\) of Schwinger's critical
+field (by Theorem L3 the quasi-particles obey, in a field of the zeugon,
+the Dirac equation of the mass of the gap, so that the estimate carries
+over to them); the charge at which it does, divided by the accretion
+limit, is \(4y_{\rm LG}\) with
+\(y_{\rm LG}=G_{\rm N}M_{\rm LG}m/(\hbar c)\) (LC-4, YC-4): for black
+holes with \(y_{\rm LG}<\tfrac14\) the creation of pairs is the stronger
+limit, for heavier ones the accretion. \emph{The scan} (D12 (1)):
+\texttt{data/lg\_charge\_scan.csv} gives, for \(\Lambda_{\rm LL}=1\) eV
+to 1 TeV, the quasi-particle mass, the accretion limit and the change of
+the shadow, the masses of the black holes with \(y_{\rm LG}=0.1\) (for
+example \(3.6\times10^{-11}\) solar masses for 1 eV and
+\(3.6\times10^{-23}\) for 1 TeV) and \(y_{\rm LG}=\tfrac14\), the ratio
+of the zeugon force to gravity, and the Bohr radius, the binding energy
+and the classical tidal mass of the pair of stage 7a (equal to those of
+\texttt{lg\_pair} at 1 eV, 1 GeV and 1 TeV, LC-5). Programs: the new
+crate \texttt{rust/lgcharge}, program \texttt{lg\_charge} (ALL PASS (6
+of 6)); \texttt{python/lg\_charge.py} (ALL PASS (5 of 5); sympy and
+mpmath); \texttt{wolfram/source/lg\_charge.wls} (ALL PASS (3 of 3);
+request 348, exact); fragments
+\texttt{code/scripts/write\_lg\_charge\_fragments.py}. Correction on the
+way: the first run of the Python program failed its check YC-3 because
+the expected series was compared before it was expanded (a coefficient
+of an unexpanded product reads 0); the series itself was right, and the
+check now expands it \\
 \end{longtable}
 
 \hypertarget{the-symbols-of-this-document}{%

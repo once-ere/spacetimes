@@ -1,0 +1,22 @@
+lg_charge: a black hole with zeugon charge, and the scan over the cutoff (stage 7b of task C23, Revision_Lord_Gravity, PROJECT spacetimes); geometric units G = c = hbar = 1 with M = 1 in LC-1 to LC-4
+Each line: PASS or FAIL, the identifier of the check, the measured deviation and its tolerance (or, for a
+statement that is true or false, the facts that decide it), and the statement that is checked.
+
+PASS LC-1a   the limit by selective accretion: a particle of charge-to-mass length x = q Q/(4 pi m), at rest far away, reaches the horizon of the Reissner-Nordstrom black hole (M = 1) exactly when x <= M: on a grid of 4001 radii from r_+ to 10^8 the radial velocity squared W(r) = (1 - x/r)^2 - f(r) stays >= 0 exactly in the cases x <= M (400 random cases, Qg/M in [0, 0.95], x/M in [0, 2], at least 1e-3 away from x = M) [400 cases, 0 where the grid and the closed condition disagree]
+PASS LC-1b   deviation 6.356e-16 (tolerance 1.0e-13): the identity W(r_+) r_+^2 = (r_+ - x)^2 at the horizon, on which the closed condition rests (largest relative difference)
+PASS LC-2    deviation 3.331e-16 (tolerance 1.0e-12): the shadow: the minimum of r/f(r)^(1/2) found by golden-section search equals the closed form r_ph/f(r_ph)^(1/2), r_ph = (3 + (9 - 8 Qg^2)^(1/2))/2, for Qg/M = 0, 0.2, ..., 0.95, 1 (largest relative difference; 3 3^(1/2) without charge, 4 for the extremal charge)
+PASS LC-3    deviation 3.761e-13 (tolerance 1.0e-9): for a small charge b_c = 3 3^(1/2) M (1 + c0 (Qg/M)^2 + ...) with c0 = -1/6: Richardson's extrapolation of (b_c/(3 3^(1/2) M) - 1)/(Qg/M)^2 from Qg/M = 0.01, 0.02, 0.04 gives c0 = -0.166666666666 (difference from -1/6)
+PASS LC-4    deviation 2.220e-16 (tolerance 1.0e-14): the limit by the creation of pairs (Schwinger): the charge Qg_S at which the field at the horizon reaches m^2/q, divided by the accretion limit Qg_acc, is 4 y, y = G M m/(hbar c), for a small charge (r_+ = 2 M); four cases (largest relative difference)
+PASS LC-5    deviation 2.220e-16 (tolerance 1.0e-12): the scan over Lambda_LL = 1 eV to 1 TeV (data/lg_charge_scan.csv): the masses of the black holes that tear the pair of stage 7a apart classically, at Lambda_LL = 1 eV, 1 GeV and 1 TeV, equal those of the program lg_pair (data/lg_pair_values.csv; largest relative difference)
+
+Notes:
+  Qg/M = 0: b_c = 5.1961524227 (search 5.1961524227)
+  Qg/M = 0.2: b_c = 5.1612375818 (search 5.1612375818)
+  Qg/M = 0.4: b_c = 5.0529772883 (search 5.0529772883)
+  Qg/M = 0.6: b_c = 4.8586941932 (search 4.8586941932)
+  Qg/M = 0.8: b_c = 4.5459862721 (search 4.5459862721)
+  Qg/M = 0.95: b_c = 4.1761632517 (search 4.1761632517)
+  Qg/M = 1: b_c = 4.0000000000 (search 4.0000000000)
+  E_gap = 0.3663906649346106 (from data/lg_curved_values.csv), q = g^v/2 = 0.35, alpha_Z = 0.0097482403; Qg_acc/M = 3.710917 Lambda_LL/M_Pl; the extremal shadow 4
+
+VERDICT: ALL PASS (6 of 6)

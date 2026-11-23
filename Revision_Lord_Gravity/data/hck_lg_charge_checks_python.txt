@@ -1,0 +1,14 @@
+lg_charge.py: the independent check of stage 7b of task C23, a black hole with zeugon charge and the scan over the cutoff (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check (YC and a number; the counterpart of the check LC of the Rust program lg_charge),
+the measured deviation and its tolerance (or the facts that decide it), and the statement.
+
+PASS YC-1    the geometry: with the zeugon field A = (Q/(4 pi r)) dt the metric f = 1 - 2 G M/r + Qg^2/r^2, Qg^2 = G Q^2/(4 pi), solves G_{mu nu} = 8 pi G T_{mu nu} with the curvature (14.2), (14.3) and the tensor (16.5) of the zeugon, exactly (sympy); with Qg^2 = G Q^2 it does not (the control) [residual [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; control, component tt: G*Q**2*(-1 + 4*pi)*(-2*G*M*r + G*Q**2 + r**2)/(4*pi*r**6)]
+PASS YC-2    the limit by selective accretion: W(r) r^2 = 2 (M - x) r + x^2 - Qg^2 and W(r_+) r_+^2 = (r_+ - x)^2 (r_+ = M + (M^2 - Qg^2)^(1/2)), so W >= 0 on r >= r_+ exactly when x <= M; the threshold q Q = 4 pi G M m gives Qg/M = (4 pi G)^(1/2) m/q = (4 pi)^(1/2) (m/M_Pl)/q (sympy) [W r^2 = 2*M*r - Q_g**2 - 2*r*x + x**2; at r_+: 0; Qg/M at the threshold = 2*sqrt(pi)*sqrt(G)*m/q]
+PASS YC-3    the shadow: d(r^2/f)/dr = 0 is r^2 - 3 M r + 2 Qg^2 = 0 (times positive factors), solved by r_ph = (3 M + (9 M^2 - 8 Qg^2)^(1/2))/2; b_c = (r_ph^2/f(r_ph))^(1/2) = 3 3^(1/2) M (1 - (Qg/M)^2/6 + ...) and 4 M for the extremal charge (sympy series) [d/dr (r^2/f) = 2*r**3*(-3*M*r + 2*Q_g**2 + r**2)/(-2*M*r + Q_g**2 + r**2)**2; series -7*sqrt(3)*epsilon**4/72 - sqrt(3)*epsilon**2/2 + 3*sqrt(3); extremal b_c/M = 4]
+PASS YC-4    the limit by the creation of pairs: with r_+ = 2 M, Qg_S/Qg_acc = 4 M m, i.e. 4 y with y = G M m/(hbar c) (sympy) [ratio 4*M*m]
+PASS YC-5    deviation 4.609e-16 (tolerance 1.0e-13): the scan data/lg_charge_scan.csv (13 values of Lambda_LL, 12 columns) recomputed from the closed forms in arithmetic of 30 digits (mpmath): largest relative difference
+
+Notes:
+  run time 2 s
+
+VERDICT: ALL PASS (5 of 5)

@@ -1,0 +1,15 @@
+# lgcharge: the program lg_charge of the folder Revision_Lord_Gravity (PROJECT spacetimes): stage 7b of task C23, a black
+# hole that carries zeugon charge (its limits by selective accretion and by the creation of pairs, its shadow), and the
+# scan of the predictions over the cutoff Lambda_LL in physical units (decision D12 of the task record).
+[package]
+name = "lgcharge"
+version = "0.1.0"
+edition = "2021"
+description = "A black hole with zeugon charge: the limits of the charge, the shadow, and the scan over the cutoff"
+
+[dependencies]
+lgcore = { path = "../lgcore" }
+
+[[bin]]
+name = "lg_charge"
+path = "src/main.rs"

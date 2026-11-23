@@ -1,0 +1,12 @@
+lg_charge.wls: the exact checks of stage 7b of task C23, a black hole with zeugon charge (Revision_Lord_Gravity, PROJECT spacetimes)
+Each line: PASS or FAIL, the identifier of the check in this script (WC and a number), the statement and, in brackets, the
+facts that decide it.  All checks are exact.
+
+PASS WC-1     (Python YC-1) with the zeugon field A = (Q/(4 pi r)) dt the metric with f = 1 - 2 G M/r + G Q^2/(4 pi r^2) solves G_{mu nu} = 8 pi G T_{mu nu} (the curvature of Landau and Lifshitz, the tensor (16.5) of the zeugon) exactly; with G Q^2/r^2 it does not (the control) [residual {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; control tt (gN*(-1 + 4*Pi)*qq^2*(gN*qq^2 - 2*gN*mm*rr + rr^2))/(4*Pi*rr^6)]
+PASS WC-2     (Rust LC-1; Python YC-2) W r^2 = 2 (1 - x) r + x^2 - Qg^2 and W(r_+) r_+^2 = (r_+ - x)^2 (M = 1); and for Qg^2 = 0, 1/4, 1/2, 9/16, 3/4, 99/100 Reduce decides that W >= 0 for every r >= r_+ exactly when 0 < x <= M [identities {0, 0}; Reduce: {Inequality[0, Less, x, LessEqual, 1], Inequality[0, Less, x, LessEqual, 1], Inequality[0, Less, x, LessEqual, 1], Inequality[0, Less, x, LessEqual, 1], Inequality[0, Less, x, LessEqual, 1], Inequality[0, Less, x, LessEqual, 1]}]
+PASS WC-3     (Rust LC-2, LC-3; Python YC-3) d(r^2/f)/dr = 0 is r^2 - 3 r + 2 Qg^2 = 0, solved by r_ph = (3 + (9 - 8 Qg^2)^(1/2))/2; b_c = 3 3^(1/2) (1 - Qg^2/6 - 7 Qg^4/216 + ...) and b_c = 4 for the extremal charge (M = 1) [d/dr (r^2/f) = (2*r^3*(2*q2 - 3*r + r^2))/(q2 - 2*r + r^2)^2; series 3*Sqrt[3] - (Sqrt[3]*eps^2)/2 - (7*eps^4)/(24*Sqrt[3]); extremal 4]
+
+Notes:
+  Wolfram Language 15.0.1; run time 0 s
+
+VERDICT: ALL PASS (3 of 3)
