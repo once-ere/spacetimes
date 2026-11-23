@@ -267,7 +267,13 @@ methods. The Mathematica notebook \texttt{superfluid.nb} named in
 Section 6.3 is written part by part; its first version repeats the
 computations of Part I in the Wolfram language, each with its
 counterparts in the two programs, and the corrections that it brought to
-the programs of Part I are listed in Section 17.5.
+the programs of Part I are listed in Section 17.5. On 22 November 2026
+the manuscript was made friendlier and complete in itself, as the author
+asked for all the manuscripts of the project: a word list (Section 0.1),
+the findings (Section 0.2), a paragraph \emph{In words} at the beginning
+of every main section, and Appendix A with the algebra and an example of
+every object; Section 17.8 lists what else changed. The results, the
+programs and the numbers are unchanged.
 
 \textbf{The correction of 21 November 2026.} The author stated on 21
 November 2026 that the spinor field of this work, the DiracLike spinor,
@@ -284,14 +290,466 @@ the Standard Model is withdrawn.
 
 \textbf{How to read it.} The manuscript is written for a reader who
 knows quantum mechanics, special relativity and the Dirac equation at
-the level of a first graduate course. It defines every symbol before it
-is used (all symbols are also collected in Section 18), shows every step
-of every derivation, and states for every result how it was checked.
-Nothing is left to another document.
+the level of a first graduate course, and who wants to learn the
+subject, not only its words. Every technical word is explained in
+Section 0.1 before the findings, and again where it is first used; every
+main section begins with a paragraph \emph{In words} that says in plain
+language what the section does and why, before the formulas do it; and
+Appendix A builds the algebra from which the fields come (the octonions
+and a Moufang loop, the bi-octonions and the Lorentz super-loop, M31,
+the eight spinor charges, a Dirac spinor, an isodoublet, an isovector,
+an isodoublet of Dirac spinors, and the spin-zero superfluid of the
+spinor charges), with an explicit example of every object. The
+manuscript defines every symbol before it is used (all symbols are also
+collected in Section 18), shows every step of every derivation, and
+states for every result how it was checked. Nothing is left to another
+document. A reader who meets the algebra for the first time can begin
+with Appendix A; a reader who wants the results first can read Section
+0.2 and then the \emph{In words} paragraphs of Sections 2 to 15.
+
+\hypertarget{words-used-in-this-manuscript}{%
+\subsection{0.1 Words used in this
+manuscript}\label{words-used-in-this-manuscript}}
+
+The documents of the revision use the following words. Each is explained
+here in a few sentences, so that a reader who meets it in the text knows
+what it means; the formulas come in the sections that use them. Appendix
+A builds the algebra from which the fields come, with an example of
+every object.
+
+\textbf{The fields and their charges}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Dirac field, Dirac spinor.} A field of spin \(\tfrac12\) with
+  four components per point that obeys the Dirac equation; a Dirac
+  spinor is one solution, such as the wave function of an electron of
+  given momentum and spin. In the chiral basis its upper two components
+  are \emph{left-handed} and its lower two \emph{right-handed}; each
+  pair is a \emph{Weyl spinor}.
+\item
+  \emph{Isospin, isodoublet, isovector (isospin triplet), singlet.}
+  Isospin is a symmetry group \(SU(2)\) that mixes fields without
+  touching space-time, as rotations mix the components of a spin. An
+  \emph{isodoublet} is a pair of fields that it mixes like the two
+  states of a spin \(\tfrac12\) (``up'' and ``down''); an
+  \emph{isovector} or \emph{isospin triplet} is a set of three fields
+  that it turns like a vector in three dimensions; a \emph{singlet} is a
+  field that it leaves alone. Two isodoublets combine into a triplet and
+  a singlet. Appendix A.5 gives an example of each.
+\item
+  \emph{\(\Psi_{\rm LL}\), the isodoublet of Dirac spinors of the spinor
+  charges.} The field of the eight spinor charges of the Lorentz
+  super-loop: two Dirac spinors (up and down) that isospin mixes, eight
+  complex components in all (Appendix A.4).
+\item
+  \emph{Weak isospin, hypercharge, electric charge.} The gauge group of
+  the electroweak interactions of the Standard Model is
+  \(SU(2)_L\times U(1)_Y\). Its \(SU(2)_L\) is the \emph{weak isospin},
+  with the third component \(T^3\); its \(U(1)_Y\) has the charge \(Y\),
+  the \emph{hypercharge}, which says how strongly a field couples to the
+  gauge field \(B_\mu\). The \emph{electric charge} is \(Q=T^3+Y\) (the
+  rule of Gell-Mann and Nishijima).
+\item
+  \emph{Vector-like.} A field whose left-handed and right-handed
+  components carry the same charges. The quarks and leptons of the
+  Standard Model are not vector-like (their left-handed components are
+  doublets, their right-handed ones singlets); the three fields of the
+  revision are.
+\item
+  \emph{Anomaly.} The loss, through quantum effects, of a symmetry of
+  the classical theory; a gauge theory with an anomaly is inconsistent.
+  Vector-like fields contribute none.
+\item
+  \emph{Particle number, relative number.} Two numbers that the
+  interaction of the revision conserves: the number of particles of all
+  three fields, and the number of particles of \(\Psi_{\rm LL}\) minus
+  the number of particles of the singlets.
+\end{itemize}
+
+\textbf{Symmetries and their breaking}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Gauge group, gauge field, covariant derivative.} A gauge group
+  is a group of symmetry transformations that may differ from point to
+  point of space-time. Keeping the derivatives of the fields covariant
+  needs a field for each generator, the gauge field, and turns the
+  derivative into the covariant derivative.
+\item
+  \emph{Spontaneous breaking, vacuum.} A symmetry is broken
+  spontaneously when the equations keep it but the state of lowest
+  energy, the \emph{vacuum}, does not; the vacuum then belongs to a
+  family of equally good vacua related by the symmetry.
+\item
+  \emph{Goldstone mode.} For every generator of a global symmetry that
+  the vacuum breaks there is a way of changing the state that costs no
+  energy, because it only turns the vacuum into another vacuum of the
+  family: a Goldstone mode, a massless excitation. In a gauge theory the
+  Goldstone modes of the gauge generators become the third
+  (longitudinal) polarization of the gauge bosons, which become massive:
+  the \emph{Higgs mechanism}.
+\item
+  \emph{Custodial symmetry, \(SU(2)_{\rm R}\), \(SU(2)_{\rm V}\).} With
+  the hypercharge coupling switched off, the theory has a larger
+  symmetry \(SU(2)_L\times SU(2)_{\rm R}\), in which \(SU(2)_{\rm R}\)
+  turns the pair of singlets as a doublet. A vacuum proportional to
+  \(i\tau^2\) keeps the diagonal subgroup \(SU(2)_{\rm V}\), the
+  transformations with equal elements of \(SU(2)_L\) and
+  \(SU(2)_{\rm R}\); this is the \emph{custodial symmetry}. Its name
+  comes from its job in the Standard Model: as long as it holds, the
+  masses that the vacuum gives the \(W\) and \(Z\) bosons obey
+  \(M_W=M_Z\cos\theta_W\) (\(\rho=1\), below); the symmetry ``keeps
+  custody'' of this relation.
+\item
+  \emph{Custodial superfluid, custodial vacuum.} The superfluid whose
+  vacuum keeps the custodial symmetry: both pair fields condense with
+  equal lengths, the down member of \(\Psi_{\rm LL}\) pairing with the
+  first singlet and the up member with the second.
+\item
+  \emph{Bidoublet; two Higgs doublets.} A \(2\times2\) matrix of fields
+  on which \(SU(2)_L\) acts from the left and \(SU(2)_{\rm R}\) from the
+  right. The two columns of the matrix of the pair fields are doublets
+  of \(SU(2)_L\); with the conjugate of the second they have the quantum
+  numbers of two Higgs doublets, the scalar content of the models with
+  two Higgs doublets.
+\item
+  \emph{The parameter \(\rho\).} The ratio
+  \(M_W^2/(M_Z^2\cos^2\theta_W)\), with the weak mixing angle
+  \(\theta_W\) (\(\tan\theta_W=g'/g\)); it is 1 at tree level in the
+  Standard Model because of the custodial symmetry.
+\item
+  \emph{Earlier and revised hypotheses; first and second version.} The
+  \emph{earlier hypotheses} are the superfluid of the spinor charges of
+  Appendix A.6, with a scalar and a vector contact term of
+  \(\Psi_{\rm LL}\) and gauge fields of its isospin and its fermion
+  number; there \(\Psi_{\rm LL}\) had no electric charge, its isospin
+  was the symmetry of a new interaction, and pairs of two members of
+  \(\Psi_{\rm LL}\) condensed. The \emph{revised hypotheses} give
+  \(\Psi_{\rm LL}\) the electroweak charges and let it pair with
+  singlets. Their \emph{first version} has one singlet, their
+  \emph{second version} two; the second is the model of the revision,
+  the first the comparison.
+\end{itemize}
+
+\textbf{States and methods}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Condensate, superfluid, order parameter.} A \emph{condensate} is
+  a state in which a macroscopic number of particles, here pairs of
+  fermions, occupy the same quantum state; a condensate of pairs of
+  fermions is a \emph{superfluid} (in a metal, a superconductor). Its
+  \emph{order parameter} is the expectation value of the pair field:
+  zero in the normal state, nonzero in the condensate.
+\item
+  \emph{Normal vacuum.} The state without pairs: every negative-energy
+  state of the free Dirac fields is filled and every positive one empty.
+\item
+  \emph{Gap, quasi-particle.} In a superfluid it costs at least a finite
+  energy, the \emph{gap}, to break a pair. The elementary excitations
+  are \emph{quasi-particles}, mixtures of a particle and a missing
+  partner of a pair (a hole).
+\item
+  \emph{Matrix of Bogoliubov and de Gennes (BdG matrix).} The matrix
+  whose eigenvectors are the quasi-particles; it couples the field at
+  the momentum \(\vec q\) with its conjugate at \(-\vec q\).
+\item
+  \emph{Mean field.} The first approximation for a contact interaction
+  of four fermion fields: each field feels the average of all the
+  others, and the state is the best state of independent
+  quasi-particles. BCS theory of superconductivity is a mean-field
+  theory.
+\item
+  \emph{Uniform quasi-free state.} A state that is the same at every
+  point of space and in which every average of a product of fields is
+  fixed by the averages of products of two fields, the \emph{normal}
+  averages \(\langle\psi^\dagger\psi\rangle\) and the \emph{pair}
+  averages \(\langle\psi\psi\rangle\) (Wick's theorem). It is the ground
+  state of a BdG matrix.
+\item
+  \emph{Self-energy (normal, pair).} The constant matrices in the BdG
+  matrix that the interaction contributes: the \emph{normal} self-energy
+  shifts the masses and energies of the particles; the \emph{pair}
+  self-energy creates and destroys pairs (it is the gap parameter of BCS
+  theory).
+\item
+  \emph{Direct, exchange and pair contractions (Hartree, Fock, BCS).}
+  The three ways in which Wick's theorem writes the average of a product
+  of four fields as products of averages of two.
+\item
+  \emph{HS, KS, CJT; pairing-only methods.} The five mean-field methods
+  of the revision. \emph{HS} \((s_{\rm S},s_{\rm V})\) is the method of
+  Hubbard and Stratonovich at the saddle point: it rewrites the square
+  of a bilinear of fields with an auxiliary field, which at the saddle
+  point equals the average of the bilinear; the shares \(s_{\rm S}\),
+  \(s_{\rm V}\) of the scalar and the vector term are rewritten in
+  density channels, the rest in pair channels, and no exchange
+  contraction is kept. \emph{KS} is the method of Kohn and Sham of
+  density-functional theory, with all three contractions and the
+  exchange projected onto local densities. \emph{CJT} is the effective
+  action of Cornwall, Jackiw and Tomboulis, a functional of the averages
+  of two fields whose stationary points are the self-consistent states,
+  with all three contractions. In HS (0,1) and HS (0,0), the
+  \emph{pairing-only methods}, only the pairing terms act on the states
+  of the revision.
+\item
+  \emph{Stationary (self-consistent) state.} A state whose self-energies
+  are those that its own averages produce.
+\item
+  \emph{Static response; critical coupling.} If a small static field of
+  some kind is imposed on a state, the state answers with averages of
+  that kind; the ratios of answer to cause are the eigenvalues of the
+  \emph{static response}. An eigenvalue above 1 means that the answer
+  grows by itself: the state is unstable in that direction. The
+  \emph{critical coupling} is the coupling at which the largest
+  eigenvalue of the normal vacuum reaches 1; above it, the pairs
+  condense.
+\item
+  \emph{Cutoff \(\Lambda_{\rm LL}\).} The largest momentum of the
+  uniform states; it is the unit of energy and of momentum.
+\end{itemize}
+
+\textbf{Responses, masses and modes}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Effective potential; Mexican hat.} The energy of the best
+  uniform state with a prescribed size of the order parameter. As a
+  function of the complex pair amplitude it is high at zero and lowest
+  on a circle, like the brim of a hat: a \emph{Mexican hat}. The points
+  of the brim differ only by the phase of the condensate.
+\item
+  \emph{Susceptibility; phase stiffness.} A uniform static gauge field
+  acts on the charges like a chemical potential; the
+  \emph{susceptibilities} say how much charge the state takes up in
+  answer. For a condensate they measure its \emph{phase stiffness}, the
+  energy that it costs to twist the phase of the condensate from point
+  to point, and they give the gauge bosons their masses.
+\item
+  \emph{Scale \(v_{\rm SH}\).} The scale of the breaking, defined by
+  \(M_W=\tfrac12gv_{\rm SH}\) as the Standard Model defines \(v=246.22\)
+  GeV.
+\item
+  \emph{Amplitude mode.} On the Mexican hat a small oscillation of the
+  condensate can go two ways. Along the brim it changes only the phase
+  (the Goldstone modes). Across the brim it changes the size of the
+  condensate; this costs energy and has a finite frequency: the
+  \emph{amplitude mode}. In the Standard Model the Higgs boson is the
+  amplitude mode of the Higgs field, so the amplitude mode of the
+  superfluid is the candidate for the Higgs boson.
+\item
+  \emph{Linear response; pole.} How a state answers a small disturbance
+  that oscillates with the frequency \(\omega\). A natural oscillation
+  of the state shows up as a \emph{pole} of the response, a frequency at
+  which an arbitrarily small push gives a finite answer.
+\item
+  \emph{Effective Lagrangian.} The description of the slow,
+  long-wavelength motions of the order parameter by a kinetic term and
+  the effective potential; it gives the amplitude mode to leading order
+  in its frequency.
+\item
+  \emph{Threshold; bound state; resonance.} The \emph{threshold} is the
+  lowest energy of two free quasi-particles, the energy that breaks a
+  pair. A mode below it is a \emph{bound state} of two quasi-particles
+  and does not decay; a mode above it can decay into pairs and is a
+  \emph{resonance}, with a width.
+\item
+  \emph{Time-dependent mean field.} The equations of motion of the
+  averages of a quasi-free state, integrated in time (here with the
+  integrator CVODE of SUNDIALS).
+\item
+  \emph{Josephson relation.} With a chemical potential \(\mu\) of the
+  particle number the phase of a condensate of pairs turns at the rate
+  \(2\mu\), because a pair carries the particle number 2.
+\item
+  \emph{Critical region.} The range of temperatures near a phase
+  transition in which the fluctuations of the order parameter, which the
+  mean field leaves out, dominate; its width is estimated by the
+  criterion of Levanyuk and Ginzburg.
+\end{itemize}
+
+\textbf{Further words of this manuscript.} The following words are used
+here and not in the other documents of the folder.
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{DiracLike spinor.} The name of the spinor field of this
+  manuscript: it transforms under \(SL(2,\mathbb C)\) as a Dirac spinor,
+  but it is a new particle, not the electron; it has electric charge 0
+  and no electroweak quantum numbers (Section 1).
+\item
+  \emph{GEE.} The author's name for the gauge group
+  \(SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}\) of
+  this manuscript: Lorentz transformations of the frame, isospin
+  rotations and phases of the fermion number, all allowed to change from
+  point to point (Section 4).
+\item
+  \emph{Superfluid boson singlet state; \(\mathrm{SFBSv}^X\).} The
+  author's names for the condensate of the pairs of spin zero, and for
+  the expansion of its effective Lagrangian about the vacuum of the
+  method \(X\) (Section 13).
+\item
+  \emph{Landau levels.} The discrete energies of a charged particle in a
+  constant magnetic field: its circular motion across the field is
+  quantized (Section 7.2).
+\item
+  \emph{Kink.} A configuration of a field that goes over from one vacuum
+  to another across a wall, here the pair field
+  \(\Delta^\infty_{\rm LL}\tanh(x^1_{\rm LL}/\ell^{\rm K}_{\rm LL})\),
+  which changes sign; particles can be bound to the wall (Section 7.4).
+\item
+  \emph{Wilson lattice.} A grid of points that replaces a space
+  coordinate, with an extra term in the Dirac operator (Wilson's term)
+  that removes spurious solutions of the discretized equation; its error
+  falls in proportion to the spacing (Sections 6.2 and 7).
+\item
+  \emph{Richardson extrapolation.} The estimate of the limit of a
+  quantity known at a few values of a small parameter (here the spacing
+  of a grid), by combinations of the values that cancel the leading
+  powers of the parameter.
+\item
+  \emph{Recursion of the potential; \(V^{(0)}_{\rm SF}\),
+  \(V^{(1)}_{\rm SF}\), \(V^{(2)}_{\rm SF}\).} The sequence of
+  self-interactions that the task asked for: the potential is changed
+  step by step until all three methods find a superfluid (Section 10).
+\item
+  \emph{Effective couplings.} The coefficients with which the energy of
+  a method contains each channel of the interaction (Section 9.4).
+\item
+  \emph{Free energy, critical temperature.} At the temperature \(T\) the
+  state of equilibrium minimizes the energy minus \(T\) times the
+  entropy, the free energy; the critical temperature is the temperature
+  at which the condensate disappears (Section 12.4).
+\item
+  \emph{Landau's theory; Ginzburg number.} Landau's theory of a
+  continuous phase transition expands the free energy in powers of the
+  order parameter near the critical temperature. Mean-field theory
+  leaves out the fluctuations of the order parameter; the Ginzburg
+  number measures the relative width of the range of temperatures around
+  the critical one in which they dominate and mean-field theory fails
+  (Section 12.5).
+\item
+  \emph{Mass matrix of the gauge bosons; Higgs mechanism; longitudinal
+  polarization.} In a condensate that carries a charge of a gauge group,
+  the gauge bosons of the broken generators acquire masses, given by a
+  matrix; a massless vector boson has two polarizations and a massive
+  one three, and the third, longitudinal, polarization is the former
+  Goldstone mode (the Higgs mechanism; Sections 13.3, 14 and 15.4).
+\item
+  \emph{Stabilizer; \(O(2)\); semidirect product.} The stabilizer of a
+  state is the subgroup that leaves it unchanged. \(O(2)\) is the group
+  of the rotations and the reflections of a plane; it is the circle
+  group \(U(1)\) together with one reflection that reverses the
+  direction of the rotations, a \emph{semidirect product} (Section
+  14.4).
+\item
+  \emph{Zeugon.} The massless gauge boson
+  \(A_{{\rm SF},p}=W^3_{{\rm SF},p}\) of the superfluid (Sections 11 and
+  14), from the Greek for a yoked pair: it attracts the two members of a
+  condensed pair. It is not the photon.
+\item
+  \emph{Alice electrodynamics.} A gauge theory of a \(U(1)\) in which
+  the reversal of the charge is itself a gauge transformation, as in the
+  surviving group \(O(2)\) of this superfluid (Section 14.4).
+\item
+  \emph{Collective modes.} Oscillations of the condensate as a whole,
+  such as the oscillation of its amplitude (Section 15.2).
+\item
+  \emph{CVODE, IDA.} The integrators of SUNDIALS, a library of the
+  Lawrence Livermore National Laboratory: CVODE integrates ordinary
+  differential equations, IDA differential-algebraic equations
+  (equations of which some contain no derivative in time); both choose
+  their steps so that the estimated error stays below a set tolerance
+  (Section 6.3).
+\end{itemize}
+
+\hypertarget{the-findings}{%
+\subsection{0.2 The findings}\label{the-findings}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \emph{Space-time and the spinor field come from the super-loop.} M31,
+  the space of the Hermitian bi-quaternions, is Minkowski space-time,
+  and its Lorentz group is contained in the Lorentz super-loop (Section
+  2). The spinor field of the solution must be an isodoublet of Dirac
+  spinors with eight components (theorem D1, Section 3.4), and its pairs
+  of spin zero are isospin triplets (Section 3.5).
+\item
+  \emph{The gauge theory is written out completely.} The GEE covariant
+  derivatives, the Lagrangian with the mass term, the self-interaction
+  and the Yang-Mills terms, and the field equations (Sections 4 and 5),
+  also in the form needed for numerical solution (Section 6); four
+  analytic solutions, plane waves, Landau levels, the uniform superfluid
+  and the kink with its bound states, test the programs (Section 7).
+\item
+  \emph{No gauge boson forms the pairs.} In the symmetric vacuum no
+  gauge boson of GEE attracts a pair of spin zero, and the exchange of
+  the four massless gauge bosons repels; the pairing comes from the
+  pairing term of the self-interaction (Sections 8 and 11).
+\item
+  \emph{A superfluid in every method.} With the potential
+  \(V^{(2)}_{\rm SF}\) every method finds a superfluid ground state, the
+  \emph{polar} state (one isovector direction of the pair field). In
+  CJT, which coincides with KS by a theorem (Section 9.2), its energy
+  per volume relative to the normal vacuum is \(-0.0002422384966\), its
+  pair amplitude \(\lvert D^{\rm CJT}_{\rm SF}\rvert=0.3284861084\), its
+  Dirac mass \(0.1622929325\) and its gap \(0.3663906649\), all in units
+  of the cutoff (Section 10).
+\item
+  \emph{The gauge bosons in the superfluid.} \(W^1\), \(W^2\) and \(B\)
+  acquire masses (\(0.04302319693\) and \(0.05754210808\) in CJT with
+  the exchange of the bosons), and \(W^3\) stays massless: the zeugon,
+  the only gauge boson that attracts the two members of a condensed
+  pair. Alone it would pair the vacuum only for
+  \(g^{\rm v}_{\rm LL}>5.290206869\), almost eight times the coupling of
+  the model (Sections 11 and 14).
+\item
+  \emph{The effective Lagrangian and the temperature.} The effective
+  potential of the pair field has the shape of a Mexican hat. At a
+  finite temperature the condensate disappears at the critical
+  temperatures \(0.214\) (HS (0, 0)) to \(0.260\) (HS (1, 1)) of the
+  cutoff; near them the order parameter is small and Landau's theory
+  holds, but the Ginzburg number, larger than 1 in every method, places
+  these temperatures inside the critical region, where the fluctuations
+  that the mean-field methods leave out dominate (Sections 12.4 and
+  12.5).
+\item
+  \emph{The surviving symmetry.} The surviving group is
+  \(SL(2,\mathbb C)\times O(2)\): its circle group
+  \(U(1)^{\rm Q}_{\rm LL}\), the group of the charge
+  \(Q_{\rm LL}=T^3_{\rm LL}\) (not the electric charge), has the
+  massless zeugon, and its reflection reverses the zeugon (Sections 13
+  and 14).
+\item
+  \emph{Not the Higgs field of the Standard Model.} The superfluid is
+  the Higgs field of its own gauge group: it gives the massive bosons
+  their masses and has an amplitude mode. It cannot be the Higgs field
+  of the Standard Model, because the spinor field carries no electroweak
+  charge (Section 14.6).
+\item
+  \emph{The superfluid in time.} The condensate grows from the unstable
+  normal vacuum, oscillates in its collective modes, the zeugon radiates
+  while a massive gauge boson stays bound, and the Goldstone wave
+  becomes the longitudinal part of the massive \(Z\) (Section 15).
+\end{enumerate}
 
 \hypertarget{conventions-units-and-notation}{%
 \section{1. Conventions, units and
 notation}\label{conventions-units-and-notation}}
+
+\emph{In words.} This section fixes the units (every energy in units of
+the momentum cutoff), the names of the indices and the matrices, and the
+rule that one symbol names one object. It also explains why the gauge
+theory of this manuscript borrows its names from the electroweak theory
+of the Standard Model although it is a different, new theory.
 
 \textbf{Units.} Planck's constant and the speed of light are 1.
 Energies, masses and momenta are measured in units of the momentum
@@ -338,11 +796,13 @@ otherwise), also written with isospin indices. \(\mathrm{tr}\),
 usual meanings.
 
 \textbf{Suffixes.} The project uses one symbol for one object. A symbol
-with the suffix LL is taken unchanged from the earlier work of the
-project on the super-loop; a symbol with the suffix SF is introduced by
-this solution; indices, operations, number sets, the author's own names
-(M31, GEE, the effective Lagrangians, \(\mathrm{SFBSv}\)) and the
-symbols of the Standard Model below carry no suffix.
+with the suffix LL names an object of the algebra of the Lorentz
+super-loop or of the spinor field built from it (Sections 2 and 3,
+Appendix A), with the name that the project gave it before this
+solution; a symbol with the suffix SF is introduced by this solution;
+indices, operations, number sets, the author's own names (M31, GEE, the
+effective Lagrangians, \(\mathrm{SFBSv}\)) and the symbols of the
+Standard Model below carry no suffix.
 
 \textbf{The author's conventions (the Standard Model).} The author gave
 the gauge-covariant derivative of the Higgs doublet of the electroweak
@@ -390,6 +850,17 @@ check this for 20 values of \((g,g',v)\).
 \hypertarget{the-manifold-m31-of-the-lorentz-super-loop-item-1-of-the-problem}{%
 \section{2. The manifold M31 of the Lorentz super-loop (item 1 of the
 problem)}\label{the-manifold-m31-of-the-lorentz-super-loop-item-1-of-the-problem}}
+
+\emph{In words.} The space-time of this manuscript is built from an
+algebra. Complex quaternions (bi-quaternions) are written as
+\(2\times2\) complex matrices; the Hermitian ones are the points of a
+four-dimensional space, M31, and the ones of determinant 1 act on them
+as Lorentz transformations. Doubling the bi-quaternions gives the
+bi-octonions, whose elements of norm 1 form the Lorentz super-loop, a
+set with a product that is not associative. This section shows that M31
+is Minkowski space-time and that its Lorentz group is contained in the
+super-loop. Appendix A builds the same objects with an explicit example
+of each.
 
 \hypertarget{bi-quaternions-and-their-matrices}{%
 \subsection{2.1 Bi-quaternions and their
@@ -602,6 +1073,17 @@ orthochronous, and the homomorphism; and the 27 commutators (2.11).
 the
 problem)}\label{the-spinor-fields-on-m31-and-the-diraclike-field-item-2-of-the-problem}}
 
+\emph{In words.} A spinor is an object that changes sign under a
+rotation by \(360°\). In the super-loop the elements
+\(\mathbf b\,\mathbf e_4\), the \emph{spinor charges}, transform as
+spinors under the unit bi-quaternions. This section builds the
+two-component spinors, the Dirac matrices and the spinor field
+\(\Psi_{\rm LL}\) of this work, an isodoublet of Dirac spinors (two
+Dirac spinors that an isospin rotation mixes, eight components in all);
+it proves that the field must be an isodoublet (theorem D1), and it
+builds its pairs of spin zero. Appendix A.5 gives an example of a Dirac
+spinor, an isodoublet, an isovector and an isodoublet of Dirac spinors.
+
 \hypertarget{two-component-spinors-and-the-spinor-charges-of-the-super-loop}{%
 \subsection{3.1 Two-component spinors and the spinor charges of the
 super-loop}\label{two-component-spinors-and-the-spinor-charges-of-the-super-loop}}
@@ -617,10 +1099,10 @@ changes the sign of \(\chi\) but not of \(\chi\chi^\dagger\).
 
 \textbf{The spinor charges.} A spinor charge of the super-loop is a
 bi-octonion \(\mathbf b\,\mathbf e_4\) with a bi-quaternion
-\(\mathbf b\) (the name is that of the earlier work: a spinor charge is
-the algebraic object that transforms as a spinor; it carries no electric
-charge). By (2.3), the multiplication by a unit bi-quaternion
-\(\mathbf g\) of the super-loop acts on it as
+\(\mathbf b\) (the name of the project: a spinor charge is the algebraic
+object that transforms as a spinor; despite the word ``charge'' it
+carries no electric charge). By (2.3), the multiplication by a unit
+bi-quaternion \(\mathbf g\) of the super-loop acts on it as
 \[(\mathbf b\,\mathbf e_4)\,\mathbf g=(\mathbf b\bar{\mathbf g})\,\mathbf e_4,\qquad\mathbf g\,(\mathbf b\,\mathbf e_4)=(\mathbf b\mathbf g)\,\mathbf e_4\tag{3.1}\]
 (in (2.3) put \(\mathbf a=0\), \(\mathbf c=\mathbf g\), \(\mathbf d=0\)
 for the first, and \(\mathbf a=\mathbf g\), \(\mathbf b=0\),
@@ -960,6 +1442,15 @@ The pseudoscalar pair operators \(\Pi'^\iota_{\rm LL}\) have
 (item 3 of the
 problem)}\label{the-gauge-group-gee-and-the-gee-gauge-covariant-derivatives-item-3-of-the-problem}}
 
+\emph{In words.} A gauge theory makes a symmetry local: the
+transformation may differ from point to point. The derivative of a field
+then no longer transforms like the field, and it must be corrected by
+gauge fields; the corrected derivative is the \emph{covariant
+derivative}. This section does this for the group GEE: the Lorentz
+transformations of the frame, the isospin rotations and the phases of
+the fermion number. It writes the covariant derivative of every field,
+the field strengths and the currents.
+
 \hypertarget{the-group-and-its-local-transformations}{%
 \subsection{4.1 The group and its local
 transformations}\label{the-group-and-its-local-transformations}}
@@ -1124,6 +1615,13 @@ Lagrangian density (C-11).
 \hypertarget{the-lagrangian-and-the-field-equations-item-4-of-the-problem}{%
 \section{5. The Lagrangian and the field equations (item 4 of the
 problem)}\label{the-lagrangian-and-the-field-equations-item-4-of-the-problem}}
+
+\emph{In words.} The Lagrangian of the solution has three parts: the
+Dirac term of the spinor field with its mass, the self-interaction of
+the spinor field (a contact interaction of four fields, the potential of
+the task), and the terms of the gauge fields. Its variation gives the
+field equations of the spinor field and of the gauge fields, which this
+section writes out.
 
 \hypertarget{the-lagrangian}{%
 \subsection{5.1 The Lagrangian}\label{the-lagrangian}}
@@ -1307,6 +1805,14 @@ simple cases.
 \hypertarget{the-field-equations-formulated-for-numerical-solution}{%
 \section{6. The field equations formulated for numerical
 solution}\label{the-field-equations-formulated-for-numerical-solution}}
+
+\emph{In words.} The field equation of the spinor field is an equation
+for quantum operators, which a computer cannot solve directly. This
+section replaces it by the equations of a \emph{quasi-free state}, a
+state described completely by two correlation matrices (as in the
+approximation of Hartree, Fock and Bogoliubov), writes them for uniform
+states and for fields that depend on one space coordinate, and names the
+integrators used in time.
 
 \hypertarget{quasi-free-states-and-the-time-dependent-mean-field}{%
 \subsection{6.1 Quasi-free states and the time-dependent mean
@@ -1493,6 +1999,12 @@ call it through a library with a C interface. The Mathematica notebook
 \hypertarget{analytic-solutions-of-four-simple-cases-item-5-of-the-problem}{%
 \section{7. Analytic solutions of four simple cases (item 5 of the
 problem)}\label{analytic-solutions-of-four-simple-cases-item-5-of-the-problem}}
+
+\emph{In words.} Before the numerical work, four cases are solved
+exactly: plane waves in constant gauge fields, the Landau levels of a
+charge in a constant magnetic field, the uniform superfluid with the
+pairing interaction, and a kink of the pair field with the states bound
+to it. Each solution also tests a program.
 
 Each solution states which equation it solves exactly. AS1 and AS2 solve
 the field equation (5.5) without the self-interaction, in given gauge
@@ -1911,6 +2423,13 @@ bound states (7.12) at \(\pm m_{\rm LL}\) and above & AS4-1 to AS4-6 \\
 pairing (item 6 of the problem, first
 part)}\label{the-pair-channels-and-the-gauge-bosons-that-mediate-the-pairing-item-6-of-the-problem-first-part}}
 
+\emph{In words.} Which interaction can bind two spinor charges into a
+pair of spin zero? At one point of space the eight components of the
+field have \(2^8=256\) states. On these states the energy of a pair in
+every channel of spin zero can be computed exactly, for every term of
+the interaction and for the exchange of every gauge boson; this section
+does so.
+
 Part II begins with the question of the task: which interaction can bind
 two spinor charges into a pair of spin zero, and which gauge boson
 mediates the pairing? This section answers the first half exactly, by
@@ -2105,6 +2624,15 @@ vacuum, where all four bosons are massless and their sum (8.5) repels.
 \hypertarget{the-three-methods-and-their-numerical-engine}{%
 \section{9. The three methods and their numerical
 engine}\label{the-three-methods-and-their-numerical-engine}}
+
+\emph{In words.} The three methods of the task, of Hubbard and
+Stratonovich (HS), of Cornwall, Jackiw and Tomboulis (CJT) and of Kohn
+and Sham (KS), all describe the state by a uniform quasi-free state;
+they differ in which contractions of the four-field interaction they
+keep and with which weights. This section writes the energy of such a
+state, the three methods, the program that finds their stationary
+states, and the static response that tells whether the normal vacuum is
+unstable.
 
 \hypertarget{the-energy-of-a-uniform-quasi-free-state-and-the-weights-of-the-contractions}{%
 \subsection{9.1 The energy of a uniform quasi-free state and the weights
@@ -2383,6 +2911,14 @@ vacuum in the two channels agree with these formulas to
 \section{10. The recursion of the potential; the ground state, the first
 excited states and the
 gap}\label{the-recursion-of-the-potential-the-ground-state-the-first-excited-states-and-the-gap}}
+
+\emph{In words.} The task asked to change the potential step by step
+until all three methods find a superfluid. Three potentials are used:
+the author's, one with an added pairing term, and one that also repels
+in the scalar channel. For each potential and method the program
+searches the stationary states from seven starts and finds the ground
+state, its \emph{gap} (the smallest energy of an excitation) and the
+first excited states.
 
 The task asks to change the potential (and the HS parameters and the
 Kohn-Sham potential) recursively until all three methods admit a
@@ -2968,9 +3504,17 @@ mode, the non-unitary doublet, and the quasi-particles; the gap is
 second
 part)}\label{the-gauge-bosons-in-the-superfluid-item-6-of-the-problem-second-part}}
 
-The gauge couplings are those of the earlier work of the project,
-\(g^{\rm v}_{\rm LL}=0.7\) and \(g^{\rm F}_{\rm LL}=0.45\), and their
-common scale \(s^{\rm g}_{\rm SF}\)
+\emph{In words.} In the superfluid the gauge bosons of the broken
+symmetries acquire masses, as the photon does inside a superconductor.
+This section computes the masses from the response of the condensate to
+the charges, the energy of the exchange of every boson, and whether the
+gauge bosons alone could form the condensate. The answer to item 6 of
+the task follows: only the zeugon attracts the two members of a
+condensed pair.
+
+The gauge couplings of the model are \(g^{\rm v}_{\rm LL}=0.7\) and
+\(g^{\rm F}_{\rm LL}=0.45\), the values that the project fixed before
+this solution, and their common scale \(s^{\rm g}_{\rm SF}\)
 (\(g^{\rm v}_{\rm LL}=0.7s^{\rm g}_{\rm SF}\),
 \(g^{\rm F}_{\rm LL}=0.45s^{\rm g}_{\rm SF}\)) is varied in Section
 11.4.
@@ -3407,14 +3951,24 @@ pairing}\label{the-answer-to-item-6-the-gauge-boson-that-mediates-the-pairing}}
 state (Part
 III)}\label{the-effective-lagrangians-of-the-superfluid-boson-singlet-state-part-iii}}
 
+\emph{In words.} The condensate is described by one field, the pair
+field \(\vec\Phi\), an isovector of complex numbers. Its effective
+Lagrangian has a potential part, the energy of a uniform state as a
+function of \(\vec\Phi\), shaped like a Mexican hat, and a kinetic part
+with its derivatives. This section computes both for every method, then
+the free energy at a finite temperature, the critical temperature at
+which the condensate disappears, and the width of the critical region in
+which the mean-field methods fail.
+
 Part III builds, for each method \(X\), the effective Lagrangian
 \(\mathcal L^X=\mathcal L^X_{\rm kinetic}+\mathcal L^X_{\rm potential}\)
-of the field of the superfluid boson singlet state (decision D7 of the
-task record: the potential part is minus the effective potential, the
-energy per volume of a uniform state as a function of the field; the
-kinetic part contains the derivatives to second order, in the form that
-GEE requires). All results are for the potential \(V^{(2)}_{\rm SF}\) of
-Section 10.3.
+of the field of the superfluid boson singlet state. Its potential part
+is minus the effective potential, the energy per volume of a uniform
+state as a function of the field; its kinetic part contains the
+derivatives of the field to the second order, in the form that GEE
+requires (the derivatives are the GEE covariant derivatives, so that the
+Lagrangian is invariant under local GEE transformations). All results
+are for the potential \(V^{(2)}_{\rm SF}\) of Section 10.3.
 
 \hypertarget{the-field-and-the-effective-potential}{%
 \subsection{12.1 The field and the effective
@@ -4047,8 +4601,10 @@ Section 9.2, and for KS the functional of Mermin with the entropy of the
 quasi-free state of Kohn and Sham and the exchange-correlation energy of
 Section 9, which has no explicit dependence on the temperature (in the
 exact theory of Mermin the exchange-correlation free energy depends on
-the temperature; here only the states do). The choice is decision D15 of
-the task record. The self-energies are the derivatives of
+the temperature; here only the states do). This is the free energy of
+Landau's theory of phase transitions: at \(T=0\) it equals the effective
+potential, and near the critical temperature of a continuous transition
+its order parameter is small. The self-energies are the derivatives of
 \(\mathcal E^X_{\rm SF}\) as before, and the stationary points of (12.7)
 are the self-consistent thermal states. The \textbf{free energy of the
 field} \(\vec\Phi\) is the smallest free energy among the states with
@@ -4834,6 +5390,13 @@ the coupling of the amplitude mode.
 and
 \(\mathrm{SFBSv}^X\)}{13. The minima, the breaking of the symmetry and \textbackslash mathrm\{SFBSv\}\^{}X}}\label{the-minima-the-breaking-of-the-symmetry-and-mathrmsfbsvx}}
 
+\emph{In words.} The minima of the effective potential form a manifold:
+all pair fields of the same length that differ by a phase and an isospin
+rotation. Nature picks one of them, and the symmetry is broken. This
+section describes the minima, the symmetry that survives, and the
+expansion of the fields about a minimum, \(\mathrm{SFBSv}^X\), with the
+masses of its excitations.
+
 \hypertarget{the-vacua-and-the-surviving-symmetry}{%
 \subsection{13.1 The vacua and the surviving
 symmetry}\label{the-vacua-and-the-surviving-symmetry}}
@@ -4997,15 +5560,23 @@ that is
 and no mass for \(W^3_{\rm SF}\): the masses (11.1) of Part II follow
 from the effective Lagrangian, and the three Goldstone fields have
 become the longitudinal parts of \(W^\pm_{\rm SF}\) and \(Z_{\rm SF}\)
-(the Higgs mechanism; the reading of ``give mass to the Goldstone
-bosons'' of decision D8). The mass matrix, its diagonalization and the
-proof that the surviving gauge boson is massless are the subject of
-Section 14.
+(the Higgs mechanism; this is how this work reads the author's request
+to ``give mass to the Goldstone bosons''). The mass matrix, its
+diagonalization and the proof that the surviving gauge boson is massless
+are the subject of Section 14.
 
 \hypertarget{the-masses-of-the-gauge-bosons-the-surviving-group-and-the-massless-gauge-boson-part-iv}{%
 \section{14. The masses of the gauge bosons, the surviving group and the
 massless gauge boson (Part
 IV)}\label{the-masses-of-the-gauge-bosons-the-surviving-group-and-the-massless-gauge-boson-part-iv}}
+
+\emph{In words.} This section writes the mass matrix of the four gauge
+fields for every vacuum, diagonalizes it, and proves that exactly one
+gauge boson stays massless: the one whose generator leaves the
+condensate unchanged. The surviving group is
+\(SL(2,\mathbb C)\times O(2)\), and its circle group has the massless
+gauge boson, the zeugon. The section ends with the question whether this
+superfluid can play the role of the Higgs particle (Section 14.6).
 
 Part IV completes item 6 of the problem. Section 13.3 inserted the
 vacuum \(\Phi^X_{0,{\rm SF}}\vec e_3\) into the kinetic part (12.4) and
@@ -5139,7 +5710,7 @@ fields \(h^X_{\rm SF}\), \(\nu^X_{{\rm SF},1}\), \(\nu^X_{{\rm SF},2}\)
 \(\vartheta^X_{{\rm SF},1}\), \(\vartheta^X_{{\rm SF},2}\) have become
 the third (longitudinal) polarizations of \(Z\), \(W^+\), \(W^-\): the
 Higgs mechanism, which the author calls ``give mass to the Goldstone
-bosons'' (decision D8). Section 15.4 shows it in time.
+bosons''. Section 15.4 shows it in time.
 
 \hypertarget{the-theorem-the-massless-gauge-bosons-are-the-generators-that-leave-the-field-unchanged}{%
 \subsection{14.3 The theorem: the massless gauge bosons are the
@@ -5236,16 +5807,15 @@ where \(\mathsf r\) is the rotation by \(\pi\) about \(\vec e_1\)
 combined with the phase \(\theta^{\rm F}_{\rm LL}=\pi/2\). As a group of
 transformations of the fields: * \textbf{The identity component} is the
 group \(U(1)^{\rm Q}_{\rm LL}=\{e^{i\theta Q_{\rm LL}}\}\),
-\(Q_{\rm LL}=T^3_{\rm LL}\), of the earlier work of the project: a
-circle group, of period \(4\pi\) on the spinor charges
-(\(Q_{\rm LL}=\pm\tfrac12\)) and \(2\pi\) on all bosonic fields. Its
-element \(e^{2\pi iQ_{\rm LL}}\) is \(-1\) on the spinor field and
-\(+1\) on the bosons, as is \(e^{i\pi F_{\rm LL}}\), which also leaves
-the condensate unchanged (\(e^{2i\theta^{\rm F}_{\rm LL}}=1\)): the two
-act alike on every field, so the stabilizer contains no further
-continuous or discrete transformations of the fields than
-\(U(1)^{\rm Q}_{\rm LL}\) and \(\mathsf r\). * \textbf{The discrete
-part.}
+\(Q_{\rm LL}=T^3_{\rm LL}\) (Section 3.3): a circle group, of period
+\(4\pi\) on the spinor charges (\(Q_{\rm LL}=\pm\tfrac12\)) and \(2\pi\)
+on all bosonic fields. Its element \(e^{2\pi iQ_{\rm LL}}\) is \(-1\) on
+the spinor field and \(+1\) on the bosons, as is
+\(e^{i\pi F_{\rm LL}}\), which also leaves the condensate unchanged
+(\(e^{2i\theta^{\rm F}_{\rm LL}}=1\)): the two act alike on every field,
+so the stabilizer contains no further continuous or discrete
+transformations of the fields than \(U(1)^{\rm Q}_{\rm LL}\) and
+\(\mathsf r\). * \textbf{The discrete part.}
 \(\mathsf r e^{i\theta Q_{\rm LL}}\mathsf r^{-1}=e^{-i\theta Q_{\rm LL}}\)
 (the rotation by \(\pi\) about \(\vec e_1\) reverses \(\vec e_3\)), and
 \(\mathsf r^2\) (the rotation by \(2\pi\) times \(e^{i\pi F_{\rm LL}}\))
@@ -5777,6 +6347,13 @@ does not exclude, its compositeness at a higher scale.
 \section{15. The dynamics of the superfluid and of its gauge fields
 (Part
 IV)}\label{the-dynamics-of-the-superfluid-and-of-its-gauge-fields-part-iv}}
+
+\emph{In words.} This section follows the superfluid in time: how the
+condensate grows from the unstable normal vacuum, how it oscillates
+about its ground state, how the zeugon radiates while a massive gauge
+boson stays bound, and how the Goldstone wave turns into the
+longitudinal part of a massive gauge boson, the Higgs mechanism seen in
+time.
 
 Every equation of this section is integrated by CVODE or IDA (Section
 6.3) in the pure-Rust SUNDIALS 7.8.0, by the program \texttt{sf\_part4}
@@ -9785,6 +10362,32 @@ tolerances of the iterations and of the integrators, the seeds, the
 steps of the differences) are still written in the text, as are the
 numbers of earlier runs in this Section 17.
 
+\hypertarget{the-rewriting-of-22-november-2026}{%
+\subsection{17.8 The rewriting of 22 November
+2026}\label{the-rewriting-of-22-november-2026}}
+
+The author found, in the manuscripts of the project, undefined terms, a
+text written for experts rather than for a student who wants to learn,
+and references that send the reader to documents that he cannot read.
+The rewriting of this manuscript on 22 November 2026 added the word
+list, the findings, the paragraphs \emph{In words} and Appendix A
+(Section 0). It also corrected four places that broke the rule that no
+document sends its reader to another document: Sections 12 (twice), 13.3
+and 14.4 named decisions of the task record of the folder (D7, D15 and
+D8) as the source of a choice, without stating the choice fully. They
+now state the choice itself: that the potential part of the effective
+Lagrangian is minus the effective potential and its kinetic part has the
+GEE covariant derivatives (Section 12); that the free energy is that of
+Landau's theory, equal to the effective potential at \(T=0\) (Section
+12.4); and that the Higgs mechanism is how this work reads the author's
+request to ``give mass to the Goldstone bosons'' (Sections 13.3 and
+14.4). Four sentences that named ``the earlier work of the project'' as
+the origin of a symbol or a value (Sections 1, 3.1, 11 and 14.4) now say
+what the object is and where this manuscript defines it. The automatic
+check of the rule did not find the four references to the decisions,
+because its list of wordings did not contain them; the rule is now kept
+by this reading, and the check is unchanged.
+
 \hypertarget{the-symbols}{%
 \section{18. The symbols}\label{the-symbols}}
 
@@ -11985,5 +12588,688 @@ used}\label{published-works-on-the-methods-used}}
   Journal für die reine und angewandte Mathematik 30, 51 (1846) -- the
   eigenvalues of symmetric matrices by plane rotations (Section 14.5).
 \end{itemize}
+
+\hypertarget{a.-the-algebra-behind-the-fields-with-an-example-of-every-object}{%
+\section{A. The algebra behind the fields, with an example of every
+object}\label{a.-the-algebra-behind-the-fields-with-an-example-of-every-object}}
+
+This appendix builds, from the beginning, the objects from which the
+fields of the revision come: the octonions and the loops they form, the
+bi-octonions and the Lorentz super-loop, Minkowski space and the Lorentz
+group inside the loop, the eight spinor charges and the fields that
+carry them, Dirac spinors and isospin, and the spin-zero superfluid of
+the spinor charges, which the revised hypotheses replace. It states what
+the documents of the revision need of the author's manuscript of 16
+November 2026 on the Lorentz super-loop and derives it, so that this
+document can be read on its own. Every object comes with a worked
+example. The examples of Sections A.1 to A.5 are exact rationals, and
+those of Section A.6 come from one-dimensional integrals; the Rust
+program \texttt{sh\_examples} (crate \texttt{rust/shexamples}) computes
+all of them (ALL PASS (27 of 27)), the Python program
+\texttt{python/sh\_examples.py} recomputes every one, the algebra in
+exact rational arithmetic (ALL PASS (9 of 9)), and the Wolfram script
+\texttt{wolfram/source/sh\_examples.wls} derives the general identities
+behind them symbolically (ALL PASS (6 of 6)). The values printed here
+are read from \texttt{data/sh\_examples.csv} and
+\texttt{data/sh\_examples\_charges.csv}. The appendix assumes what a
+first-year graduate student knows: special relativity, the Dirac
+equation, second quantization and the elements of group theory.
+
+\hypertarget{a.1-octonions-and-a-loop-that-is-not-a-group}{%
+\subsection{A.1 Octonions, and a loop that is not a
+group}\label{a.1-octonions-and-a-loop-that-is-not-a-group}}
+
+The \emph{quaternions} are the numbers
+\(a_0\mathbf e_0+a_1\mathbf e_1+a_2\mathbf e_2+a_3\mathbf e_3\) with
+real \(a_p\), where \(\mathbf e_0=1\) and the three imaginary units obey
+\[\mathbf e_1^2=\mathbf e_2^2=\mathbf e_3^2=-\mathbf e_0,\qquad\mathbf e_1\mathbf e_2=-\mathbf e_2\mathbf e_1=\mathbf e_3\tag{A.1}\]
+and the cyclic permutations (\(\mathbf e_2\mathbf e_3=\mathbf e_1\),
+\(\mathbf e_3\mathbf e_1=\mathbf e_2\)). Their product is associative
+but not commutative. The \emph{octonions} double them. Write an octonion
+as a pair of quaternions,
+\(\mathbf x=\mathbf a+\mathbf b\,\mathbf e_4\), and multiply by the rule
+of Cayley and Dickson,
+\[(\mathbf a+\mathbf b\,\mathbf e_4)(\mathbf c+\mathbf d\,\mathbf e_4)=(\mathbf a\mathbf c-\bar{\mathbf d}\mathbf b)+(\mathbf d\mathbf a+\mathbf b\bar{\mathbf c})\,\mathbf e_4,\tag{A.2}\]
+where the bar of a quaternion changes the signs of the coefficients of
+\(\mathbf e_1\), \(\mathbf e_2\), \(\mathbf e_3\). The eight units are
+\(\mathbf e_0,\dots,\mathbf e_3\), \(\mathbf e_4\), and
+\(\mathbf e_5=\mathbf e_1\mathbf e_4\),
+\(\mathbf e_6=\mathbf e_2\mathbf e_4\),
+\(\mathbf e_7=\mathbf e_3\mathbf e_4\). The product of two units is
+again a unit, up to a sign. For example
+\(\mathbf e_1\mathbf e_2=\mathbf e_{3}\) and
+\(\mathbf e_2\mathbf e_1=-\mathbf e_{3}\), so the product is not
+commutative, and
+\[(\mathbf e_1\mathbf e_2)\mathbf e_4=\mathbf e_{7},\qquad\mathbf e_1(\mathbf e_2\mathbf e_4)=-\mathbf e_{7},\tag{A.3}\]
+so it is not associative either. The \emph{associator}
+\([\mathbf x,\mathbf y,\mathbf z]=(\mathbf x\mathbf y)\mathbf z-\mathbf x(\mathbf y\mathbf z)\)
+measures the failure; here
+\([\mathbf e_1,\mathbf e_2,\mathbf e_4]=2\mathbf e_{7}\). The octonions
+keep a weaker property: the associator vanishes whenever two of its
+arguments are equal, so that any two octonions generate an associative
+subalgebra; such an algebra is called \emph{alternative}. The
+\emph{norm} \(N(\mathbf x)=\sum_pa_p^2\), the sum of the squares of the
+eight coefficients, is multiplicative,
+\(N(\mathbf x\mathbf y)=N(\mathbf x)N(\mathbf y)\), and
+\(\mathbf x\bar{\mathbf x}=N(\mathbf x)\,\mathbf e_0\), where the bar of
+an octonion changes the signs of the coefficients of
+\(\mathbf e_1,\dots,\mathbf e_7\).
+
+Associativity is what turns a set with a product into a group. Without
+it one has a \emph{loop}: a set with a product, an identity element, and
+unique solutions \(\mathbf x\) of the equations
+\(\mathbf w\mathbf x=\mathbf y\) and \(\mathbf x\mathbf w=\mathbf y\). A
+loop that obeys the three \emph{Moufang identities}
+\[\mathbf z(\mathbf x(\mathbf z\mathbf y))=((\mathbf z\mathbf x)\mathbf z)\mathbf y,\qquad((\mathbf y\mathbf z)\mathbf x)\mathbf z=\mathbf y(\mathbf z(\mathbf x\mathbf z)),\qquad(\mathbf z\mathbf x)(\mathbf y\mathbf z)=(\mathbf z(\mathbf x\mathbf y))\mathbf z\tag{A.4}\]
+is a \emph{Moufang loop} (R. Moufang, 1935). Every group is a Moufang
+loop, but not every Moufang loop is a group.
+
+\textbf{Example: a Moufang loop that is not a group.} The sixteen
+elements \(\pm\mathbf e_0,\dots,\pm\mathbf e_7\) with the product of the
+units form a loop with \(16\) elements. The identities (A.4) hold for
+all 4096 ordered triples of its elements (the programs find \(0\)
+failures), yet 1344 of 4096 ordered triples are not associative, (A.3)
+being one of them, and 168 of 256 ordered pairs do not commute.
+
+\textbf{Example: the octonions of norm 1.} They form a larger Moufang
+loop, the seven-sphere. The three octonions
+\(\mathbf x=\tfrac{3}{5}\mathbf e_{0}+\tfrac{4}{5}\mathbf e_{1}\),
+\(\mathbf y=\tfrac{3}{5}\mathbf e_{2}+\tfrac{4}{5}\mathbf e_{4}\) and
+\(\mathbf z=\tfrac{1}{3}\mathbf e_{0}+\tfrac{2}{3}\mathbf e_{3}+\tfrac{2}{3}\mathbf e_{6}\)
+have norm 1, the product
+\(\mathbf x\mathbf y=\tfrac{9}{25}\mathbf e_{2}+\tfrac{12}{25}\mathbf e_{3}+\tfrac{12}{25}\mathbf e_{4}+\tfrac{16}{25}\mathbf e_{5}\)
+again has norm 1, and \((\mathbf x\mathbf y)\mathbf z\) and
+\(\mathbf x(\mathbf y\mathbf z)\) differ by the associator
+\(-\tfrac{64}{75}\mathbf e_{3}+\tfrac{16}{25}\mathbf e_{5}+\tfrac{64}{75}\mathbf e_{6}\).
+
+\hypertarget{a.2-bi-octonions-and-the-lorentz-super-loop}{%
+\subsection{A.2 Bi-octonions and the Lorentz
+super-loop}\label{a.2-bi-octonions-and-the-lorentz-super-loop}}
+
+Allow complex coefficients: \(\mathbf x=\sum_{p=0}^7\xi_p\,\mathbf e_p\)
+with \(\xi_p\in\mathbb C\). The imaginary unit \(i\) of the coefficients
+commutes with every unit \(\mathbf e_p\); it is not one of them. These
+\emph{bi-octonions} form an algebra of real dimension 16 with the same
+product (A.2), now applied to \emph{bi-quaternions} (quaternions with
+complex coefficients). The norm \(N(\mathbf x)=\sum_p\xi_p^2\) is now a
+complex number, still multiplicative, and the algebra is still
+alternative. The bi-octonions of norm 1,
+\[\mathbb L_{\rm LL}=\{\mathbf w:\ N(\mathbf w)=1\},\tag{A.5}\] form a
+Moufang loop. The product of two of them has norm 1, \(\mathbf e_0\) is
+the identity, and \(\bar{\mathbf w}\) is the inverse of \(\mathbf w\),
+since
+\(\mathbf w\bar{\mathbf w}=N(\mathbf w)\,\mathbf e_0=\mathbf e_0\). The
+equation \(\mathbf w\mathbf x=\mathbf y\) has the unique solution
+\(\mathbf x=\bar{\mathbf w}\mathbf y\): the two elements \(\mathbf w\)
+and \(\mathbf y\) generate an associative subalgebra, which contains
+\(\bar{\mathbf w}=2\xi_0\mathbf e_0-\mathbf w\), so
+\(\mathbf w(\bar{\mathbf w}\mathbf y)=(\mathbf w\bar{\mathbf w})\mathbf y=\mathbf y\),
+and in the same way \(\mathbf w\mathbf x=\mathbf y\) gives
+\(\mathbf x=\bar{\mathbf w}\mathbf y\). The Moufang identities (A.4)
+hold in every alternative algebra (R. D. Schafer, \emph{An Introduction
+to Nonassociative Algebras}, 1966), so they hold in
+\(\mathbb L_{\rm LL}\). The author calls this loop the \emph{Lorentz
+super-loop}, for the reason that the next two sections show: it contains
+the Lorentz group, and beside it charges of spin \(\tfrac12\). It is a
+smooth manifold of complex dimension 7 (one complex equation in
+\(\mathbb C^8\)).
+
+\textbf{Example: an element of the Lorentz super-loop and a division in
+it.}
+\(\mathbf w=\tfrac{3}{4}\mathbf e_{0}+\tfrac{9}{20}i\mathbf e_{3}+\mathbf e_{4}+\tfrac{3}{5}i\mathbf e_{7}\)
+has norm 1; its inverse is
+\(\bar{\mathbf w}=\tfrac{3}{4}\mathbf e_{0}-\tfrac{9}{20}i\mathbf e_{3}-\mathbf e_{4}-\tfrac{3}{5}i\mathbf e_{7}\),
+and the solution of \(\mathbf w\mathbf x=\mathbf e_5\) is
+\(\mathbf x=\bar{\mathbf w}\mathbf e_5=-\mathbf e_{1}+\tfrac{3}{5}i\mathbf e_{2}+\tfrac{3}{4}\mathbf e_{5}+\tfrac{9}{20}i\mathbf e_{6}\).
+
+\hypertarget{a.3-space-time-and-the-lorentz-group-inside-the-loop}{%
+\subsection{A.3 Space-time and the Lorentz group inside the
+loop}\label{a.3-space-time-and-the-lorentz-group-inside-the-loop}}
+
+The bi-quaternions of norm 1 are a subset of the loop that \emph{is} a
+group, because the product of bi-quaternions is associative. The map
+\[M_{\rm LL}(\mathbf e_0)=\mathsf 1_2,\qquad M_{\rm LL}(\mathbf e_j)=-i\sigma^{\rm LL}_j\quad(j=1,2,3),\tag{A.6}\]
+with the Pauli matrices \(\sigma^{\rm LL}_j\) and the \(2\times2\) unit
+matrix \(\mathsf 1_2\), extended complex-linearly, turns every
+bi-quaternion into a complex \(2\times2\) matrix and every product into
+the product of the matrices, and the norm becomes the determinant. The
+bi-quaternions of norm 1 are therefore the group \(SL(2,\mathbb C)\) of
+complex \(2\times2\) matrices of determinant 1, the double cover of the
+Lorentz group: each Lorentz transformation corresponds to two matrices,
+\(\pm M\).
+
+Space-time enters as follows. A bi-quaternion \(\mathbf x\) is
+\emph{Hermitian} if \(\mathbf x^\dagger=\mathbf x\), where the dagger is
+the bar combined with the complex conjugation of the coefficients. The
+Hermitian bi-quaternions are exactly
+\[\mathbf x=x^0\mathbf e_0+i\,(x^1\mathbf e_1+x^2\mathbf e_2+x^3\mathbf e_3),\qquad N(\mathbf x)=(x^0)^2-(x^1)^2-(x^2)^2-(x^3)^2,\tag{A.7}\]
+with real \(x^\mu\): they are the points of Minkowski space, and their
+norm is the Minkowski interval with the metric
+\(\mathrm{diag}(1,-1,-1,-1)\). This space is called M31. An element
+\(\mathbf g\) of \(SL(2,\mathbb C)\) acts on it by
+\(\mathbf x\mapsto\mathbf g\,\mathbf x\,\mathbf g^\dagger\), which keeps
+\(\mathbf x\) Hermitian and its norm unchanged: it is a Lorentz
+transformation.
+
+\textbf{Example: a rotation and a boost.} The rotation
+\(\mathbf g_{\rm rot}=\tfrac{3}{5}\mathbf e_{0}+\tfrac{4}{5}\mathbf e_{1}\)
+and the boost
+\(\mathbf g_{\rm boost}=\tfrac{5}{4}\mathbf e_{0}+\tfrac{3}{4}i\mathbf e_{3}\)
+have the matrices
+\[M_{\rm LL}(\mathbf g_{\rm rot})=\begin{pmatrix}\tfrac{3}{5}&-\tfrac{4}{5}i\\-\tfrac{4}{5}i&\tfrac{3}{5}\end{pmatrix},\qquad M_{\rm LL}(\mathbf g_{\rm boost})=\begin{pmatrix}2&0\\0&\tfrac{1}{2}\end{pmatrix},\tag{A.8}\]
+both of determinant 1. Written as \(4\times4\) matrices
+\(\mathsf L_{\rm LL}(\mathbf g)\) that act on the coordinates
+\((x^0,x^1,x^2,x^3)\), the two Lorentz transformations are
+\[\mathsf L_{\rm LL}(\mathbf g_{\rm rot})=\begin{pmatrix}1&0&0&0\\0&1&0&0\\0&0&-\tfrac{7}{25}&-\tfrac{24}{25}\\0&0&\tfrac{24}{25}&-\tfrac{7}{25}\end{pmatrix},\qquad\mathsf L_{\rm LL}(\mathbf g_{\rm boost})=\begin{pmatrix}\tfrac{17}{8}&0&0&\tfrac{15}{8}\\0&1&0&0\\0&0&1&0\\\tfrac{15}{8}&0&0&\tfrac{17}{8}\end{pmatrix}.\tag{A.9}\]
+The first turns the plane of \(x^2\) and \(x^3\) about the \(x^1\) axis
+by the angle whose cosine is \(-\tfrac7{25}\). The second moves the
+point at rest \((1,0,0,0)\) to \((\tfrac{17}{8},0,0,\tfrac{15}{8})\): it
+is a boost along \(x^3\) with the Lorentz factor \(\tfrac{17}8\) and the
+velocity \(\tfrac{15}{17}\).
+
+\textbf{Generators and parity.} The tangent directions of
+\(SL(2,\mathbb C)\) at the identity are the imaginary bi-quaternions.
+With the rotation and boost generators
+\(J^j_{\rm LL}=\tfrac12\mathbf e_j\) and
+\(K^j_{\rm LL}=\tfrac12i\,\mathbf e_j\), the commutators of (A.1) are
+those of the Lie algebra of the Lorentz group; for example
+\([J^1_{\rm LL},K^2_{\rm LL}]=K^3_{\rm LL}\). The unit \(\mathbf e_4\)
+supplies the parity: conjugation by it,
+\(\mathbf x\mapsto\mathbf e_4\,\mathbf x\,\mathbf e_4^{-1}=\bar{\mathbf x}\),
+reverses the three spatial coordinates, so the point \((2,1,3,5)\) goes
+to \(2\mathbf e_{0}-i\mathbf e_{1}-3i\mathbf e_{2}-5i\mathbf e_{3}\),
+that is, to \((2,-1,-3,-5)\). (The expression
+\(\mathbf e_4\,\mathbf x\,\mathbf e_4^{-1}\) needs no brackets, because
+the octonions are \emph{flexible},
+\((\mathbf a\mathbf b)\mathbf a=\mathbf a(\mathbf b\mathbf a)\), a
+consequence of alternativity.) No bi-quaternion can do this: conjugation
+by an element of an associative algebra keeps the order of products,
+\(\mathbf g(\mathbf x\mathbf y)\mathbf g^{-1}=(\mathbf g\mathbf x\mathbf g^{-1})(\mathbf g\mathbf y\mathbf g^{-1})\),
+while the bar reverses it,
+\(\overline{\mathbf x\mathbf y}=\bar{\mathbf y}\,\bar{\mathbf x}\). In
+the loop, whose product is not associative, the parity is conjugation by
+an element.
+
+\textbf{Example: associativity fails inside the loop.} The element
+\(\mathbf s=\tfrac{3}{5}\mathbf e_{0}+\tfrac{4}{5}\mathbf e_{4}\) has
+norm 1 but is not a bi-quaternion, and
+\([\mathbf g_{\rm rot},\mathbf g_{\rm boost},\mathbf s]=-\tfrac{24}{25}i\mathbf e_{6}\).
+
+\hypertarget{a.4-the-eight-spinor-charges}{%
+\subsection{A.4 The eight spinor
+charges}\label{a.4-the-eight-spinor-charges}}
+
+The tangent directions of the whole loop at the identity are the
+imaginary bi-octonions, a space of real dimension 14. It splits into two
+parts. The \emph{Lorentz part} is the six-dimensional space of the
+imaginary bi-quaternions, the generators \(J^j_{\rm LL}\) and
+\(K^j_{\rm LL}\). The other eight directions are the \emph{spinor
+charges}, the bi-octonions \(\mathbf b\,\mathbf e_4\) with a
+bi-quaternion \(\mathbf b\), spanned by
+\(\mathbf e_4,\mathbf e_5,\mathbf e_6,\mathbf e_7,i\mathbf e_4,i\mathbf e_5,i\mathbf e_6,i\mathbf e_7\).
+Two facts make them interesting.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{The Lorentz group acts on them as on spin \(\tfrac12\).} For a
+  bi-quaternion \(\mathbf g\) of norm 1 the map
+  \[\phi_{\mathbf g}:\ \mathbf a+\mathbf b\,\mathbf e_4\ \mapsto\ \mathbf g\mathbf a\mathbf g^{-1}+(\mathbf b\mathbf g^{-1})\,\mathbf e_4\tag{A.10}\]
+  keeps every product of bi-octonions,
+  \(\phi_{\mathbf g}(\mathbf x\mathbf y)=\phi_{\mathbf g}(\mathbf x)\,\phi_{\mathbf g}(\mathbf y)\)
+  (insert it into (A.2) and use \(\bar{\mathbf g}=\mathbf g^{-1}\)): it
+  is an \emph{automorphism} of the algebra, a symmetry of its
+  multiplication table. On the Lorentz part it is the familiar action of
+  \(SL(2,\mathbb C)\) on its generators; on a spinor charge it
+  multiplies \(\mathbf b\) from the right by \(\mathbf g^{-1}\). A
+  rotation by the angle \(\theta\) about the axis \(j\) is
+  \(\mathbf g=\cos\tfrac\theta2\,\mathbf e_0+\sin\tfrac\theta2\,\mathbf e_j\),
+  so the rotation by \(2\pi\) is \(\mathbf g=-\mathbf e_0\): it leaves
+  the Lorentz part unchanged and multiplies every spinor charge by
+  \(-1\), the hallmark of spin \(\tfrac12\). So the spinor charges are
+  \emph{fermionic}: by the spin-statistics theorem, a field that carries
+  them anticommutes. (The commutator of a Lorentz generator
+  \(\mathbf u\) with a spinor charge,
+  \([\mathbf u,\mathbf b\,\mathbf e_4]=2(\mathbf b\mathbf u)\,\mathbf e_4\),
+  is again a spinor charge, but it is \(-2\) times the infinitesimal
+  form of (A.10), \(\mathbf b\mapsto-\mathbf b\mathbf u\), and not the
+  same map, as it would be in a Lie algebra.)
+\item
+  \textbf{Two spinor charges commute into the Lorentz part.} For example
+  \([\mathbf e_4,\mathbf e_5]=2\mathbf e_{1}=4J^1_{\rm LL}\) and
+  \([\mathbf e_4,i\mathbf e_5]=2i\mathbf e_{1}=4K^1_{\rm LL}\), and
+  these commutators span the whole Lorentz part.
+\end{enumerate}
+
+\textbf{Why ``super-loop''.} A \emph{supergroup}, such as the symmetry
+group of supersymmetry, has besides its ordinary generators fermionic
+ones, which turn as spinors under the ordinary ones and whose
+anticommutators give the ordinary ones back (here the commutators of the
+spinor charges do so, fact 2). By analogy, a smooth Moufang loop that
+contains a Lie group, and whose other tangent directions turn as spin
+\(\tfrac12\) under it, is called a \emph{super-loop}. \textbf{Example:}
+the loop of the octonions of norm 1 (Section A.1) contains the
+quaternions of norm 1, which form the rotation group \(SU(2)\), and the
+automorphisms (A.10) with a real quaternion \(\mathbf g\) turn its four
+other directions \(\mathbf e_4,\dots,\mathbf e_7\) as a doublet of spin
+\(\tfrac12\): the rotation by \(2\pi\), \(\mathbf g=-\mathbf e_0\),
+multiplies each of them by \(-1\). The Lorentz super-loop is its complex
+version, in which the rotation group grows into the Lorentz group.
+
+\textbf{The Jacobi identity fails.}
+\([[\mathbf e_4,\mathbf e_5],\mathbf e_6]+[[\mathbf e_5,\mathbf e_6],\mathbf e_4]+[[\mathbf e_6,\mathbf e_4],\mathbf e_5]=-12\mathbf e_{7}\),
+six times the associator \([\mathbf e_4,\mathbf e_5,\mathbf e_6]\). The
+tangent space is therefore not a Lie algebra; it is a \emph{Malcev
+algebra}, the structure that plays for a smooth Moufang loop the role
+that a Lie algebra plays for a Lie group (A. I. Mal'cev, 1955). This is
+why the spinor charges cannot be generated by operators on a Hilbert
+space in the usual way: the commutator of two operators on a Hilbert
+space always obeys the Jacobi identity, and the commutator of the spinor
+charges does not. For the same reason the loop lies outside the
+assumptions of the theorems of Coleman and Mandula (1967) and of Haag,
+Łopuszański and Sohnius (1975), which assume that the symmetries form a
+Lie group or a Lie superalgebra.
+
+\textbf{The fields of the spinor charges.} Write \(\mathbf b\) as the
+\(2\times2\) matrix \(M_{\rm LL}(\mathbf b)\) and form
+\[\psi'_{\rm LL}=\mathsf E^{-1}_{\rm LL}M_{\rm LL}(\mathbf b)^T,\qquad\mathsf E_{\rm LL}=i\sigma^{\rm LL}_2=\begin{pmatrix}0&1\\-1&0\end{pmatrix}.\tag{A.11}\]
+Each column of \(\psi'_{\rm LL}\) is a two-component (Weyl) spinor.
+Under the automorphism (A.10) the matrix \(M_{\rm LL}(\mathbf b)\)
+becomes \(M_{\rm LL}(\mathbf b)M_{\rm LL}(\mathbf g)^{-1}\), and with
+the identity \(\mathsf E_{\rm LL}^{-1}(M^{-1})^T\mathsf E_{\rm LL}=M\),
+valid for every complex \(2\times2\) matrix \(M\) of determinant 1, each
+column of \(\psi'_{\rm LL}\) is multiplied by \(M_{\rm LL}(\mathbf g)\):
+the Lorentz group acts on it as on the right-handed spinors of the Dirac
+equation (the lower two components in the chiral basis of Section A.5).
+The two columns are mixed by multiplying \(\mathbf b\) from the left
+with a quaternion \(\mathbf t\) of norm 1, the map
+\(\mathbf a+\mathbf b\,\mathbf e_4\mapsto\mathbf a+(\mathbf t\mathbf b)\,\mathbf e_4\),
+which is also an automorphism and commutes with the Lorentz action,
+because the bi-quaternions multiply associatively. These rotations form
+a group \(SU(2)\) that does not touch space-time: an \emph{isospin}.
+Table A.1 lists the eight spinor charges with their matrices. The field
+of the spinor charges, completed by the complex-conjugate loop (on which
+the boosts act with the opposite sign, and which supplies the
+left-handed spinors), is therefore a Dirac spinor with two isospin
+components, an \emph{isodoublet of Dirac spinors} \(\Psi_{\rm LL}\) with
+eight complex components. The third isospin generator \(T^3_{\rm LL}\)
+has the eigenvalues \(+\tfrac12\) (up) and \(-\tfrac12\) (down) on the
+components.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+spinor charge \(\mathbf b\,\mathbf e_4\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(M_{\rm LL}(\mathbf b)\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\psi'_{\rm LL}\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+up column
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+down column
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mathbf e_{4}\) & \(\begin{pmatrix}1&0\\0&1\end{pmatrix}\) &
+\(\begin{pmatrix}0&-1\\1&0\end{pmatrix}\) &
+\(\begin{pmatrix}0\\1\end{pmatrix}\) &
+\(\begin{pmatrix}-1\\0\end{pmatrix}\) \\
+\(\mathbf e_{5}\) & \(\begin{pmatrix}0&-i\\-i&0\end{pmatrix}\) &
+\(\begin{pmatrix}i&0\\0&-i\end{pmatrix}\) &
+\(\begin{pmatrix}i\\0\end{pmatrix}\) &
+\(\begin{pmatrix}0\\-i\end{pmatrix}\) \\
+\(\mathbf e_{6}\) & \(\begin{pmatrix}0&-1\\1&0\end{pmatrix}\) &
+\(\begin{pmatrix}1&0\\0&1\end{pmatrix}\) &
+\(\begin{pmatrix}1\\0\end{pmatrix}\) &
+\(\begin{pmatrix}0\\1\end{pmatrix}\) \\
+\(\mathbf e_{7}\) & \(\begin{pmatrix}-i&0\\0&i\end{pmatrix}\) &
+\(\begin{pmatrix}0&-i\\-i&0\end{pmatrix}\) &
+\(\begin{pmatrix}0\\-i\end{pmatrix}\) &
+\(\begin{pmatrix}-i\\0\end{pmatrix}\) \\
+\(i\mathbf e_{4}\) & \(\begin{pmatrix}i&0\\0&i\end{pmatrix}\) &
+\(\begin{pmatrix}0&-i\\i&0\end{pmatrix}\) &
+\(\begin{pmatrix}0\\i\end{pmatrix}\) &
+\(\begin{pmatrix}-i\\0\end{pmatrix}\) \\
+\(i\mathbf e_{5}\) & \(\begin{pmatrix}0&1\\1&0\end{pmatrix}\) &
+\(\begin{pmatrix}-1&0\\0&1\end{pmatrix}\) &
+\(\begin{pmatrix}-1\\0\end{pmatrix}\) &
+\(\begin{pmatrix}0\\1\end{pmatrix}\) \\
+\(i\mathbf e_{6}\) & \(\begin{pmatrix}0&-i\\i&0\end{pmatrix}\) &
+\(\begin{pmatrix}i&0\\0&i\end{pmatrix}\) &
+\(\begin{pmatrix}i\\0\end{pmatrix}\) &
+\(\begin{pmatrix}0\\i\end{pmatrix}\) \\
+\(i\mathbf e_{7}\) & \(\begin{pmatrix}1&0\\0&-1\end{pmatrix}\) &
+\(\begin{pmatrix}0&1\\1&0\end{pmatrix}\) &
+\(\begin{pmatrix}0\\1\end{pmatrix}\) &
+\(\begin{pmatrix}1\\0\end{pmatrix}\) \\
+\end{longtable}
+
+Table A.1. The eight spinor charges \(\mathbf b\,\mathbf e_4\): the
+matrix \(M_{\rm LL}(\mathbf b)\) of (A.6), the matrix \(\psi'_{\rm LL}\)
+of (A.11), and its two columns, the isospin-up and the isospin-down Weyl
+spinor.
+
+\hypertarget{a.5-spinors-and-isospin-by-example}{%
+\subsection{A.5 Spinors and isospin, by
+example}\label{a.5-spinors-and-isospin-by-example}}
+
+A \emph{Dirac spinor} is a four-component solution of the Dirac
+equation. In the chiral basis the Dirac matrices are
+\[\gamma^0_{\rm LL}=\begin{pmatrix}0&\mathsf 1_2\\\mathsf 1_2&0\end{pmatrix},\qquad\gamma^j_{\rm LL}=\begin{pmatrix}0&\sigma^{\rm LL}_j\\-\sigma^{\rm LL}_j&0\end{pmatrix},\]
+and the chirality matrix
+\(\gamma^{\rm ch}_{\rm LL}=i\gamma^0_{\rm LL}\gamma^1_{\rm LL}\gamma^2_{\rm LL}\gamma^3_{\rm LL}=\mathrm{diag}(-1,-1,1,1)\)
+separates the left-handed (upper) from the right-handed (lower)
+components.
+
+\textbf{Example: a Dirac spinor.} A particle of mass \(1\) at rest with
+spin up has \(u_{\rm LL}=(1,0,1,0)\) (normalized so that
+\(\bar u_{\rm LL}u_{\rm LL}\) is twice the mass). The boost
+\(\mathbf g_{\rm boost}\) of Section A.3 gives it the energy and
+momentum \((\tfrac{17}{8},0,0,\tfrac{15}{8})\) and changes the spinor to
+\(u_{\rm LL}=(\tfrac{1}{2},0,2,0)\): the left-handed half shrinks by the
+factor 2 and the right-handed half grows by the factor 2 (2 and
+\(\tfrac12\) are the diagonal entries of
+\(M_{\rm LL}(\mathbf g_{\rm boost})\), the factors
+\(e^{\pm\vartheta/2}\) of a boost of rapidity \(\vartheta\)). One checks
+\(\bar u_{\rm LL}u_{\rm LL}=2\) (unchanged, as a Lorentz scalar must be)
+and \(u_{\rm LL}^\dagger u_{\rm LL}=\tfrac{17}{4}\), twice the energy
+\(\tfrac{17}8\).
+
+\textbf{Example: an isodoublet and an isovector.} An \emph{isodoublet}
+is a pair of fields that an isospin rotation \(U_{\rm LL}\in SU(2)\)
+mixes. An \emph{isovector}, or \emph{isospin triplet}, is a set of three
+fields that the same rotation turns like a vector in three dimensions,
+by the \(3\times3\) rotation matrix \(\mathsf R_{\rm LL}(U_{\rm LL})\)
+defined by
+\(U_{\rm LL}\tau^{\rm LL}_aU_{\rm LL}^\dagger=\sum_b(\mathsf R_{\rm LL})_{ba}\,\tau^{\rm LL}_b\),
+with the isospin Pauli matrices \(\tau^{\rm LL}_a\). For the rotation
+\(U_{\rm LL}=M_{\rm LL}(\mathbf g_{\rm rot})\) of Section A.3,
+\[U_{\rm LL}=\begin{pmatrix}\tfrac{3}{5}&-\tfrac{4}{5}i\\-\tfrac{4}{5}i&\tfrac{3}{5}\end{pmatrix},\qquad\mathsf R_{\rm LL}(U_{\rm LL})=\begin{pmatrix}1&0&0\\0&-\tfrac{7}{25}&-\tfrac{24}{25}\\0&\tfrac{24}{25}&-\tfrac{7}{25}\end{pmatrix}.\tag{A.12}\]
+It turns the isodoublet \((1,0)\) (pure ``up'') into
+\((\tfrac{3}{5},-\tfrac{4}{5}i)\) and the isovector \((0,0,1)\) into
+\((0,-\tfrac{24}{25},-\tfrac{7}{25})\). The isodoublet turns by half the
+angle of the isovector: the entries \(\tfrac35\) and \(\tfrac45\) of
+\(U_{\rm LL}\) are the cosine and the sine of half the angle whose
+cosine, \(-\tfrac7{25}\), appears in \(\mathsf R_{\rm LL}(U_{\rm LL})\).
+This is the isospin analogue of spin \(\tfrac12\) and spin 1. Two
+isodoublets combine into a triplet and a singlet: the three symmetric
+states \(|{\rm uu}\rangle\), \(|{\rm ud}\rangle+|{\rm du}\rangle\),
+\(|{\rm dd}\rangle\) have total isospin 1 (the square of the total
+isospin has the eigenvalue 2 on them), and the antisymmetric state
+\(|{\rm ud}\rangle-|{\rm du}\rangle\) has isospin 0; the eigenvalues of
+the square of the total isospin on the four states are \(0, 2, 2, 2\).
+
+\textbf{Example: an isodoublet of Dirac spinors.} It has eight
+components, a Dirac index times an isospin index. Its up member with the
+spinor \(u_{\rm LL}\) above is
+\(u_{\rm LL}\otimes(1,0)=(\tfrac{1}{2},0,0,0,2,0,0,0)\) (the Dirac index
+runs slower), and the isospin rotation \(U_{\rm LL}\) acts on the second
+factor only:
+\((\mathsf 1_4\otimes U_{\rm LL})\,(u_{\rm LL}\otimes(1,0))=(\tfrac{3}{10},-\tfrac{2}{5}i,0,0,\tfrac{6}{5},-\tfrac{8}{5}i,0,0)\).
+The field \(\Psi_{\rm LL}\) of the spinor charges is of this kind.
+
+\hypertarget{a.6-the-spin-zero-superfluid-of-the-spinor-charges}{%
+\subsection{A.6 The spin-zero superfluid of the spinor
+charges}\label{a.6-the-spin-zero-superfluid-of-the-spinor-charges}}
+
+A \emph{superfluid} of fermions is a state in which a macroscopic number
+of pairs occupy the same pair state, as the Cooper pairs do in a
+superconductor. Its \emph{order parameter} is the expectation value of
+the pair field, which is zero in the ordinary (normal) state and nonzero
+in the superfluid, and it costs at least the energy of the \emph{gap} to
+break a pair. The elementary excitations are then not the bare particles
+but \emph{quasi-particles}, mixtures of a particle and a missing partner
+of a pair (a hole), whose energies are found by diagonalizing the matrix
+of Bogoliubov and de Gennes, which couples the field at momentum
+\(\vec q\) with its conjugate at \(-\vec q\).
+
+The superfluid of the spinor charges was proposed by the author in his
+manuscript of 16 November 2026; this section states and derives what the
+documents of the revision need of it. The Hamiltonian is that of free
+Dirac particles of mass \(m_{\rm LL}\) at the chemical potential
+\(\mu_{\rm LL}\), with an attractive contact interaction of strength
+\(G_{\rm LL}\) that acts on pairs of spin zero,
+\[\mathcal H^{\rm sf}_{\rm LL}=\sum_{\vec q}\Psi^\dagger_{\rm LL}\big(\mathsf h_{\rm LL}(\vec q)-\mu_{\rm LL}\big)\Psi_{\rm LL}-\tfrac14G_{\rm LL}\sum_{\iota=1}^3(\Pi^\iota_{\rm LL})^\dagger\Pi^\iota_{\rm LL},\tag{A.13}\]
+where
+\(\mathsf h_{\rm LL}(\vec q)=\gamma^0_{\rm LL}(\vec\gamma_{\rm LL}\cdot\vec q+m_{\rm LL})\)
+is the free Dirac Hamiltonian (times the unit matrix on the isospin
+index), and
+\(\Pi^\iota_{\rm LL}=\sum_{\vec q}\Psi_{\rm LL}(\vec q)^T\mathsf K^\iota_{\rm LL}\Psi_{\rm LL}(-\vec q)\)
+removes a pair of opposite momenta. Momenta are cut off at
+\(|\vec q|<\Lambda_{\rm LL}\), the unit of energy. The matrices
+\(\mathsf K^\iota_{\rm LL}=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf E_{\rm LL}\tau^{\rm LL}_\iota\)
+(with the charge-conjugation matrix
+\(C_{\rm LL}=i\gamma^2_{\rm LL}\gamma^0_{\rm LL}\)) make the pair a
+Lorentz scalar. In this model \(\Psi_{\rm LL}\) carries no electric
+charge: its isospin is an internal symmetry, and \(T^3_{\rm LL}\) is the
+charge of the rotations about the third isospin axis. This model,
+completed by a scalar and a vector contact term of \(\Psi_{\rm LL}\) and
+by gauge fields of its isospin and of its fermion number, is what the
+documents of the revision call the \emph{earlier hypotheses}; the
+\emph{revised hypotheses} keep the two contact terms, make the isospin
+the weak isospin of the Standard Model, and replace the pairing (A.13)
+by the pairing of \(\Psi_{\rm LL}\) with singlets. In the earlier
+hypotheses the coupling was \(G_{\rm LL}=25.2\); the examples below use
+other values to show how the superfluid behaves.
+
+\textbf{Why the pairs are isospin triplets.} A Lorentz-invariant pair of
+two Dirac spinors of spin zero must be built with \(C_{\rm LL}\) or
+\(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\), and both are antisymmetric
+matrices. The fields anticommute, so the pair \(\Psi^T\mathsf K\Psi\)
+keeps only the antisymmetric part of \(\mathsf K\). The product
+\(\mathsf K=C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\otimes\mathsf X_{\rm LL}\)
+of the antisymmetric Dirac factor with an isospin factor
+\(\mathsf X_{\rm LL}\) is antisymmetric if \(\mathsf X_{\rm LL}\) is
+symmetric and symmetric if \(\mathsf X_{\rm LL}\) is antisymmetric, so
+only a \emph{symmetric} \(2\times2\) isospin factor survives. The
+symmetric matrices are spanned by
+\[\mathsf E_{\rm LL}\tau^{\rm LL}_1=\begin{pmatrix}1&0\\0&-1\end{pmatrix},\qquad\mathsf E_{\rm LL}\tau^{\rm LL}_2=\begin{pmatrix}i&0\\0&i\end{pmatrix},\qquad\mathsf E_{\rm LL}\tau^{\rm LL}_3=\begin{pmatrix}0&-1\\-1&0\end{pmatrix},\tag{A.14}\]
+which transform as an isovector; the remaining matrix,
+\(\mathsf E_{\rm LL}\) of (A.11), the isospin singlet, is antisymmetric
+and drops out. Every spin-zero pair of two members of the isodoublet
+therefore has isospin 1, with \(T^3_{\rm LL}=+1\), \(0\) or \(-1\). The
+combinations
+\[\mathsf E_{\rm LL}\tau^{\rm LL}_1-i\mathsf E_{\rm LL}\tau^{\rm LL}_2=\begin{pmatrix}2&0\\0&0\end{pmatrix},\qquad\mathsf E_{\rm LL}\tau^{\rm LL}_1+i\mathsf E_{\rm LL}\tau^{\rm LL}_2=\begin{pmatrix}0&0\\0&-2\end{pmatrix}\]
+pair two up and two down members, and
+\(\mathsf E_{\rm LL}\tau^{\rm LL}_3\) pairs an up with a down member.
+
+\textbf{Quasi-particles and gaps.} In the mean-field approximation the
+product of pair operators in (A.13) is replaced by its average, which
+leaves a Hamiltonian quadratic in the fields, with the isovector order
+parameter
+\(d^\iota_{\rm LL}=-\tfrac12G_{\rm LL}\langle\Pi^\iota_{\rm LL}\rangle\).
+At each momentum its quasi-particles are the eigenvectors of the
+\(16\times16\) matrix of Bogoliubov and de Gennes, which acts on the
+field at \(\vec q\) and its conjugate at \(-\vec q\),
+\[\mathsf H_{\rm LL}(\vec q)=\begin{pmatrix}\mathsf h_{\rm LL}(\vec q)-\mu_{\rm LL}&\mathsf P_{\rm LL}\\\mathsf P_{\rm LL}^\dagger&-\big(\mathsf h_{\rm LL}(-\vec q)-\mu_{\rm LL}\big)^T\end{pmatrix},\qquad\mathsf P_{\rm LL}=\sum_\iota d^\iota_{\rm LL}(\mathsf K^\iota_{\rm LL})^\dagger.\tag{A.15}\]
+Its positive eigenvalues are
+\(E^\pm_{\rm LL}=[(\varepsilon_{\rm LL}\pm\mu_{\rm LL})^2+\Delta_{\rm LL}^2]^{1/2}\),
+with \(\varepsilon_{\rm LL}=(q^2+m_{\rm LL}^2)^{1/2}\) and
+\(\Delta_{\rm LL}\) one of the two \emph{gaps}
+\[(\Delta^\pm_{\rm LL})^2=|\vec d_{\rm LL}|^2(1\pm\zeta_{\rm LL}),\qquad\zeta_{\rm LL}=\frac{|\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}|}{|\vec d_{\rm LL}|^2},\tag{A.16}\]
+each twice. (A change of basis in the lower block by the matrix
+\(C_{\rm LL}\gamma^{\rm ch}_{\rm LL}\), which turns
+\(\mathsf h_{\rm LL}(-\vec q)^T\) into \(\mathsf h_{\rm LL}(\vec q)\),
+brings \(\mathsf H_{\rm LL}\) to the diagonal blocks
+\(\mathsf h_{\rm LL}-\mu_{\rm LL}\) and
+\(-(\mathsf h_{\rm LL}-\mu_{\rm LL})\) and the off-diagonal blocks
+\(\pm\mathsf D_{\rm LL}\), where \(\mathsf D_{\rm LL}\) is the isospin
+factor of \(\mathsf P_{\rm LL}\). Because
+\(\mathsf D_{\rm LL}\mathsf D_{\rm LL}^\dagger=|\vec d_{\rm LL}|^2+i(\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL})\cdot\vec\tau_{\rm LL}\)
+has the eigenvalues \((\Delta^\pm_{\rm LL})^2\), the matrix splits into
+two blocks, one per gap, whose squares are
+\((\mathsf h_{\rm LL}-\mu_{\rm LL})^2+(\Delta^\pm_{\rm LL})^2\), and
+\(\mathsf h_{\rm LL}\) has the eigenvalues \(\pm\varepsilon_{\rm LL}\).)
+\(E^-_{\rm LL}\) belongs to the particles near the Fermi surface,
+\(E^+_{\rm LL}\) to the antiparticles.
+
+\textbf{Which state condenses.} A state with \(\zeta_{\rm LL}=0\) has
+one gap \(\Delta_{\rm LL}=|\vec d_{\rm LL}|\) for all quasi-particles
+and is called \emph{unitary}, as in the theory of superfluid helium 3
+(R. Balian and N. R. Werthamer, 1963; A. J. Leggett, 1975). Its grand
+potential per volume at zero temperature, measured from the normal
+state, is half the sum of the positive eigenvalues of (A.15), in which
+each energy occurs four times, with the opposite sign, plus the cost of
+the pair field:
+\[\Omega_{\rm LL}=\frac{\Delta_{\rm LL}^2}{G_{\rm LL}}-2\int\frac{d^3q}{(2\pi)^3}\Big[E^+_{\rm LL}+E^-_{\rm LL}-\big(E^+_{\rm LL}+E^-_{\rm LL}\big)_{\Delta_{\rm LL}=0}\Big].\tag{A.17}\]
+Its minimum over \(\Delta_{\rm LL}\) obeys the \emph{gap equation}
+\[\frac1{G_{\rm LL}}=\int\frac{d^3q}{(2\pi)^3}\Big(\frac1{E^+_{\rm LL}}+\frac1{E^-_{\rm LL}}\Big).\tag{A.18}\]
+The unitary states have the lowest energy. At fixed
+\(|\vec d_{\rm LL}|\) the two squared gaps
+\(|\vec d_{\rm LL}|^2(1\pm\zeta_{\rm LL})\) have the mean
+\(|\vec d_{\rm LL}|^2\), and \(E^+_{\rm LL}+E^-_{\rm LL}\) is a concave
+function of \(\Delta_{\rm LL}^2\) (each term is the square root of a
+linear function of it). By Jensen's inequality the energies of a state
+with \(\zeta_{\rm LL}>0\) add up to less than those of the unitary state
+with the same \(|\vec d_{\rm LL}|\), and because they enter
+\(\Omega_{\rm LL}\) with a minus sign, its \(\Omega_{\rm LL}\) is
+higher. For \(\zeta_{\rm LL}=1\) one gap vanishes and the other is
+\(\sqrt2|\vec d_{\rm LL}|\): half of the quasi-particles are not gapped
+at all, and \(\Omega_{\rm LL}\) at \(|\vec d_{\rm LL}|\) is half the
+unitary \(\Omega_{\rm LL}\) at the gap \(\sqrt2|\vec d_{\rm LL}|\), so
+its minimum is exactly half the unitary minimum. A unitary order
+parameter, \(\vec d_{\rm LL}\times\vec d^{\,*}_{\rm LL}=0\), is a
+complex multiple of a real vector, so up to an isospin rotation and a
+phase it is the \emph{polar} state \(\vec d_{\rm LL}\propto(0,0,1)\), in
+which every pair joins an up with a down member. Its pair matrix
+\(\mathsf K^3_{\rm LL}\) has the non-zero entries
+\((\mathsf K^3_{\rm LL})_{03}=(\mathsf K^3_{\rm LL})_{12}=(\mathsf K^3_{\rm LL})_{47}=(\mathsf K^3_{\rm LL})_{56}=1\)
+and
+\((\mathsf K^3_{\rm LL})_{21}=(\mathsf K^3_{\rm LL})_{30}=(\mathsf K^3_{\rm LL})_{65}=(\mathsf K^3_{\rm LL})_{74}=-1\)
+(the rows and columns numbered from 0 to 7, the Dirac index running
+slower than the isospin index). The state
+\(\vec d_{\rm LL}\propto(1,i,0)\), built from pairs of two up members,
+has \(\zeta_{\rm LL}=1\). The polar superfluid keeps the rotations about
+the third isospin axis, and with them the charge \(T^3_{\rm LL}\),
+unbroken: each of its pairs has \(T^3_{\rm LL}=0\).
+
+\textbf{The critical coupling.} In the vacuum, \(\mu_{\rm LL}=0\), both
+energies are \((q^2+m_{\rm LL}^2+\Delta_{\rm LL}^2)^{1/2}\), and the
+right side of (A.18) is largest at \(\Delta_{\rm LL}=0\). A gap
+therefore forms only above the coupling at which the right side at
+\(\Delta_{\rm LL}=0\) equals \(1/G_{\rm LL}\), the \emph{critical
+coupling}
+\[\begin{aligned}&G^{\rm crit}_{\rm LL}=\frac{\pi^2}{I^{(1)}_{\rm SF}(m_{\rm LL})},\qquad I^{(1)}_{\rm SF}(M)=\int_0^{\Lambda_{\rm LL}}\frac{q^2\,dq}{(q^2+M^2)^{1/2}},\\&I^{(1)}_{\rm SF}(M)=\tfrac12\Big[\Lambda_{\rm LL}(\Lambda_{\rm LL}^2+M^2)^{1/2}-M^2\ln\frac{\Lambda_{\rm LL}+(\Lambda_{\rm LL}^2+M^2)^{1/2}}{M}\Big].\end{aligned}\tag{A.19}\]
+It is \(2\pi^2/\Lambda_{\rm LL}^2=19.739209\) for massless fields and
+\(21.286610\) for \(m_{\rm LL}=0.2\); at \(G_{\rm LL}=30\) and
+\(m_{\rm LL}=0.2\) the gap of the vacuum is \(0.6641405875\) and its
+grand potential \(-2.3656704935\times10^{-3}\). With a Fermi surface,
+\(\mu_{\rm LL}>m_{\rm LL}\), the integral of \(1/E^-_{\rm LL}\) grows
+without bound as \(\Delta_{\rm LL}\to0\), and a gap forms at every
+positive coupling, as in a metal.
+
+\textbf{Example: an explicit spin-zero superfluid of the eight spinor
+charges.} Take the polar state at \(G_{\rm LL}=12\),
+\(\mu_{\rm LL}=0.5\) and \(m_{\rm LL}=0.2\), where the Fermi momentum is
+\(k^{\rm F}_{\rm LL}=(\mu_{\rm LL}^2-m_{\rm LL}^2)^{1/2}=0.4582575695\).
+The gap equation (A.18) gives its gap, \(\Delta_{\rm LL}=0.0904165695\),
+and (A.17) its grand potential,
+\(\Omega_{\rm LL}=-9.7206051525\times10^{-5}\). At the momentum
+\(\vec q=(0,0,0.3)\) the matrix (A.15) has the eight positive
+eigenvalues \(E^-_{\rm LL}=0.1661927450\) and
+\(E^+_{\rm LL}=0.8652920221\), four times each. The state of pairs of
+two up members at the same coupling, chemical potential and mass has its
+minimum at \(|\vec d_{\rm LL}|=0.0639341652\), the gap divided by
+\(\sqrt2\), with \(\Omega_{\rm LL}=-4.8603025763\times10^{-5}\), exactly
+half.
+
+\textbf{Why this superfluid cannot be the Higgs field.} Its order
+parameter is an isovector, and a condensate of pairs has the quantum
+numbers of the pairs. The Higgs field of the Standard Model is an
+isodoublet with hypercharge \(\tfrac12\). No choice of the coupling, the
+mass or the chemical potential changes the isospin of a pair of two
+members of one isodoublet. To obtain an isodoublet, a member of
+\(\Psi_{\rm LL}\) must pair with a field that has no isospin, an isospin
+singlet: this is the change that the revised hypotheses make.
+
+\hypertarget{a.7-the-symbols-of-this-appendix}{%
+\subsection{A.7 The symbols of this
+appendix}\label{a.7-the-symbols-of-this-appendix}}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+meaning
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mathbf e_0,\dots,\mathbf e_7\) & the units of the octonions (A.1),
+(A.2); \(\mathbf e_0=1\) \\
+\(\mathbf a,\mathbf b,\mathbf c,\mathbf d,\mathbf t\) & quaternions or
+bi-quaternions; \(\mathbf t\) of norm 1 in the isospin rotations \\
+\(\mathbf x,\mathbf y,\mathbf z,\mathbf w,\mathbf s\) & octonions or
+bi-octonions, and the elements of the examples \\
+\(\bar{\mathbf x}\), \(\mathbf x^\dagger\) & the bar (the signs of the
+imaginary units changed) and the bar with the complex conjugation \\
+\(N(\mathbf x)\) & the norm, \(\sum_p\xi_p^2\) \\
+\([\mathbf x,\mathbf y,\mathbf z]\) & the associator
+\((\mathbf x\mathbf y)\mathbf z-\mathbf x(\mathbf y\mathbf z)\) \\
+\(\xi_p\), \(a_p\) & the complex and the real coefficients of a
+bi-octonion and of a quaternion \\
+\(\mathbb L_{\rm LL}\) & the Lorentz super-loop (A.5) \\
+\(M_{\rm LL}(\mathbf b)\) & the \(2\times2\) matrix of a bi-quaternion
+(A.6) \\
+\(\sigma^{\rm LL}_j\), \(\tau^{\rm LL}_a\), \(\mathsf 1_2\),
+\(\mathsf 1_4\) & the Pauli matrices on the spinor and on the isospin
+index; the unit matrices \\
+\(x^\mu\) & the coordinates of M31 (A.7) \\
+\(\mathbf g\), \(\mathbf g_{\rm rot}\), \(\mathbf g_{\rm boost}\) & an
+element of \(SL(2,\mathbb C)\); the rotation and the boost of the
+examples \\
+\(\mathsf L_{\rm LL}(\mathbf g)\) & the \(4\times4\) Lorentz matrix of
+\(\mathbf g\) (A.9) \\
+\(J^j_{\rm LL}\), \(K^j_{\rm LL}\), \(\mathbf u\) & the rotation and
+boost generators; a Lorentz generator \\
+\(\theta\), \(\vartheta\) & the angle of a rotation; the rapidity of a
+boost \\
+\(\phi_{\mathbf g}\) & the automorphism (A.10) \\
+\(\psi'_{\rm LL}\), \(\mathsf E_{\rm LL}\) & the matrix of the Weyl
+spinors of a spinor charge and \(i\sigma^{\rm LL}_2\) (A.11) \\
+\(\Psi_{\rm LL}\), \(T^3_{\rm LL}\) & the isodoublet of Dirac spinors of
+the spinor charges; its third isospin generator \\
+\(\gamma^p_{\rm LL}\), \(\gamma^{\rm ch}_{\rm LL}\), \(C_{\rm LL}\) &
+the Dirac matrices of the chiral basis, the chirality matrix and the
+charge-conjugation matrix \\
+\(u_{\rm LL}\) & the Dirac spinor of the example \\
+\(U_{\rm LL}\), \(\mathsf R_{\rm LL}(U_{\rm LL})\) & an isospin rotation
+and its \(3\times3\) rotation matrix (A.12) \\
+\(\mathcal H^{\rm sf}_{\rm LL}\), \(\mathsf h_{\rm LL}\) & the
+Hamiltonian (A.13) and the free Dirac Hamiltonian \\
+\(m_{\rm LL}\), \(\mu_{\rm LL}\), \(G_{\rm LL}\), \(\Lambda_{\rm LL}\) &
+the mass, the chemical potential, the coupling and the momentum
+cutoff \\
+\(\Pi^\iota_{\rm LL}\), \(\mathsf K^\iota_{\rm LL}\) & the pair
+operators and their matrices (\(\iota=1,2,3\)) \\
+\(\mathsf K\), \(\mathsf X_{\rm LL}\) & a pair matrix of two Dirac
+spinors and its isospin factor \\
+\(d^\iota_{\rm LL}\), \(\vec d_{\rm LL}\) & the isovector order
+parameter \\
+\(\mathsf H_{\rm LL}\), \(\mathsf P_{\rm LL}\), \(\mathsf D_{\rm LL}\) &
+the matrix of Bogoliubov and de Gennes (A.15), the pair self-energy and
+its isospin factor \\
+\(E^\pm_{\rm LL}\), \(\varepsilon_{\rm LL}\) & the quasi-particle
+energies and \((q^2+m_{\rm LL}^2)^{1/2}\) \\
+\(\Delta_{\rm LL}\), \(\Delta^\pm_{\rm LL}\), \(\zeta_{\rm LL}\) & a
+gap, the two gaps and the measure of non-unitarity (A.16) \\
+\(\Omega_{\rm LL}\) & the grand potential per volume (A.17) \\
+\(G^{\rm crit}_{\rm LL}\), \(I^{(1)}_{\rm SF}\) & the critical coupling
+and the integral (A.19) \\
+\(k^{\rm F}_{\rm LL}\) & the Fermi momentum \\
+\end{longtable}
 
 \end{document}

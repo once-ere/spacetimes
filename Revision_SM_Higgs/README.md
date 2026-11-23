@@ -89,10 +89,11 @@ contains that material with a worked example of every object, and it defines its
 check `check_self_contained.py` now reads the LaTeX sources of the article and of its Supplemental Material too. The
 hypotheses document and the manuscripts of the stages 3, 4 and 6 have been made complete in themselves as well (E78):
 each explains the words that it uses before its findings and contains, as its Appendix A, the algebra from which its
-fields come, with an example of every object. The manuscript `superfluid.md` of the earlier hypotheses has not yet been
-written again; it follows the rewriting of the manuscript of the folder `Revision_Lord_Gravity`, which states the model of
-the earlier hypotheses, the brochon model, in full (decisions D38 and D39). This README is the list of contents of the
-folder.
+fields come, with an example of every object. The manuscript `superfluid.md` of the earlier hypotheses was written again in
+the same way on 22 November 2026, after the manuscript of the folder `Revision_Lord_Gravity`, which states the model of the
+earlier hypotheses, the brochon model, in full (decisions D38 and D39, entry E82): a word list, its findings, a paragraph *In
+words* at the beginning of every main section, and Appendix A; its results are unchanged. This README is the list of contents of
+the folder.
 
 # 2. State
 
@@ -240,7 +241,7 @@ holds the checks and the remarks of the revision. The article (part three) is co
 | `higgs_superfluid.md`, `.tex`, `.pdf` | the manuscript of stage 3 of the revision: the mean-field superfluid of the three fields of the second version of the revised hypotheses by the methods HS, KS and CJT, with the first version as the comparison (the Hamiltonian density and the potentials, what forms the condensate, the uniform states and the three methods, the static response of the normal vacuum with the critical coupling in closed form, the stationary states and the custodial Higgs ground states, their symmetry and stability, the instability of the condensate of one doublet, the quasi-particles and the custodial symmetry, the checks) | written (current, second version) |
 | `provenance/P1_master_symbols.md`, `.tex`, `.pdf` | the MASTER provenance of the symbols of PROJECT spacetimes for this solution: the convention of the symbols (suffix LL: taken unchanged from the earlier work on the super-loop; suffix SF: introduced by this solution), the seven registries of the project read by a program, the identifications and remedies file by file, the collisions and their resolution, the machine checks, and the table of all symbols | written; grows with the solution |
 | `provenance/symbols_sf.csv` | the registry of the symbols of the solution, written by `code/scripts/write_symbol_registry.py` from `code/scripts/symbol_entries.py` | written |
-| `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | parts I to IV written |
+| `superfluid.md`, `.tex`, `.pdf` | the manuscript of the solution | parts I to IV written; made friendlier and complete in itself on 22 November 2026 (word list, findings, *In words*, Appendix A) |
 | `superfluid.nb`, `superfluid_notebook.pdf` | the Mathematica notebook of the whole solution, evaluated in the front end of Wolfram, and its printed copy | introduction, Parts I and II and the sections of Part III on the Landau form (III.L), on the free energy at finite temperature (III.T) and on the gradient coefficient, the Ginzburg number and the Higgs sector (III.G) written, and Part R (the revised hypotheses); the rest of Parts III and IV for the earlier hypotheses not written |
 | `provenance/P3_notebook.md`, `.tex`, `.pdf` | the provenance of the notebook: its task, files, build and evaluation, the checks with their counterparts in Rust and Python, the symbols of its code, the corrections | written for Parts I to III and Part R; grows with the notebook |
 | `provenance/P4_remarks.md`, `.tex`, `.pdf` | the remarks on the results (an approximation, a fit, an accuracy, a limitation): for each, what it means, why it holds, why it matters, the corrections of the first answer, and the provenance; first remark R1: the accuracy of the Landau form, with its definition and examples; the addendum A1 (the free energy of the five methods at finite temperature, and whether the order parameter is smaller and more physically reasonable) and remark R2 (the free energies are mean-field free energies); the addendum A2 (the gradient coefficient at the critical temperature and the width of the critical region; the superfluid as a Higgs sector and the compositeness of the Higgs) with its remarks; for the revised hypotheses the remarks R8 to R10 of stage 3 (what forms the condensate, with the correction of R8; the charges of the lightest quasi-particles in the first and the second version; the current response of the vacuum with the sharp cutoff) | written for R1, A1, R2, A2 and R8 to R10; grows with every such remark |

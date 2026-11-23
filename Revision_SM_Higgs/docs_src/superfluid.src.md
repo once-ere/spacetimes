@@ -51,7 +51,10 @@ and the reports of the checks of every part, Section 17 the corrections made dur
 and Section 19 the published works on the methods. The Mathematica notebook `superfluid.nb` named in Section 6.3 is
 written part by part; its first version repeats the computations of Part I in the Wolfram language, each with its
 counterparts in the two programs, and the corrections that it brought to the programs of Part I are listed in Section
-17.5.
+17.5. On 22 November 2026 the manuscript was made friendlier and complete in itself, as the author asked for all the
+manuscripts of the project: a word list (Section 0.1), the findings (Section 0.2), a paragraph *In words* at the beginning of
+every main section, and Appendix A with the algebra and an example of every object; Section 17.8 lists what else changed. The
+results, the programs and the numbers are unchanged.
 
 **The correction of 21 November 2026.** The author stated on 21 November 2026 that the spinor field of this work, the
 DiracLike spinor, has electric charge 0 and carries no electroweak quantum numbers, that it is a particle not yet
@@ -62,11 +65,101 @@ groups were one. Section 17.6 states what was wrong, why it happened, and what t
 Section 14.6, whose comparison with the Standard Model is withdrawn.
 
 **How to read it.** The manuscript is written for a reader who knows quantum mechanics, special relativity and the
-Dirac equation at the level of a first graduate course. It defines every symbol before it is used (all symbols are
-also collected in Section 18), shows every step of every derivation, and states for every result how it was checked.
-Nothing is left to another document.
+Dirac equation at the level of a first graduate course, and who wants to learn the subject, not only its words. Every
+technical word is explained in Section 0.1 before the findings, and again where it is first used; every main section
+begins with a paragraph *In words* that says in plain language what the section does and why, before the formulas do it;
+and Appendix A builds the algebra from which the fields come (the octonions and a Moufang loop, the bi-octonions and the
+Lorentz super-loop, M31, the eight spinor charges, a Dirac spinor, an isodoublet, an isovector, an isodoublet of Dirac
+spinors, and the spin-zero superfluid of the spinor charges), with an explicit example of every object. The manuscript
+defines every symbol before it is used (all symbols are also collected in Section 18), shows every step of every
+derivation, and states for every result how it was checked. Nothing is left to another document. A reader who meets the
+algebra for the first time can begin with Appendix A; a reader who wants the results first can read Section 0.2 and then
+the *In words* paragraphs of Sections 2 to 15.
+
+## 0.1 Words used in this manuscript
+
+{{PART:glossary_sh}}
+
+**Further words of this manuscript.** The following words are used here and not in the other documents of the folder.
+
+* *DiracLike spinor.* The name of the spinor field of this manuscript: it transforms under $SL(2,\mathbb C)$ as a Dirac spinor, but it
+  is a new particle, not the electron; it has electric charge 0 and no electroweak quantum numbers (Section 1).
+* *GEE.* The author's name for the gauge group $SL(2,\mathbb C)\times SU(2)_{\rm v}\times U(1)^{\rm F}_{\rm LL}$ of this manuscript: Lorentz
+  transformations of the frame, isospin rotations and phases of the fermion number, all allowed to change from point to point
+  (Section 4).
+* *Superfluid boson singlet state; $\mathrm{SFBSv}^X$.* The author's names for the condensate of the pairs of spin zero, and for the
+  expansion of its effective Lagrangian about the vacuum of the method $X$ (Section 13).
+* *Landau levels.* The discrete energies of a charged particle in a constant magnetic field: its circular motion across the field is
+  quantized (Section 7.2).
+* *Kink.* A configuration of a field that goes over from one vacuum to another across a wall, here the pair field
+  $\Delta^\infty_{\rm LL}\tanh(x^1_{\rm LL}/\ell^{\rm K}_{\rm LL})$, which changes sign; particles can be bound to the wall (Section 7.4).
+* *Wilson lattice.* A grid of points that replaces a space coordinate, with an extra term in the Dirac operator (Wilson's term) that
+  removes spurious solutions of the discretized equation; its error falls in proportion to the spacing (Sections 6.2 and 7).
+* *Richardson extrapolation.* The estimate of the limit of a quantity known at a few values of a small parameter (here the spacing
+  of a grid), by combinations of the values that cancel the leading powers of the parameter.
+* *Recursion of the potential; $V^{(0)}_{\rm SF}$, $V^{(1)}_{\rm SF}$, $V^{(2)}_{\rm SF}$.* The sequence of self-interactions that the task asked for:
+  the potential is changed step by step until all three methods find a superfluid (Section 10).
+* *Effective couplings.* The coefficients with which the energy of a method contains each channel of the interaction (Section 9.4).
+* *Free energy, critical temperature.* At the temperature $T$ the state of equilibrium minimizes the energy minus $T$ times the
+  entropy, the free energy; the critical temperature is the temperature at which the condensate disappears (Section 12.4).
+* *Landau's theory; Ginzburg number.* Landau's theory of a continuous phase transition expands the free energy in powers of the
+  order parameter near the critical temperature. Mean-field theory leaves out the fluctuations of the order parameter; the
+  Ginzburg number measures the relative width of the range of temperatures around the critical one in which they dominate
+  and mean-field theory fails (Section 12.5).
+* *Mass matrix of the gauge bosons; Higgs mechanism; longitudinal polarization.* In a condensate that carries a charge of a gauge
+  group, the gauge bosons of the broken generators acquire masses, given by a matrix; a massless vector boson has two
+  polarizations and a massive one three, and the third, longitudinal, polarization is the former Goldstone mode (the Higgs
+  mechanism; Sections 13.3, 14 and 15.4).
+* *Stabilizer; $O(2)$; semidirect product.* The stabilizer of a state is the subgroup that leaves it unchanged. $O(2)$ is the group
+  of the rotations and the reflections of a plane; it is the circle group $U(1)$ together with one reflection that reverses the
+  direction of the rotations, a *semidirect product* (Section 14.4).
+* *Zeugon.* The massless gauge boson $A_{{\rm SF},p}=W^3_{{\rm SF},p}$ of the superfluid (Sections 11 and 14), from the Greek for a yoked
+  pair: it attracts the two members of a condensed pair. It is not the photon.
+* *Alice electrodynamics.* A gauge theory of a $U(1)$ in which the reversal of the charge is itself a gauge transformation, as in
+  the surviving group $O(2)$ of this superfluid (Section 14.4).
+* *Collective modes.* Oscillations of the condensate as a whole, such as the oscillation of its amplitude (Section 15.2).
+* *CVODE, IDA.* The integrators of SUNDIALS, a library of the Lawrence Livermore National Laboratory: CVODE integrates ordinary
+  differential equations, IDA differential-algebraic equations (equations of which some contain no derivative in time); both choose
+  their steps so that the estimated error stays below a set tolerance (Section 6.3).
+
+## 0.2 The findings
+
+1. *Space-time and the spinor field come from the super-loop.* M31, the space of the Hermitian bi-quaternions, is Minkowski
+   space-time, and its Lorentz group is contained in the Lorentz super-loop (Section 2). The spinor field of the solution must be an
+   isodoublet of Dirac spinors with eight components (theorem D1, Section 3.4), and its pairs of spin zero are isospin triplets
+   (Section 3.5).
+2. *The gauge theory is written out completely.* The GEE covariant derivatives, the Lagrangian with the mass term, the
+   self-interaction and the Yang-Mills terms, and the field equations (Sections 4 and 5), also in the form needed for numerical
+   solution (Section 6); four analytic solutions, plane waves, Landau levels, the uniform superfluid and the kink with its bound
+   states, test the programs (Section 7).
+3. *No gauge boson forms the pairs.* In the symmetric vacuum no gauge boson of GEE attracts a pair of spin zero, and the exchange of
+   the four massless gauge bosons repels; the pairing comes from the pairing term of the self-interaction (Sections 8 and 11).
+4. *A superfluid in every method.* With the potential $V^{(2)}_{\rm SF}$ every method finds a superfluid ground state, the *polar*
+   state (one isovector direction of the pair field). In CJT, which coincides with KS by a theorem (Section 9.2), its energy per
+   volume relative to the normal vacuum is ${{GENM:p2_E_V2_CJT}}$, its pair amplitude $\lvert D^{\rm CJT}_{\rm SF}\rvert={{GENM:p2_D_V2_CJT}}$, its Dirac
+   mass ${{GENM:p2_M_V2_CJT}}$ and its gap ${{GENM:p2_gap_V2_CJT}}$, all in units of the cutoff (Section 10).
+5. *The gauge bosons in the superfluid.* $W^1$, $W^2$ and $B$ acquire masses (${{GENM:p2_cjtex_M_W}}$ and ${{GENM:p2_cjtex_M_Z}}$ in CJT with the
+   exchange of the bosons), and $W^3$ stays massless: the zeugon, the only gauge boson that attracts the two members of a condensed
+   pair. Alone it would pair the vacuum only for $g^{\rm v}_{\rm LL}>{{GENM:p2_thouless7}}$, almost eight times the coupling of the model
+   (Sections 11 and 14).
+6. *The effective Lagrangian and the temperature.* The effective potential of the pair field has the shape of a Mexican hat. At a
+   finite temperature the condensate disappears at the critical temperatures {{GEN:p4_tc}} of the cutoff; near them the order
+   parameter is small and Landau's theory holds, but the Ginzburg number, larger than 1 in every method, places these temperatures
+   inside the critical region, where the fluctuations that the mean-field methods leave out dominate (Sections 12.4 and 12.5).
+7. *The surviving symmetry.* The surviving group is $SL(2,\mathbb C)\times O(2)$: its circle group $U(1)^{\rm Q}_{\rm LL}$, the group of the charge
+   $Q_{\rm LL}=T^3_{\rm LL}$ (not the electric charge), has the massless zeugon, and its reflection reverses the zeugon (Sections 13 and 14).
+8. *Not the Higgs field of the Standard Model.* The superfluid is the Higgs field of its own gauge group: it gives the massive bosons
+   their masses and has an amplitude mode. It cannot be the Higgs field of the Standard Model, because the spinor field carries no
+   electroweak charge (Section 14.6).
+9. *The superfluid in time.* The condensate grows from the unstable normal vacuum, oscillates in its collective modes, the zeugon
+   radiates while a massive gauge boson stays bound, and the Goldstone wave becomes the longitudinal part of the massive $Z$
+   (Section 15).
 
 # 1. Conventions, units and notation
+
+*In words.* This section fixes the units (every energy in units of the momentum cutoff), the names of the indices and the
+matrices, and the rule that one symbol names one object. It also explains why the gauge theory of this manuscript borrows its
+names from the electroweak theory of the Standard Model although it is a different, new theory.
 
 **Units.** Planck's constant and the speed of light are 1. Energies, masses and momenta are measured in units of the
 momentum cutoff $\Lambda_{\rm LL}$ (Section 7.3 and Part II), and $\Lambda_{\rm LL}=1$; lengths and times in units of
@@ -94,8 +187,9 @@ ${}^*$ means the column of their adjoints. $\epsilon^{\rm LL}_{jj'j''}$ is the L
 permutation of $1,2,3$, $-1$ for an odd one, 0 otherwise), also written with isospin indices.
 $\mathrm{tr}$, $\det$, $\mathrm{diag}$, $\mathrm{Re}$, $\mathrm{Im}$ have their usual meanings.
 
-**Suffixes.** The project uses one symbol for one object. A symbol with the suffix LL is taken unchanged from the
-earlier work of the project on the super-loop; a symbol with the suffix SF is introduced by this solution; indices,
+**Suffixes.** The project uses one symbol for one object. A symbol with the suffix LL names an object of the algebra of the
+Lorentz super-loop or of the spinor field built from it (Sections 2 and 3, Appendix A), with the name that the project gave it before
+this solution; a symbol with the suffix SF is introduced by this solution; indices,
 operations, number sets, the author's own names (M31, GEE, the effective Lagrangians, $\mathrm{SFBSv}$) and the symbols
 of the Standard Model below carry no suffix.
 
@@ -125,6 +219,12 @@ $(W^1_\mu,W^2_\mu,W^3_\mu,B_\mu)$ whose matrix has the eigenvalues $M_W^2$ (twic
 $W^1_\mu$, $W^2_\mu$, $Z_\mu$ and $A_\mu$ above; the programs check this for 20 values of $(g,g',v)$.
 
 # 2. The manifold M31 of the Lorentz super-loop (item 1 of the problem)
+
+*In words.* The space-time of this manuscript is built from an algebra. Complex quaternions (bi-quaternions) are written as
+$2\times2$ complex matrices; the Hermitian ones are the points of a four-dimensional space, M31, and the ones of determinant 1 act
+on them as Lorentz transformations. Doubling the bi-quaternions gives the bi-octonions, whose elements of norm 1 form the Lorentz
+super-loop, a set with a product that is not associative. This section shows that M31 is Minkowski space-time and that its
+Lorentz group is contained in the super-loop. Appendix A builds the same objects with an explicit example of each.
 
 ## 2.1 Bi-quaternions and their matrices
 
@@ -245,6 +345,12 @@ is proper orthochronous, and the homomorphism; and the 27 commutators (2.11).
 
 # 3. The spinor fields on M31, and the DiracLike field (item 2 of the problem)
 
+*In words.* A spinor is an object that changes sign under a rotation by $360°$. In the super-loop the elements $\mathbf b\,\mathbf e_4$,
+the *spinor charges*, transform as spinors under the unit bi-quaternions. This section builds the two-component spinors, the Dirac
+matrices and the spinor field $\Psi_{\rm LL}$ of this work, an isodoublet of Dirac spinors (two Dirac spinors that an isospin rotation
+mixes, eight components in all); it proves that the field must be an isodoublet (theorem D1), and it builds its pairs of spin zero.
+Appendix A.5 gives an example of a Dirac spinor, an isodoublet, an isovector and an isodoublet of Dirac spinors.
+
 ## 3.1 Two-component spinors and the spinor charges of the super-loop
 
 A **two-component spinor** is a column of two complex numbers that transforms under the unit bi-quaternion $\mathbf g$ as
@@ -254,8 +360,8 @@ which transforms by (2.9): a spinor is a "square root" of a light ray, and a rot
 $\chi$ but not of $\chi\chi^\dagger$.
 
 **The spinor charges.** A spinor charge of the super-loop is a bi-octonion $\mathbf b\,\mathbf e_4$ with a bi-quaternion
-$\mathbf b$ (the name is that of the earlier work: a spinor charge is the algebraic object that transforms as a spinor;
-it carries no electric charge). By (2.3), the multiplication by a unit bi-quaternion $\mathbf g$ of the super-loop acts on it as
+$\mathbf b$ (the name of the project: a spinor charge is the algebraic object that transforms as a spinor; despite the word
+"charge" it carries no electric charge). By (2.3), the multiplication by a unit bi-quaternion $\mathbf g$ of the super-loop acts on it as
 $$(\mathbf b\,\mathbf e_4)\,\mathbf g=(\mathbf b\bar{\mathbf g})\,\mathbf e_4,\qquad\mathbf g\,(\mathbf b\,\mathbf e_4)=(\mathbf b\mathbf g)\,\mathbf e_4\tag{3.1}$$
 (in (2.3) put $\mathbf a=0$, $\mathbf c=\mathbf g$, $\mathbf d=0$ for the first, and $\mathbf a=\mathbf g$, $\mathbf b=0$, $\mathbf c=0$,
 $\mathbf d=\mathbf b$ for the second). The **Lorentz transformation of a spinor charge** is its multiplication by
@@ -443,6 +549,11 @@ operators $\Pi'^\iota_{\rm LL}$ have $\mathsf K'^\iota_{\rm LL}$ in place of $\m
 
 # 4. The gauge group GEE and the GEE gauge-covariant derivatives (item 3 of the problem)
 
+*In words.* A gauge theory makes a symmetry local: the transformation may differ from point to point. The derivative of a field
+then no longer transforms like the field, and it must be corrected by gauge fields; the corrected derivative is the *covariant
+derivative*. This section does this for the group GEE: the Lorentz transformations of the frame, the isospin rotations and the
+phases of the fermion number. It writes the covariant derivative of every field, the field strengths and the currents.
+
 ## 4.1 The group and its local transformations
 
 The gauge group of the problem is
@@ -537,6 +648,10 @@ of $\bar\Psi\gamma^p\nabla_p\Psi$ (C-6 to C-8); all of GEE at once with a genera
 (C-9); the curvature (4.8) (C-10); and the invariance of the value of the Dirac Lagrangian density (C-11).
 
 # 5. The Lagrangian and the field equations (item 4 of the problem)
+
+*In words.* The Lagrangian of the solution has three parts: the Dirac term of the spinor field with its mass, the
+self-interaction of the spinor field (a contact interaction of four fields, the potential of the task), and the terms of the gauge
+fields. Its variation gives the field equations of the spinor field and of the gauge fields, which this section writes out.
 
 ## 5.1 The Lagrangian
 
@@ -648,6 +763,11 @@ the common ground of the three methods of Part II, and Section 7 gives exact sol
 
 # 6. The field equations formulated for numerical solution
 
+*In words.* The field equation of the spinor field is an equation for quantum operators, which a computer cannot solve directly.
+This section replaces it by the equations of a *quasi-free state*, a state described completely by two correlation matrices (as in
+the approximation of Hartree, Fock and Bogoliubov), writes them for uniform states and for fields that depend on one space
+coordinate, and names the integrators used in time.
+
 ## 6.1 Quasi-free states and the time-dependent mean field
 
 The field equation (5.5) is an equation for operators. All three methods of Part II approximate the state of the
@@ -752,6 +872,10 @@ programs call it through a library with a C interface. The Mathematica notebook 
 inside the Wolfram function `NDSolve`. The time-dependent solutions are in Section 15.
 
 # 7. Analytic solutions of four simple cases (item 5 of the problem)
+
+*In words.* Before the numerical work, four cases are solved exactly: plane waves in constant gauge fields, the Landau levels of a
+charge in a constant magnetic field, the uniform superfluid with the pairing interaction, and a kink of the pair field with the
+states bound to it. Each solution also tests a program.
 
 Each solution states which equation it solves exactly. AS1 and AS2 solve the field equation (5.5) without the
 self-interaction, in given gauge fields: they are the single-particle modes above the normal vacuum, and they are also
@@ -970,6 +1094,10 @@ $\pm m_{\rm LL}$ and $\pm(m_{\rm LL}^2+(E^{\rm K}_{{\rm SF},1})^2)^{1/2}$, below
 
 # 8. The pair channels and the gauge bosons that mediate the pairing (item 6 of the problem, first part)
 
+*In words.* Which interaction can bind two spinor charges into a pair of spin zero? At one point of space the eight components of
+the field have $2^8=256$ states. On these states the energy of a pair in every channel of spin zero can be computed exactly, for
+every term of the interaction and for the exchange of every gauge boson; this section does so.
+
 Part II begins with the question of the task: which interaction can bind two spinor charges into a pair of spin
 zero, and which gauge boson mediates the pairing? This section answers the first half exactly, by operator algebra on
 the 256 states of one point; Section 11 answers the second half quantitatively in the condensed state.
@@ -1058,6 +1186,11 @@ the pairing term, but it cannot pair the symmetric vacuum, where all four bosons
 repels.
 
 # 9. The three methods and their numerical engine
+
+*In words.* The three methods of the task, of Hubbard and Stratonovich (HS), of Cornwall, Jackiw and Tomboulis (CJT) and of Kohn
+and Sham (KS), all describe the state by a uniform quasi-free state; they differ in which contractions of the four-field
+interaction they keep and with which weights. This section writes the energy of such a state, the three methods, the program that
+finds their stationary states, and the static response that tells whether the normal vacuum is unstable.
 
 ## 9.1 The energy of a uniform quasi-free state and the weights of the contractions
 
@@ -1205,6 +1338,11 @@ $\lambda^{\rm P}_{\rm SF}>1$. *Checks P2-6b and P2-6c:* the eigenvalues of the f
 vacuum in the two channels agree with these formulas to {{GEN:bnd_P2-6bc}}, for all potentials and methods.
 
 # 10. The recursion of the potential; the ground state, the first excited states and the gap
+
+*In words.* The task asked to change the potential step by step until all three methods find a superfluid. Three potentials are
+used: the author's, one with an added pairing term, and one that also repels in the scalar channel. For each potential and method
+the program searches the stationary states from seven starts and finds the ground state, its *gap* (the smallest energy of an
+excitation) and the first excited states.
 
 The task asks to change the potential (and the HS parameters and the Kohn-Sham potential) recursively until all three
 methods admit a superfluid. The recursion is carried out with three potentials; for each potential and method the
@@ -1388,8 +1526,13 @@ $E^{{\rm KS},{\rm gap}}_{\rm SF}=E^{{\rm CJT},{\rm gap}}_{\rm SF}={{GENM:p2_gap_
 
 # 11. The gauge bosons in the superfluid (item 6 of the problem, second part)
 
-The gauge couplings are those of the earlier work of the project, $g^{\rm v}_{\rm LL}=0.7$ and $g^{\rm F}_{\rm LL}=0.45$, and their
-common scale $s^{\rm g}_{\rm SF}$ ($g^{\rm v}_{\rm LL}=0.7s^{\rm g}_{\rm SF}$, $g^{\rm F}_{\rm LL}=0.45s^{\rm g}_{\rm SF}$) is varied in Section 11.4.
+*In words.* In the superfluid the gauge bosons of the broken symmetries acquire masses, as the photon does inside a
+superconductor. This section computes the masses from the response of the condensate to the charges, the energy of the exchange of
+every boson, and whether the gauge bosons alone could form the condensate. The answer to item 6 of the task follows: only the zeugon
+attracts the two members of a condensed pair.
+
+The gauge couplings of the model are $g^{\rm v}_{\rm LL}=0.7$ and $g^{\rm F}_{\rm LL}=0.45$, the values that the project fixed before this
+solution, and their common scale $s^{\rm g}_{\rm SF}$ ($g^{\rm v}_{\rm LL}=0.7s^{\rm g}_{\rm SF}$, $g^{\rm F}_{\rm LL}=0.45s^{\rm g}_{\rm SF}$) is varied in Section 11.4.
 
 ## 11.1 The masses of the gauge bosons
 
@@ -1552,10 +1695,16 @@ Section 10 is unchanged. The gauge bosons acquire the masses of Table 11.1 by th
 
 # 12. The effective Lagrangians of the superfluid boson singlet state (Part III)
 
+*In words.* The condensate is described by one field, the pair field $\vec\Phi$, an isovector of complex numbers. Its effective
+Lagrangian has a potential part, the energy of a uniform state as a function of $\vec\Phi$, shaped like a Mexican hat, and a kinetic
+part with its derivatives. This section computes both for every method, then the free energy at a finite temperature, the critical
+temperature at which the condensate disappears, and the width of the critical region in which the mean-field methods fail.
+
 Part III builds, for each method $X$, the effective Lagrangian $\mathcal L^X=\mathcal L^X_{\rm kinetic}+\mathcal L^X_{\rm potential}$ of the field
-of the superfluid boson singlet state (decision D7 of the task record: the potential part is minus the effective
-potential, the energy per volume of a uniform state as a function of the field; the kinetic part contains the
-derivatives to second order, in the form that GEE requires). All results are for the potential $V^{(2)}_{\rm SF}$ of
+of the superfluid boson singlet state. Its potential part is minus the effective potential, the energy per volume of a
+uniform state as a function of the field; its kinetic part contains the derivatives of the field to the second order, in
+the form that GEE requires (the derivatives are the GEE covariant derivatives, so that the Lagrangian is invariant
+under local GEE transformations). All results are for the potential $V^{(2)}_{\rm SF}$ of
 Section 10.3.
 
 ## 12.1 The field and the effective potential
@@ -1815,7 +1964,9 @@ hence the factor $\tfrac12$). For HS this is the free energy at the saddle point
 effective action at finite temperature with the truncation of Section 9.2, and for KS the functional of Mermin with the
 entropy of the quasi-free state of Kohn and Sham and the exchange-correlation energy of Section 9, which has no explicit
 dependence on the temperature (in the exact theory of Mermin the exchange-correlation free energy depends on the
-temperature; here only the states do). The choice is decision D15 of the task record. The self-energies are the
+temperature; here only the states do). This is the free energy of Landau's theory of phase transitions: at $T=0$ it equals
+the effective potential, and near the critical temperature of a continuous transition its order parameter is small. The
+self-energies are the
 derivatives of $\mathcal E^X_{\rm SF}$ as before, and the stationary points of (12.7) are the self-consistent thermal states. The
 **free energy of the field** $\vec\Phi$ is the smallest free energy among the states with this field, measured from the
 normal state at the same temperature,
@@ -2149,6 +2300,10 @@ amplitude mode.
 
 # 13. The minima, the breaking of the symmetry and $\mathrm{SFBSv}^X$
 
+*In words.* The minima of the effective potential form a manifold: all pair fields of the same length that differ by a phase and an
+isospin rotation. Nature picks one of them, and the symmetry is broken. This section describes the minima, the symmetry that survives,
+and the expansion of the fields about a minimum, $\mathrm{SFBSv}^X$, with the masses of its excitations.
+
 ## 13.1 The vacua and the surviving symmetry
 
 **The minima.** By Section 12.1 the minima of $\mathcal V^X_{\rm SF}$ are the polar fields of modulus $\Phi_0$:
@@ -2220,11 +2375,16 @@ $\vec e_1\times\vec e_3=-\vec e_2$, $\vec e_2\times\vec e_3=\vec e_1$, $\vec e_3
 $$\sum_p\eta^{\rm LL}_{pp}\Big[Z^X_{\rm SF}\Phi_0^2(g^{\rm v}_{\rm LL})^2\big((W^1_{{\rm SF},p})^2+(W^2_{{\rm SF},p})^2\big)+4(Z^X_{\rm SF}+Y^X_{\rm SF})\Phi_0^2(g^{\rm F}_{\rm LL})^2(B_{{\rm SF},p})^2\Big],\tag{13.7}$$
 that is $M^X_{W,{\rm SF}}=g^{\rm v}_{\rm LL}(2Z^X_{\rm SF})^{1/2}\Phi_0=g^{\rm v}_{\rm LL}(\chi^{11}_{\rm SF})^{1/2}$, $M^X_{Z,{\rm SF}}=g^{\rm F}_{\rm LL}(8(Z^X_{\rm SF}+Y^X_{\rm SF}))^{1/2}\Phi_0=g^{\rm F}_{\rm LL}(\chi^{\rm FF}_{\rm SF})^{1/2}$,
 and no mass for $W^3_{\rm SF}$: the masses (11.1) of Part II follow from the effective Lagrangian, and the three Goldstone
-fields have become the longitudinal parts of $W^\pm_{\rm SF}$ and $Z_{\rm SF}$ (the Higgs mechanism; the reading of "give mass to
-the Goldstone bosons" of decision D8). The mass matrix, its diagonalization and the proof that the surviving gauge
+fields have become the longitudinal parts of $W^\pm_{\rm SF}$ and $Z_{\rm SF}$ (the Higgs mechanism; this is how this work reads the
+author's request to "give mass to the Goldstone bosons"). The mass matrix, its diagonalization and the proof that the surviving gauge
 boson is massless are the subject of Section 14.
 
 # 14. The masses of the gauge bosons, the surviving group and the massless gauge boson (Part IV)
+
+*In words.* This section writes the mass matrix of the four gauge fields for every vacuum, diagonalizes it, and proves that exactly
+one gauge boson stays massless: the one whose generator leaves the condensate unchanged. The surviving group is
+$SL(2,\mathbb C)\times O(2)$, and its circle group has the massless gauge boson, the zeugon. The section ends with the question whether this
+superfluid can play the role of the Higgs particle (Section 14.6).
 
 Part IV completes item 6 of the problem. Section 13.3 inserted the vacuum $\Phi^X_{0,{\rm SF}}\vec e_3$ into the kinetic part
 (12.4) and found the masses of $W^\pm_{{\rm SF},p}$ and $Z_{{\rm SF},p}$; this section writes the mass matrix of the four gauge
@@ -2296,7 +2456,7 @@ $\nu^X_{{\rm SF},1}\mp i\nu^X_{{\rm SF},2}$ of charge $\pm1$ (they rotate like t
 polarizations each (9), the zeugon $A_{{\rm SF},p}$ (massless, 2), and the three massive scalar fields $h^X_{\rm SF}$, $\nu^X_{{\rm SF},1}$,
 $\nu^X_{{\rm SF},2}$ (3): 14. The three Goldstone fields $\vartheta^X_{{\rm SF},0}$, $\vartheta^X_{{\rm SF},1}$, $\vartheta^X_{{\rm SF},2}$
 have become the third (longitudinal) polarizations of $Z$, $W^+$, $W^-$: the Higgs mechanism, which the author calls
-"give mass to the Goldstone bosons" (decision D8). Section 15.4 shows it in time.
+"give mass to the Goldstone bosons". Section 15.4 shows it in time.
 
 ## 14.3 The theorem: the massless gauge bosons are the generators that leave the field unchanged
 
@@ -2347,8 +2507,8 @@ coefficients of Table 12.3.
 By Section 13.1 the stabilizer of the vacuum $\Phi_0\vec e_3$ is $H^{\rm vac}_{\rm SF}=SL(2,\mathbb C)\times O(2)$ with
 $O(2)=\{e^{i\theta T^3_{\rm LL}}\}\rtimes\{\mathsf 1,\mathsf r\}$, where $\mathsf r$ is the rotation by $\pi$ about $\vec e_1$ combined with the phase
 $\theta^{\rm F}_{\rm LL}=\pi/2$. As a group of transformations of the fields:
-* **The identity component** is the group $U(1)^{\rm Q}_{\rm LL}=\{e^{i\theta Q_{\rm LL}}\}$, $Q_{\rm LL}=T^3_{\rm LL}$, of the earlier work of the
-  project: a circle group, of period $4\pi$ on the spinor charges ($Q_{\rm LL}=\pm\tfrac12$) and $2\pi$ on all bosonic fields. Its
+* **The identity component** is the group $U(1)^{\rm Q}_{\rm LL}=\{e^{i\theta Q_{\rm LL}}\}$, $Q_{\rm LL}=T^3_{\rm LL}$ (Section 3.3): a circle
+  group, of period $4\pi$ on the spinor charges ($Q_{\rm LL}=\pm\tfrac12$) and $2\pi$ on all bosonic fields. Its
   element $e^{2\pi iQ_{\rm LL}}$ is $-1$ on the spinor field and $+1$ on the bosons, as is $e^{i\pi F_{\rm LL}}$, which also leaves the
   condensate unchanged ($e^{2i\theta^{\rm F}_{\rm LL}}=1$): the two act alike on every field, so the stabilizer contains no further
   continuous or discrete transformations of the fields than $U(1)^{\rm Q}_{\rm LL}$ and $\mathsf r$.
@@ -2580,6 +2740,10 @@ the Standard Model at the level of several per cent (ATLAS 2022, CMS 2022), whic
 compositeness at a higher scale.
 
 # 15. The dynamics of the superfluid and of its gauge fields (Part IV)
+
+*In words.* This section follows the superfluid in time: how the condensate grows from the unstable normal vacuum, how it oscillates
+about its ground state, how the zeugon radiates while a massive gauge boson stays bound, and how the Goldstone wave turns into the
+longitudinal part of a massive gauge boson, the Higgs mechanism seen in time.
 
 Every equation of this section is integrated by CVODE or IDA (Section 6.3) in the pure-Rust SUNDIALS 7.8.0, by the
 program `sf_part4` and, through the C interface of the crate `sfsundials_c`, by the Python program `sf_part4.py`. The
@@ -3481,6 +3645,21 @@ and CJT). The values of the analytic solution AS3 in Section 9.3 are now the fra
 parameters of the programs (the tolerances of the iterations and of the integrators, the seeds, the steps of the
 differences) are still written in the text, as are the numbers of earlier runs in this Section 17.
 
+## 17.8 The rewriting of 22 November 2026
+
+The author found, in the manuscripts of the project, undefined terms, a text written for experts rather than for a student who
+wants to learn, and references that send the reader to documents that he cannot read. The rewriting of this manuscript on 22
+November 2026 added the word list, the findings, the paragraphs *In words* and Appendix A (Section 0). It also corrected four places
+that broke the rule that no document sends its reader to another document: Sections 12 (twice), 13.3 and 14.4 named decisions of the
+task record of the folder (D7, D15 and D8) as the source of a choice, without stating the choice fully. They now state the choice
+itself: that the potential part of the effective Lagrangian is minus the effective potential and its kinetic part has the GEE
+covariant derivatives (Section 12); that the free energy is that of Landau's theory, equal to the effective potential at $T=0$
+(Section 12.4); and that the Higgs mechanism is how this work reads the author's request to "give mass to the Goldstone bosons"
+(Sections 13.3 and 14.4). Four sentences that named "the earlier work of the project" as the origin of a symbol or a value
+(Sections 1, 3.1, 11 and 14.4) now say what the object is and where this manuscript defines it. The automatic check of the rule did
+not find the four references to the decisions, because its list of wordings did not contain them; the rule is now kept by this
+reading, and the check is unchanged.
+
 # 18. The symbols
 
 Every symbol of this manuscript, except the local variables listed at the end of this section, is an entry of the
@@ -3674,3 +3853,5 @@ gauge-invariant fields of (15.8)).
 * C. G. J. Jacobi, Über ein leichtes Verfahren, die in der Theorie der Säcularstörungen vorkommenden Gleichungen numerisch
   aufzulösen, Journal für die reine und angewandte Mathematik 30, 51 (1846) -- the eigenvalues of symmetric matrices by
   plane rotations (Section 14.5).
+
+{{PART:algebra_sh}}
